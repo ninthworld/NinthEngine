@@ -1,23 +1,31 @@
-#include <NinthEngine\NinthEngine.hpp>
 #include "TestGame.hpp"
-#include <iostream>
+#include <NinthEngine\GameEngine.hpp>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <thread>
 
-int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow) {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
+void gameEngine()
+{
+	TestGame *gameLogic;
+	gameLogic = new TestGame();
 
-	using namespace NinthEngine;
+	try {
+		GameEngine engine("Block Game", 1600, 900, false, gameLogic);
+		engine.run();
+	}
+	catch (GameUtils::Exception &exc) {
+		fputs(exc.what(), stderr);
+	}
 
-	BootstrapWin32 bootstrap;
+	delete gameLogic;
+}
 
-	bootstrap.OnError([](std::exception const& e) {
-		// Log::Critical("NinthEngine", e.what());
-		std::cerr << "NinthEngine [CRITICAL] " << e.what() << std::endl;
-	});
+int main()
+{
+	std::thread gameThread(gameEngine);
 
-	bootstrap.Run([](std::shared_ptr<GameHost> const& gameHost) {
-		return std::make_unique<TestGame::TestGame>(gameHost);
-	});
+	gameThread.join();
 
 	return 0;
 }
