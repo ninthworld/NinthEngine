@@ -1,24 +1,19 @@
 #pragma once
 
-#include "SimpleShader.hpp"
-#include "Chunk.hpp"
 #include <NinthEngine\IGameLogic.hpp>
-#include <NinthEngine\VertexArray.hpp>
-#include <NinthEngine\Camera.hpp>
+#include <NinthEngine\Window.hpp>
 
-class TestGame : public IGameLogic {
+class TestGame : public NinthEngine::IGameLogic {
 public:
 	TestGame();
-	~TestGame();
-	void init(Window *window);
-	void input(Window *window);
+	TestGame(const TestGame&);
+	virtual ~TestGame();
+
+	void init(NinthEngine::Window&);
+	void input(NinthEngine::Window&);
 	void update(const float interval);
-	void render(Window *window);
+	void render(NinthEngine::Window&);
+
 protected:
 private:
-	SimpleShader *simpleShader;
-	//VertexArray *simpleVAO;
-	Camera *camera;
-	Texture *simpleTexture;
-	Chunk *chunk;
 };

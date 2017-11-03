@@ -1,32 +1,42 @@
-#include "../include/NinthEngine/GameEngine.hpp"
+#include "..\include\NinthEngine\GameEngine.hpp"
 
-GameEngine::GameEngine(const std::string title, const int width, const int height, const bool vsyncEnabled, IGameLogic *gameLogic) :
-	gameLogic(gameLogic),
-	window(new Window(title, width, height, vsyncEnabled)) {
+namespace NinthEngine {
+
+GameEngine::GameEngine(Window &window, IGameLogic &gameLogic) 
+	: window(window), gameLogic(gameLogic) {
+
+}
+
+GameEngine::GameEngine(const GameEngine &g) 
+	: window(g.window), gameLogic(g.gameLogic) {
+
 }
 
 GameEngine::~GameEngine() {
-	delete window;
+
 }
 
 void GameEngine::run() {
+
 	init();
-	gameLoop();
 }
 
 void GameEngine::init() {
-	window->init();
-	gameLogic->init(window);
+
+	window.init();
+	gameLogic.init(window);
+
+	gameLoop();
 }
 
 void GameEngine::gameLoop() {
-	double lastTime = glfwGetTime(), timer = lastTime;
-	double deltaTime = 0, nowTime = 0;
+	const double fpsLimit = 1 / 60.0;
+	double lastTime = glfwGetTime(), timer = lastTime, deltaTime = 0, nowTime = 0;
 	int frames = 0, updates = 0;
 
-	while (!window->isClosedRequested()) {
+	while (!window.isCloseRequested()) {
 		nowTime = glfwGetTime();
-		deltaTime += (nowTime - lastTime) / LIMIT_FPS;
+		deltaTime += (nowTime - lastTime) / fpsLimit;
 		lastTime = nowTime;
 
 		input();
@@ -42,22 +52,23 @@ void GameEngine::gameLoop() {
 
 		if (glfwGetTime() - timer > 1.0) {
 			timer++;
-			window->displayFPS(frames, updates);
-			updates = 0, frames = 0;
+			window.setTitle(std::to_string(frames) + " FPS, " + std::to_string(updates) + " UPS");
+			updates = 0;
+			frames = 0;
 		}
 	}
-
 }
 
 void GameEngine::input() {
-	gameLogic->input(window);
+
 }
 
 void GameEngine::update(const float interval) {
-	gameLogic->update(interval);
+
 }
 
 void GameEngine::render() {
-	gameLogic->render(window);
-	window->update();
+
 }
+
+} // namespace NinthEngine
