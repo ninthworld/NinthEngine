@@ -102,7 +102,7 @@ void Camera::setProjMatrix(const int width, const int height) {
 }
 
 void Camera::setViewMatrix() {
-	viewMatrix = glm::rotate(glm::mat4(), rotation.x, glm::vec3(1, 0, 0));
+	viewMatrix = glm::rotate(glm::mat4(1), rotation.x, glm::vec3(1, 0, 0));
 	viewMatrix = glm::rotate(viewMatrix, rotation.y, glm::vec3(0, 1, 0));
 	viewMatrix = glm::rotate(viewMatrix, rotation.z, glm::vec3(0, 0, 1));
 	viewMatrix = glm::translate(viewMatrix, -position);

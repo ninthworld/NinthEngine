@@ -5,11 +5,10 @@
 
 #include <GLFW\glfw3.h>
 #include <string>
+#include "..\NinthEngine\Window.hpp"
+#include "..\NinthEngine\IGameLogic.hpp"
 
 namespace NinthEngine {
-
-class Window;
-class IGameLogic;
 
 class GameEngine {
 public:

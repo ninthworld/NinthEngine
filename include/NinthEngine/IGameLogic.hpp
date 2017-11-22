@@ -1,8 +1,8 @@
 #pragma once
 
-namespace NinthEngine {
+#include "..\NinthEngine\Window.hpp"
 
-class Window;
+namespace NinthEngine {
 
 class IGameLogic {
 public:
@@ -10,6 +10,7 @@ public:
 	virtual void input(Window *window) = 0;
 	virtual void update(const float interval) = 0;
 	virtual void render(Window *window) = 0;
+
 protected:
 private:
 };

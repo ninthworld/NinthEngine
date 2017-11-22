@@ -47,6 +47,7 @@ private:
 	static void windowSizeCallback(GLFWwindow *wId, int width, int height);
 	static void cursorPosCallback(GLFWwindow *wId, double cursorX, double cursorY);
 	static void errorCallback(int error, const char *desc);
+
 };
 
 } // namespace NinthEngine

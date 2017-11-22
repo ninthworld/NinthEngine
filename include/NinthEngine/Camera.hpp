@@ -5,10 +5,9 @@
 #include <glm\glm.hpp>
 #include <glm\ext.hpp>
 #include <glm\gtx\extend.hpp>
+#include "..\NinthEngine\Window.hpp"
 
 namespace NinthEngine {
-
-class Window;
 
 class Camera {
 public:

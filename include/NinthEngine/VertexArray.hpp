@@ -30,6 +30,7 @@ public:
 	void setData(std::vector<Vertex_t> vertices, std::vector<unsigned int> indices);
 	void setData(std::vector<VertexNT_t> vertices, std::vector<unsigned int> indices);
 	void render();
+
 protected:
 private:
 	GLuint vaoId;

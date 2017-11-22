@@ -1,6 +1,4 @@
 #include "BlockGame.hpp"
-#include "Chunk.hpp"
-#include "SimpleShader.hpp"
 #include <NinthEngine\Window.hpp>
 #include <NinthEngine\GameUtils.hpp>
 
@@ -30,12 +28,13 @@ void BlockGame::init(Window *window) {
 	glGetIntegerv(GL_MAJOR_VERSION, &major);
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
 
-	simpleTexture = GameUtils::loadBMP("blocks.bmp");
+	simpleTexture = GameUtils::loadBMP("res/textures/blocks.bmp");
 
 	chunk = new Chunk({ 0, 0 });
 	chunk->init();
 
-	/*struct UV_t {
+	/*
+	struct UV_t {
 		float u, v;
 		UV_t operator +(UV_t b) { return { u + b.u, v + b.v }; }
 		UV_t operator *(UV_t b) { return { u * b.u, v * b.v }; }
@@ -86,10 +85,11 @@ void BlockGame::init(Window *window) {
 		12, 13, 14, 14, 13, 15,
 		16, 17, 18, 18, 17, 19,
 		20, 21, 22, 22, 21, 23
-	};*/
+	};	*/
 
 	simpleShader = new SimpleShader();
 	simpleShader->init();
+
 	//simpleVAO = new VertexArray();
 	//simpleVAO->setData(vertices, indices);
 }
@@ -113,7 +113,7 @@ void BlockGame::render(Window *window) {
 
 	simpleShader->bind();
 	simpleShader->loadViewProjMatrix(camera->getViewProjMatrix());
-	simpleShader->loadModelMatrix(glm::translate(glm::mat4(), glm::vec3(0)));
+	simpleShader->loadModelMatrix(glm::translate(glm::mat4(1), glm::vec3(0)));
 	simpleShader->loadTexture(simpleTexture);
 	//simpleVAO->render();
 	chunk->render();

@@ -1,14 +1,12 @@
 #pragma once
 
+#include "..\NinthEngine\Texture.hpp"
 #include <string>
 #include <exception>
 #include <fstream>
 #include <streambuf>
 
 namespace NinthEngine {
-
-class Texture;
-
 namespace GameUtils {
 
 #define PI			3.141592654

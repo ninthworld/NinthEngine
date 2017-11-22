@@ -52,7 +52,7 @@ void Window::init() {
 
 	if (glewInit() != GLEW_OK) throw GameUtils::Exception("Failed to initialize GLEW");
 
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void Window::update() {

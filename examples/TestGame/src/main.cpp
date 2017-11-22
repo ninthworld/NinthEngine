@@ -9,9 +9,6 @@
 using namespace NinthEngine;
 using namespace TestGame;
 
-void gameEngine() {
-}
-
 int main() {
 	IGameLogic *gameLogic = new BlockGame();
 
