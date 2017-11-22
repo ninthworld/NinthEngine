@@ -1,4 +1,7 @@
-#include "../include/NinthEngine/Shader.hpp"
+#include "..\include\NinthEngine\Shader.hpp"
+#include "..\include\NinthEngine\GameUtils.hpp"
+
+namespace NinthEngine {
 
 Shader::Shader() :
 	programId(glCreateProgram()) {
@@ -85,3 +88,5 @@ void Shader::setUniform(const std::string uniform, const glm::vec3 val) {
 void Shader::setUniform(const std::string uniform, const glm::mat4 val) {
 	glUniformMatrix4fv(uniforms[uniform], 1, GL_FALSE, glm::value_ptr(val));
 }
+
+} // namespace NinthEngine

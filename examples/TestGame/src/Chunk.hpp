@@ -5,6 +5,10 @@
 #include <stdint.h>
 #include <iostream>
 
+using namespace NinthEngine;
+
+namespace TestGame {
+
 #define CHUNK_SIZE		16
 #define CHUNK_HEIGHT	32
 
@@ -39,7 +43,7 @@ struct Block_t {
 };
 
 const Block_t blocks[]{
-	{},																	// Air
+	{ },																	// Air
 	{ { { 8, 14 },{ 8, 14 },{ 8, 14 },{ 8, 14 },{ 8, 14 },{ 8, 14 } } },	// Stone
 	{ { { 0, 14 },{ 0, 14 },{ 0, 14 },{ 0, 14 },{ 0, 14 },{ 0, 14 } } },	// Dirt
 	{ { { 0, 13 },{ 0, 14 },{ 1, 14 },{ 1, 14 },{ 1, 14 },{ 1, 14 } } }		// Grass
@@ -61,3 +65,5 @@ private:
 	BlockID_t data[CHUNK_SIZE * CHUNK_HEIGHT * CHUNK_SIZE];
 	VertexArray *vao;
 };
+
+} // namespace TestGame

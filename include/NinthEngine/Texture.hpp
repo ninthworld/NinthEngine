@@ -1,6 +1,9 @@
 #pragma once
 
+#define GLEW_STATIC
 #include <GL\glew.h>
+
+namespace NinthEngine {
 
 class Texture {
 public:
@@ -13,3 +16,5 @@ private:
 	int width;
 	int height;
 };
+
+} // namespace NinthEngine

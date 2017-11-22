@@ -1,4 +1,8 @@
-#include "../include/NinthEngine/Camera.hpp"
+#include "..\include\NinthEngine\Camera.hpp"
+#include "..\include\NinthEngine\Window.hpp"
+#include "..\include\NinthEngine\GameUtils.hpp"
+
+namespace NinthEngine {
 
 Camera::Camera(const glm::vec3 position, const glm::vec3 rotation, const float fov, const float zNear, const float zFar, const double pitchSensitivity, const double yawSensitivity, const double moveSpeedFactor) :
 	position(position),
@@ -109,3 +113,5 @@ void Camera::setViewMatrix() {
 void Camera::setViewProjMatrix() {
 	viewProjMatrix = projMatrix * viewMatrix;
 }
+
+} // namespace NinthEngine

@@ -1,25 +1,29 @@
-#include <memory>
-#include <NinthEngine\Window.hpp>
+#include "BlockGame.hpp"
+#include <NinthEngine\GameUtils.hpp>
 #include <NinthEngine\GameEngine.hpp>
-#include "TestGame.hpp"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include <thread>
 
 using namespace NinthEngine;
+using namespace TestGame;
+
+void gameEngine() {
+}
 
 int main() {
-
-	auto window = std::make_unique<Window>("Test", 640, 480);
-	auto testGame = std::make_unique<TestGame>();
+	IGameLogic *gameLogic = new BlockGame();
 
 	try {
-		GameEngine engine(*window, *testGame);
+		GameEngine engine("Block Game", 1600, 900, false, gameLogic);
 		engine.run();
 	}
-	catch (std::exception &e) {
-		fputs(e.what(), stderr);
+	catch (GameUtils::Exception &exc) {
+		fputs(exc.what(), stderr);
 	}
 
-	testGame.reset();
-	window.reset();
+	delete gameLogic;
 
 	return 0;
 }

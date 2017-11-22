@@ -1,6 +1,11 @@
 #pragma once
 
 #include <NinthEngine\Shader.hpp>
+#include <NinthEngine\Texture.hpp>
+
+using namespace NinthEngine;
+
+namespace TestGame {
 
 class SimpleShader : public Shader {
 public:
@@ -11,3 +16,5 @@ public:
 protected:
 private:
 };
+
+} // namespace TestGame

@@ -1,11 +1,14 @@
 #pragma once
 
-#include "GameUtils.hpp"
+#define GLEW_STATIC
 #include <GL\glew.h>
-#include <glm.hpp>
-#include <ext.hpp>
+
+#include <glm\glm.hpp>
+#include <glm\ext.hpp>
 #include <map>
 #include <string>
+
+namespace NinthEngine {
 
 class Shader {
 public:
@@ -27,3 +30,5 @@ private:
 	GLuint programId;
 	std::map<std::string, GLint> uniforms;
 };
+
+} // namespace NinthEngine

@@ -1,5 +1,6 @@
 #include "Chunk.hpp"
-#include <GL\glew.h>
+
+namespace TestGame {
 
 Chunk::Chunk(const ChunkPos_t pos) :
 	pos(pos),
@@ -180,3 +181,5 @@ ChunkVAO_t Chunk::generateCube(const float x, const float y, const float z, cons
 
 	return { vertices, indices };
 }
+
+} // namespace TestGame

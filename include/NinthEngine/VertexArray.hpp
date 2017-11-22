@@ -1,11 +1,15 @@
 #pragma once
 
+#define GLEW_STATIC
+#include <GL\glew.h>
+
+#include <vector>
+
+namespace NinthEngine {
+
 #define ATTRIB_POSITION 0
 #define ATTRIB_NORMAL	1
 #define ATTRIB_TEXCOORD 2
-
-#include <GL\glew.h>
-#include <vector>
 
 class VertexArray {
 public:
@@ -35,3 +39,5 @@ private:
 	bool hasNormals;
 	bool hasTexCoords;
 };
+
+} // namespace NinthEngine

@@ -1,4 +1,6 @@
-#include "../include/NinthEngine/Texture.hpp"
+#include "..\include\NinthEngine\Texture.hpp"
+
+namespace NinthEngine {
 
 Texture::Texture(const GLuint id, const int width, const int height) :
 	id(id),
@@ -13,3 +15,5 @@ Texture::~Texture() {
 void Texture::bind() {
 	glBindTexture(GL_TEXTURE_2D, id);
 }
+
+} // namespace NinthEngine

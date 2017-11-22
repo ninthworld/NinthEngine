@@ -1,4 +1,10 @@
-#include "../include/NinthEngine/GameUtils.hpp"
+#include "..\include\NinthEngine\GameUtils.hpp"
+#include "..\include\NinthEngine\Texture.hpp"
+
+#define GLEW_STATIC
+#include <GL\glew.h>
+
+namespace NinthEngine {
 
 GameUtils::Exception::Exception(const std::string msg) :
 	msg(msg) {
@@ -60,3 +66,5 @@ Texture *GameUtils::loadBMP(const std::string file) {
 	delete data;
 	return new Texture(id, width, height);
 }
+
+} // namespace NinthEngine

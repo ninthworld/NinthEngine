@@ -2,10 +2,13 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 
-#include "Window.hpp"
-#include <glm.hpp>
-#include <ext.hpp>
-#include <gtx/extend.hpp>
+#include <glm\glm.hpp>
+#include <glm\ext.hpp>
+#include <glm\gtx\extend.hpp>
+
+namespace NinthEngine {
+
+class Window;
 
 class Camera {
 public:
@@ -14,10 +17,12 @@ public:
 	void update(const float interval);
 	void input(Window *window);
 	glm::mat4 getViewProjMatrix() { return viewProjMatrix; }
+
 protected:
 	void setProjMatrix(const int width, const int height);
 	void setViewMatrix();
 	void setViewProjMatrix();
+
 private:
 	float fov;
 	float zNear;
@@ -33,3 +38,5 @@ private:
 	glm::mat4 viewMatrix;
 	glm::mat4 viewProjMatrix;
 };
+
+} // namespace NinthEngine

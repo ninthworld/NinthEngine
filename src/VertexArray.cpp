@@ -1,4 +1,6 @@
-#include "../include/NinthEngine/VertexArray.hpp"
+#include "..\include\NinthEngine\VertexArray.hpp"
+
+namespace NinthEngine {
 
 VertexArray::VertexArray() :
 	numIndices(0),
@@ -63,3 +65,5 @@ void VertexArray::render() {
 	if (hasTexCoords) glDisableVertexAttribArray(ATTRIB_TEXCOORD);
 	glBindVertexArray(0);
 }
+
+} // namespace NinthEngine
