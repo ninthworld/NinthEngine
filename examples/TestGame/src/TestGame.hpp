@@ -1,6 +1,6 @@
 #pragma once
 
-#include <NinthEngine\Game.hpp>
+#include <NinthEngine\Application\Game.hpp>
 #include <memory>
 
 namespace NinthEngine {
@@ -25,7 +25,7 @@ public:
 	void init(std::shared_ptr<GameWindow> window);
 	void render(std::shared_ptr<GameWindow> window, const double deltaTime);
 
-	std::shared_ptr<FPSGameCamera> getCamera();
+	std::shared_ptr<FPSGameCamera> getCamera() { return camera; };
 
 protected:
 private:
@@ -35,7 +35,3 @@ private:
 	Texture *simpleTexture;
 
 };
-
-inline std::shared_ptr<FPSGameCamera> TestGame::getCamera() {
-	return camera;
-}

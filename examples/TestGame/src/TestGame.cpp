@@ -1,16 +1,16 @@
-#include "TestGame.hpp"
-#include "SimpleShader.hpp"
-#include <NinthEngine\FPSGameCamera.hpp>
+#include <NinthEngine\Application\GameWindow.hpp>
+#include <NinthEngine\Camera\FPSGameCamera.hpp>
 #include <NinthEngine\VertexArray.hpp>
-#include <NinthEngine\GameWindow.hpp>
 #include <NinthEngine\GameUtils.hpp>
+#include "SimpleShader.hpp"
+#include "TestGame.hpp"
 
 namespace {
 
-void windowResizeCallback(Game *game, GameWindow *window, int width, int height);
-void mouseMoveCallback(Game *game, GameWindow *window, double mouseX, double mouseY);
-void mouseButtonCallback(Game *game, GameWindow *window, int button, InputState action);
-void keyCallback(Game *game, GameWindow *window, int keyCode, InputState action);
+void windowResizeCallback(Game*, GameWindow*, int, int);
+void mouseMoveCallback(Game*, GameWindow*, double, double);
+void mouseButtonCallback(Game*, GameWindow*, int, InputState);
+void keyCallback(Game*, GameWindow*, int, InputState);
 
 } // namespace
 
@@ -29,9 +29,6 @@ void TestGame::init(std::shared_ptr<GameWindow> window) {
 	window->setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	window->setResizeCallback(this, windowResizeCallback);
-	window->setKeyCallback(this, keyCallback);
-	window->setMouseMoveCallback(this, mouseMoveCallback);
-	window->setMouseButtonCallback(this, mouseButtonCallback);
 
 	camera = std::make_shared<FPSGameCamera>();
 	camera->init(window->getWidth(), window->getHeight());
@@ -43,9 +40,9 @@ void TestGame::init(std::shared_ptr<GameWindow> window) {
 	int major = 0, minor = 0;
 	glGetIntegerv(GL_MAJOR_VERSION, &major);
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
-
-	simpleTexture = GameUtils::loadBMP("res/textures/blocks.bmp");
 	
+	simpleTexture = GameUtils::loadBMP("res/textures/blocks.bmp");
+		
 	struct UV_t {
 		float u, v;
 		UV_t operator +(UV_t b) { return { u + b.u, v + b.v }; }
@@ -56,7 +53,6 @@ void TestGame::init(std::shared_ptr<GameWindow> window) {
 	UV_t grassTop{ 0, 13 };
 	UV_t grassBot{ 0, 14 };
 	UV_t grassSide{ 1, 14 };
-
 	std::vector<VertexArray::VertexNT_t> vertices {
 		// Top
 		{ 0, 1, 0, 0, 1, 0, grassTop.u * size.u, grassTop.v * size.v },
@@ -122,31 +118,31 @@ void TestGame::render(std::shared_ptr<GameWindow> window, const double deltaTime
 
 namespace {
 
-void windowResizeCallback(Game *game, GameWindow *window, int width, int height) {
+void windowResizeCallback(Game* game, GameWindow* window, int width, int height) {
 	auto testGame = (TestGame*)game;
 
 	testGame->getCamera()->setProjMatrix(width, height);
 	glViewport(0, 0, width, height);
 }
 
-void mouseMoveCallback(Game *game, GameWindow *window, double mouseX, double mouseY) {
+void mouseMoveCallback(Game* game, GameWindow* window, double mouseX, double mouseY) {
 	auto testGame = (TestGame*)game;
 
-	testGame->getCamera()->mouseMoveCallback(window, mouseX, mouseY);
+	//testGame->getCamera()->mouseMoveCallback(window, mouseX, mouseY);
 }
 
-void mouseButtonCallback(Game *game, GameWindow *window, int button, InputState action) {
+void mouseButtonCallback(Game* game, GameWindow* window, int button, InputState action) {
 	auto testGame = (TestGame*)game;
 
-	testGame->getCamera()->mouseButtonCallback(window, button, action);
+	//testGame->getCamera()->mouseButtonCallback(window, button, action);
 }
 
-void keyCallback(Game *game, GameWindow *window, int keyCode, InputState action) {
+void keyCallback(Game* game, GameWindow* window, int keyCode, InputState action) {
 	auto testGame = (TestGame*)game;
 
-	testGame->getCamera()->keyCallback(keyCode, action);
+	//testGame->getCamera()->keyCallback(keyCode, action);
 
-	if (keyCode == VK_ESCAPE) window->setCloseRequested(true);
+	//if (keyCode == VK_ESCAPE) window->setCloseRequested(true);
 }
 
 } // namespace

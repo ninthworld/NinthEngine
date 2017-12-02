@@ -6,11 +6,12 @@
 namespace NinthEngine {
 
 class GameWindow;
+class GameTimer;
 class Game;
 
 class GameEngine {
 public:
-	GameEngine(std::shared_ptr<GameWindow> window, std::shared_ptr<Game> game);
+	GameEngine(std::shared_ptr<GameWindow> window, std::shared_ptr<GameTimer> timer, std::shared_ptr<Game> game);
 	~GameEngine();
 	
 	void start();
@@ -22,6 +23,7 @@ private:
 	void render(const double deltaTime);
 
 	std::shared_ptr<GameWindow> window;
+	std::shared_ptr<GameTimer> timer;
 	std::shared_ptr<Game> game;
 };
 

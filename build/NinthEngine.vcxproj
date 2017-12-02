@@ -19,28 +19,38 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\NinthEngine\FPSGameCamera.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GameCamera.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GameEngine.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GameInput.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GameTimer.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Application\Game.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Application\GameInput.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Application\GameTimer.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Application\GameWindow.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Camera\FPSGameCamera.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Camera\GameCamera.hpp" />
     <ClInclude Include="..\include\NinthEngine\GameUtils.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Game.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GameWindow.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GLGameWindow.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GLUtils.hpp" />
+    <ClInclude Include="..\include\NinthEngine\GLFW\GLFWBootstrap.hpp" />
     <ClInclude Include="..\include\NinthEngine\Shader.hpp" />
     <ClInclude Include="..\include\NinthEngine\Texture.hpp" />
     <ClInclude Include="..\include\NinthEngine\VertexArray.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Win32\Win32Bootstrap.hpp" />
+    <ClInclude Include="..\src\Application\GameEngine.hpp" />
+    <ClInclude Include="..\src\GLFW\GLFWGameTimer.hpp" />
+    <ClInclude Include="..\src\GLFW\GLFWGameWindow.hpp" />
+    <ClInclude Include="..\src\GLFW\GLFWUtils.hpp" />
+    <ClInclude Include="..\src\RenderGL\GLUtils.hpp" />
+    <ClInclude Include="..\src\Win32\Win32GameTimer.hpp" />
+    <ClInclude Include="..\src\Win32\Win32GameWindow.hpp" />
+    <ClInclude Include="..\src\Win32\Win32Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\FPSGameCamera.cpp" />
-    <ClCompile Include="..\src\GameEngine.cpp" />
+    <ClCompile Include="..\src\Application\GameEngine.cpp" />
+    <ClCompile Include="..\src\Camera\FPSGameCamera.cpp" />
     <ClCompile Include="..\src\GameUtils.cpp" />
-    <ClCompile Include="..\src\GLGameWindow.cpp" />
+    <ClCompile Include="..\src\GLFW\GLFWBootstrap.cpp" />
+    <ClCompile Include="..\src\GLFW\GLFWGameWindow.cpp" />
     <ClCompile Include="..\src\Shader.cpp" />
     <ClCompile Include="..\src\Texture.cpp" />
     <ClCompile Include="..\src\VertexArray.cpp" />
+    <ClCompile Include="..\src\Win32\Win32Bootstrap.cpp" />
+    <ClCompile Include="..\src\Win32\Win32GameWindow.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -95,27 +105,27 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
-    <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

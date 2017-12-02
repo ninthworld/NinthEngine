@@ -16,20 +16,29 @@
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{53fc88d4-935e-4b37-b6ef-a1396ea7fb3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GL">
-      <UniqueIdentifier>{7020e3c3-3d54-48d7-a09c-c71b5b8faf42}</UniqueIdentifier>
+    <Filter Include="Header Files\Win32">
+      <UniqueIdentifier>{6e4c629d-1261-4c8a-895b-0ed78dcdb0f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Application">
-      <UniqueIdentifier>{f9881d29-b408-4e62-b7e3-94e122247dae}</UniqueIdentifier>
+    <Filter Include="Source Files\Win32">
+      <UniqueIdentifier>{cb634bf6-951b-4e96-a334-f5f9bac61b2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GL">
-      <UniqueIdentifier>{ae39e240-bb68-4da8-8b65-ec0edb723303}</UniqueIdentifier>
+    <Filter Include="Header Files\GLFW">
+      <UniqueIdentifier>{89712a47-e6a2-43c2-8c7b-d44fdda2cd27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GLFW">
+      <UniqueIdentifier>{588e6333-c02a-4a03-b00e-17cda3869342}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderGL">
+      <UniqueIdentifier>{96daa917-2a36-4156-9932-ad738b5b6706}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Camera">
-      <UniqueIdentifier>{e6addaa3-49e1-4d2e-ae1b-9be911acbed2}</UniqueIdentifier>
+      <UniqueIdentifier>{b6c96740-6382-434b-a12e-a4aa9493dc14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Window">
-      <UniqueIdentifier>{666a35eb-29b6-446e-927b-e8440a7c69ce}</UniqueIdentifier>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{c18641e7-c8a8-4c8a-aef3-89e31105b1fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{0da8423f-547d-414b-9571-2eb912355c18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,32 +54,53 @@
     <ClInclude Include="..\include\NinthEngine\VertexArray.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GameEngine.hpp">
+    <ClInclude Include="..\include\NinthEngine\Application\Game.hpp">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GameTimer.hpp">
+    <ClInclude Include="..\include\NinthEngine\Application\GameTimer.hpp">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Game.hpp">
+    <ClInclude Include="..\include\NinthEngine\Application\GameWindow.hpp">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GameWindow.hpp">
+    <ClInclude Include="..\include\NinthEngine\Win32\Win32Bootstrap.hpp">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\GLFW\GLFWBootstrap.hpp">
+      <Filter>Header Files\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GLFW\GLFWGameWindow.hpp">
+      <Filter>Header Files\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GLFW\GLFWUtils.hpp">
+      <Filter>Header Files\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\RenderGL\GLUtils.hpp">
+      <Filter>Header Files\RenderGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Win32\Win32GameWindow.hpp">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Win32\Win32GameTimer.hpp">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GLFW\GLFWGameTimer.hpp">
+      <Filter>Header Files\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Win32\Win32Utils.hpp">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Application\GameInput.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Application\GameEngine.hpp">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GLGameWindow.hpp">
-      <Filter>Header Files\GL</Filter>
+    <ClInclude Include="..\include\NinthEngine\Camera\FPSGameCamera.hpp">
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GLUtils.hpp">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GameCamera.hpp">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\FPSGameCamera.hpp">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GameInput.hpp">
-      <Filter>Header Files\Application</Filter>
+    <ClInclude Include="..\include\NinthEngine\Camera\GameCamera.hpp">
+      <Filter>Header Files\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -86,14 +116,23 @@
     <ClCompile Include="..\src\VertexArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GameEngine.cpp">
+    <ClCompile Include="..\src\Win32\Win32Bootstrap.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GLFW\GLFWBootstrap.cpp">
+      <Filter>Source Files\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GLFW\GLFWGameWindow.cpp">
+      <Filter>Source Files\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Win32\Win32GameWindow.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Application\GameEngine.cpp">
       <Filter>Source Files\Application</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GLGameWindow.cpp">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\FPSGameCamera.cpp">
-      <Filter>Source Files\Application</Filter>
+    <ClCompile Include="..\src\Camera\FPSGameCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
