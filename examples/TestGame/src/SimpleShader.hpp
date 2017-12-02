@@ -5,8 +5,6 @@
 
 using namespace NinthEngine;
 
-namespace TestGame {
-
 class SimpleShader : public Shader {
 public:
 	void init();
@@ -16,5 +14,3 @@ public:
 protected:
 private:
 };
-
-} // namespace TestGame

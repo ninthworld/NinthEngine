@@ -1,68 +1,57 @@
 #include "..\include\NinthEngine\GameEngine.hpp"
-#include "..\include\NinthEngine\Window.hpp"
-#include "..\include\NinthEngine\IGameLogic.hpp"
+#include "..\include\NinthEngine\GameWindow.hpp"
+#include "..\include\NinthEngine\Game.hpp"
+#include "..\include\NinthEngine\GameTimer.hpp"
 
 namespace NinthEngine {
 
-GameEngine::GameEngine(const std::string title, const int width, const int height, const bool vsyncEnabled, IGameLogic *gameLogic) :
-	gameLogic(gameLogic),
-	window(new Window(title, width, height, vsyncEnabled)) {
+const static double FPS = 1 / 60.0;
+
+GameEngine::GameEngine(std::shared_ptr<GameWindow> window, std::shared_ptr<Game> game)
+	: window(window), game(game) {
 }
 
 GameEngine::~GameEngine() {
-	delete window;
 }
 
-void GameEngine::run() {
+void GameEngine::start() {
+
 	init();
-	gameLoop();
+	loop();
 }
 
 void GameEngine::init() {
+
 	window->init();
-	gameLogic->init(window);
+	game->init(window);
 }
 
-void GameEngine::gameLoop() {
-	double lastTime = glfwGetTime(), timer = lastTime;
-	double deltaTime = 0, nowTime = 0;
-	int frames = 0, updates = 0;
+void GameEngine::loop() {
 
-	while (!window->isClosedRequested()) {
-		nowTime = glfwGetTime();
-		deltaTime += (nowTime - lastTime) / LIMIT_FPS;
-		lastTime = nowTime;
+	const std::string title = window->getTitle();
+	GameTimer loopTimer, fpsTimer;
+	double deltaTime = 0.0;
+	int frames = 0;
 
-		input();
+	while (!window->isCloseRequested()) {
+		
+		deltaTime = loopTimer.elapsed();
+		loopTimer.reset();
 
-		while (deltaTime >= 1.0) {
-			update(deltaTime);
-			updates++;
-			deltaTime--;
-		}
-
-		render();
+		render(deltaTime);
 		frames++;
 
-		if (glfwGetTime() - timer > 1.0) {
-			timer++;
-			window->displayFPS(frames, updates);
-			updates = 0, frames = 0;
+		if (fpsTimer.elapsed() > 1.0) {
+			fpsTimer.reset();
+			window->setTitle(title + " - " + std::to_string(frames) + " FPS");
+			frames = 0;
 		}
 	}
-
 }
 
-void GameEngine::input() {
-	gameLogic->input(window);
-}
+void GameEngine::render(const double deltaTime) {
 
-void GameEngine::update(const float interval) {
-	gameLogic->update(interval);
-}
-
-void GameEngine::render() {
-	gameLogic->render(window);
+	game->render(window, deltaTime);
 	window->update();
 }
 

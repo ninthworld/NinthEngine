@@ -1,30 +1,28 @@
 #pragma once
 
-#define GLEW_STATIC
-#include <GL\glew.h>
-
-#include <GLFW\glfw3.h>
+#include <memory>
 #include <string>
-#include "..\NinthEngine\Window.hpp"
-#include "..\NinthEngine\IGameLogic.hpp"
 
 namespace NinthEngine {
 
+class GameWindow;
+class Game;
+
 class GameEngine {
 public:
-	const double LIMIT_FPS = 1.0 / 60.0;
-	GameEngine(const std::string title, const int width, const int height, const bool vsyncEnabled, IGameLogic *gameLogic);
+	GameEngine(std::shared_ptr<GameWindow> window, std::shared_ptr<Game> game);
 	~GameEngine();
-	void run();
+	
+	void start();
+
 protected:
-	void init();
-	void gameLoop();
-	void input();
-	void update(const float interval);
-	void render();
 private:
-	Window *window;
-	IGameLogic *gameLogic;
+	void init();
+	void loop();
+	void render(const double deltaTime);
+
+	std::shared_ptr<GameWindow> window;
+	std::shared_ptr<Game> game;
 };
 
 } // namespace NinthEngine

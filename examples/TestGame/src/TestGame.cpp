@@ -1,24 +1,40 @@
-#include "BlockGame.hpp"
-#include <NinthEngine\Window.hpp>
+#include "TestGame.hpp"
+#include "SimpleShader.hpp"
+#include <NinthEngine\FPSGameCamera.hpp>
+#include <NinthEngine\VertexArray.hpp>
+#include <NinthEngine\GameWindow.hpp>
 #include <NinthEngine\GameUtils.hpp>
 
-namespace TestGame {
+namespace {
 
-BlockGame::BlockGame() :
-	camera(new Camera(glm::vec3(0), glm::vec3(0))) {
+void windowResizeCallback(Game *game, GameWindow *window, int width, int height);
+void mouseMoveCallback(Game *game, GameWindow *window, double mouseX, double mouseY);
+void mouseButtonCallback(Game *game, GameWindow *window, int button, InputState action);
+void keyCallback(Game *game, GameWindow *window, int keyCode, InputState action);
+
+} // namespace
+
+TestGame::TestGame() {
 }
 
-BlockGame::~BlockGame() {
-	delete simpleShader;
-	//delete simpleVAO;
-	delete camera;
+TestGame::~TestGame() {
+	camera.reset();
+	simpleShader.reset();
+	simpleVAO.reset();
+
 	delete simpleTexture;
-	delete chunk;
 }
 
-void BlockGame::init(Window *window) {
+void TestGame::init(std::shared_ptr<GameWindow> window) {
 	window->setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	camera->init(window);
+
+	window->setResizeCallback(this, windowResizeCallback);
+	window->setKeyCallback(this, keyCallback);
+	window->setMouseMoveCallback(this, mouseMoveCallback);
+	window->setMouseButtonCallback(this, mouseButtonCallback);
+
+	camera = std::make_shared<FPSGameCamera>();
+	camera->init(window->getWidth(), window->getHeight());
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -29,11 +45,7 @@ void BlockGame::init(Window *window) {
 	glGetIntegerv(GL_MINOR_VERSION, &minor);
 
 	simpleTexture = GameUtils::loadBMP("res/textures/blocks.bmp");
-
-	chunk = new Chunk({ 0, 0 });
-	chunk->init();
-
-	/*
+	
 	struct UV_t {
 		float u, v;
 		UV_t operator +(UV_t b) { return { u + b.u, v + b.v }; }
@@ -85,39 +97,56 @@ void BlockGame::init(Window *window) {
 		12, 13, 14, 14, 13, 15,
 		16, 17, 18, 18, 17, 19,
 		20, 21, 22, 22, 21, 23
-	};	*/
+	};	
 
-	simpleShader = new SimpleShader();
+	simpleShader = std::make_shared<SimpleShader>();
 	simpleShader->init();
 
-	//simpleVAO = new VertexArray();
-	//simpleVAO->setData(vertices, indices);
+	simpleVAO = std::make_shared<VertexArray>();
+	simpleVAO->setData(vertices, indices);
 }
 
-void BlockGame::input(Window *window) {
-	camera->input(window);
-}
+void TestGame::render(std::shared_ptr<GameWindow> window, const double deltaTime) {
 
-void BlockGame::update(const float interval) {
-	camera->update(interval);
-}
-
-void BlockGame::render(Window *window) {
-	if (window->isResized()) {
-		glViewport(0, 0, window->getWidth(), window->getHeight());
-		camera->init(window);
-		window->setResized(false);
-	}
+	camera->update(deltaTime);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	simpleShader->bind();
 	simpleShader->loadViewProjMatrix(camera->getViewProjMatrix());
-	simpleShader->loadModelMatrix(glm::translate(glm::mat4(1), glm::vec3(0)));
+	simpleShader->loadModelMatrix(glm::translate(glm::mat4(1), glm::vec3(0, 0, 0)));
 	simpleShader->loadTexture(simpleTexture);
-	//simpleVAO->render();
-	chunk->render();
+	simpleVAO->render();
 	simpleShader->unbind();
 }
 
-} // namespace TestGame
+namespace {
+
+void windowResizeCallback(Game *game, GameWindow *window, int width, int height) {
+	auto testGame = (TestGame*)game;
+
+	testGame->getCamera()->setProjMatrix(width, height);
+	glViewport(0, 0, width, height);
+}
+
+void mouseMoveCallback(Game *game, GameWindow *window, double mouseX, double mouseY) {
+	auto testGame = (TestGame*)game;
+
+	testGame->getCamera()->mouseMoveCallback(window, mouseX, mouseY);
+}
+
+void mouseButtonCallback(Game *game, GameWindow *window, int button, InputState action) {
+	auto testGame = (TestGame*)game;
+
+	testGame->getCamera()->mouseButtonCallback(window, button, action);
+}
+
+void keyCallback(Game *game, GameWindow *window, int keyCode, InputState action) {
+	auto testGame = (TestGame*)game;
+
+	testGame->getCamera()->keyCallback(keyCode, action);
+
+	if (keyCode == VK_ESCAPE) window->setCloseRequested(true);
+}
+
+} // namespace

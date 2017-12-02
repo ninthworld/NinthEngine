@@ -1,8 +1,6 @@
 #include "SimpleShader.hpp"
 #include <NinthEngine\GameUtils.hpp>
 
-namespace TestGame {
-
 void SimpleShader::init() {
 	addShader(GameUtils::readFile("res/shaders/simple.vs.glsl"), GL_VERTEX_SHADER);
 	addShader(GameUtils::readFile("res/shaders/simple.fs.glsl"), GL_FRAGMENT_SHADER);
@@ -26,5 +24,3 @@ void SimpleShader::loadTexture(Texture *texture) {
 	texture->bind();
 	setUniform("texture0", 0);
 }
-
-} // namespace TestGame

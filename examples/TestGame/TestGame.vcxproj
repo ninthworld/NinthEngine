@@ -70,25 +70,25 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glfw\lib-vc2015;$(ProjectDir)..\..\dependencies\glew\lib\Release\Win32;$(ProjectDir)..\..\build\Win32\Debug</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glfw\lib-vc2015;$(ProjectDir)..\..\dependencies\glew\lib\Release\x86;$(ProjectDir)..\..\build\x64\Debug</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glfw\lib-vc2015;$(ProjectDir)..\..\dependencies\glew\lib\Release\Win32;$(ProjectDir)..\..\build\Win32\Release</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\glfw\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glfw\lib-vc2015;$(ProjectDir)..\..\dependencies\glew\lib\Release\x86;$(ProjectDir)..\..\build\x64\Release</LibraryPath>
     <OutDir>$(ProjectDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)$(Platform)\$(Configuration)\</IntDir>
@@ -147,13 +147,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BlockGame.hpp" />
-    <ClInclude Include="src\Chunk.hpp" />
+    <ClInclude Include="src\TestGame.hpp" />
     <ClInclude Include="src\SimpleShader.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\BlockGame.cpp" />
-    <ClCompile Include="src\Chunk.cpp" />
+    <ClCompile Include="src\TestGame.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\SimpleShader.cpp" />
   </ItemGroup>

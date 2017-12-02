@@ -1,26 +1,31 @@
-#include "BlockGame.hpp"
-#include <NinthEngine\GameUtils.hpp>
+#include "TestGame.hpp"
+#include <NinthEngine\GLGameWindow.hpp>
 #include <NinthEngine\GameEngine.hpp>
-#include <stdio.h>
-#include <stdlib.h>
+#include <plog\Log.h>
+#include <plog\Appenders\ColorConsoleAppender.h>
 #include <string>
-#include <thread>
+#include <memory>
 
 using namespace NinthEngine;
-using namespace TestGame;
 
-int main() {
-	IGameLogic *gameLogic = new BlockGame();
+int main(int argc, char *argv[]) {
+
+	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
+	plog::init(plog::verbose, &consoleAppender);
+	
+	auto window = std::make_shared<GLGameWindow>("Test Game", 1600, 900, false);
+	auto game = std::make_shared<TestGame>();
+
+	NinthEngine::GameEngine engine(window, game);
 
 	try {
-		GameEngine engine("Block Game", 1600, 900, false, gameLogic);
-		engine.run();
+		engine.start();
 	}
-	catch (GameUtils::Exception &exc) {
-		fputs(exc.what(), stderr);
+	catch (std::exception&) {
 	}
 
-	delete gameLogic;
+	game.reset();
+	window.reset();
 
 	return 0;
 }

@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestGame", "TestGame.vcxproj", "{05D3663E-B7B2-4203-8DA0-2C1232F4384D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC0F8228-A714-4D62-9B83-56A0F6A1DAA7} = {FC0F8228-A714-4D62-9B83-56A0F6A1DAA7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NinthEngine", "..\..\build\NinthEngine.vcxproj", "{FC0F8228-A714-4D62-9B83-56A0F6A1DAA7}"
 EndProject
