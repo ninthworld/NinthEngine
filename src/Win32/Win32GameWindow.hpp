@@ -20,9 +20,9 @@ public:
 	bool isCloseRequested();
 	void setCloseRequested(const bool);
 
-	void setResizeCallback(Game*, std::function<void(Game*, GameWindow*, int, int)>);
+	void setResizeCallback(const std::function<void(int, int)>&);
 
-	void resizeCallback(const int _width, const int _height) { resizeCB.callback(resizeCB.game, this, _width, _height); };
+	void resizeCallback(const int _width, const int _height) { resizeCB(_width, _height); };
 
 	std::string getTitle() const { return title; };
 	int getWidth() const { return width; };
@@ -48,7 +48,7 @@ private:
 	HINSTANCE hInstance;
 	int cmdShow;
 
-	ResizeCallback resizeCB;
+	std::function<void(int, int)> resizeCB;
 
 };
 

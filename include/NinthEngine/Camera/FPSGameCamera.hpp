@@ -13,6 +13,10 @@ struct FPSGameCameraSettings : public GameCameraSettings {
 	float pitchSensitivity = 6.0f;
 };
 
+enum Key;
+enum KeyState;
+enum MouseButton;
+enum MouseState;
 class GameWindow;
 
 class FPSGameCamera : public GameCamera {
@@ -39,9 +43,9 @@ public:
 	void setViewMatrix();
 	void setViewProjMatrix();
 
-	//void mouseMoveCallback(GameWindow *window, double mouseX, double mouseY);
-	//void mouseButtonCallback(GameWindow *window, int button, InputState action);
-	//void keyCallback(int keyCode, InputState action);
+	void mouseMoveCallback(const std::shared_ptr<GameWindow>&, double, double);
+	void mouseButtonCallback(const std::shared_ptr<GameWindow>&, MouseButton, MouseState);
+	void keyCallback(Key, KeyState);
 
 protected:
 private:
@@ -54,9 +58,9 @@ private:
 	glm::mat4 viewMatrix;
 	glm::mat4 viewProjMatrix;
 
-	//std::vector<InputState> keyStates;
-	//std::vector<InputState> mouseStates;
-	//glm::vec2 mouseDelta;
+	std::vector<KeyState> keyStates;
+	std::vector<MouseState> mouseStates;
+	glm::vec2 mouseDelta;
 
 };
 

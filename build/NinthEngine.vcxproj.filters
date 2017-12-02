@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{0da8423f-547d-414b-9571-2eb912355c18}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{5b17f6de-0da1-4fb6-aef5-fa6ca7b3a07c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngine\GameUtils.hpp">
@@ -93,14 +96,32 @@
     <ClInclude Include="..\include\NinthEngine\Application\GameInput.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Application\GameEngine.hpp">
-      <Filter>Header Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Camera\FPSGameCamera.hpp">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Camera\GameCamera.hpp">
       <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Input\Keyboard.hpp">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Application\GameEngine.hpp">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GLFW\GLFWKeyboard.hpp">
+      <Filter>Header Files\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\GLFW\GLFWMouse.hpp">
+      <Filter>Header Files\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Win32\Win32Keyboard.hpp">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Win32\Win32Mouse.hpp">
+      <Filter>Header Files\Win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +154,18 @@
     </ClCompile>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp">
       <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GLFW\GLFWKeyboard.cpp">
+      <Filter>Source Files\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GLFW\GLFWMouse.cpp">
+      <Filter>Source Files\GLFW</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Win32\Win32Keyboard.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Win32\Win32Mouse.cpp">
+      <Filter>Source Files\Win32</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

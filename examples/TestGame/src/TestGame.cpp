@@ -1,20 +1,15 @@
 #include <NinthEngine\Application\GameWindow.hpp>
+#include <NinthEngine\Application\GameEngine.hpp>
 #include <NinthEngine\Camera\FPSGameCamera.hpp>
 #include <NinthEngine\VertexArray.hpp>
 #include <NinthEngine\GameUtils.hpp>
 #include "SimpleShader.hpp"
 #include "TestGame.hpp"
 
-namespace {
+TestGame::TestGame(const std::shared_ptr<GameEngine>& engine) 
+	: engine(engine) {
 
-void windowResizeCallback(Game*, GameWindow*, int, int);
-void mouseMoveCallback(Game*, GameWindow*, double, double);
-void mouseButtonCallback(Game*, GameWindow*, int, InputState);
-void keyCallback(Game*, GameWindow*, int, InputState);
-
-} // namespace
-
-TestGame::TestGame() {
+	camera = std::make_shared<FPSGameCamera>();
 }
 
 TestGame::~TestGame() {
@@ -25,21 +20,30 @@ TestGame::~TestGame() {
 	delete simpleTexture;
 }
 
-void TestGame::init(std::shared_ptr<GameWindow> window) {
-	window->setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+void TestGame::init() {
+	engine->getWindow()->setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	camera->init(engine->getWindow()->getWidth(), engine->getWindow()->getHeight());
 
-	window->setResizeCallback(this, windowResizeCallback);
+	engine->getWindow()->setResizeCallback([this](int width, int height) {
+		getCamera()->setProjMatrix(width, height);
+		glViewport(0, 0, width, height);
+	});
+	
+	engine->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
+		getCamera()->keyCallback(key, state);
+	});
 
-	camera = std::make_shared<FPSGameCamera>();
-	camera->init(window->getWidth(), window->getHeight());
+	engine->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
+		getCamera()->mouseButtonCallback(engine->getWindow(), btn, state);
+	});
+
+	engine->getMouse()->setMoveCallback([this](double mx, double my) {
+		getCamera()->mouseMoveCallback(engine->getWindow(), mx, my);
+	});
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-
-	int major = 0, minor = 0;
-	glGetIntegerv(GL_MAJOR_VERSION, &major);
-	glGetIntegerv(GL_MINOR_VERSION, &minor);
 	
 	simpleTexture = GameUtils::loadBMP("res/textures/blocks.bmp");
 		
@@ -102,7 +106,7 @@ void TestGame::init(std::shared_ptr<GameWindow> window) {
 	simpleVAO->setData(vertices, indices);
 }
 
-void TestGame::render(std::shared_ptr<GameWindow> window, const double deltaTime) {
+void TestGame::render(const double deltaTime) {
 
 	camera->update(deltaTime);
 
@@ -115,34 +119,3 @@ void TestGame::render(std::shared_ptr<GameWindow> window, const double deltaTime
 	simpleVAO->render();
 	simpleShader->unbind();
 }
-
-namespace {
-
-void windowResizeCallback(Game* game, GameWindow* window, int width, int height) {
-	auto testGame = (TestGame*)game;
-
-	testGame->getCamera()->setProjMatrix(width, height);
-	glViewport(0, 0, width, height);
-}
-
-void mouseMoveCallback(Game* game, GameWindow* window, double mouseX, double mouseY) {
-	auto testGame = (TestGame*)game;
-
-	//testGame->getCamera()->mouseMoveCallback(window, mouseX, mouseY);
-}
-
-void mouseButtonCallback(Game* game, GameWindow* window, int button, InputState action) {
-	auto testGame = (TestGame*)game;
-
-	//testGame->getCamera()->mouseButtonCallback(window, button, action);
-}
-
-void keyCallback(Game* game, GameWindow* window, int keyCode, InputState action) {
-	auto testGame = (TestGame*)game;
-
-	//testGame->getCamera()->keyCallback(keyCode, action);
-
-	//if (keyCode == VK_ESCAPE) window->setCloseRequested(true);
-}
-
-} // namespace

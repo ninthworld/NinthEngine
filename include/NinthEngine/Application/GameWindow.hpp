@@ -9,11 +9,6 @@ namespace NinthEngine {
 class Game;
 class GameWindow;
 
-struct ResizeCallback {
-	Game *game;
-	std::function<void(Game*, GameWindow*, int, int)> callback;
-};
-
 class GameWindow {
 public:
 	virtual void init() = 0;
@@ -22,7 +17,7 @@ public:
 	virtual bool isCloseRequested() = 0;
 	virtual void setCloseRequested(const bool) = 0;
 
-	virtual void setResizeCallback(Game*, std::function<void(Game*, GameWindow*, int, int)>) = 0;
+	virtual void setResizeCallback(const std::function<void(int, int)>&) = 0;
 	
 	virtual void resizeCallback(const int, const int) = 0;
 

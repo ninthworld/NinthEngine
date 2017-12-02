@@ -1,5 +1,7 @@
 #include "..\..\include\NinthEngine\Application\GameWindow.hpp"
 #include "..\..\include\NinthEngine\Camera\FPSGameCamera.hpp"
+#include "..\..\include\NinthEngine\Input\Keyboard.hpp"
+#include "..\..\include\NinthEngine\Input\Mouse.hpp"
 
 namespace {
 
@@ -11,10 +13,9 @@ namespace NinthEngine {
 
 FPSGameCamera::FPSGameCamera(FPSGameCameraSettings settings, const glm::vec3 position, const glm::vec3 rotation)
 	: settings(settings), position(position), rotation(rotation)
-	//, keyStates(std::vector<InputState>(512, RELEASED))
-	//, mouseStates(std::vector<InputState>(3, RELEASED))
-	//, mouseDelta(glm::vec2(0))
-	{
+	, keyStates(std::vector<KeyState>(VK_NB, KS_RELEASED))
+	, mouseStates(std::vector<MouseState>(MB_NB, MS_RELEASED))
+	, mouseDelta(glm::vec2(0)) {
 }
 
 void FPSGameCamera::init(const int width, const int height) {
@@ -22,7 +23,7 @@ void FPSGameCamera::init(const int width, const int height) {
 }
 
 void FPSGameCamera::update(const double deltaTime) {
-	/*
+	
 	glm::vec3 rotation = getRotation();
 
 	rotation.x += mouseDelta.y * deltaTime;
@@ -61,11 +62,11 @@ void FPSGameCamera::update(const double deltaTime) {
 		movement.z += sinYRot;
 	}
 
-	if (keyStates[VK_SPACE]) {
+	if (keyStates[VK_SPACE_KEY]) {
 		movement.y++;
 	}
 
-	if (keyStates[VK_LSHIFT]) {
+	if (keyStates[VK_LEFT_SHIFT]) {
 		movement.y--;
 	}
 
@@ -76,7 +77,6 @@ void FPSGameCamera::update(const double deltaTime) {
 	setPosition(getPosition() + movement);
 
 	setViewMatrix();
-	*/
 }
 
 void FPSGameCamera::setProjMatrix(const int width, const int height) {
@@ -98,10 +98,9 @@ void FPSGameCamera::setViewProjMatrix() {
 	viewProjMatrix = projMatrix * viewMatrix;
 }
 
-/*
-void FPSGameCamera::mouseMoveCallback(GameWindow *window, double mouseX, double mouseY) {
+void FPSGameCamera::mouseMoveCallback(const std::shared_ptr<GameWindow>& window, double mouseX, double mouseY) {
 
-	if (mouseStates[MB_RIGHT]) {
+	if (mouseStates[MB_RIGHTBTN]) {
 		mouseDelta = glm::vec2(
 			(mouseX - (window->getWidth() / 2.0)) * getFPSSettings().yawSensitivity,
 			(mouseY - (window->getHeight() / 2.0)) * getFPSSettings().pitchSensitivity
@@ -109,12 +108,12 @@ void FPSGameCamera::mouseMoveCallback(GameWindow *window, double mouseX, double 
 	}
 }
 
-void FPSGameCamera::mouseButtonCallback(GameWindow *window, int button, InputState action) {
+void FPSGameCamera::mouseButtonCallback(const std::shared_ptr<GameWindow>& window, MouseButton button, MouseState action) {
 	if (button > mouseStates.size()) return;
 
 	mouseStates[button] = action;
 
-	if (mouseStates[MB_RIGHT] == PRESSED) {
+	if (mouseStates[MB_RIGHTBTN] == MS_PRESSED) {
 		window->setMouseVisible(false);
 		window->setMouseCentered(true);
 	}
@@ -124,11 +123,10 @@ void FPSGameCamera::mouseButtonCallback(GameWindow *window, int button, InputSta
 	}
 }
 
-void FPSGameCamera::keyCallback(int keyCode, InputState action) {
-	if (keyCode > keyStates.size()) return;
+void FPSGameCamera::keyCallback(Key key, KeyState action) {
+	if (key > keyStates.size()) return;
 
-	keyStates[keyCode] = action;
+	keyStates[key] = action;
 }
-*/
 
 } // namespace NinthEngine

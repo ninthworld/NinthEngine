@@ -2,33 +2,44 @@
 
 #include "..\..\include\NinthEngine\Application\Game.hpp"
 #include "..\..\include\NinthEngine\Win32\Win32Bootstrap.hpp"
-#include "..\Application\GameEngine.hpp"
+#include "..\..\include\NinthEngine\Application\GameEngine.hpp"
 #include "Win32GameWindow.hpp"
 #include "Win32GameTimer.hpp"
+#include "Win32Keyboard.hpp"
+#include "Win32Mouse.hpp"
 
 namespace NinthEngine {
 
 Win32Bootstrap::Win32Bootstrap(const std::string title, const int width, const int height, const bool vsyncEnabled, HINSTANCE hInstance, int cmdShow, const bool useGL)
-	: useGL(useGL)
-	, window(std::make_shared<Win32GameWindow>(title, width, height, vsyncEnabled, hInstance, cmdShow)) 
-	, timer(std::make_shared<Win32GameTimer>()) {
+	: title(title), width(width), height(height), vsyncEnabled(vsyncEnabled), hInstance(hInstance), cmdShow(cmdShow), useGL(useGL) {
 }
 
 Win32Bootstrap::~Win32Bootstrap() {
-	window.reset();
-	timer.reset();
 }
 
-void Win32Bootstrap::start(std::shared_ptr<Game> app) {
+void Win32Bootstrap::run(const std::function<std::shared_ptr<Game>(const std::shared_ptr<GameEngine>&)>& app) {
 
-	GameEngine engine(window, timer, app);
+	auto window = std::make_shared<Win32GameWindow>(title, width, height, vsyncEnabled, hInstance, cmdShow);
+	auto timer = std::make_shared<Win32GameTimer>();
+	auto keyboard = std::make_shared<Win32Keyboard>();
+	auto mouse = std::make_shared<Win32Mouse>();
+
+	auto engine = std::make_shared<GameEngine>(window, timer, keyboard, mouse);
+
+	auto game = app(engine);
 
 	try {
-		engine.start();
+		engine->run(game);
 	}
 	catch (std::exception&) {
 	}
+
+	game.reset();
+	engine.reset();
+	timer.reset();
+	window.reset();
 }
+
 
 } // namespace NinthEngine
 

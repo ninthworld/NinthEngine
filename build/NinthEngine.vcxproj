@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngine\Application\Game.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Application\GameEngine.hpp" />
     <ClInclude Include="..\include\NinthEngine\Application\GameInput.hpp" />
     <ClInclude Include="..\include\NinthEngine\Application\GameTimer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Application\GameWindow.hpp" />
@@ -27,17 +28,22 @@
     <ClInclude Include="..\include\NinthEngine\Camera\GameCamera.hpp" />
     <ClInclude Include="..\include\NinthEngine\GameUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\GLFW\GLFWBootstrap.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Input\Keyboard.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp" />
     <ClInclude Include="..\include\NinthEngine\Shader.hpp" />
     <ClInclude Include="..\include\NinthEngine\Texture.hpp" />
     <ClInclude Include="..\include\NinthEngine\VertexArray.hpp" />
     <ClInclude Include="..\include\NinthEngine\Win32\Win32Bootstrap.hpp" />
-    <ClInclude Include="..\src\Application\GameEngine.hpp" />
     <ClInclude Include="..\src\GLFW\GLFWGameTimer.hpp" />
     <ClInclude Include="..\src\GLFW\GLFWGameWindow.hpp" />
+    <ClInclude Include="..\src\GLFW\GLFWKeyboard.hpp" />
+    <ClInclude Include="..\src\GLFW\GLFWMouse.hpp" />
     <ClInclude Include="..\src\GLFW\GLFWUtils.hpp" />
     <ClInclude Include="..\src\RenderGL\GLUtils.hpp" />
     <ClInclude Include="..\src\Win32\Win32GameTimer.hpp" />
     <ClInclude Include="..\src\Win32\Win32GameWindow.hpp" />
+    <ClInclude Include="..\src\Win32\Win32Keyboard.hpp" />
+    <ClInclude Include="..\src\Win32\Win32Mouse.hpp" />
     <ClInclude Include="..\src\Win32\Win32Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,11 +52,15 @@
     <ClCompile Include="..\src\GameUtils.cpp" />
     <ClCompile Include="..\src\GLFW\GLFWBootstrap.cpp" />
     <ClCompile Include="..\src\GLFW\GLFWGameWindow.cpp" />
+    <ClCompile Include="..\src\GLFW\GLFWKeyboard.cpp" />
+    <ClCompile Include="..\src\GLFW\GLFWMouse.cpp" />
     <ClCompile Include="..\src\Shader.cpp" />
     <ClCompile Include="..\src\Texture.cpp" />
     <ClCompile Include="..\src\VertexArray.cpp" />
     <ClCompile Include="..\src\Win32\Win32Bootstrap.cpp" />
     <ClCompile Include="..\src\Win32\Win32GameWindow.cpp" />
+    <ClCompile Include="..\src\Win32\Win32Keyboard.cpp" />
+    <ClCompile Include="..\src\Win32\Win32Mouse.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

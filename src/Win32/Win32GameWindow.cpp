@@ -4,10 +4,6 @@
 #include "..\..\include\NinthEngine\Application\Game.hpp"
 #include "Win32GameWindow.hpp"
 
-namespace {
-
-} // namespace
-
 namespace NinthEngine {
 
 Win32GameWindow::Win32GameWindow(const std::string title, const int width, const int height, const bool vsyncEnable, HINSTANCE hInstance, int cmdShow)
@@ -58,16 +54,11 @@ void Win32GameWindow::setWindowSize(const int _width, const int _height) {
 	height = _height;
 }
 
-void Win32GameWindow::setResizeCallback(Game *game, std::function<void(Game*, GameWindow*, int, int)> callback) {
+void Win32GameWindow::setResizeCallback(const std::function<void(int, int)>& callback) {
 
-	resizeCB.game = game;
-	resizeCB.callback = callback;
+	resizeCB = callback;
 }
 
 } // namespace NinthEngine
-
-namespace {
-
-}
 
 #endif

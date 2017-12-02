@@ -2,10 +2,12 @@
 
 #include <string>
 #include <memory>
+#include <functional>
 
 namespace NinthEngine {
 
 class Game;
+class GameEngine;
 class GLFWGameWindow;
 class GLFWGameTimer;
 
@@ -14,11 +16,12 @@ public:
 	GLFWBootstrap(const std::string title, const int width, const int height, const bool vsyncEnabled);
 	~GLFWBootstrap();
 
-	void start(std::shared_ptr<Game> app);
+	void run(const std::function<std::shared_ptr<Game>(const std::shared_ptr<GameEngine>&)>& app);
 
 private:
-	std::shared_ptr<GLFWGameWindow> window;
-	std::shared_ptr<GLFWGameTimer> timer;
+	std::string title;
+	int width, height;
+	bool vsyncEnabled;
 
 };
 

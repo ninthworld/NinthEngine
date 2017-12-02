@@ -4,8 +4,7 @@
 
 namespace {
 
-void glfwErrorCallback(int, const char *);
-void glfwResizeCallback(GLFWwindow*, int, int);
+void glfwErrorCallback(int error, const char *desc);
 
 } // namespace
 
@@ -116,12 +115,18 @@ void GLFWGameWindow::setWindowSize(const int _width, const int _height) {
 	glfwSetWindowSize(windowId, _width, _height);
 }
 
-void GLFWGameWindow::setResizeCallback(Game *game, std::function<void(Game*, GameWindow*, int, int)> callback) {
+void GLFWGameWindow::setResizeCallback(const std::function<void(int, int)>& callback) {
 
-	resizeCB.game = game;
-	resizeCB.callback = callback;
+	resizeCB = callback;
 
-	glfwSetWindowSizeCallback(windowId, glfwResizeCallback);
+	glfwSetWindowSizeCallback(windowId, [](GLFWwindow *id, int width, int height) {
+		auto window = (NinthEngine::GameWindow*)glfwGetWindowUserPointer(id);
+
+		window->setWidth(width);
+		window->setHeight(height);
+
+		window->resizeCallback(width, height);
+	});
 }
 
 } // namespace NinthEngine
@@ -129,17 +134,9 @@ void GLFWGameWindow::setResizeCallback(Game *game, std::function<void(Game*, Gam
 namespace {
 
 void glfwErrorCallback(int error, const char *desc) {
+
 	LOG_ERROR << "(error code " << std::to_string(error) << ") " << desc;
 	throw std::exception();
-}
-
-void glfwResizeCallback(GLFWwindow *id, int width, int height) {
-	auto window = (NinthEngine::GameWindow*)glfwGetWindowUserPointer(id);
-
-	window->setWidth(width);
-	window->setHeight(height);
-
-	window->resizeCallback(width, height);
 }
 
 } // namespace

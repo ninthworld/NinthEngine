@@ -19,16 +19,17 @@ class SimpleShader;
 
 class TestGame : public Game {
 public:
-	TestGame();
+	TestGame(const std::shared_ptr<GameEngine>& engine);
 	~TestGame();
 
-	void init(std::shared_ptr<GameWindow> window);
-	void render(std::shared_ptr<GameWindow> window, const double deltaTime);
+	void init();
+	void render(const double deltaTime);
 
 	std::shared_ptr<FPSGameCamera> getCamera() { return camera; };
 
 protected:
 private:
+	std::shared_ptr<GameEngine> engine;
 	std::shared_ptr<FPSGameCamera> camera;
 	std::shared_ptr<SimpleShader> simpleShader;
 	std::shared_ptr<VertexArray> simpleVAO;

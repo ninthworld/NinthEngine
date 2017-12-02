@@ -2,6 +2,7 @@
 #include <memory>
 #include <plog\Log.h>
 #include <plog\Appenders\ColorConsoleAppender.h>
+#include <NinthEngine\Application\GameEngine.hpp>
 #include "TestGame.hpp"
 
 using namespace NinthEngine;
@@ -36,12 +37,11 @@ int main(int argc, char *argv[]) {
 
 	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
 	plog::init(plog::verbose, &consoleAppender);
-
-	auto game = std::make_shared<TestGame>();
-
-	GLFWBootstrap("Test Game", 1600, 900, false).start(game);
-
-	game.reset();
+	
+	GLFWBootstrap bootstrap("Test Game", 1600, 900, false);
+	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
+		return std::make_shared<TestGame>(engine);
+	});
 
 	return 0;
 }

@@ -4,11 +4,13 @@
 
 #include <string>
 #include <memory>
+#include <functional>
 #include "..\..\..\src\Win32\Win32Utils.hpp"
 
 namespace NinthEngine {
 
 class Game;
+class GameEngine;
 class Win32GameWindow;
 class Win32GameTimer;
 
@@ -17,11 +19,14 @@ public:
 	Win32Bootstrap(const std::string title, const int width, const int height, const bool vsyncEnabled, HINSTANCE hInstance, int cmdShow, const bool useGL = true);
 	~Win32Bootstrap();
 
-	void start(std::shared_ptr<Game> app);
+	void run(const std::function<std::shared_ptr<Game>(const std::shared_ptr<GameEngine>&)>& app);
 
 private:
-	std::shared_ptr<Win32GameWindow> window;
-	std::shared_ptr<Win32GameTimer> timer;
+	std::string title;
+	int width, height;
+	bool vsyncEnabled;
+	HINSTANCE hInstance;
+	int cmdShow;
 	
 	bool useGL;
 };
