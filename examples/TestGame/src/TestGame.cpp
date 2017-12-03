@@ -6,10 +6,27 @@
 #include "SimpleShader.hpp"
 #include "TestGame.hpp"
 
+namespace {
+
+struct UV_t {
+	float u, v;
+	UV_t operator +(UV_t b) { return { u + b.u, v + b.v }; }
+	UV_t operator *(UV_t b) { return { u * b.u, v * b.v }; }
+};
+
+UV_t size{ 1 / 16.f, 1 / 16.f };
+UV_t grassTop{ 0, 13 };
+UV_t grassBot{ 0, 14 };
+UV_t grassSide{ 1, 14 };
+
+} // namespace
+
 TestGame::TestGame(const std::shared_ptr<GameEngine>& engine) 
 	: engine(engine) {
 
-	camera = std::make_shared<FPSGameCamera>();
+	camera = std::make_shared<FPSGameCamera>(glm::vec3(1, 1, 4));
+	simpleVAO = std::make_shared<VertexArray>();
+	simpleShader = std::make_shared<SimpleShader>();
 }
 
 TestGame::~TestGame() {
@@ -17,46 +34,22 @@ TestGame::~TestGame() {
 	simpleShader.reset();
 	simpleVAO.reset();
 
-	delete simpleTexture;
+	//delete simpleTexture;
 }
 
 void TestGame::init() {
 	engine->getWindow()->setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	camera->init(engine->getWindow()->getWidth(), engine->getWindow()->getHeight());
 
-	engine->getWindow()->setResizeCallback([this](int width, int height) {
-		getCamera()->setProjMatrix(width, height);
-		glViewport(0, 0, width, height);
-	});
+	///*
+	simpleShader->init();
 	
-	engine->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
-		getCamera()->keyCallback(key, state);
-	});
-
-	engine->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
-		getCamera()->mouseButtonCallback(engine->getWindow(), btn, state);
-	});
-
-	engine->getMouse()->setMoveCallback([this](double mx, double my) {
-		getCamera()->mouseMoveCallback(engine->getWindow(), mx, my);
-	});
+	simpleTexture = GameUtils::loadBMP("res/textures/blocks.bmp");
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	
-	simpleTexture = GameUtils::loadBMP("res/textures/blocks.bmp");
 		
-	struct UV_t {
-		float u, v;
-		UV_t operator +(UV_t b) { return { u + b.u, v + b.v }; }
-		UV_t operator *(UV_t b) { return { u * b.u, v * b.v }; }
-	};
-
-	UV_t size{ 1 / 16.f, 1 / 16.f };
-	UV_t grassTop{ 0, 13 };
-	UV_t grassBot{ 0, 14 };
-	UV_t grassSide{ 1, 14 };
 	std::vector<VertexArray::VertexNT_t> vertices {
 		// Top
 		{ 0, 1, 0, 0, 1, 0, grassTop.u * size.u, grassTop.v * size.v },
@@ -99,17 +92,43 @@ void TestGame::init() {
 		20, 21, 22, 22, 21, 23
 	};	
 
-	simpleShader = std::make_shared<SimpleShader>();
-	simpleShader->init();
-
-	simpleVAO = std::make_shared<VertexArray>();
 	simpleVAO->setData(vertices, indices);
+
+	engine->getWindow()->setResizeCallback([this](int width, int height) {
+		getCamera()->setProjMatrix(width, height);
+		glViewport(0, 0, width, height);
+	});
+
+	engine->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
+		if (key == VK_ESCAPE_KEY) engine->getWindow()->setCloseRequested(true);
+		getCamera()->keyCallback(key, state);
+	});
+
+	engine->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
+		getCamera()->mouseButtonCallback(engine->getWindow(), btn, state);
+	});
+
+	engine->getMouse()->setMoveCallback([this](double mx, double my) {
+		getCamera()->mouseMoveCallback(engine->getWindow(), mx, my);
+	});
+	//*/
 }
 
-void TestGame::render(const double deltaTime) {
+void TestGame::update(const double deltaTime) {
 
 	camera->update(deltaTime);
+}
 
+void TestGame::render() {
+
+	/*
+	engine->getCommandQueue()->reset();
+	engine->getCommandQueue()->push(commandList);
+	engine->getCommandQueue()->execute();
+	engine->getCommandQueue()->render();
+	*/
+	
+	///*
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	simpleShader->bind();
@@ -118,4 +137,5 @@ void TestGame::render(const double deltaTime) {
 	simpleShader->loadTexture(simpleTexture);
 	simpleVAO->render();
 	simpleShader->unbind();
+	//*/
 }

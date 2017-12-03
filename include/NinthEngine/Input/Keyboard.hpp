@@ -13,13 +13,14 @@ enum Key {
 	VK_D,
 	VK_SPACE_KEY,
 	VK_LEFT_SHIFT,
+	VK_ESCAPE_KEY,
 
 	VK_NB = 256
 };
 
 enum KeyState {
-	KS_PRESSED,
-	KS_RELEASED
+	KS_RELEASED,
+	KS_PRESSED
 };
 
 class Keyboard {

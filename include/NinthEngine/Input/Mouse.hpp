@@ -14,8 +14,8 @@ enum MouseButton {
 };
 
 enum MouseState {
-	MS_PRESSED,
-	MS_RELEASED
+	MS_RELEASED,
+	MS_PRESSED
 };
 
 class Mouse {

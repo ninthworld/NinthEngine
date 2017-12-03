@@ -21,7 +21,7 @@ class GameWindow;
 
 class FPSGameCamera : public GameCamera {
 public:
-	FPSGameCamera(const FPSGameCameraSettings = FPSGameCameraSettings(), const glm::vec3 position = glm::vec3(0), const glm::vec3 rotation = glm::vec3(0));
+	FPSGameCamera(const glm::vec3 position = glm::vec3(0), const glm::vec3 rotation = glm::vec3(0), const FPSGameCameraSettings = FPSGameCameraSettings());
 	~FPSGameCamera() {};
 
 	void init(const int width, const int height);

@@ -14,7 +14,6 @@ public:
 	Win32GameWindow(const std::string title, const int width, const int height, const bool vsyncEnabled, HINSTANCE hInstance, int cmdShow);
 	~Win32GameWindow();
 
-	void init();
 	void update();
 
 	bool isCloseRequested();
@@ -23,6 +22,9 @@ public:
 	void setResizeCallback(const std::function<void(int, int)>&);
 
 	void resizeCallback(const int _width, const int _height) { resizeCB(_width, _height); };
+
+	HWND getHandle() { return handle; }
+	HINSTANCE getInstance() { return instance; }
 
 	std::string getTitle() const { return title; };
 	int getWidth() const { return width; };
@@ -40,12 +42,15 @@ public:
 	void setWindowSize(const int width, const int height);
 	void setClearColor(const float red, const float green, const float blue, const float alpha);
 
+	LRESULT CALLBACK wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+
 private:
 	std::string title;
 	int width, height;
-	bool vsyncEnabled, mouseCentered, mouseVisible;
+	bool vsyncEnabled, mouseCentered, mouseVisible, closeRequested;
 
-	HINSTANCE hInstance;
+	HWND handle;
+	HINSTANCE instance;
 	int cmdShow;
 
 	std::function<void(int, int)> resizeCB;

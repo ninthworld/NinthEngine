@@ -23,7 +23,8 @@ public:
 	~TestGame();
 
 	void init();
-	void render(const double deltaTime);
+	void update(const double deltaTime);
+	void render();
 
 	std::shared_ptr<FPSGameCamera> getCamera() { return camera; };
 

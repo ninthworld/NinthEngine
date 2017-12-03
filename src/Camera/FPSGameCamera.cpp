@@ -11,8 +11,8 @@ const double PI = 3.14159;
 
 namespace NinthEngine {
 
-FPSGameCamera::FPSGameCamera(FPSGameCameraSettings settings, const glm::vec3 position, const glm::vec3 rotation)
-	: settings(settings), position(position), rotation(rotation)
+FPSGameCamera::FPSGameCamera(const glm::vec3 position, const glm::vec3 rotation,const FPSGameCameraSettings settings)
+	: position(position), rotation(rotation), settings(settings)
 	, keyStates(std::vector<KeyState>(VK_NB, KS_RELEASED))
 	, mouseStates(std::vector<MouseState>(MB_NB, MS_RELEASED))
 	, mouseDelta(glm::vec2(0)) {
@@ -42,31 +42,31 @@ void FPSGameCamera::update(const double deltaTime) {
 	double cosYRot = cos(getRotation().y);
 	double pitchLimitFactor = cosXRot;
 
-	if (keyStates[VK_W]) {
+	if (keyStates[VK_W] == KS_PRESSED) {
 		movement.x += sinYRot * pitchLimitFactor;
 		movement.z -= cosYRot * pitchLimitFactor;
 	}
 
-	if (keyStates[VK_S]) {
+	if (keyStates[VK_S] == KS_PRESSED) {
 		movement.x -= sinYRot * pitchLimitFactor;
 		movement.z += cosYRot * pitchLimitFactor;
 	}
 
-	if (keyStates[VK_A]) {
+	if (keyStates[VK_A] == KS_PRESSED) {
 		movement.x += -cosYRot;
 		movement.z += -sinYRot;
 	}
 
-	if (keyStates[VK_D]) {
+	if (keyStates[VK_D] == KS_PRESSED) {
 		movement.x += cosYRot;
 		movement.z += sinYRot;
 	}
 
-	if (keyStates[VK_SPACE_KEY]) {
+	if (keyStates[VK_SPACE_KEY] == KS_PRESSED) {
 		movement.y++;
 	}
 
-	if (keyStates[VK_LEFT_SHIFT]) {
+	if (keyStates[VK_LEFT_SHIFT] == KS_PRESSED) {
 		movement.y--;
 	}
 
@@ -100,7 +100,7 @@ void FPSGameCamera::setViewProjMatrix() {
 
 void FPSGameCamera::mouseMoveCallback(const std::shared_ptr<GameWindow>& window, double mouseX, double mouseY) {
 
-	if (mouseStates[MB_RIGHTBTN]) {
+	if (mouseStates[MB_RIGHTBTN] == MS_PRESSED) {
 		mouseDelta = glm::vec2(
 			(mouseX - (window->getWidth() / 2.0)) * getFPSSettings().yawSensitivity,
 			(mouseY - (window->getHeight() / 2.0)) * getFPSSettings().pitchSensitivity
@@ -124,7 +124,7 @@ void FPSGameCamera::mouseButtonCallback(const std::shared_ptr<GameWindow>& windo
 }
 
 void FPSGameCamera::keyCallback(Key key, KeyState action) {
-	if (key > keyStates.size()) return;
+	if (key >= keyStates.size()) return;
 
 	keyStates[key] = action;
 }

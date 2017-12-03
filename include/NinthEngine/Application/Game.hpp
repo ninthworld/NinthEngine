@@ -9,7 +9,8 @@ class GameWindow;
 class Game {
 public:
 	virtual void init() = 0;
-	virtual void render(const double deltaTime) = 0;
+	virtual void update(const double deltaTime) = 0;
+	virtual void render() = 0;
 
 protected:
 private:

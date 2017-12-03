@@ -20,16 +20,15 @@ public:
 	void moveCallback(double mX, double mY) { moveCB(mX, mY); };
 
 private:
-	MouseButton getMouseButton(int) const;
-	MouseState getMouseState(int) const;
-
 	std::shared_ptr<GLFWGameWindow> window;
 
 	std::function<void(MouseButton, MouseState)> buttonCB;
 	std::function<void(double, double)> moveCB;
 };
 
-inline MouseButton GLFWMouse::getMouseButton(int btn) const {
+namespace GLFW {
+
+inline MouseButton getMouseButton(int btn) {
 	switch (btn) {
 	case GLFW_MOUSE_BUTTON_1: return MB_LEFTBTN;
 	case GLFW_MOUSE_BUTTON_2: return MB_RIGHTBTN;
@@ -37,9 +36,10 @@ inline MouseButton GLFWMouse::getMouseButton(int btn) const {
 	}
 }
 
-inline MouseState GLFWMouse::getMouseState(int state) const {
+inline MouseState getMouseState(int state) {
 	if (state == GLFW_PRESS) return MS_PRESSED;
 	return MS_RELEASED;
 }
 
+} // namespace GLFW
 } // namespace NinthEngine

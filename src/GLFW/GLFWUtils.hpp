@@ -1,4 +1,4 @@
 #pragma once
 
-#include "..\RenderGL\GLUtils.hpp"
+#include "..\Render\GL\GLUtils.hpp"
 #include <GLFW\glfw3.h>

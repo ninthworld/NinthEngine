@@ -6,21 +6,30 @@
 namespace NinthEngine {
 
 class Game;
+enum Key;
+enum KeyState;
+enum MouseButton;
+enum MouseState;
 
 class GLFWGameWindow : public GameWindow {
 public:
 	GLFWGameWindow(const std::string title, const int width, const int height, const bool vsyncEnabled);
 	~GLFWGameWindow();
 
-	void init();
 	void update();
 
 	bool isCloseRequested();
 	void setCloseRequested(const bool);
 
 	void setResizeCallback(const std::function<void(int, int)>&);
+	void setKeyCallback(const std::function<void(Key, KeyState)>& callback) { keyCB = callback; }
+	void setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) { buttonCB = callback; };
+	void setMoveCallback(const std::function<void(double, double)>& callback) { moveCB = callback; };
 
 	void resizeCallback(const int _width, const int _height) { resizeCB(_width, _height); };
+	void keyCallback(Key key, KeyState keyState) { keyCB(key, keyState); };
+	void buttonCallback(MouseButton mouseBtn, MouseState mouseSt) { buttonCB(mouseBtn, mouseSt); };
+	void moveCallback(double mX, double mY) { moveCB(mX, mY); };
 
 	std::string getTitle() const { return title; };
 	int getWidth() const { return width; };
@@ -47,6 +56,9 @@ private:
 	GLFWwindow *windowId;
 
 	std::function<void(int, int)> resizeCB;
+	std::function<void(Key, KeyState)> keyCB;
+	std::function<void(MouseButton, MouseState)> buttonCB;
+	std::function<void(double, double)> moveCB;
 
 };
 

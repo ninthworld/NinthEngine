@@ -13,9 +13,10 @@ GLFWKeyboard::~GLFWKeyboard() {
 void GLFWKeyboard::setKeyCallback(const std::function<void(Key, KeyState)>& callback) {
 	keyCB = callback;
 
+	window->setKeyCallback(callback);
 	glfwSetKeyCallback(window->getWindowID(), [](GLFWwindow *id, int key, int code, int action, int mods) {
-		auto window = (NinthEngine::GameWindow*)glfwGetWindowUserPointer(id);
-		//keyboard->keyCallback(Key(key), KeyState(action));
+		auto window = (NinthEngine::GLFWGameWindow*)glfwGetWindowUserPointer(id);
+		window->keyCallback(GLFW::getKey(key), GLFW::getKeyState(action));
 	});
 }
 

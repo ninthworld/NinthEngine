@@ -7,6 +7,8 @@
 
 using namespace NinthEngine;
 
+#define USE_WIN32
+
 #if defined(_WIN32) && defined(USE_WIN32)
 
 #define WIN32_LEAN_AND_MEAN
@@ -22,11 +24,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
 	plog::init(plog::verbose, &consoleAppender);
 
-	auto game = std::make_shared<TestGame>();
+	Win32Bootstrap bootstrap("Test Game", 1600, 900, false, hInstance, cmdShow, true);
+	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
+		return std::make_shared<TestGame>(engine);
+	});
 
-	Win32Bootstrap("Test Game", 1600, 900, false, hInstance, cmdShow, true).start(game);
-
-	game.reset();
+	return 0;
 }
 
 #else

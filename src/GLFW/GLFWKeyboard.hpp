@@ -18,15 +18,14 @@ public:
 	void keyCallback(Key key, KeyState keyState) { keyCB(key, keyState); };
 
 private:
-	Key getKey(int) const;
-	KeyState getKeyState(int) const;
-
 	std::shared_ptr<GLFWGameWindow> window;
 
 	std::function<void(Key, KeyState)> keyCB;
 };
 
-inline Key GLFWKeyboard::getKey(int key) const {
+namespace GLFW {
+
+inline Key getKey(int key) {
 	switch (key) {
 	case GLFW_KEY_W: return VK_W;
 	case GLFW_KEY_A: return VK_A;
@@ -34,13 +33,15 @@ inline Key GLFWKeyboard::getKey(int key) const {
 	case GLFW_KEY_D: return VK_D;
 	case GLFW_KEY_SPACE: return VK_SPACE_KEY;
 	case GLFW_KEY_LEFT_SHIFT: return VK_LEFT_SHIFT;
+	case GLFW_KEY_ESCAPE: return VK_ESCAPE_KEY;
 	default: return VK_NONE;
 	}
 }
 
-inline KeyState GLFWKeyboard::getKeyState(int state) const {
+inline KeyState getKeyState(int state) {
 	if (state == GLFW_PRESS) return KS_PRESSED;
 	return KS_RELEASED;
 }
 
+} // namespace GLFW
 } // namespace NinthEngine

@@ -12,15 +12,6 @@ namespace NinthEngine {
 
 GLFWGameWindow::GLFWGameWindow(const std::string title, const int width, const int height, const bool vsyncEnabled)
 	: title(title), width(width), height(height), vsyncEnabled(vsyncEnabled), mouseCentered(false), mouseVisible(true) {
-}
-
-GLFWGameWindow::~GLFWGameWindow() {
-
-	glfwDestroyWindow(windowId);
-	glfwTerminate();
-}
-
-void GLFWGameWindow::init() {
 
 	glfwSetErrorCallback(glfwErrorCallback);
 
@@ -55,13 +46,12 @@ void GLFWGameWindow::init() {
 	setMouseCentered(false);
 
 	glfwShowWindow(windowId);
+}
 
-	if (glewInit() != GLEW_OK) {
-		LOG_ERROR << "Failed to initialize GLEW";
-		throw std::exception();
-	}
+GLFWGameWindow::~GLFWGameWindow() {
 
-	setClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glfwDestroyWindow(windowId);
+	glfwTerminate();
 }
 
 void GLFWGameWindow::update() {
@@ -120,7 +110,7 @@ void GLFWGameWindow::setResizeCallback(const std::function<void(int, int)>& call
 	resizeCB = callback;
 
 	glfwSetWindowSizeCallback(windowId, [](GLFWwindow *id, int width, int height) {
-		auto window = (NinthEngine::GameWindow*)glfwGetWindowUserPointer(id);
+		auto window = (NinthEngine::GLFWGameWindow*)glfwGetWindowUserPointer(id);
 
 		window->setWidth(width);
 		window->setHeight(height);
