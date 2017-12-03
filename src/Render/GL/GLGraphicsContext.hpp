@@ -13,6 +13,8 @@ public:
 	GLGraphicsContext(const std::shared_ptr<GLContext>&, const std::shared_ptr<GameWindow>&);
 	~GLGraphicsContext();
 	
+	void swapBuffers();
+
 private:
 	std::shared_ptr<GLContext> glContext;
 	std::shared_ptr<GameWindow> window;

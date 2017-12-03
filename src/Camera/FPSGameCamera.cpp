@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "..\..\include\NinthEngine\Application\GameWindow.hpp"
 #include "..\..\include\NinthEngine\Camera\FPSGameCamera.hpp"
 #include "..\..\include\NinthEngine\Input\Keyboard.hpp"
@@ -13,16 +14,14 @@ namespace NinthEngine {
 
 FPSGameCamera::FPSGameCamera(const glm::vec3 position, const glm::vec3 rotation,const FPSGameCameraSettings settings)
 	: position(position), rotation(rotation), settings(settings)
-	, keyStates(std::vector<KeyState>(VK_NB, KS_RELEASED))
-	, mouseStates(std::vector<MouseState>(MB_NB, MS_RELEASED))
-	, mouseDelta(glm::vec2(0)) {
+	, mouseLast(glm::vec2(0)), mouseDelta(glm::vec2(0)) {
 }
 
 void FPSGameCamera::init(const int width, const int height) {
 	setProjMatrix(width, height);
 }
 
-void FPSGameCamera::update(const double deltaTime) {
+void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const double deltaTime) {
 	
 	glm::vec3 rotation = getRotation();
 
@@ -42,31 +41,31 @@ void FPSGameCamera::update(const double deltaTime) {
 	double cosYRot = cos(getRotation().y);
 	double pitchLimitFactor = cosXRot;
 
-	if (keyStates[VK_W] == KS_PRESSED) {
+	if (window->getKeyboard()->getKey(KEY_W) == KS_PRESSED) {
 		movement.x += sinYRot * pitchLimitFactor;
 		movement.z -= cosYRot * pitchLimitFactor;
 	}
 
-	if (keyStates[VK_S] == KS_PRESSED) {
+	if (window->getKeyboard()->getKey(KEY_S) == KS_PRESSED) {
 		movement.x -= sinYRot * pitchLimitFactor;
 		movement.z += cosYRot * pitchLimitFactor;
 	}
 
-	if (keyStates[VK_A] == KS_PRESSED) {
+	if (window->getKeyboard()->getKey(KEY_A) == KS_PRESSED) {
 		movement.x += -cosYRot;
 		movement.z += -sinYRot;
 	}
 
-	if (keyStates[VK_D] == KS_PRESSED) {
+	if (window->getKeyboard()->getKey(KEY_D) == KS_PRESSED) {
 		movement.x += cosYRot;
 		movement.z += sinYRot;
 	}
 
-	if (keyStates[VK_SPACE_KEY] == KS_PRESSED) {
+	if (window->getKeyboard()->getKey(KEY_SPACE) == KS_PRESSED) {
 		movement.y++;
 	}
 
-	if (keyStates[VK_LEFT_SHIFT] == KS_PRESSED) {
+	if (window->getKeyboard()->getKey(KEY_LSHIFT) == KS_PRESSED) {
 		movement.y--;
 	}
 
@@ -80,7 +79,10 @@ void FPSGameCamera::update(const double deltaTime) {
 }
 
 void FPSGameCamera::setProjMatrix(const int width, const int height) {
-	projMatrix = glm::perspective(getSettings().FOV, static_cast<float>(width) / static_cast<float>(height), getSettings().zNear, getSettings().zFar);
+	float w = std::max(width, 1);
+	float h = std::max(height, 1);
+
+	projMatrix = glm::perspective(getSettings().FOV, w / h, getSettings().zNear, getSettings().zFar);
 
 	setViewMatrix();
 }
@@ -100,33 +102,37 @@ void FPSGameCamera::setViewProjMatrix() {
 
 void FPSGameCamera::mouseMoveCallback(const std::shared_ptr<GameWindow>& window, double mouseX, double mouseY) {
 
-	if (mouseStates[MB_RIGHTBTN] == MS_PRESSED) {
+	if (window->getMouse()->getButton(MB_RIGHT_BTN) == MS_PRESSED) {
+
 		mouseDelta = glm::vec2(
-			(mouseX - (window->getWidth() / 2.0)) * getFPSSettings().yawSensitivity,
-			(mouseY - (window->getHeight() / 2.0)) * getFPSSettings().pitchSensitivity
+			(mouseX - mouseLast.x) * getFPSSettings().yawSensitivity,
+			(mouseY - mouseLast.y) * getFPSSettings().pitchSensitivity
 		);
+
+		mouseLast = glm::vec2(mouseX, mouseY);
+
+		window->setMouseCentered();
+
+		/*mouseDelta = glm::vec2(
+			(mouseX - (window->getWidth() / 2)) * getFPSSettings().yawSensitivity,
+			(mouseY - (window->getHeight() / 2)) * getFPSSettings().pitchSensitivity
+		);*/
 	}
 }
 
 void FPSGameCamera::mouseButtonCallback(const std::shared_ptr<GameWindow>& window, MouseButton button, MouseState action) {
-	if (button > mouseStates.size()) return;
 
-	mouseStates[button] = action;
-
-	if (mouseStates[MB_RIGHTBTN] == MS_PRESSED) {
+	if (window->getMouse()->getButton(MB_RIGHT_BTN) == MS_PRESSED) {
+		mouseLast = glm::vec2(window->getMouse()->getMouseX(), window->getMouse()->getMouseY());
 		window->setMouseVisible(false);
-		window->setMouseCentered(true);
 	}
 	else {
 		window->setMouseVisible(true);
-		window->setMouseCentered(false);
 	}
 }
 
 void FPSGameCamera::keyCallback(Key key, KeyState action) {
-	if (key >= keyStates.size()) return;
-
-	keyStates[key] = action;
+	
 }
 
 } // namespace NinthEngine

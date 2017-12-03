@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <glm\glm.hpp>
 #include <glm\ext.hpp>
 
@@ -11,10 +12,12 @@ struct GameCameraSettings {
 	float zFar = 1000.f;
 };
 
+class GameWindow;
+
 class GameCamera {
 public:
 	virtual void init(const int width, const int height) = 0;
-	virtual void update(const double deltaTime) = 0;
+	virtual void update(const std::shared_ptr<GameWindow>& window, const double deltaTime) = 0;
 
 	virtual GameCameraSettings getSettings() const = 0;
 	virtual glm::vec3 getPosition() const = 0;

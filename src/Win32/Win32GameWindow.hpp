@@ -2,12 +2,16 @@
 
 #ifdef _WIN32
 
-#include "..\..\include\NinthEngine\Application\GameWindow.hpp"
 #include "Win32Utils.hpp"
+#include "..\..\include\NinthEngine\Application\GameWindow.hpp"
 
 namespace NinthEngine {
 
 class Game;
+enum Key;
+enum KeyState;
+enum MouseButton;
+enum MouseState;
 
 class Win32GameWindow : public GameWindow {
 public:
@@ -15,13 +19,15 @@ public:
 	~Win32GameWindow();
 
 	void update();
+	void close();
 
-	bool isCloseRequested();
-	void setCloseRequested(const bool);
+	bool isClosed() const { return closed; }
 
-	void setResizeCallback(const std::function<void(int, int)>&);
+	void setResizeCallback(const std::function<void(int, int)>& callback) { resizeCB = callback; };
+	void resizeCallback(const int _width, const int _height) { if(resizeCB) resizeCB(_width, _height); };
 
-	void resizeCallback(const int _width, const int _height) { resizeCB(_width, _height); };
+	std::shared_ptr<Keyboard> getKeyboard() { return keyboard; }
+	std::shared_ptr<Mouse> getMouse() { return mouse; }
 
 	HWND getHandle() { return handle; }
 	HINSTANCE getInstance() { return instance; }
@@ -30,30 +36,32 @@ public:
 	int getWidth() const { return width; };
 	int getHeight() const { return height; };
 	bool isVsyncEnabled() const { return vsyncEnabled; };
-	bool isMouseCentered() const { return mouseCentered; };
 	bool isMouseVisible() const { return mouseVisible; };
 
 	void setTitle(const std::string);
 	void setWidth(const int _width) { width = _width; };
 	void setHeight(const int _height) { height = _height; };
 	void setVsyncEnabled(const bool);
-	void setMouseCentered(const bool);
 	void setMouseVisible(const bool);
 	void setWindowSize(const int width, const int height);
 	void setClearColor(const float red, const float green, const float blue, const float alpha);
+	void setMouseCentered();
 
 	LRESULT CALLBACK wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
 	std::string title;
 	int width, height;
-	bool vsyncEnabled, mouseCentered, mouseVisible, closeRequested;
+	bool vsyncEnabled, mouseVisible, closed;
 
 	HWND handle;
 	HINSTANCE instance;
 	int cmdShow;
 
 	std::function<void(int, int)> resizeCB;
+
+	std::shared_ptr<Keyboard> keyboard;
+	std::shared_ptr<Mouse> mouse;
 
 };
 

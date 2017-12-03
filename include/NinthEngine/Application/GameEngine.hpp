@@ -17,8 +17,6 @@ class GameEngine {
 public:
 	virtual std::shared_ptr<GameWindow> getWindow() = 0;
 	virtual std::shared_ptr<GameTimer> getTimer() = 0;
-	virtual std::shared_ptr<Keyboard> getKeyboard() = 0;
-	virtual std::shared_ptr<Mouse> getMouse() = 0;
 	virtual std::shared_ptr<GraphicsDevice> getDevice() = 0;
 	virtual std::shared_ptr<GraphicsCommandQueue> getCommandQueue() = 0;
 

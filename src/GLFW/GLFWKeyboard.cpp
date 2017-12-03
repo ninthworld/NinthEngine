@@ -1,23 +1,21 @@
-#include "GLFWGameWindow.hpp"
 #include "GLFWKeyboard.hpp"
 
 namespace NinthEngine {
 
-GLFWKeyboard::GLFWKeyboard(const std::shared_ptr<GLFWGameWindow>& window)
-	: window(window) {
+GLFWKeyboard::GLFWKeyboard() 
+	: keys(std::vector<KeyState>(KEY_NB, KS_RELEASED)) {
 }
 
 GLFWKeyboard::~GLFWKeyboard() {
 }
 
-void GLFWKeyboard::setKeyCallback(const std::function<void(Key, KeyState)>& callback) {
-	keyCB = callback;
+void GLFWKeyboard::keyCallback(int key, int keyState) {
+	
+	if (key >= 0 && key < KEY_NB && keyState >= 0 && keyState < KS_NB) {
+		keys[key] = KeyState(keyState);
+	}
 
-	window->setKeyCallback(callback);
-	glfwSetKeyCallback(window->getWindowID(), [](GLFWwindow *id, int key, int code, int action, int mods) {
-		auto window = (NinthEngine::GLFWGameWindow*)glfwGetWindowUserPointer(id);
-		window->keyCallback(GLFW::getKey(key), GLFW::getKeyState(action));
-	});
+	if (keyCB) keyCB(Key(key), KeyState(keyState));
 }
 
 } // namespace NinthEngine

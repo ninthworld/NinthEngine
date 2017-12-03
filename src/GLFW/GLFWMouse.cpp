@@ -1,33 +1,30 @@
-#include "GLFWGameWindow.hpp"
 #include "GLFWMouse.hpp"
 
 namespace NinthEngine {
 
-GLFWMouse::GLFWMouse(const std::shared_ptr<GLFWGameWindow>& window)
-	: window(window) {
+GLFWMouse::GLFWMouse()
+	: mouseX(0), mouseY(0)
+	, buttons(std::vector<MouseState>(MB_NB, MS_RELEASED)) {
 }
 
 GLFWMouse::~GLFWMouse() {
 }
 
-void GLFWMouse::setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) {
-	buttonCB = callback;
+void GLFWMouse::buttonCallback(int mouseBtn, int mouseSt) {
 
-	window->setButtonCallback(callback);
-	glfwSetMouseButtonCallback(window->getWindowID(), [](GLFWwindow *id, int button, int action, int mods) {
-		auto window = (NinthEngine::GLFWGameWindow*)glfwGetWindowUserPointer(id);
-		window->buttonCallback(GLFW::getMouseButton(button), GLFW::getMouseState(action));
-	});
+	if (mouseBtn >= 0 && mouseBtn < MB_NB && mouseSt >= 0 && mouseSt < MS_NB) {
+		buttons[mouseBtn] = MouseState(mouseSt);
+	}
+
+	if (buttonCB) buttonCB(MouseButton(mouseBtn), MouseState(mouseSt));
 }
 
-void GLFWMouse::setMoveCallback(const std::function<void(double, double)>& callback) {
-	moveCB = callback;
+void GLFWMouse::moveCallback(double mX, double mY) {
 
-	window->setMoveCallback(callback);
-	glfwSetCursorPosCallback(window->getWindowID(), [](GLFWwindow *id, double xpos, double ypos) {
-		auto window = (NinthEngine::GLFWGameWindow*)glfwGetWindowUserPointer(id);
-		window->moveCallback(xpos, ypos);
-	});
+	mouseX = mX;
+	mouseY = mY;
+
+	if (moveCB) moveCB(mX, mY);
 }
 
 } // namespace NinthEngine

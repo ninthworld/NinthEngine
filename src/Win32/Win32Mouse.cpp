@@ -4,16 +4,28 @@
 
 namespace NinthEngine {
 
-Win32Mouse::Win32Mouse() {
+Win32Mouse::Win32Mouse()
+	: mouseX(0), mouseY(0), buttons(std::vector<MouseState>(MB_NB, MS_RELEASED)) {
 }
 
 Win32Mouse::~Win32Mouse() {
 }
 
-void Win32Mouse::setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) {
+void Win32Mouse::buttonCallback(int mouseBtn, int mouseSt) {
+
+	if (mouseBtn >= 0 && mouseBtn < MB_NB && mouseSt >= 0 && mouseSt < MS_NB) {
+		buttons[mouseBtn] = MouseState(mouseSt);
+	}
+
+	if (buttonCB) buttonCB(MouseButton(mouseBtn), MouseState(mouseSt));
 }
 
-void Win32Mouse::setMoveCallback(const std::function<void(double, double)>& callback) {
+void Win32Mouse::moveCallback(double mX, double mY) {
+
+	mouseX = mX;
+	mouseY = mY;
+
+	if (moveCB) moveCB(mX, mY);
 }
 
 } // namespace NinthEngine

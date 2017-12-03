@@ -12,8 +12,6 @@ GLFWGameEngine::GLFWGameEngine(const std::shared_ptr<GLFWGameWindow>& window)
 	: window(window) {
 
 	timer = std::make_shared<GLFWGameTimer>();
-	keyboard = std::make_shared<GLFWKeyboard>(window);
-	mouse = std::make_shared<GLFWMouse>(window);
 
 	auto glContext = std::make_shared<GLFWGLContext>(window->getWindowID());
 
@@ -34,8 +32,6 @@ GLFWGameEngine::~GLFWGameEngine() {
 
 	commandQueue.reset();
 	device.reset();
-	mouse.reset();
-	keyboard.reset();
 	timer.reset();
 }
 
@@ -47,13 +43,15 @@ void GLFWGameEngine::run(const std::shared_ptr<Game>& game) {
 	double deltaTime = 0.0;
 	int frames = 0;
 
-	while (!window->isCloseRequested()) {
+	while (!window->isClosed()) {
 
 		deltaTime = timer->elapsed();
 		timer->reset();
 
 		game->update(deltaTime);
 		game->render();
+		//commandQueue->reset();
+
 		window->update();
 		frames++;
 

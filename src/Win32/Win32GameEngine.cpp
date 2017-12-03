@@ -15,8 +15,6 @@ Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window,
 	: window(window) {
 	
 	timer = std::make_shared<Win32GameTimer>();
-	keyboard = std::make_shared<Win32Keyboard>();
-	mouse = std::make_shared<Win32Mouse>();
 
 	if (useGL) {
 
@@ -43,8 +41,6 @@ Win32GameEngine::~Win32GameEngine() {
 
 	commandQueue.reset();
 	device.reset();
-	mouse.reset();
-	keyboard.reset();
 	timer.reset();
 }
 
@@ -56,13 +52,14 @@ void Win32GameEngine::run(const std::shared_ptr<Game>& game) {
 	double deltaTime = 0.0;
 	int frames = 0;
 
-	while (!window->isCloseRequested()) {
+	while (!window->isClosed()) {
 
 		deltaTime = timer->elapsed();
 		timer->reset();
 
 		game->update(deltaTime);
 		game->render();
+		commandQueue->reset();
 		
 		window->update();
 		frames++;

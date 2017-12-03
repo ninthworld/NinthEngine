@@ -93,22 +93,22 @@ void TestGame::init() {
 	};	
 
 	simpleVAO->setData(vertices, indices);
-
+	
 	engine->getWindow()->setResizeCallback([this](int width, int height) {
 		getCamera()->setProjMatrix(width, height);
 		glViewport(0, 0, width, height);
 	});
 
-	engine->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
-		if (key == VK_ESCAPE_KEY) engine->getWindow()->setCloseRequested(true);
+	engine->getWindow()->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
+		if (key == KEY_ESCAPE) engine->getWindow()->close();
 		getCamera()->keyCallback(key, state);
 	});
 
-	engine->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
+	engine->getWindow()->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
 		getCamera()->mouseButtonCallback(engine->getWindow(), btn, state);
 	});
 
-	engine->getMouse()->setMoveCallback([this](double mx, double my) {
+	engine->getWindow()->getMouse()->setMoveCallback([this](double mx, double my) {
 		getCamera()->mouseMoveCallback(engine->getWindow(), mx, my);
 	});
 	//*/
@@ -116,7 +116,7 @@ void TestGame::init() {
 
 void TestGame::update(const double deltaTime) {
 
-	camera->update(deltaTime);
+	camera->update(engine->getWindow(), deltaTime);
 }
 
 void TestGame::render() {

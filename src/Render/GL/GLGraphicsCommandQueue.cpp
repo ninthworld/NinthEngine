@@ -13,7 +13,7 @@ GLGraphicsCommandQueue::~GLGraphicsCommandQueue() {
 }
 
 void GLGraphicsCommandQueue::reset() {
-
+	context->swapBuffers();
 }
 
 void GLGraphicsCommandQueue::execute() {

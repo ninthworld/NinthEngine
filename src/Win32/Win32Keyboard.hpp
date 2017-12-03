@@ -2,6 +2,8 @@
 
 #ifdef _WIN32
 
+#include <Windows.h>
+#include <vector>
 #include <memory>
 #include "..\..\include\NinthEngine\Input\Keyboard.hpp"
 
@@ -12,14 +14,46 @@ public:
 	Win32Keyboard();
 	~Win32Keyboard();
 
-	void setKeyCallback(const std::function<void(Key, KeyState)>&);
+	void setKeyCallback(const std::function<void(Key, KeyState)>& callback) { keyCB = callback; };
 
-	void keyCallback(Key key, KeyState keyState) { keyCB(key, keyState); };
+	void keyCallback(int key, int keyState);
+
+	KeyState getKey(Key key) const { return keys[key]; };
 
 private:
-	std::function<void(Key, KeyState)> keyCB;
+	std::vector<KeyState> keys;
 
+	std::function<void(Key, KeyState)> keyCB;
 };
+
+inline Key getKeyFromWin32(int key) {
+	switch (key) {
+	case VK_BACK: return KEY_BACKSPACE;
+	case VK_TAB: return KEY_TAB;
+	case VK_RETURN: return KEY_ENTER;
+	case VK_LSHIFT: return KEY_LSHIFT;
+	case VK_LCONTROL: return KEY_LCTRL;
+	case VK_LMENU: return KEY_LALT;
+	case VK_RSHIFT: return KEY_RSHIFT;
+	case VK_RCONTROL: return KEY_RCTRL;
+	case VK_RMENU: return KEY_RALT;
+	case VK_PAUSE: return KEY_PAUSE;
+	case VK_CAPITAL: return KEY_CAPSLOCK;
+	case VK_ESCAPE: return KEY_ESCAPE;
+	case VK_PRIOR: return KEY_PAGEUP;
+	case VK_NEXT: return KEY_PAGEDOWN;
+	case VK_END: return KEY_END;
+	case VK_HOME: return KEY_HOME;
+	case VK_LEFT: return KEY_LEFT;
+	case VK_UP: return KEY_UP;
+	case VK_RIGHT: return KEY_RIGHT;
+	case VK_DOWN: return KEY_DOWN;
+	case VK_SNAPSHOT: return KEY_PRINTSCREEN;
+	case VK_INSERT: return KEY_INSERT;
+	case VK_DELETE: return KEY_DELETE;
+	default: return Key(key);
+	}
+}
 
 } // namespace NinthEngine
 

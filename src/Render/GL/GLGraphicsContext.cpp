@@ -13,4 +13,8 @@ GLGraphicsContext::~GLGraphicsContext() {
 	glContext.reset();
 }
 
+void GLGraphicsContext::swapBuffers() {
+	glContext->swapBuffers();
+}
+
 } // namespace NinthEngine

@@ -2,7 +2,9 @@
 
 #ifdef _WIN32
 
+#include <vector>
 #include <memory>
+#include "..\GLFW\GLFWUtils.hpp"
 #include "..\..\include\NinthEngine\Input\Mouse.hpp"
 
 namespace NinthEngine {
@@ -12,16 +14,22 @@ public:
 	Win32Mouse();
 	~Win32Mouse();
 
-	void setButtonCallback(const std::function<void(MouseButton, MouseState)>&);
-	void setMoveCallback(const std::function<void(double, double)>&);
+	void setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) { buttonCB = callback; };
+	void setMoveCallback(const std::function<void(double, double)>& callback) { moveCB = callback; };
 
-	void buttonCallback(MouseButton mouseBtn, MouseState mouseSt) { buttonCB(mouseBtn, mouseSt); };
-	void moveCallback(double mX, double mY) { moveCB(mX, mY); };
+	void buttonCallback(int mouseBtn, int mouseSt);
+	void moveCallback(double mX, double mY);
+
+	MouseState getButton(MouseButton btn) const { return buttons[btn]; };
+	double getMouseX() const { return mouseX; };
+	double getMouseY() const { return mouseY; };
 
 private:
+	double mouseX, mouseY;
+	std::vector<MouseState> buttons;
+
 	std::function<void(MouseButton, MouseState)> buttonCB;
 	std::function<void(double, double)> moveCB;
-
 };
 
 } // namespace NinthEngine

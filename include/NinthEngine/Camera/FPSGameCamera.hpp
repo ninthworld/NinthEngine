@@ -25,7 +25,7 @@ public:
 	~FPSGameCamera() {};
 
 	void init(const int width, const int height);
-	void update(const double deltaTime);
+	void update(const std::shared_ptr<GameWindow>& window, const double deltaTime);
 
 	GameCameraSettings getSettings() const { return settings; };
 	FPSGameCameraSettings getFPSSettings() const { return settings; };
@@ -58,8 +58,7 @@ private:
 	glm::mat4 viewMatrix;
 	glm::mat4 viewProjMatrix;
 
-	std::vector<KeyState> keyStates;
-	std::vector<MouseState> mouseStates;
+	glm::vec2 mouseLast;
 	glm::vec2 mouseDelta;
 
 };

@@ -2,6 +2,8 @@
 
 #include <plog\Log.h>
 #include "..\..\include\NinthEngine\Application\Game.hpp"
+#include "Win32Keyboard.hpp"
+#include "Win32Mouse.hpp"
 #include "Win32GameWindow.hpp"
 
 namespace {
@@ -14,7 +16,7 @@ namespace NinthEngine {
 
 Win32GameWindow::Win32GameWindow(const std::string title, const int width, const int height, const bool vsyncEnable, HINSTANCE hInstance, int cmdShow)
 	: title(title), width(width), height(height), vsyncEnabled(vsyncEnabled), instance(hInstance), cmdShow(cmdShow)
-	, mouseCentered(false), mouseVisible(true), closeRequested(false)
+	, mouseVisible(true), closed(false)
 	, handle(NULL) {
 
 	WNDCLASSEX wndClass = { 0 };
@@ -49,30 +51,30 @@ Win32GameWindow::Win32GameWindow(const std::string title, const int width, const
 
 	ShowWindow(handle, cmdShow);
 	UpdateWindow(handle);
+
+	keyboard = std::make_shared<Win32Keyboard>();
+	mouse = std::make_shared<Win32Mouse>();
 }
 
 Win32GameWindow::~Win32GameWindow() {
+
+	mouse.reset();
+	keyboard.reset();
 }
 
 void Win32GameWindow::update() {
 	
 	MSG msg;
-	if (GetMessage(&msg, handle, NULL, NULL) > 0) {
+	if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 }
 
-bool Win32GameWindow::isCloseRequested() {
-	return closeRequested;
-}
+void Win32GameWindow::close() {
 
-void Win32GameWindow::setCloseRequested(const bool _close) {
-
-	if (_close) {
-		CloseWindow(handle);
-		DestroyWindow(handle);
-	}
+	closed = true;
+	DestroyWindow(handle);
 }
 
 void Win32GameWindow::setClearColor(const float red, const float green, const float blue, const float alpha) {
@@ -89,28 +91,28 @@ void Win32GameWindow::setVsyncEnabled(const bool _enabled) {
 	vsyncEnabled = _enabled;
 }
 
-void Win32GameWindow::setMouseCentered(const bool _mouseCentered) {
-	mouseCentered = _mouseCentered;
-}
-
 void Win32GameWindow::setMouseVisible(const bool _mouseVisible) {
 	mouseVisible = _mouseVisible;
+
+	ShowCursor(_mouseVisible);
 }
 
 void Win32GameWindow::setWindowSize(const int _width, const int _height) {
-	width = _width;
-	height = _height;
+	// Send resize command
 }
 
-void Win32GameWindow::setResizeCallback(const std::function<void(int, int)>& callback) {
+void Win32GameWindow::setMouseCentered() {
 
-	resizeCB = callback;
+	RECT rect = { 0 };
+	GetWindowRect(handle, &rect);
+	// SetCursorPos(rect.left + width / 2, rect.top + height / 2);
 }
 
 LRESULT CALLBACK Win32GameWindow::wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
 	PAINTSTRUCT paintStruct;
 	HDC hDC;
+	RECT rect = { 0 };
 
 	switch (message) {
 	case WM_PAINT:
@@ -118,10 +120,34 @@ LRESULT CALLBACK Win32GameWindow::wndProcCallback(HWND hwnd, UINT message, WPARA
 		EndPaint(hwnd, &paintStruct);
 		break;
 	case WM_SIZE:
-		// Resize
+		width = LOWORD(lParam);
+		height = HIWORD(lParam);
+		resizeCallback(width, height);
+		break;
+	case WM_KEYDOWN:
+		keyboard->keyCallback(wParam, KS_PRESSED);
+		break;
+	case WM_KEYUP:
+		keyboard->keyCallback(wParam, KS_RELEASED);
+		break;
+	case WM_LBUTTONDOWN:
+		mouse->buttonCallback(MB_LEFT_BTN, MS_PRESSED);
+		break;
+	case WM_LBUTTONUP:
+		mouse->buttonCallback(MB_LEFT_BTN, MS_RELEASED);
+		break;
+	case WM_RBUTTONDOWN:
+		mouse->buttonCallback(MB_RIGHT_BTN, MS_PRESSED);
+		break;
+	case WM_RBUTTONUP:
+		mouse->buttonCallback(MB_RIGHT_BTN, MS_RELEASED);
+		break;
+	case WM_MOUSEMOVE:
+		GetWindowRect(handle, &rect);
+		mouse->moveCallback(LOWORD(lParam), HIWORD(lParam));
 		break;
 	case WM_CLOSE:
-		closeRequested = true;
+		closed = true;
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
