@@ -36,7 +36,6 @@ public:
 	virtual void setMouseVisible(const bool) = 0;
 	virtual void setWindowSize(const int width, const int height) = 0;
 	virtual void setClearColor(const float red, const float green, const float blue, const float alpha) = 0;
-	virtual void setMouseCentered() = 0;
 
 };
 

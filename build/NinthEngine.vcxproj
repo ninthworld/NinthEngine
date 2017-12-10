@@ -27,7 +27,6 @@
     <ClInclude Include="..\include\NinthEngine\Camera\FPSGameCamera.hpp" />
     <ClInclude Include="..\include\NinthEngine\Camera\GameCamera.hpp" />
     <ClInclude Include="..\include\NinthEngine\GameUtils.hpp" />
-    <ClInclude Include="..\include\NinthEngine\GLFW\GLFWBootstrap.hpp" />
     <ClInclude Include="..\include\NinthEngine\Input\Keyboard.hpp" />
     <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp" />
@@ -37,13 +36,10 @@
     <ClInclude Include="..\include\NinthEngine\Texture.hpp" />
     <ClInclude Include="..\include\NinthEngine\VertexArray.hpp" />
     <ClInclude Include="..\include\NinthEngine\Win32\Win32Bootstrap.hpp" />
-    <ClInclude Include="..\src\GLFW\GLFWGameEngine.hpp" />
-    <ClInclude Include="..\src\GLFW\GLFWGameTimer.hpp" />
-    <ClInclude Include="..\src\GLFW\GLFWGameWindow.hpp" />
-    <ClInclude Include="..\src\GLFW\GLFWGLContext.hpp" />
-    <ClInclude Include="..\src\GLFW\GLFWKeyboard.hpp" />
-    <ClInclude Include="..\src\GLFW\GLFWMouse.hpp" />
-    <ClInclude Include="..\src\GLFW\GLFWUtils.hpp" />
+    <ClInclude Include="..\src\Render\D3D\D3DGraphicsCommandQueue.hpp" />
+    <ClInclude Include="..\src\Render\D3D\D3DGraphicsContext.hpp" />
+    <ClInclude Include="..\src\Render\D3D\D3DGraphicsDevice.hpp" />
+    <ClInclude Include="..\src\Render\D3D\D3DUtils.hpp" />
     <ClInclude Include="..\src\Render\GL\GLContext.hpp" />
     <ClInclude Include="..\src\Render\GL\GLGraphicsCommandQueue.hpp" />
     <ClInclude Include="..\src\Render\GL\GLGraphicsContext.hpp" />
@@ -60,12 +56,9 @@
   <ItemGroup>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp" />
     <ClCompile Include="..\src\GameUtils.cpp" />
-    <ClCompile Include="..\src\GLFW\GLFWBootstrap.cpp" />
-    <ClCompile Include="..\src\GLFW\GLFWGameEngine.cpp" />
-    <ClCompile Include="..\src\GLFW\GLFWGameWindow.cpp" />
-    <ClCompile Include="..\src\GLFW\GLFWGLContext.cpp" />
-    <ClCompile Include="..\src\GLFW\GLFWKeyboard.cpp" />
-    <ClCompile Include="..\src\GLFW\GLFWMouse.cpp" />
+    <ClCompile Include="..\src\Render\D3D\D3DGraphicsCommandQueue.cpp" />
+    <ClCompile Include="..\src\Render\D3D\D3DGraphicsContext.cpp" />
+    <ClCompile Include="..\src\Render\D3D\D3DGraphicsDevice.cpp" />
     <ClCompile Include="..\src\Render\GL\GLGraphicsCommandQueue.cpp" />
     <ClCompile Include="..\src\Render\GL\GLGraphicsContext.cpp" />
     <ClCompile Include="..\src\Render\GL\GLGraphicsDevice.cpp" />
@@ -131,26 +124,26 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw\include;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\dependencies\glew\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\plog\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>

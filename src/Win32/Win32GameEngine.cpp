@@ -6,6 +6,9 @@
 #include "..\Render\GL\GLGraphicsDevice.hpp"
 #include "..\Render\GL\GLGraphicsContext.hpp"
 #include "..\Render\GL\GLGraphicsCommandQueue.hpp"
+#include "..\Render\D3D\D3DGraphicsDevice.hpp"
+#include "..\Render\D3D\D3DGraphicsContext.hpp"
+#include "..\Render\D3D\D3DGraphicsCommandQueue.hpp"
 #include "Win32GLContext.hpp"
 #include "Win32GameEngine.hpp"
 
@@ -34,6 +37,10 @@ Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window,
 	}
 	else {
 
+		device = std::make_shared<D3DGraphicsDevice>();
+
+		auto graphicsContext = std::make_shared<D3DGraphicsContext>(device, window);
+		commandQueue = std::make_shared<D3DGraphicsCommandQueue>(graphicsContext);
 	}
 }
 

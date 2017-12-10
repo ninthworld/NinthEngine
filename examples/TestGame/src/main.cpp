@@ -7,9 +7,7 @@
 
 using namespace NinthEngine;
 
-#define USE_WIN32
-
-#if defined(_WIN32) && defined(USE_WIN32)
+#if defined(_WIN32)
 
 #define WIN32_LEAN_AND_MEAN
 
@@ -20,11 +18,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 
 	UNREFERENCED_PARAMETER(prevInstance);
 	UNREFERENCED_PARAMETER(cmdLine);
-
+	
 	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
 	plog::init(plog::verbose, &consoleAppender);
 
-	Win32Bootstrap bootstrap("Test Game", 1600, 900, false, hInstance, cmdShow, true);
+	Win32Bootstrap bootstrap("Test Game", 1600, 900, false, hInstance, cmdShow, false);
 	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
 		return std::make_shared<TestGame>(engine);
 	});
@@ -32,20 +30,15 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	return 0;
 }
 
+int main() {
+	wWinMain(GetModuleHandle(NULL), NULL, NULL, 1);
+	return 0;
+}
+
 #else
 
-#include <NinthEngine\GLFW\GLFWBootstrap.hpp>
-
 int main(int argc, char *argv[]) {
-
-	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
-	plog::init(plog::verbose, &consoleAppender);
 	
-	GLFWBootstrap bootstrap("Test Game", 1600, 900, false);
-	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
-		return std::make_shared<TestGame>(engine);
-	});
-
 	return 0;
 }
 

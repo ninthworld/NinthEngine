@@ -8,9 +8,9 @@
 namespace NinthEngine {
 
 struct FPSGameCameraSettings : public GameCameraSettings {
-	float moveSpeedFactor = 12.0f;
-	float yawSensitivity = 6.0f;
-	float pitchSensitivity = 6.0f;
+	float moveSpeedFactor = 16.0f;
+	float yawSensitivity = 2.4f;
+	float pitchSensitivity = 2.4f;
 };
 
 enum Key;
@@ -43,7 +43,7 @@ public:
 	void setViewMatrix();
 	void setViewProjMatrix();
 
-	void mouseMoveCallback(const std::shared_ptr<GameWindow>&, double, double);
+	void mouseMoveCallback(const std::shared_ptr<GameWindow>&, int, int);
 	void mouseButtonCallback(const std::shared_ptr<GameWindow>&, MouseButton, MouseState);
 	void keyCallback(Key, KeyState);
 
@@ -58,7 +58,6 @@ private:
 	glm::mat4 viewMatrix;
 	glm::mat4 viewProjMatrix;
 
-	glm::vec2 mouseLast;
 	glm::vec2 mouseDelta;
 
 };

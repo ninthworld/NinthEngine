@@ -31,12 +31,9 @@ inline Key getKeyFromWin32(int key) {
 	case VK_BACK: return KEY_BACKSPACE;
 	case VK_TAB: return KEY_TAB;
 	case VK_RETURN: return KEY_ENTER;
-	case VK_LSHIFT: return KEY_LSHIFT;
-	case VK_LCONTROL: return KEY_LCTRL;
-	case VK_LMENU: return KEY_LALT;
-	case VK_RSHIFT: return KEY_RSHIFT;
-	case VK_RCONTROL: return KEY_RCTRL;
-	case VK_RMENU: return KEY_RALT;
+	case VK_SHIFT: return KEY_SHIFT;
+	case VK_CONTROL: return KEY_CTRL;
+	case VK_MENU: return KEY_ALT;
 	case VK_PAUSE: return KEY_PAUSE;
 	case VK_CAPITAL: return KEY_CAPSLOCK;
 	case VK_ESCAPE: return KEY_ESCAPE;

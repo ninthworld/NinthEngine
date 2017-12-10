@@ -1,5 +1,6 @@
 #ifdef _WIN32
 
+#include <windowsx.h>
 #include <plog\Log.h>
 #include "..\..\include\NinthEngine\Application\Game.hpp"
 #include "Win32Keyboard.hpp"
@@ -101,18 +102,12 @@ void Win32GameWindow::setWindowSize(const int _width, const int _height) {
 	// Send resize command
 }
 
-void Win32GameWindow::setMouseCentered() {
-
-	RECT rect = { 0 };
-	GetWindowRect(handle, &rect);
-	// SetCursorPos(rect.left + width / 2, rect.top + height / 2);
-}
-
 LRESULT CALLBACK Win32GameWindow::wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
 	PAINTSTRUCT paintStruct;
 	HDC hDC;
 	RECT rect = { 0 };
+	POINT pos;
 
 	switch (message) {
 	case WM_PAINT:
@@ -144,7 +139,10 @@ LRESULT CALLBACK Win32GameWindow::wndProcCallback(HWND hwnd, UINT message, WPARA
 		break;
 	case WM_MOUSEMOVE:
 		GetWindowRect(handle, &rect);
-		mouse->moveCallback(LOWORD(lParam), HIWORD(lParam));
+		mouse->moveCallback(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		pos = { width / 2, height / 2 };
+		ClientToScreen(handle, &pos);
+		if(mouse->isMouseCentered()) SetCursorPos(pos.x, pos.y);
 		break;
 	case WM_CLOSE:
 		closed = true;

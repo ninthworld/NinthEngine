@@ -45,7 +45,6 @@ public:
 	void setMouseVisible(const bool);
 	void setWindowSize(const int width, const int height);
 	void setClearColor(const float red, const float green, const float blue, const float alpha);
-	void setMouseCentered();
 
 	LRESULT CALLBACK wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 

@@ -22,12 +22,6 @@
     <Filter Include="Source Files\Win32">
       <UniqueIdentifier>{cb634bf6-951b-4e96-a334-f5f9bac61b2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GLFW">
-      <UniqueIdentifier>{89712a47-e6a2-43c2-8c7b-d44fdda2cd27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GLFW">
-      <UniqueIdentifier>{588e6333-c02a-4a03-b00e-17cda3869342}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Camera">
       <UniqueIdentifier>{b6c96740-6382-434b-a12e-a4aa9493dc14}</UniqueIdentifier>
     </Filter>
@@ -51,6 +45,12 @@
     </Filter>
     <Filter Include="Source Files\Render\GL">
       <UniqueIdentifier>{7670d67e-c181-4470-9ee3-707f44b08914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render\D3D">
+      <UniqueIdentifier>{1aebdf95-a102-4f82-892a-8ae5204c98ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Render\D3D">
+      <UniqueIdentifier>{b7014396-4553-4cc0-98f1-2ef4b9090ebb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,23 +78,11 @@
     <ClInclude Include="..\include\NinthEngine\Win32\Win32Bootstrap.hpp">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\GLFW\GLFWBootstrap.hpp">
-      <Filter>Header Files\GLFW</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GLFW\GLFWGameWindow.hpp">
-      <Filter>Header Files\GLFW</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GLFW\GLFWUtils.hpp">
-      <Filter>Header Files\GLFW</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Win32\Win32GameWindow.hpp">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Win32\Win32GameTimer.hpp">
       <Filter>Header Files\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GLFW\GLFWGameTimer.hpp">
-      <Filter>Header Files\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Win32\Win32Utils.hpp">
       <Filter>Header Files\Win32</Filter>
@@ -117,20 +105,11 @@
     <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GLFW\GLFWKeyboard.hpp">
-      <Filter>Header Files\GLFW</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GLFW\GLFWMouse.hpp">
-      <Filter>Header Files\GLFW</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Win32\Win32Keyboard.hpp">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Win32\Win32Mouse.hpp">
       <Filter>Header Files\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\GLFW\GLFWGameEngine.hpp">
-      <Filter>Header Files\GLFW</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Win32\Win32GameEngine.hpp">
       <Filter>Header Files\Win32</Filter>
@@ -162,8 +141,17 @@
     <ClInclude Include="..\src\Render\GL\GLGraphicsCommandQueue.hpp">
       <Filter>Header Files\Render\GL</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\GLFW\GLFWGLContext.hpp">
-      <Filter>Header Files\GLFW</Filter>
+    <ClInclude Include="..\src\Render\D3D\D3DUtils.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DGraphicsCommandQueue.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DGraphicsContext.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DGraphicsDevice.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -182,32 +170,17 @@
     <ClCompile Include="..\src\Win32\Win32Bootstrap.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GLFW\GLFWBootstrap.cpp">
-      <Filter>Source Files\GLFW</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GLFW\GLFWGameWindow.cpp">
-      <Filter>Source Files\GLFW</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Win32\Win32GameWindow.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GLFW\GLFWKeyboard.cpp">
-      <Filter>Source Files\GLFW</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GLFW\GLFWMouse.cpp">
-      <Filter>Source Files\GLFW</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Win32\Win32Keyboard.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Win32\Win32Mouse.cpp">
       <Filter>Source Files\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\GLFW\GLFWGameEngine.cpp">
-      <Filter>Source Files\GLFW</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Win32\Win32GameEngine.cpp">
       <Filter>Source Files\Win32</Filter>
@@ -224,8 +197,14 @@
     <ClCompile Include="..\src\Render\GL\GLGraphicsCommandQueue.cpp">
       <Filter>Source Files\Render\GL</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\GLFW\GLFWGLContext.cpp">
-      <Filter>Source Files\GLFW</Filter>
+    <ClCompile Include="..\src\Render\D3D\D3DGraphicsDevice.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DGraphicsContext.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DGraphicsCommandQueue.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
