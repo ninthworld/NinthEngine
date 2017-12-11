@@ -12,21 +12,23 @@ namespace NinthEngine {
 
 class Win32GameEngine : public GameEngine {
 public:
-	Win32GameEngine(const std::shared_ptr<Win32GameWindow>&, const bool useGL);
+	Win32GameEngine(const std::shared_ptr<Win32GameWindow>&, const bool vsync, const bool useGL);
 	~Win32GameEngine();
 
 	void run(const std::shared_ptr<Game>&);
 
 	std::shared_ptr<GameWindow> getWindow() { return window; };
 	std::shared_ptr<GameTimer> getTimer() { return timer; };
-	std::shared_ptr<GraphicsDevice> getDevice() { return device; };
-	std::shared_ptr<GraphicsCommandQueue> getCommandQueue() { return commandQueue; };
+	std::shared_ptr<GraphicsDevice> getGraphicsDevice() { return device; };
+	std::shared_ptr<GraphicsContext> getGraphicsContext() { return context; };
+	std::shared_ptr<ResourceManager> getManager() { return manager; };
 
 private:
 	std::shared_ptr<Win32GameWindow> window;
 	std::shared_ptr<Win32GameTimer> timer;
 	std::shared_ptr<GraphicsDevice> device;
-	std::shared_ptr<GraphicsCommandQueue> commandQueue;
+	std::shared_ptr<GraphicsContext> context;
+	std::shared_ptr<ResourceManager> manager;
 
 };
 

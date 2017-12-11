@@ -10,6 +10,8 @@ public:
 	GLGraphicsDevice();
 	~GLGraphicsDevice();
 
+	std::shared_ptr<ShaderProgram> createShader(ShaderConfig& config);
+
 private:
 
 };

@@ -5,20 +5,16 @@
 #include "..\Render\GL\GLUtils.hpp"
 #include "..\Render\GL\GLGraphicsDevice.hpp"
 #include "..\Render\GL\GLGraphicsContext.hpp"
-#include "..\Render\GL\GLGraphicsCommandQueue.hpp"
 #include "..\Render\D3D\D3DGraphicsDevice.hpp"
 #include "..\Render\D3D\D3DGraphicsContext.hpp"
-#include "..\Render\D3D\D3DGraphicsCommandQueue.hpp"
 #include "Win32GLContext.hpp"
 #include "Win32GameEngine.hpp"
 
 namespace NinthEngine {
 
-Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window, const bool useGL)
+Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window, const bool vsync, const bool useGL)
 	: window(window) {
 	
-	timer = std::make_shared<Win32GameTimer>();
-
 	if (useGL) {
 
 		auto glContext = std::make_shared<Win32GLContext>(window->getHandle());
@@ -32,21 +28,26 @@ Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window,
 
 		device = std::make_shared<GLGraphicsDevice>();
 
-		auto graphicsContext = std::make_shared<GLGraphicsContext>(glContext, window);
-		commandQueue = std::make_shared<GLGraphicsCommandQueue>(graphicsContext);
+		context = std::make_shared<GLGraphicsContext>(glContext, window, vsync);
 	}
 	else {
 
-		device = std::make_shared<D3DGraphicsDevice>();
+		auto d3dDevice = std::make_shared<D3DGraphicsDevice>();
 
-		auto graphicsContext = std::make_shared<D3DGraphicsContext>(device, window);
-		commandQueue = std::make_shared<D3DGraphicsCommandQueue>(graphicsContext);
+		context = std::make_shared<D3DGraphicsContext>(
+			d3dDevice->getDevice(), 
+			d3dDevice->getDeviceContext(), 
+			window, vsync);
+
+		device = std::move(d3dDevice);
 	}
+
+	manager = std::make_shared<ResourceManager>(device);
+	timer = std::make_shared<Win32GameTimer>();
 }
 
 Win32GameEngine::~Win32GameEngine() {
 
-	commandQueue.reset();
 	device.reset();
 	timer.reset();
 }
@@ -66,7 +67,7 @@ void Win32GameEngine::run(const std::shared_ptr<Game>& game) {
 
 		game->update(deltaTime);
 		game->render();
-		commandQueue->reset();
+		context->swapBuffers();
 		
 		window->update();
 		frames++;

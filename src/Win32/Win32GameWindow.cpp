@@ -15,8 +15,8 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 namespace NinthEngine {
 
-Win32GameWindow::Win32GameWindow(const std::string title, const int width, const int height, const bool vsyncEnable, HINSTANCE hInstance, int cmdShow)
-	: title(title), width(width), height(height), vsyncEnabled(vsyncEnabled), instance(hInstance), cmdShow(cmdShow)
+Win32GameWindow::Win32GameWindow(const std::string title, const int width, const int height, HINSTANCE hInstance, int cmdShow)
+	: title(title), width(width), height(height), instance(hInstance), cmdShow(cmdShow)
 	, mouseVisible(true), closed(false)
 	, handle(NULL) {
 
@@ -78,18 +78,10 @@ void Win32GameWindow::close() {
 	DestroyWindow(handle);
 }
 
-void Win32GameWindow::setClearColor(const float red, const float green, const float blue, const float alpha) {
-
-}
-
 void Win32GameWindow::setTitle(const std::string _title) {
 	title = _title;
 
 	SetWindowText(handle, title.c_str());
-}
-
-void Win32GameWindow::setVsyncEnabled(const bool _enabled) {
-	vsyncEnabled = _enabled;
 }
 
 void Win32GameWindow::setMouseVisible(const bool _mouseVisible) {

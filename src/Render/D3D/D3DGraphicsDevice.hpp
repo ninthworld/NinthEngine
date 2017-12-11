@@ -13,14 +13,14 @@ public:
 	D3DGraphicsDevice();
 	~D3DGraphicsDevice();
 
-	ComPtr<ID3D11Device> getDevice() { return device; };
-	ComPtr<ID3D11DeviceContext> getDeviceContext() { return deviceContext; };
-	ComPtr<IDXGIFactory> getFactory() { return factory; };
+	std::shared_ptr<ShaderProgram> createShader(ShaderConfig& config);
+
+	ComPtr<ID3D11Device> getDevice() const { return device; };
+	ComPtr<ID3D11DeviceContext> getDeviceContext() const { return deviceContext; };
 
 private:
 	ComPtr<ID3D11Device> device;
 	ComPtr<ID3D11DeviceContext> deviceContext;
-	ComPtr<IDXGIFactory> factory;
 
 };
 

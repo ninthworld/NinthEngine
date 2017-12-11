@@ -15,7 +15,7 @@ enum MouseState;
 
 class Win32GameWindow : public GameWindow {
 public:
-	Win32GameWindow(const std::string title, const int width, const int height, const bool vsyncEnabled, HINSTANCE hInstance, int cmdShow);
+	Win32GameWindow(const std::string title, const int width, const int height, HINSTANCE hInstance, int cmdShow);
 	~Win32GameWindow();
 
 	void update();
@@ -35,23 +35,20 @@ public:
 	std::string getTitle() const { return title; };
 	int getWidth() const { return width; };
 	int getHeight() const { return height; };
-	bool isVsyncEnabled() const { return vsyncEnabled; };
 	bool isMouseVisible() const { return mouseVisible; };
 
 	void setTitle(const std::string);
 	void setWidth(const int _width) { width = _width; };
 	void setHeight(const int _height) { height = _height; };
-	void setVsyncEnabled(const bool);
 	void setMouseVisible(const bool);
 	void setWindowSize(const int width, const int height);
-	void setClearColor(const float red, const float green, const float blue, const float alpha);
 
 	LRESULT CALLBACK wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
 	std::string title;
 	int width, height;
-	bool vsyncEnabled, mouseVisible, closed;
+	bool mouseVisible, closed;
 
 	HWND handle;
 	HINSTANCE instance;

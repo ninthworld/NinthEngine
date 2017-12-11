@@ -25,17 +25,14 @@ public:
 	virtual std::string getTitle() const = 0;
 	virtual int getWidth() const = 0;
 	virtual int getHeight() const = 0;
-	virtual bool isVsyncEnabled() const = 0;
 	virtual bool isMouseVisible() const = 0;
 	virtual bool isClosed() const = 0;
 
 	virtual void setTitle(const std::string) = 0;
 	virtual void setWidth(const int) = 0;
 	virtual void setHeight(const int) = 0;
-	virtual void setVsyncEnabled(const bool) = 0;
 	virtual void setMouseVisible(const bool) = 0;
 	virtual void setWindowSize(const int width, const int height) = 0;
-	virtual void setClearColor(const float red, const float green, const float blue, const float alpha) = 0;
 
 };
 

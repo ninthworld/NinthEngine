@@ -15,13 +15,11 @@ TestGame::~TestGame() {
 }
 
 void TestGame::init() {
-	engine->getWindow()->setClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	camera->init(engine->getWindow()->getWidth(), engine->getWindow()->getHeight());
-
-	
+		
 	engine->getWindow()->setResizeCallback([this](int width, int height) {
 		getCamera()->setProjMatrix(width, height);
-		// glViewport(0, 0, width, height);
+		engine->getGraphicsContext()->setViewport(0, 0, width, height);
 	});
 
 	engine->getWindow()->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {

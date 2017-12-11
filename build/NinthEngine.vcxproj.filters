@@ -52,6 +52,12 @@
     <Filter Include="Source Files\Render\D3D">
       <UniqueIdentifier>{b7014396-4553-4cc0-98f1-2ef4b9090ebb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Resource">
+      <UniqueIdentifier>{b7064351-b0f4-4de3-9925-c4e29812467c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource">
+      <UniqueIdentifier>{4471bce7-a3f3-449b-a292-d0022d47b12b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngine\GameUtils.hpp">
@@ -120,9 +126,6 @@
     <ClInclude Include="..\src\Win32\Win32GLContext.hpp">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\GraphicsCommandQueue.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
@@ -138,13 +141,7 @@
     <ClInclude Include="..\src\Render\GL\GLGraphicsDevice.hpp">
       <Filter>Header Files\Render\GL</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Render\GL\GLGraphicsCommandQueue.hpp">
-      <Filter>Header Files\Render\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DUtils.hpp">
-      <Filter>Header Files\Render\D3D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Render\D3D\D3DGraphicsCommandQueue.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsContext.hpp">
@@ -152,6 +149,36 @@
     </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsDevice.hpp">
       <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\ShaderProgram.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Resource\ResourceManager.hpp">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\ShaderConstants.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DShaderProgram.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLShaderProgram.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\ShaderConfig.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\ShaderLayout.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\GraphicsUtils.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DBuffer.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp">
+      <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,17 +221,29 @@
     <ClCompile Include="..\src\Render\GL\GLGraphicsDevice.cpp">
       <Filter>Source Files\Render\GL</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\GL\GLGraphicsCommandQueue.cpp">
-      <Filter>Source Files\Render\GL</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Render\D3D\D3DGraphicsDevice.cpp">
       <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Render\D3D\D3DGraphicsContext.cpp">
       <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\D3D\D3DGraphicsCommandQueue.cpp">
+    <ClCompile Include="..\src\Resource\ResourceManager.cpp">
+      <Filter>Source Files\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DShaderProgram.cpp">
       <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLShaderProgram.cpp">
+      <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\ShaderConfig.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\ShaderLayout.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\ShaderConstants.cpp">
+      <Filter>Source Files\Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

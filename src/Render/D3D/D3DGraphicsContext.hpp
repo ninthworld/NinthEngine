@@ -9,19 +9,28 @@
 namespace NinthEngine {
 
 class D3DGraphicsDevice;
-class GameWindow;
+class Win32GameWindow;
 
 class D3DGraphicsContext : public GraphicsContext {
 public:
-	D3DGraphicsContext(const std::shared_ptr<D3DGraphicsDevice>&, const std::shared_ptr<Win32GameWindow>&);
+	D3DGraphicsContext(const ComPtr<ID3D11Device>&, const ComPtr<ID3D11DeviceContext>&, const std::shared_ptr<Win32GameWindow>&, const bool vsync);
 	~D3DGraphicsContext();
 
 	void swapBuffers();
 
-private:
-	std::shared_ptr<Win32GameWindow> window;
+	bool isVsync() const { return vsync; };
 
-	ComPtr<IDXGISwapChain> swapChain;
+	void setVsync(const bool _vsync) { vsync = _vsync; };
+
+	void setViewport(const float x, const float y, const float width, const float height);
+	void setViewport(const std::shared_ptr<GameWindow>&);
+
+private:
+	ComPtr<ID3D11DeviceContext> context;
+	ComPtr<IDXGISwapChain> swapChain;	
+	ComPtr<ID3D11RenderTargetView> renderTargetView;
+
+	bool vsync;
 
 };
 
