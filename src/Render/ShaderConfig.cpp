@@ -1,14 +1,9 @@
-#include "..\..\include\NinthEngine\Render\GraphicsDevice.hpp"
-#include "..\..\include\NinthEngine\Render\ShaderProgram.hpp"
-#include "..\..\include\NinthEngine\Render\ShaderLayout.hpp"
-#include "..\..\include\NinthEngine\Render\ShaderConstants.hpp"
 #include "..\..\include\NinthEngine\Render\ShaderConfig.hpp"
 
 namespace NinthEngine {
 
 ShaderConfig::ShaderConfig()
-	: layout(ShaderLayout())
-	, constants(ShaderConstants()) {
+	: layout(InputLayoutConfig()) {
 }
 
 ShaderConfig::~ShaderConfig() {
@@ -36,22 +31,52 @@ ShaderConfig& ShaderConfig::setHLSLPixelShader(const std::string file, const std
 	return *this;
 }
 
-ShaderConfig& ShaderConfig::setLayout(ShaderLayout& _layout) {
-	layout = _layout;
-	return *this;
-}
-
-ShaderConfig& ShaderConfig::setConstants(ShaderConstants& _constants) {
-	constants = _constants;
-	return *this;
-}
-
 ShaderConfig& ShaderConfig::load(const std::function<const std::string(const std::string)>& readFile) {
 	if (!glslVSFile.empty()) glslVS = readFile(glslVSFile);
 	if (!glslPSFile.empty()) glslPS = readFile(glslPSFile);
 	if (!hlslVSFile.empty()) hlslVS = readFile(hlslVSFile);
 	if (!hlslPSFile.empty()) hlslPS = readFile(hlslPSFile);
 
+	return *this;
+}
+
+ShaderConfig& ShaderConfig::setLayout(InputLayoutConfig _layout) {
+	layout = _layout;
+	return *this;
+}
+
+template<> ShaderConfig& ShaderConfig::addConstant<INT>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(INT)));
+	return *this;
+}
+
+template<> ShaderConfig& ShaderConfig::addConstant<FLOAT>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(FLOAT)));
+	return *this;
+}
+
+template<> ShaderConfig& ShaderConfig::addConstant<FLOAT2>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(FLOAT2)));
+	return *this;
+}
+
+template<> ShaderConfig& ShaderConfig::addConstant<FLOAT3>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(FLOAT3)));
+	return *this;
+}
+
+template<> ShaderConfig& ShaderConfig::addConstant<FLOAT4>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(FLOAT4)));
+	return *this;
+}
+
+template<> ShaderConfig& ShaderConfig::addConstant<MATRIX3>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(MATRIX3)));
+	return *this;
+}
+
+template<> ShaderConfig& ShaderConfig::addConstant<MATRIX4>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(MATRIX4)));
 	return *this;
 }
 

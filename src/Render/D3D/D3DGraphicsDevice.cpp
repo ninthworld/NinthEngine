@@ -1,9 +1,10 @@
 #ifdef _WIN32
 
 #include <plog\Log.h>
-#include "..\..\..\include\NinthEngine\Render\ShaderConstants.hpp"
 #include "..\..\..\include\NinthEngine\Render\ShaderConfig.hpp"
-#include "D3DShaderProgram.hpp"
+#include "..\..\..\include\NinthEngine\Render\BufferConfig.hpp"
+#include "D3DShader.hpp"
+#include "D3DBuffer.hpp"
 #include "D3DGraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -52,16 +53,23 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 D3DGraphicsDevice:: ~D3DGraphicsDevice() {
 }
 
-std::shared_ptr<ShaderProgram> D3DGraphicsDevice::createShader(ShaderConfig& config) {
+std::shared_ptr<Shader> D3DGraphicsDevice::createShader(ShaderConfig& config) {
 
-	auto shader = std::make_shared<D3DShaderProgram>(deviceContext);
+	auto shader = std::make_shared<D3DShader>(deviceContext);
 	shader->createVertexShader(device, config.getHLSLVertexShader(), config.getHLSLVertexShaderEntry(), config.getLayout());
 	shader->createPixelShader(device, config.getHLSLPixelShader(), config.getHLSLPixelShaderEntry());
-	for (auto it = config.getConstants().getConstants().begin(); it != config.getConstants().getConstants().end(); ++it) {
+	for (auto it = config.getConstants().begin(); it != config.getConstants().end(); ++it) {
 		shader->createConstant(device, it->first, it->second);
 	}
 
 	return shader;
+}
+
+std::shared_ptr<Buffer> D3DGraphicsDevice::createBuffer(BufferConfig& config) {
+
+	auto buffer = std::make_shared<D3DBuffer>(device, deviceContext, config);
+
+	return buffer;
 }
 
 } // namespace NinthEngine

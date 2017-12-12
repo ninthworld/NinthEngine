@@ -5,6 +5,8 @@
 
 namespace NinthEngine {
 
+class Shader;
+class Buffer;
 class GameWindow;
 class FPSGameCamera;
 
@@ -27,5 +29,9 @@ protected:
 private:
 	std::shared_ptr<GameEngine> engine;
 	std::shared_ptr<FPSGameCamera> camera;
+
+	std::shared_ptr<Shader> simpleShader;
+	std::shared_ptr<Buffer> vertexBuffer;
+	std::shared_ptr<Buffer> indexBuffer;
 
 };

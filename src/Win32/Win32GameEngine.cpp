@@ -44,11 +44,15 @@ Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window,
 
 	manager = std::make_shared<ResourceManager>(device);
 	timer = std::make_shared<Win32GameTimer>();
+
+	//context->setViewport(window);
 }
 
 Win32GameEngine::~Win32GameEngine() {
 
+	manager.reset();
 	device.reset();
+	context.reset();
 	timer.reset();
 }
 

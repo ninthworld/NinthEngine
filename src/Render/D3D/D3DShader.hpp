@@ -6,22 +6,22 @@
 #include <vector>
 #include <map>
 #include "D3DUtils.hpp"
-#include "..\..\..\include\NinthEngine\Render\ShaderProgram.hpp"
+#include "..\..\..\include\NinthEngine\Render\Shader.hpp"
 
 namespace NinthEngine {
 
-class ShaderLayout;
+class InputLayoutConfig;
 class D3DGraphicsDevice;
 
-class D3DShaderProgram : public ShaderProgram {
+class D3DShader : public Shader {
 public:
-	D3DShaderProgram(const ComPtr<ID3D11DeviceContext>&);
-	~D3DShaderProgram();
+	D3DShader(const ComPtr<ID3D11DeviceContext>&);
+	~D3DShader();
 
 	void bind();
 	void unbind();
 
-	void createVertexShader(const ComPtr<ID3D11Device>&, const std::string src, const std::string entry, ShaderLayout&);
+	void createVertexShader(const ComPtr<ID3D11Device>&, const std::string src, const std::string entry, InputLayoutConfig&);
 	void createPixelShader(const ComPtr<ID3D11Device>&, const std::string src, const std::string entry);
 	
 	void createConstant(const ComPtr<ID3D11Device>&, const std::string, const unsigned typeSize);

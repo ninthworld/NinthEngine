@@ -60,18 +60,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\NinthEngine\GameUtils.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Shader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Texture.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\VertexArray.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Application\Game.hpp">
       <Filter>Header Files\Application</Filter>
     </ClInclude>
@@ -92,9 +80,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Win32\Win32Utils.hpp">
       <Filter>Header Files\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Application\GameInput.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Camera\FPSGameCamera.hpp">
       <Filter>Header Files\Camera</Filter>
@@ -150,25 +135,10 @@
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsDevice.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\ShaderProgram.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Resource\ResourceManager.hpp">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\ShaderConstants.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Render\D3D\D3DShaderProgram.hpp">
-      <Filter>Header Files\Render\D3D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Render\GL\GLShaderProgram.hpp">
-      <Filter>Header Files\Render\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\ShaderConfig.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\ShaderLayout.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsUtils.hpp">
@@ -180,20 +150,35 @@
     <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Shader.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DShader.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLShader.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLBuffer.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\BufferConfig.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\InputLayout.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DInputLayout.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLInputLayout.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\InputLayoutConfig.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\GameUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\VertexArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Win32\Win32Bootstrap.cpp">
       <Filter>Source Files\Win32</Filter>
     </ClCompile>
@@ -230,19 +215,25 @@
     <ClCompile Include="..\src\Resource\ResourceManager.cpp">
       <Filter>Source Files\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\D3D\D3DShaderProgram.cpp">
-      <Filter>Source Files\Render\D3D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Render\GL\GLShaderProgram.cpp">
-      <Filter>Source Files\Render\GL</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Render\ShaderConfig.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\ShaderLayout.cpp">
+    <ClCompile Include="..\src\Render\D3D\D3DShader.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLShader.cpp">
+      <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\BufferConfig.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\ShaderConstants.cpp">
+    <ClCompile Include="..\src\Render\D3D\D3DBuffer.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLBuffer.cpp">
+      <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\InputLayoutConfig.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
   </ItemGroup>

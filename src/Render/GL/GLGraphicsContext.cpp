@@ -11,7 +11,12 @@ GLGraphicsContext::GLGraphicsContext(const std::shared_ptr<GLContext>& glContext
 GLGraphicsContext::~GLGraphicsContext() {
 
 	glContext.reset();
-} 
+}
+
+void GLGraphicsContext::drawIndexed(const unsigned indexCount) {
+
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+}
 
 void GLGraphicsContext::swapBuffers() {
 	glContext->swapBuffers();
@@ -19,6 +24,7 @@ void GLGraphicsContext::swapBuffers() {
 
 void GLGraphicsContext::setViewport(const float x, const float y, const float width, const float height) {
 
+	glClearColor(0, 0, 1, 1);
 	glViewport(x, y, width, height);
 }
 

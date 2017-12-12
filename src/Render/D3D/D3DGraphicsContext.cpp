@@ -80,6 +80,22 @@ D3DGraphicsContext::D3DGraphicsContext(
 D3DGraphicsContext:: ~D3DGraphicsContext() {
 }
 
+void D3DGraphicsContext::drawIndexed(const unsigned indexCount) {
+
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->DrawIndexed(indexCount, 0, 0);
+}
+
+void D3DGraphicsContext::swapBuffers() {
+
+	if (isVsync()) {
+		swapChain->Present(1, 0);
+	}
+	else {
+		swapChain->Present(0, 0);
+	}
+}
+
 void D3DGraphicsContext::setViewport(const float x, const float y, const float width, const float height) {
 
 	D3D11_VIEWPORT vp;
@@ -90,6 +106,7 @@ void D3DGraphicsContext::setViewport(const float x, const float y, const float w
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 
+	context->ClearRenderTargetView(renderTargetView.Get(), DirectX::Colors::CornflowerBlue);
 	context->RSSetViewports(1, &vp);
 	context->OMSetRenderTargets(1, &renderTargetView, NULL);
 }
@@ -97,16 +114,6 @@ void D3DGraphicsContext::setViewport(const float x, const float y, const float w
 void D3DGraphicsContext::setViewport(const std::shared_ptr<GameWindow>& window) {
 
 	setViewport(0.0f, 0.0f, static_cast<float>(window->getWidth()), static_cast<float>(window->getHeight()));
-}
-
-void D3DGraphicsContext::swapBuffers() {
-	
-	if (isVsync()) {
-		swapChain->Present(1, 0);
-	}
-	else {
-		swapChain->Present(0, 0);
-	}
 }
 
 } // namespace NinthEngine

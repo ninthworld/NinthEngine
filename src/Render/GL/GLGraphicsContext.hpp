@@ -14,12 +14,13 @@ public:
 	GLGraphicsContext(const std::shared_ptr<GLContext>&, const std::shared_ptr<GameWindow>&, const bool vsync);
 	~GLGraphicsContext();
 	
+	void drawIndexed(const unsigned indexCount);
+
 	void swapBuffers();
 
 	bool isVsync() const { return vsync; };
 
 	void setVsync(const bool _vsync) { vsync = _vsync; };
-
 	void setViewport(const float x, const float y, const float width, const float height);
 	void setViewport(const std::shared_ptr<GameWindow>&);
 

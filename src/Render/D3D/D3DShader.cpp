@@ -1,8 +1,8 @@
 #ifdef _WIN32
 
 #include <plog\Log.h>
-#include "..\..\..\include\NinthEngine\Render\ShaderLayout.hpp"
-#include "D3DShaderProgram.hpp"
+#include "..\..\..\include\NinthEngine\Render\InputLayoutConfig.hpp"
+#include "D3DShader.hpp"
 
 namespace {
 
@@ -12,14 +12,14 @@ const ComPtr<ID3DBlob>& compileShader(const ComPtr<ID3D11Device>& device, const 
 
 namespace NinthEngine {
 
-D3DShaderProgram::D3DShaderProgram(const ComPtr<ID3D11DeviceContext>& deviceContext)
+D3DShader::D3DShader(const ComPtr<ID3D11DeviceContext>& deviceContext)
 	: deviceContext(deviceContext) {
 }
 
-D3DShaderProgram::~D3DShaderProgram() {
+D3DShader::~D3DShader() {
 }
 
-void D3DShaderProgram::bind() {
+void D3DShader::bind() {
 
 	deviceContext->IASetInputLayout(inputLayout.Get());
 	deviceContext->VSSetShader(vertexShader.Get(), nullptr, 0);
@@ -27,11 +27,11 @@ void D3DShaderProgram::bind() {
 	deviceContext->PSSetShader(pixelShader.Get(), nullptr, 0);
 }
 
-void D3DShaderProgram::unbind() {
+void D3DShader::unbind() {
 
 }
 
-void D3DShaderProgram::createVertexShader(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry, ShaderLayout& layout) {
+void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry, InputLayoutConfig& layout) {
 
 	auto compiledCode = compileShader(device, src, entry, "vs_5_0");
 
@@ -45,14 +45,15 @@ void D3DShaderProgram::createVertexShader(const ComPtr<ID3D11Device>& device, co
 	std::vector<D3D11_INPUT_ELEMENT_DESC> vertexLayoutDesc;
 	for (auto it = layout.getLayout().begin(); it != layout.getLayout().end(); ++it) {
 		D3D11_INPUT_ELEMENT_DESC desc;
-		desc.SemanticName = it->semantic.c_str();
+		desc.SemanticName = getSemanticString(it->semantic).c_str();
 		desc.SemanticIndex = it->index;
 
 		switch (it->type) {
-		case SLT_FLOAT: desc.Format = DXGI_FORMAT_R32_FLOAT; break;
-		case SLT_FLOAT2: desc.Format = DXGI_FORMAT_R32G32_FLOAT; break;
-		case SLT_FLOAT3: desc.Format = DXGI_FORMAT_R32G32B32_FLOAT; break;
-		case SLT_FLOAT4: desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; break;
+		case INT_T: desc.Format = DXGI_FORMAT_R32_UINT; break;
+		case FLOAT_T: desc.Format = DXGI_FORMAT_R32_FLOAT; break;
+		case FLOAT2_T: desc.Format = DXGI_FORMAT_R32G32_FLOAT; break;
+		case FLOAT3_T: desc.Format = DXGI_FORMAT_R32G32B32_FLOAT; break;
+		case FLOAT4_T: desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; break;
 		}
 
 		desc.InputSlot = 0;
@@ -70,7 +71,7 @@ void D3DShaderProgram::createVertexShader(const ComPtr<ID3D11Device>& device, co
 	}
 }
 
-void D3DShaderProgram::createPixelShader(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
+void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
 
 	auto compiledCode = compileShader(device, src, entry, "ps_5_0");
 
@@ -82,7 +83,7 @@ void D3DShaderProgram::createPixelShader(const ComPtr<ID3D11Device>& device, con
 	}
 }
 
-void D3DShaderProgram::createConstant(const ComPtr<ID3D11Device>& device, const std::string name, const unsigned typeSize) {
+void D3DShader::createConstant(const ComPtr<ID3D11Device>& device, const std::string name, const unsigned typeSize) {
 
 	ComPtr<ID3D11Buffer> buffer;
 	constants.push_back(buffer);
@@ -104,31 +105,31 @@ void D3DShaderProgram::createConstant(const ComPtr<ID3D11Device>& device, const 
 	}
 }
 
-void D3DShaderProgram::setConstant(const std::string name, const INT data) {
+void D3DShader::setConstant(const std::string name, const INT data) {
 	deviceContext->UpdateSubresource(constants[constantsMap.find(name)->second].Get(), 0, nullptr, &data, 0, 0);
 }
 
-void D3DShaderProgram::setConstant(const std::string name, const FLOAT data) {
+void D3DShader::setConstant(const std::string name, const FLOAT data) {
 	deviceContext->UpdateSubresource(constants[constantsMap.find(name)->second].Get(), 0, nullptr, &data, 0, 0);
 }
 
-void D3DShaderProgram::setConstant(const std::string name, const FLOAT2 data) {
+void D3DShader::setConstant(const std::string name, const FLOAT2 data) {
 	deviceContext->UpdateSubresource(constants[constantsMap.find(name)->second].Get(), 0, nullptr, &data, 0, 0);
 }
 
-void D3DShaderProgram::setConstant(const std::string name, const FLOAT3 data) {
+void D3DShader::setConstant(const std::string name, const FLOAT3 data) {
 	deviceContext->UpdateSubresource(constants[constantsMap.find(name)->second].Get(), 0, nullptr, &data, 0, 0);
 }
 
-void D3DShaderProgram::setConstant(const std::string name, const FLOAT4 data) {
+void D3DShader::setConstant(const std::string name, const FLOAT4 data) {
 	deviceContext->UpdateSubresource(constants[constantsMap.find(name)->second].Get(), 0, nullptr, &data, 0, 0);
 }
 
-void D3DShaderProgram::setConstant(const std::string name, const MATRIX3 data) {
+void D3DShader::setConstant(const std::string name, const MATRIX3 data) {
 	deviceContext->UpdateSubresource(constants[constantsMap.find(name)->second].Get(), 0, nullptr, &data, 0, 0);
 }
 
-void D3DShaderProgram::setConstant(const std::string name, const MATRIX4 data) {
+void D3DShader::setConstant(const std::string name, const MATRIX4 data) {
 	deviceContext->UpdateSubresource(constants[constantsMap.find(name)->second].Get(), 0, nullptr, &data, 0, 0);
 }
 

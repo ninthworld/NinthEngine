@@ -19,20 +19,20 @@
     <Filter Include="Resource Files\textures">
       <UniqueIdentifier>{3f901578-9248-49bf-80b3-b21a367ed985}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\shaders\GLSL">
+      <UniqueIdentifier>{8f8c601f-4c91-43b2-b0a5-cd6d1f80376b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\shaders\HLSL">
+      <UniqueIdentifier>{2437a57e-6acb-4732-8edd-b52f8086527d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\SimpleShader.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\TestGame.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SimpleShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestGame.cpp">
@@ -45,11 +45,25 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\simple.fs.glsl">
+    <None Include="res\shaders\texture.fs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="res\shaders\simple.vs.glsl">
+    <None Include="res\shaders\texture.vs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="res\shaders\GLSL\simple.vs.glsl">
+      <Filter>Resource Files\shaders\GLSL</Filter>
+    </None>
+    <None Include="res\shaders\GLSL\simple.ps.glsl">
+      <Filter>Resource Files\shaders\GLSL</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="res\shaders\HLSL\simple.vs.hlsl">
+      <Filter>Resource Files\shaders\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\HLSL\simple.ps.hlsl">
+      <Filter>Resource Files\shaders\HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

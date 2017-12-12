@@ -3,19 +3,21 @@
 #include <memory>
 #include <map>
 #include "GLUtils.hpp"
-#include "..\..\..\include\NinthEngine\Render\ShaderProgram.hpp"
+#include "..\..\..\include\NinthEngine\Render\Shader.hpp"
 
 namespace NinthEngine {
 
-class GLShaderProgram : public ShaderProgram {
+class InputLayoutConfig;
+
+class GLShader : public Shader {
 public:
-	GLShaderProgram();
-	~GLShaderProgram();
+	GLShader();
+	~GLShader();
 
 	void bind();
 	void unbind();
 
-	void createVertexShader(const std::string src);
+	void createVertexShader(const std::string src, InputLayoutConfig&);
 	void createPixelShader(const std::string src);
 	void createProgram();
 
@@ -33,6 +35,9 @@ private:
 	GLuint programId;
 	GLuint vertexShader;
 	GLuint pixelShader;
+
+	GLuint vaoId;
+	unsigned inputCount;
 
 	std::map<std::string, GLint> constants;
 };

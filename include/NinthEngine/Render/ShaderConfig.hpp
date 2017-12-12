@@ -3,13 +3,11 @@
 #include <string>
 #include <memory>
 #include <functional>
+#include <map>
+#include "GraphicsUtils.hpp"
+#include "InputLayoutConfig.hpp"
 
 namespace NinthEngine {
-
-class GraphicsDevice;
-class ShaderProgram;
-class ShaderLayout;
-class ShaderConstants;
 
 class ShaderConfig {
 public:
@@ -22,11 +20,13 @@ public:
 	ShaderConfig& setHLSLVertexShader(const std::string file, const std::string entry);
 	ShaderConfig& setHLSLPixelShader(const std::string file, const std::string entry);
 
-	ShaderConfig& setLayout(ShaderLayout&);
-	ShaderConfig& setConstants(ShaderConstants&);
-
 	ShaderConfig& load(const std::function<const std::string(const std::string)>&);
 
+	ShaderConfig& setLayout(InputLayoutConfig);
+
+	template<typename T>
+	ShaderConfig& addConstant(const std::string);
+	
 public:
 	std::string getGLSLVertexShader() const { return glslVS; };
 	std::string getGLSLPixelShader() const { return glslPS; };
@@ -37,8 +37,9 @@ public:
 	std::string getHLSLVertexShaderEntry() const { return hlslVSEntry; };
 	std::string getHLSLPixelShaderEntry() const { return hlslPSEntry; };
 
-	ShaderLayout& getLayout() { return layout; };
-	ShaderConstants& getConstants() { return constants; };
+	InputLayoutConfig getLayout() { return layout; };
+
+	const std::map<std::string, unsigned>& getConstants() { return constants; };
 
 private:
 	std::string glslVSFile, glslPSFile;
@@ -49,8 +50,8 @@ private:
 
 	std::string hlslVSEntry, hlslPSEntry;
 
-	ShaderLayout& layout;
-	ShaderConstants& constants;
+	InputLayoutConfig layout;
+	std::map<std::string, unsigned> constants;
 
 };
 
