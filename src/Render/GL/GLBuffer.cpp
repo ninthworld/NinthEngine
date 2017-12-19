@@ -11,7 +11,7 @@ GLuint getBufferType(const NinthEngine::BufferTypeConfig);
 namespace NinthEngine {
 
 GLBuffer::GLBuffer(BufferConfig& config)
-	: bufferId(0), bufferType(config.getType()) {
+	: bufferId(0), bufferType(getBufferType(config.getType())) {
 
 	glGenBuffers(1, &bufferId);
 

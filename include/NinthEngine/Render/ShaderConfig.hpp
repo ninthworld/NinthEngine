@@ -4,7 +4,7 @@
 #include <memory>
 #include <functional>
 #include <map>
-#include "GraphicsUtils.hpp"
+#include "..\Resource\MathUtils.hpp"
 #include "InputLayoutConfig.hpp"
 
 namespace NinthEngine {

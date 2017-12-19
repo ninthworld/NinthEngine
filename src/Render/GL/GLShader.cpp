@@ -1,5 +1,6 @@
 #include <plog\Log.h>
 #include "..\..\..\include\NinthEngine\Render\InputLayoutConfig.hpp"
+#include "..\..\..\include\NinthEngine\Render\Buffer.hpp"
 #include "GLShader.hpp"
 
 namespace {
@@ -32,14 +33,14 @@ void GLShader::bind() {
 	glUseProgram(programId);
 
 	glBindVertexArray(vaoId);
-	for (unsigned i = 0; i < inputCount; ++i) {
+	for (unsigned i = 0; i < attribs.size(); ++i) {
 		glEnableVertexAttribArray(i);
 	}
 }
 
 void GLShader::unbind() {
 
-	for (unsigned i = 0; i < inputCount; ++i) {
+	for (unsigned i = 0; i < attribs.size(); ++i) {
 		glDisableVertexAttribArray(i);
 	}
 	glBindVertexArray(0);
@@ -47,41 +48,34 @@ void GLShader::unbind() {
 	glUseProgram(0);
 }
 
+void GLShader::bindBuffer(const unsigned layoutIndex, const std::shared_ptr<Buffer>& buffer) {
+	
+	glBindVertexArray(vaoId);
+	buffer->bind();
+
+	int pointer = attribs[layoutIndex].pointer;
+	glVertexAttribPointer(layoutIndex, attribs[layoutIndex].count, attribs[layoutIndex].type, GL_FALSE, totalSize, (int*)pointer);
+	
+	buffer->unbind();
+	glBindVertexArray(0);
+}
+
 void GLShader::createVertexShader(const std::string src, InputLayoutConfig& config) {
 
 	vertexShader = compileShader(src, GL_VERTEX_SHADER);
 
-	struct VertexAttrib {
-		GLuint count;
-		GLuint type;
-		size_t size;
-	};
+	glGenVertexArrays(1, &vaoId);
 
-	size_t totalSize = 0;
-	std::vector<VertexAttrib> attribs;
+	totalSize = 0;
 	for (auto it = config.getLayout().begin(); it != config.getLayout().end(); ++it) {
 		switch (it->type) {
-		case INT_T: attribs.push_back(VertexAttrib{ 1, GL_INT, sizeof(INT) }); totalSize += sizeof(INT); break;
-		case FLOAT_T: attribs.push_back(VertexAttrib{ 1, GL_FLOAT, sizeof(FLOAT) }); totalSize += sizeof(FLOAT); break;
-		case FLOAT2_T: attribs.push_back(VertexAttrib{ 2, GL_FLOAT, sizeof(FLOAT2) }); totalSize += sizeof(FLOAT2); break;
-		case FLOAT3_T: attribs.push_back(VertexAttrib{ 3, GL_FLOAT, sizeof(FLOAT3) }); totalSize += sizeof(FLOAT3); break;
-		case FLOAT4_T: attribs.push_back(VertexAttrib{ 4, GL_FLOAT, sizeof(FLOAT4) }); totalSize += sizeof(FLOAT4); break;
+		case INT_T: attribs.push_back({ 1, GL_INT, sizeof(int), (int)totalSize }); totalSize += sizeof(int); break;
+		case FLOAT_T: attribs.push_back({ 1, GL_FLOAT, sizeof(float), (int)totalSize }); totalSize += sizeof(float); break;
+		case FLOAT2_T: attribs.push_back({ 2, GL_FLOAT, sizeof(glm::vec2), (int)totalSize }); totalSize += sizeof(glm::vec2); break;
+		case FLOAT3_T: attribs.push_back({ 3, GL_FLOAT, sizeof(glm::vec3), (int)totalSize }); totalSize += sizeof(glm::vec3); break;
+		case FLOAT4_T: attribs.push_back({ 4, GL_FLOAT, sizeof(glm::vec4), (int)totalSize }); totalSize += sizeof(glm::vec4); break;
 		}
 	}
-
-	glGenVertexArrays(1, &vaoId);
-	glBindVertexArray(vaoId);
-
-	int pointer = 0;
-	unsigned i = 0;
-	for (auto it = attribs.begin(); it != attribs.end(); ++it, ++i) {
-		glVertexAttribPointer(i, it->count, it->type, false, totalSize, &pointer);
-		pointer += it->size;
-	}
-
-	glBindVertexArray(0);
-
-	inputCount = attribs.size();
 
 }
 
@@ -139,32 +133,28 @@ void GLShader::createConstant(const std::string name) {
 	}
 }
 
-void GLShader::setConstant(const std::string name, const INT data) {
+void GLShader::setConstant(const std::string name, const int data) {
 	glUniform1i(constants.find(name)->second, data);
 }
 
-void GLShader::setConstant(const std::string name, const FLOAT data) {
+void GLShader::setConstant(const std::string name, const float data) {
 	glUniform1f(constants.find(name)->second, data);
 }
 
-void GLShader::setConstant(const std::string name, const FLOAT2 data) {
+void GLShader::setConstant(const std::string name, const glm::vec2 data) {
 	glUniform2f(constants.find(name)->second, data.x, data.y);
 }
 
-void GLShader::setConstant(const std::string name, const FLOAT3 data) {
+void GLShader::setConstant(const std::string name, const glm::vec3 data) {
 	glUniform3f(constants.find(name)->second, data.x, data.y, data.z);
 }
 
-void GLShader::setConstant(const std::string name, const FLOAT4 data) {
+void GLShader::setConstant(const std::string name, const glm::vec4 data) {
 	glUniform4f(constants.find(name)->second, data.x, data.y, data.z, data.w);
 }
 
-void GLShader::setConstant(const std::string name, const MATRIX3 data) {
-	glUniformMatrix3fv(constants.find(name)->second, 1, GL_FALSE, &data.m00);
-}
-
-void GLShader::setConstant(const std::string name, const MATRIX4 data) {
-	glUniformMatrix4fv(constants.find(name)->second, 1, GL_FALSE, &data.m00);
+void GLShader::setConstant(const std::string name, const glm::mat4 data) {
+	glUniformMatrix4fv(constants.find(name)->second, 1, GL_FALSE, glm::value_ptr(data));
 }
 
 } // namespace NinthEngine

@@ -9,6 +9,13 @@ namespace NinthEngine {
 
 class InputLayoutConfig;
 
+struct GLVertexAttrib {
+	GLuint count;
+	GLuint type;
+	size_t size;
+	int pointer;
+};
+
 class GLShader : public Shader {
 public:
 	GLShader();
@@ -17,19 +24,20 @@ public:
 	void bind();
 	void unbind();
 
+	void bindBuffer(const unsigned layoutIndex, const std::shared_ptr<Buffer>& buffer);
+
 	void createVertexShader(const std::string src, InputLayoutConfig&);
 	void createPixelShader(const std::string src);
 	void createProgram();
 
 	void createConstant(const std::string name);
 
-	void setConstant(const std::string, const INT);
-	void setConstant(const std::string, const FLOAT);
-	void setConstant(const std::string, const FLOAT2);
-	void setConstant(const std::string, const FLOAT3);
-	void setConstant(const std::string, const FLOAT4);
-	void setConstant(const std::string, const MATRIX3);
-	void setConstant(const std::string, const MATRIX4);
+	void setConstant(const std::string, const int);
+	void setConstant(const std::string, const float);
+	void setConstant(const std::string, const glm::vec2);
+	void setConstant(const std::string, const glm::vec3);
+	void setConstant(const std::string, const glm::vec4);
+	void setConstant(const std::string, const glm::mat4);
 
 private:
 	GLuint programId;
@@ -37,7 +45,8 @@ private:
 	GLuint pixelShader;
 
 	GLuint vaoId;
-	unsigned inputCount;
+	std::vector<GLVertexAttrib> attribs;
+	size_t totalSize;
 
 	std::map<std::string, GLint> constants;
 };

@@ -2,6 +2,7 @@
 
 #include <plog\Log.h>
 #include "..\..\Win32\Win32GameWindow.hpp"
+#include "..\..\..\include\NinthEngine\Render\Buffer.hpp"
 #include "D3DGraphicsDevice.hpp"
 #include "D3DGraphicsContext.hpp"
 
@@ -74,16 +75,38 @@ D3DGraphicsContext::D3DGraphicsContext(
 
 	backBuffer->Release();
 
+	D3D11_RASTERIZER_DESC rasterizerDesc;
+	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
+
+	rasterizerDesc.AntialiasedLineEnable = FALSE;
+	rasterizerDesc.CullMode = D3D11_CULL_NONE; //D3D11_CULL_BACK;
+	rasterizerDesc.DepthBias = 0;
+	rasterizerDesc.DepthBiasClamp = 0.0f;
+	rasterizerDesc.DepthClipEnable = FALSE;// TRUE;
+	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+	rasterizerDesc.FrontCounterClockwise = FALSE;
+	rasterizerDesc.MultisampleEnable = FALSE;
+	rasterizerDesc.ScissorEnable = FALSE;
+	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
+
+	hr = device->CreateRasterizerState(&rasterizerDesc, &rasterizerState);
+	if (FAILED(hr)) {
+		LOG_ERROR << "Failed to create RasterizerState";
+		throw std::exception();
+	}
+
 	setViewport(window);
 }
 
 D3DGraphicsContext:: ~D3DGraphicsContext() {
 }
 
-void D3DGraphicsContext::drawIndexed(const unsigned indexCount) {
+void D3DGraphicsContext::drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
 
+	indexBuffer->bind();
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->DrawIndexed(indexCount, 0, 0);
+	context->DrawIndexed(indexCount, startIndex, 0);
+	//context->Draw(3, 0);
 }
 
 void D3DGraphicsContext::swapBuffers() {
@@ -96,6 +119,12 @@ void D3DGraphicsContext::swapBuffers() {
 	}
 }
 
+void D3DGraphicsContext::clear() {
+
+	context->ClearRenderTargetView(renderTargetView.Get(), DirectX::Colors::CornflowerBlue);
+}
+
+
 void D3DGraphicsContext::setViewport(const float x, const float y, const float width, const float height) {
 
 	D3D11_VIEWPORT vp;
@@ -106,9 +135,9 @@ void D3DGraphicsContext::setViewport(const float x, const float y, const float w
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 
-	context->ClearRenderTargetView(renderTargetView.Get(), DirectX::Colors::CornflowerBlue);
+	context->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), NULL);
+	context->RSSetState(rasterizerState.Get());
 	context->RSSetViewports(1, &vp);
-	context->OMSetRenderTargets(1, &renderTargetView, NULL);
 }
 
 void D3DGraphicsContext::setViewport(const std::shared_ptr<GameWindow>& window) {

@@ -45,11 +45,11 @@ std::shared_ptr<Buffer> ResourceManager::addBuffer(const std::string name, Buffe
 	return buffer;
 }
 
-std::shared_ptr<Shader> ResourceManager::getShader(const std::string name) {
+const std::shared_ptr<Shader>& ResourceManager::getShader(const std::string name) {
 	return shaders.find(name)->second;
 }
 
-std::shared_ptr<Buffer> ResourceManager::getBuffer(const std::string name) {
+const std::shared_ptr<Buffer>& ResourceManager::getBuffer(const std::string name) {
 	return buffers.find(name)->second;
 }
 

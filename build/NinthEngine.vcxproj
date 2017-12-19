@@ -31,11 +31,11 @@
     <ClInclude Include="..\include\NinthEngine\Render\BufferConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\GraphicsUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\InputLayout.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\ShaderConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\InputLayoutConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Shader.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Resource\MathUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\Resource\ResourceManager.hpp" />
     <ClInclude Include="..\include\NinthEngine\Win32\Win32Bootstrap.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DBuffer.hpp" />

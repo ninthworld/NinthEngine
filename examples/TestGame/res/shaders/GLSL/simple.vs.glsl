@@ -2,10 +2,9 @@
 
 layout (location = 0) in vec3 in_position;
 
-uniform mat4 viewProjMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 mvpMatrix;
 
 void main(){
 
-	gl_Position = viewProjMatrix * modelMatrix * vec4(in_position, 1.0);
+	gl_Position = mvpMatrix * vec4(in_position, 1.0);
 }

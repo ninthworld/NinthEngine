@@ -26,22 +26,6 @@ enum InputLayoutSemantic {
 	TEXCOORD_SEM
 };
 
-inline static const std::string getSemanticString(InputLayoutSemantic sem) {
-	switch (sem) {
-	case BINORMAL_SEM: return "BINORMAL";
-	case BLENDINDICES_SEM: return "BLENDINDICES";
-	case BLENDWEIGHT_SEM: return "BLENDWEIGHT";
-	case COLOR_SEM: return "COLOR";
-	case NORMAL_SEM: return "NORMAL";
-	case POSITION_SEM: return "POSITION";
-	case POSITIONT_SEM: return "POSITIONT";
-	case PSIZE_SEM: return "PSIZE";
-	case TANGENT_SEM: return "TANGENT";
-	case TEXCOORD_SEM: return "TEXCOORD";
-	default: return "";
-	}
-}
-
 struct InputLayoutElement {
 
 	InputLayoutType type;

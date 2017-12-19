@@ -1,20 +1,13 @@
 #include <algorithm>
 #include "..\..\include\NinthEngine\Application\GameWindow.hpp"
-#include "..\..\include\NinthEngine\Camera\FPSGameCamera.hpp"
 #include "..\..\include\NinthEngine\Input\Keyboard.hpp"
 #include "..\..\include\NinthEngine\Input\Mouse.hpp"
-
-namespace {
-
-const double PI = 3.14159;
-
-} // namespace
+#include "..\..\include\NinthEngine\Camera\FPSGameCamera.hpp"
 
 namespace NinthEngine {
 
 FPSGameCamera::FPSGameCamera(const glm::vec3 position, const glm::vec3 rotation,const FPSGameCameraSettings settings)
-	: position(position), rotation(rotation), settings(settings)
-	, mouseDelta(glm::vec2(0)) {
+	: position(position), rotation(rotation), settings(settings), mouseDelta(glm::vec2()) {
 }
 
 void FPSGameCamera::init(const int width, const int height) {
@@ -23,22 +16,18 @@ void FPSGameCamera::init(const int width, const int height) {
 
 void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const double deltaTime) {
 	
-	glm::vec3 rotation = getRotation();
-
 	rotation.x += mouseDelta.y * deltaTime;
 	rotation.y += mouseDelta.x * deltaTime;
-	mouseDelta = glm::vec2(0);
-
+	mouseDelta = glm::vec2();
+	
 	rotation.x = fmax(-PI / 2.0, fmin(PI / 2.0, rotation.x));
 	rotation.y += (rotation.y < 0 ? 2.0 * PI : (rotation.y > 2.0 * PI ? -2.0 * PI : 0));
-
-	setRotation(rotation);
-
-	glm::vec3 movement(0);
-	double sinXRot = sin(getRotation().x);
-	double cosXRot = cos(getRotation().x);
-	double sinYRot = sin(getRotation().y);
-	double cosYRot = cos(getRotation().y);
+	
+	glm::vec3 movement = glm::vec3();
+	double sinXRot = sin(rotation.x);
+	double cosXRot = cos(rotation.x);
+	double sinYRot = sin(rotation.y);
+	double cosYRot = cos(rotation.y);
 	double pitchLimitFactor = cosXRot;
 
 	if (window->getKeyboard()->getKey(KEY_W) == KS_PRESSED) {
@@ -73,7 +62,7 @@ void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const doub
 	double fpsFactor = getFPSSettings().moveSpeedFactor * deltaTime;
 	movement *= fpsFactor;
 
-	setPosition(getPosition() + movement);
+	position += movement;
 
 	setViewMatrix();
 }

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <glm\glm.hpp>
-#include <glm\ext.hpp>
+#include "..\Resource\MathUtils.hpp"
 
 namespace NinthEngine {
 

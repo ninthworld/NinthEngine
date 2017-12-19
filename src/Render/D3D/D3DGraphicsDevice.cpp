@@ -62,14 +62,14 @@ std::shared_ptr<Shader> D3DGraphicsDevice::createShader(ShaderConfig& config) {
 		shader->createConstant(device, it->first, it->second);
 	}
 
-	return shader;
+	return std::move(shader);
 }
 
 std::shared_ptr<Buffer> D3DGraphicsDevice::createBuffer(BufferConfig& config) {
 
 	auto buffer = std::make_shared<D3DBuffer>(device, deviceContext, config);
 
-	return buffer;
+	return std::move(buffer);
 }
 
 } // namespace NinthEngine

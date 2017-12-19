@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glm\glm.hpp>
-#include <glm\ext.hpp>
 #include <vector>
 #include "GameCamera.hpp"
 
@@ -21,7 +19,7 @@ class GameWindow;
 
 class FPSGameCamera : public GameCamera {
 public:
-	FPSGameCamera(const glm::vec3 position = glm::vec3(0), const glm::vec3 rotation = glm::vec3(0), const FPSGameCameraSettings = FPSGameCameraSettings());
+	FPSGameCamera(const glm::vec3 position = glm::vec3(), const glm::vec3 rotation = glm::vec3(), const FPSGameCameraSettings = FPSGameCameraSettings());
 	~FPSGameCamera() {};
 
 	void init(const int width, const int height);

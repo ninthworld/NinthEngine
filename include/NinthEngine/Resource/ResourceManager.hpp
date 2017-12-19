@@ -21,8 +21,8 @@ public:
 	std::shared_ptr<Shader> addShader(const std::string name, ShaderConfig& config);
 	std::shared_ptr<Buffer> addBuffer(const std::string name, BufferConfig& config);
 	
-	std::shared_ptr<Shader> getShader(const std::string name);
-	std::shared_ptr<Buffer> getBuffer(const std::string name);
+	const std::shared_ptr<Shader>& getShader(const std::string name);
+	const std::shared_ptr<Buffer>& getBuffer(const std::string name);
 
 private:
 	std::shared_ptr<GraphicsDevice> device;

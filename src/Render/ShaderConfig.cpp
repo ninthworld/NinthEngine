@@ -45,38 +45,33 @@ ShaderConfig& ShaderConfig::setLayout(InputLayoutConfig _layout) {
 	return *this;
 }
 
-template<> ShaderConfig& ShaderConfig::addConstant<INT>(const std::string name) {
-	constants.insert(std::make_pair(name, sizeof(INT)));
+template<> ShaderConfig& ShaderConfig::addConstant<int>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(int)));
 	return *this;
 }
 
-template<> ShaderConfig& ShaderConfig::addConstant<FLOAT>(const std::string name) {
-	constants.insert(std::make_pair(name, sizeof(FLOAT)));
+template<> ShaderConfig& ShaderConfig::addConstant<float>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(float)));
 	return *this;
 }
 
-template<> ShaderConfig& ShaderConfig::addConstant<FLOAT2>(const std::string name) {
-	constants.insert(std::make_pair(name, sizeof(FLOAT2)));
+template<> ShaderConfig& ShaderConfig::addConstant<glm::vec2>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(glm::vec2)));
 	return *this;
 }
 
-template<> ShaderConfig& ShaderConfig::addConstant<FLOAT3>(const std::string name) {
-	constants.insert(std::make_pair(name, sizeof(FLOAT3)));
+template<> ShaderConfig& ShaderConfig::addConstant<glm::vec3>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(glm::vec3)));
 	return *this;
 }
 
-template<> ShaderConfig& ShaderConfig::addConstant<FLOAT4>(const std::string name) {
-	constants.insert(std::make_pair(name, sizeof(FLOAT4)));
+template<> ShaderConfig& ShaderConfig::addConstant<glm::vec4>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(glm::vec4)));
 	return *this;
 }
 
-template<> ShaderConfig& ShaderConfig::addConstant<MATRIX3>(const std::string name) {
-	constants.insert(std::make_pair(name, sizeof(MATRIX3)));
-	return *this;
-}
-
-template<> ShaderConfig& ShaderConfig::addConstant<MATRIX4>(const std::string name) {
-	constants.insert(std::make_pair(name, sizeof(MATRIX4)));
+template<> ShaderConfig& ShaderConfig::addConstant<glm::mat4>(const std::string name) {
+	constants.insert(std::make_pair(name, sizeof(glm::mat4)));
 	return *this;
 }
 

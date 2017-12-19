@@ -1,4 +1,5 @@
 #include "..\..\..\include\NinthEngine\Application\GameWindow.hpp"
+#include "..\..\..\include\NinthEngine\Render\Buffer.hpp"
 #include "GLContext.hpp"
 #include "GLGraphicsContext.hpp"
 
@@ -13,18 +14,26 @@ GLGraphicsContext::~GLGraphicsContext() {
 	glContext.reset();
 }
 
-void GLGraphicsContext::drawIndexed(const unsigned indexCount) {
+void GLGraphicsContext::drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
 
-	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+	indexBuffer->bind();
+	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, (void*)startIndex);
+	indexBuffer->unbind();
 }
 
 void GLGraphicsContext::swapBuffers() {
+
 	glContext->swapBuffers();
+}
+
+void GLGraphicsContext::clear() {
+
+	glClearColor(0, 0, 1, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void GLGraphicsContext::setViewport(const float x, const float y, const float width, const float height) {
 
-	glClearColor(0, 0, 1, 1);
 	glViewport(x, y, width, height);
 }
 

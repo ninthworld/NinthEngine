@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GraphicsUtils.hpp"
+#include "..\Resource\MathUtils.hpp"
 
 namespace NinthEngine {
 

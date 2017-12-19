@@ -3,12 +3,15 @@
 namespace NinthEngine {
 
 class GameWindow;
+class Buffer;
 
 class GraphicsContext {
 public:
-	virtual void drawIndexed(const unsigned indexCount) = 0;
+	virtual void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) = 0;
 	
 	virtual void swapBuffers() = 0;
+
+	virtual void clear() = 0;
 
 	virtual bool isVsync() const = 0;
 

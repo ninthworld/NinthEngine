@@ -21,18 +21,19 @@ public:
 	void bind();
 	void unbind();
 
+	void bindBuffer(const unsigned layoutIndex, const std::shared_ptr<Buffer>& buffer);
+
 	void createVertexShader(const ComPtr<ID3D11Device>&, const std::string src, const std::string entry, InputLayoutConfig&);
 	void createPixelShader(const ComPtr<ID3D11Device>&, const std::string src, const std::string entry);
 	
 	void createConstant(const ComPtr<ID3D11Device>&, const std::string, const unsigned typeSize);
 
-	void setConstant(const std::string, const INT);
-	void setConstant(const std::string, const FLOAT);
-	void setConstant(const std::string, const FLOAT2);
-	void setConstant(const std::string, const FLOAT3);
-	void setConstant(const std::string, const FLOAT4);
-	void setConstant(const std::string, const MATRIX3);
-	void setConstant(const std::string, const MATRIX4);
+	void setConstant(const std::string, const int);
+	void setConstant(const std::string, const float);
+	void setConstant(const std::string, const glm::vec2);
+	void setConstant(const std::string, const glm::vec3);
+	void setConstant(const std::string, const glm::vec4);
+	void setConstant(const std::string, const glm::mat4);
 
 private:
 	ComPtr<ID3D11DeviceContext> deviceContext;

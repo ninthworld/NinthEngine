@@ -141,9 +141,6 @@
     <ClInclude Include="..\include\NinthEngine\Render\ShaderConfig.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\GraphicsUtils.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DBuffer.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
@@ -176,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\InputLayoutConfig.hpp">
       <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Resource\MathUtils.hpp">
+      <Filter>Header Files\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

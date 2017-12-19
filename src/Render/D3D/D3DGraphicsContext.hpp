@@ -16,9 +16,11 @@ public:
 	D3DGraphicsContext(const ComPtr<ID3D11Device>&, const ComPtr<ID3D11DeviceContext>&, const std::shared_ptr<Win32GameWindow>&, const bool vsync);
 	~D3DGraphicsContext();
 
-	void drawIndexed(const unsigned indexCount);
+	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex);
 
 	void swapBuffers();
+
+	void clear();
 
 	bool isVsync() const { return vsync; };
 
@@ -30,6 +32,7 @@ private:
 	ComPtr<ID3D11DeviceContext> context;
 	ComPtr<IDXGISwapChain> swapChain;	
 	ComPtr<ID3D11RenderTargetView> renderTargetView;
+	ComPtr<ID3D11RasterizerState> rasterizerState;
 
 	bool vsync;
 

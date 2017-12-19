@@ -39,7 +39,7 @@ D3DBuffer::~D3DBuffer() {
 void D3DBuffer::bind() {
 	const UINT offset = 0;
 	switch (bufferType) {
-	case VERTEX_BT: deviceContext->IASetVertexBuffers(0, 1, &buffer, &unitSize, &offset); break;
+	case VERTEX_BT: deviceContext->IASetVertexBuffers(0, 1, buffer.GetAddressOf(), &unitSize, &offset); break;
 	case INDEX_BT: deviceContext->IASetIndexBuffer(buffer.Get(), DXGI_FORMAT_R16_UINT, 0); break;
 	}
 }

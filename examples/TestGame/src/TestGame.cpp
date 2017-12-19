@@ -8,7 +8,7 @@
 TestGame::TestGame(const std::shared_ptr<GameEngine>& engine) 
 	: engine(engine) {
 
-	camera = std::make_shared<FPSGameCamera>(glm::vec3(1, 1, 4));
+	camera = std::make_shared<FPSGameCamera>(glm::vec3(0, 0, 1));
 }
 
 TestGame::~TestGame() {
@@ -37,29 +37,31 @@ void TestGame::init() {
 		getCamera()->mouseMoveCallback(engine->getWindow(), mx, my);
 	});
 
-	std::vector<FLOAT3> vertices = {
-		{0, 0, 0}, {0, 1, 0}, {1, 0, 0}
-	};
-
-	std::vector<INT> indices = {
+	std::vector<short> indices = {
 		0, 1, 2
 	};
+
+	indexBuffer = engine->getManager()->addBuffer("IndexBuffer", BufferConfig(INDEX_BT)
+		.setData(indices.data(), sizeof(short), sizeof(short) * indices.size()));
+	
+	std::vector<glm::vec3> vertices = {
+		glm::vec3(-1, -1, 0), glm::vec3(1, -1, 0), glm::vec3(0, 1, 0)
+	};
+
+	vertexBuffer = engine->getManager()->addBuffer("VertexBuffer", BufferConfig(VERTEX_BT)
+		.setData(vertices.data(), sizeof(glm::vec3), sizeof(glm::vec3) * vertices.size()));
 
 	simpleShader = engine->getManager()->addShader("SimpleShader", ShaderConfig()
 		.setGLSLVertexShader("res/shaders/GLSL/simple.vs.glsl")
 		.setGLSLPixelShader("res/shaders/GLSL/simple.ps.glsl")
 		.setHLSLVertexShader("res/shaders/HLSL/simple.vs.hlsl", "main")
 		.setHLSLPixelShader("res/shaders/HLSL/simple.ps.hlsl", "main")
-		.addConstant<MATRIX4>("viewProjMatrix")
-		.addConstant<MATRIX4>("modelMatrix")
-		.setLayout(InputLayoutConfig().
-			add(FLOAT3_T, POSITION_SEM, 0)));
+		.addConstant<glm::mat4>("mvpMatrix")
+		.setLayout(InputLayoutConfig()
+			.add(FLOAT3_T, POSITION_SEM, 0)));
+	
+	simpleShader->bindBuffer(0, vertexBuffer);
 
-	vertexBuffer = engine->getManager()->addBuffer("VertexBuffer", BufferConfig(VERTEX_BT)
-		.setData(vertices.data(), sizeof(FLOAT3), sizeof(FLOAT3) * vertices.size()));
-
-	indexBuffer = engine->getManager()->addBuffer("IndexBuffer", BufferConfig(INDEX_BT)
-		.setData(indices.data(), sizeof(INT), sizeof(INT) * vertices.size()));
 }
 
 void TestGame::update(const double deltaTime) {
@@ -69,14 +71,18 @@ void TestGame::update(const double deltaTime) {
 
 void TestGame::render() {
 	
+	engine->getGraphicsContext()->clear();
+
+	engine->getGraphicsContext()->setViewport(engine->getWindow());
+
 	simpleShader->bind();
+
+	simpleShader->setConstant("mvpMatrix", camera->getViewProjMatrix());
+
 	vertexBuffer->bind();
-	indexBuffer->bind();
+	
+	engine->getGraphicsContext()->drawIndexed(indexBuffer, 3, 0);
 
-	engine->getGraphicsContext()->drawIndexed(3);
-
-	indexBuffer->unbind();
-	vertexBuffer->unbind();
 	simpleShader->unbind();
 
 }

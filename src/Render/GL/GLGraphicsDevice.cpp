@@ -22,14 +22,14 @@ std::shared_ptr<Shader> GLGraphicsDevice::createShader(ShaderConfig& config) {
 		shader->createConstant(it->first);
 	}
 
-	return shader;
+	return std::move(shader);
 }
 
 std::shared_ptr<Buffer> GLGraphicsDevice::createBuffer(BufferConfig& config) {
 
 	auto buffer = std::make_shared<GLBuffer>(config);
 
-	return buffer;
+	return std::move(buffer);
 }
 
 } // namespace NinthEngine
