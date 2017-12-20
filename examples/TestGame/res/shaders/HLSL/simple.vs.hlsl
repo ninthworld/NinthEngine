@@ -1,5 +1,9 @@
-cbuffer MVPMatrix : register(b0) {
-	matrix mvpMatrix;
+cbuffer ViewProjMatrix : register(b0) {
+	matrix viewProjMatrix;
+}
+
+cbuffer ModelMatrix : register(b1) {
+	matrix modelMatrix;
 }
 
 struct input {
@@ -13,7 +17,7 @@ struct output {
 output main(input IN) {
 	output OUT;
 
-	OUT.position = mul(mvpMatrix, float4(IN.position, 1.0f));
+	OUT.position = mul(viewProjMatrix, mul(modelMatrix, float4(IN.position, 1.0f)));
 
 	//OUT.position = float4(IN.position, 1.0f);
 

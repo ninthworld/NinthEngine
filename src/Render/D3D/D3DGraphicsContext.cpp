@@ -2,7 +2,7 @@
 
 #include <plog\Log.h>
 #include "..\..\Win32\Win32GameWindow.hpp"
-#include "..\..\..\include\NinthEngine\Render\Buffer.hpp"
+#include "..\..\..\include\NinthEngine\Render\IndexBuffer.hpp"
 #include "D3DGraphicsDevice.hpp"
 #include "D3DGraphicsContext.hpp"
 
@@ -10,10 +10,11 @@ namespace NinthEngine {
 
 D3DGraphicsContext::D3DGraphicsContext(
 	const ComPtr<ID3D11Device>& device, 
-	const ComPtr<ID3D11DeviceContext>& context, 
+	const ComPtr<ID3D11DeviceContext>& deviceContext,
 	const std::shared_ptr<Win32GameWindow>& window,
 	const bool vsync)
-	: context(context), vsync(vsync) {
+	: m_deviceContext(deviceContext)
+	, m_vsync(vsync) {
 	
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
@@ -54,20 +55,20 @@ D3DGraphicsContext::D3DGraphicsContext(
 		throw std::exception();
 	}
 
-	hr = dxgiFactory->CreateSwapChain(device.Get(), &swapChainDesc, &swapChain);
+	hr = dxgiFactory->CreateSwapChain(device.Get(), &swapChainDesc, &m_swapChain);
 	if (FAILED(hr)) {
 		LOG_ERROR << "Failed to create IDXGISwapChain";
 		throw std::exception();
 	}
 
 	ID3D11Texture2D *backBuffer;
-	hr = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
+	hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
 	if (FAILED(hr)) {
 		LOG_ERROR << "Failed to create BackBuffer Texture";
 		throw std::exception();
 	}
 
-	hr = device->CreateRenderTargetView(backBuffer, nullptr, &renderTargetView);
+	hr = device->CreateRenderTargetView(backBuffer, nullptr, &m_renderTargetView);
 	if (FAILED(hr)) {
 		LOG_ERROR << "Failed to create RenderTargetView";
 		throw std::exception();
@@ -89,39 +90,37 @@ D3DGraphicsContext::D3DGraphicsContext(
 	rasterizerDesc.ScissorEnable = FALSE;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
-	hr = device->CreateRasterizerState(&rasterizerDesc, &rasterizerState);
+	hr = device->CreateRasterizerState(&rasterizerDesc, &m_rasterizerState);
 	if (FAILED(hr)) {
 		LOG_ERROR << "Failed to create RasterizerState";
 		throw std::exception();
 	}
-
-	setViewport(window);
 }
 
 D3DGraphicsContext:: ~D3DGraphicsContext() {
 }
 
-void D3DGraphicsContext::drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
+void D3DGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
 
 	indexBuffer->bind();
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	context->DrawIndexed(indexCount, startIndex, 0);
-	//context->Draw(3, 0);
+	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_deviceContext->DrawIndexed(indexCount, startIndex, 0);
+	//m_deviceContext->Draw(3, 0);
 }
 
 void D3DGraphicsContext::swapBuffers() {
 
 	if (isVsync()) {
-		swapChain->Present(1, 0);
+		m_swapChain->Present(1, 0);
 	}
 	else {
-		swapChain->Present(0, 0);
+		m_swapChain->Present(0, 0);
 	}
 }
 
 void D3DGraphicsContext::clear() {
 
-	context->ClearRenderTargetView(renderTargetView.Get(), DirectX::Colors::CornflowerBlue);
+	m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), DirectX::Colors::CornflowerBlue);
 }
 
 
@@ -135,14 +134,9 @@ void D3DGraphicsContext::setViewport(const float x, const float y, const float w
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 
-	context->OMSetRenderTargets(1, renderTargetView.GetAddressOf(), NULL);
-	context->RSSetState(rasterizerState.Get());
-	context->RSSetViewports(1, &vp);
-}
-
-void D3DGraphicsContext::setViewport(const std::shared_ptr<GameWindow>& window) {
-
-	setViewport(0.0f, 0.0f, static_cast<float>(window->getWidth()), static_cast<float>(window->getHeight()));
+	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), NULL);
+	m_deviceContext->RSSetState(m_rasterizerState.Get());
+	m_deviceContext->RSSetViewports(1, &vp);
 }
 
 } // namespace NinthEngine

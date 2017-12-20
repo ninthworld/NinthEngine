@@ -1,7 +1,8 @@
-#include "..\..\..\include\NinthEngine\Render\ShaderConfig.hpp"
-#include "..\..\..\include\NinthEngine\Render\BufferConfig.hpp"
 #include "GLShader.hpp"
-#include "GLBuffer.hpp"
+#include "GLConstantsBuffer.hpp"
+#include "GLIndexBuffer.hpp"
+#include "GLVertexBuffer.hpp"
+#include "GLVertexArray.hpp"
 #include "GLGraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -12,24 +13,36 @@ GLGraphicsDevice::GLGraphicsDevice() {
 GLGraphicsDevice::~GLGraphicsDevice() {
 }
 
-std::shared_ptr<Shader> GLGraphicsDevice::createShader(ShaderConfig& config) {
+std::unique_ptr<Shader> GLGraphicsDevice::createShader(ShaderConfig& config) {
 
-	auto shader = std::make_shared<GLShader>();
-	shader->createVertexShader(config.getGLSLVertexShader(), config.getLayout());
-	shader->createPixelShader(config.getGLSLPixelShader());
+	auto shader = std::make_unique<GLShader>();
+	shader->createVertexShader(config);
+	shader->createPixelShader(config);
 	shader->createProgram();
-	for (auto it = config.getConstants().begin(); it != config.getConstants().end(); ++it) {
-		shader->createConstant(it->first);
-	}
-
+	
 	return std::move(shader);
 }
 
-std::shared_ptr<Buffer> GLGraphicsDevice::createBuffer(BufferConfig& config) {
+std::unique_ptr<ConstantsBuffer> GLGraphicsDevice::createConstantsBuffer(BufferConfig& config) {
 
-	auto buffer = std::make_shared<GLBuffer>(config);
+	return std::make_unique<GLConstantsBuffer>(config);
+}
 
-	return std::move(buffer);
+std::unique_ptr<IndexBuffer> GLGraphicsDevice::createIndexBuffer(BufferConfig& config) {
+
+	return std::make_unique<GLIndexBuffer>(config);
+}
+
+std::unique_ptr<VertexBuffer> GLGraphicsDevice::createVertexBuffer(BufferConfig& config) {
+
+	return std::make_unique<GLVertexBuffer>(config);
+}
+
+std::unique_ptr<VertexArray> GLGraphicsDevice::createVertexArray(InputLayoutConfig& config) {
+
+	auto vertexArray = std::make_unique<GLVertexArray>(config);
+
+	return std::move(vertexArray);
 }
 
 } // namespace NinthEngine

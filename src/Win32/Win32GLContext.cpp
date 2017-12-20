@@ -1,24 +1,24 @@
 #ifdef _WIN32
 
 #include <plog\Log.h>
-#include "..\Render\GL\GLUtils.hpp"
+#include "..\Utils\GL\GLUtils.hpp"
 #include "Win32GLContext.hpp"
 
 namespace NinthEngine {
 
 Win32GLContext::Win32GLContext(HWND handle)
-	: handle(handle)
-	, hdc(nullptr, [&](HDC _hdc) {
-		ReleaseDC(handle, _hdc);
+	: m_handle(handle)
+	, m_hdc(nullptr, [&](HDC hdc) {
+		ReleaseDC(handle, hdc);
 	})
-	, glrc(nullptr, [](HGLRC _glrc) {
-		if (wglGetCurrentContext() == _glrc) {
+	, m_glrc(nullptr, [](HGLRC glrc) {
+		if (wglGetCurrentContext() == glrc) {
 			wglMakeCurrent(nullptr, nullptr);
 		}
-		wglDeleteContext(_glrc);
+		wglDeleteContext(glrc);
 	}) {
 
-	hdc.reset(GetDC(handle));
+	m_hdc.reset(GetDC(handle));
 
 	PIXELFORMATDESCRIPTOR pfd;
 	memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
@@ -30,21 +30,21 @@ Win32GLContext::Win32GLContext(HWND handle)
 	pfd.cDepthBits = 32;
 	pfd.iLayerType = PFD_MAIN_PLANE;
 
-	auto const pixelFormat = ChoosePixelFormat(hdc.get(), &pfd);
+	auto const pixelFormat = ChoosePixelFormat(m_hdc.get(), &pfd);
 
 	if (!pixelFormat) {
 		LOG_ERROR << "Failed to call pixel format";
 		throw std::exception();
 	}
 
-	if (!SetPixelFormat(hdc.get(), pixelFormat, &pfd)) {
+	if (!SetPixelFormat(m_hdc.get(), pixelFormat, &pfd)) {
 		LOG_ERROR << "Failed to set pixel format";
 		throw std::exception();
 	}
 
-	glrc.reset(wglCreateContext(hdc.get()));
+	m_glrc.reset(wglCreateContext(m_hdc.get()));
 
-	if (!wglMakeCurrent(hdc.get(), glrc.get())) {
+	if (!wglMakeCurrent(m_hdc.get(), m_glrc.get())) {
 		LOG_ERROR << "Failed to make wGL current";
 		throw std::exception();
 	}
@@ -53,13 +53,13 @@ Win32GLContext::Win32GLContext(HWND handle)
 
 Win32GLContext::~Win32GLContext() {
 
-	glrc.reset();
-	hdc.reset();
+	m_glrc.reset();
+	m_hdc.reset();
 }
 
 void Win32GLContext::makeCurrent() {
 
-	wglMakeCurrent(hdc.get(), glrc.get());
+	wglMakeCurrent(m_hdc.get(), m_glrc.get());
 }
 
 void Win32GLContext::clearCurrent() {
@@ -70,7 +70,7 @@ void Win32GLContext::clearCurrent() {
 void Win32GLContext::swapBuffers() {
 
 	glFlush();
-	::SwapBuffers(hdc.get());
+	::SwapBuffers(m_hdc.get());
 }
 
 } // namespace NinthEngine

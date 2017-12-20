@@ -24,7 +24,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 
 	Win32Bootstrap bootstrap("Test Game", 1600, 900, false, hInstance, cmdShow, false);
 	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
-		return std::make_shared<TestGame>(engine);
+		return std::make_unique<TestGame>(engine);
 	});
 
 	return 0;

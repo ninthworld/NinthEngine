@@ -3,7 +3,7 @@
 #ifdef _WIN32
 
 #include <memory>
-#include "D3DUtils.hpp"
+#include "..\..\Utils\D3D\D3DUtils.hpp"
 #include "..\..\..\include\NinthEngine\Render\GraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -13,15 +13,18 @@ public:
 	D3DGraphicsDevice();
 	~D3DGraphicsDevice();
 
-	std::shared_ptr<Shader> createShader(ShaderConfig& config);
-	std::shared_ptr<Buffer> createBuffer(BufferConfig& config);
+	std::unique_ptr<Shader> createShader(ShaderConfig& config) override;
+	std::unique_ptr<ConstantsBuffer> createConstantsBuffer(BufferConfig& config) override;
+	std::unique_ptr<IndexBuffer> createIndexBuffer(BufferConfig& config) override;
+	std::unique_ptr<VertexBuffer> createVertexBuffer(BufferConfig& config) override;
+	std::unique_ptr<VertexArray> createVertexArray(InputLayoutConfig& config) override;
 
-	ComPtr<ID3D11Device> getDevice() const { return device; };
-	ComPtr<ID3D11DeviceContext> getDeviceContext() const { return deviceContext; };
+	ComPtr<ID3D11Device> getDevice() const { return m_device; };
+	ComPtr<ID3D11DeviceContext> getDeviceContext() const { return m_deviceContext; };
 
 private:
-	ComPtr<ID3D11Device> device;
-	ComPtr<ID3D11DeviceContext> deviceContext;
+	ComPtr<ID3D11Device> m_device;
+	ComPtr<ID3D11DeviceContext> m_deviceContext;
 
 };
 

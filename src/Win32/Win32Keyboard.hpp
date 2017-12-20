@@ -14,16 +14,16 @@ public:
 	Win32Keyboard();
 	~Win32Keyboard();
 
-	void setKeyCallback(const std::function<void(Key, KeyState)>& callback) { keyCB = callback; };
+	void setKeyCallback(const std::function<void(Key, KeyState)>& callback) override { m_keyCB = callback; };
 
-	void keyCallback(int key, int keyState);
+	void keyCallback(int key, int state) override;
 
-	KeyState getKey(Key key) const { return keys[key]; };
+	const KeyState getKey(Key key) const override { return m_keys[key]; };
 
 private:
-	std::vector<KeyState> keys;
+	std::vector<KeyState> m_keys;
 
-	std::function<void(Key, KeyState)> keyCB;
+	std::function<void(Key, KeyState)> m_keyCB;
 };
 
 inline Key getKeyFromWin32(int key) {

@@ -1,12 +1,15 @@
 #pragma once
 
-#include <NinthEngine\Application\Game.hpp>
 #include <memory>
+#include <NinthEngine\Application\Game.hpp>
 
 namespace NinthEngine {
 
 class Shader;
-class Buffer;
+class VertexBuffer;
+class IndexBuffer;
+class ConstantsBuffer;
+class VertexArray;
 class GameWindow;
 class FPSGameCamera;
 
@@ -23,15 +26,22 @@ public:
 	void update(const double deltaTime);
 	void render();
 
-	std::shared_ptr<FPSGameCamera> getCamera() { return camera; };
-
 protected:
 private:
 	std::shared_ptr<GameEngine> engine;
-	std::shared_ptr<FPSGameCamera> camera;
+	std::shared_ptr<GameWindow> window;
+	std::shared_ptr<GraphicsDevice> device;
+	std::shared_ptr<GraphicsContext> context;
 
-	std::shared_ptr<Shader> simpleShader;
-	std::shared_ptr<Buffer> vertexBuffer;
-	std::shared_ptr<Buffer> indexBuffer;
+	std::unique_ptr<FPSGameCamera> camera;
+
+	std::unique_ptr<Shader> simpleShader;
+
+	std::shared_ptr<ConstantsBuffer> constantsBufferVPM;
+	std::shared_ptr<ConstantsBuffer> constantsBufferWM;
+	std::shared_ptr<IndexBuffer> indexBuffer;
+	std::shared_ptr<VertexBuffer> vertexBuffer;
+
+	std::shared_ptr<VertexArray> vertexArray;
 
 };

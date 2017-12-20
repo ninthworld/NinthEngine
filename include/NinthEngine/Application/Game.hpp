@@ -8,6 +8,12 @@ class GameWindow;
 
 class Game {
 public:
+	Game() = default;
+	Game(const Game&) = delete;
+	Game& operator=(const Game&) = delete;
+
+	virtual ~Game() = default;
+
 	virtual void init() = 0;
 	virtual void update(const double deltaTime) = 0;
 	virtual void render() = 0;

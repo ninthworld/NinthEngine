@@ -13,26 +13,26 @@ public:
 	Win32Mouse();
 	~Win32Mouse();
 
-	void setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) { buttonCB = callback; };
-	void setMoveCallback(const std::function<void(int, int)>& callback) { moveCB = callback; };
+	void setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) override { m_buttonCB = callback; };
+	void setMoveCallback(const std::function<void(int, int)>& callback) override { m_moveCB = callback; };
 
-	void buttonCallback(int mouseBtn, int mouseSt);
-	void moveCallback(int mX, int mY);
+	void buttonCallback(int button, int state) override;
+	void moveCallback(int x, int y) override;
 
-	MouseState getButton(MouseButton btn) const { return buttons[btn]; };
-	double getMouseX() const { return mouseX; };
-	double getMouseY() const { return mouseY; };
+	const MouseState getButton(MouseButton button) const override { return m_buttons[button]; };
+	const double getMouseX() const override { return m_x; };
+	const double getMouseY() const override { return m_y; };
 
-	void setMouseCentered(const bool _centered) { mouseCentered = _centered; };
-	bool isMouseCentered() const { return mouseCentered; };
+	void setMouseCentered(const bool centered) override { m_centered = centered; };
+	const bool isMouseCentered() const override { return m_centered; };
 
 private:
-	double mouseX, mouseY;
-	std::vector<MouseState> buttons;
-	bool mouseCentered;
+	double m_x, m_y;
+	std::vector<MouseState> m_buttons;
+	bool m_centered;
 
-	std::function<void(MouseButton, MouseState)> buttonCB;
-	std::function<void(int, int)> moveCB;
+	std::function<void(MouseButton, MouseState)> m_buttonCB;
+	std::function<void(int, int)> m_moveCB;
 };
 
 } // namespace NinthEngine

@@ -1,4 +1,3 @@
-#include <NinthEngine\Application\GameWindow.hpp>
 #include <NinthEngine\Application\GameEngine.hpp>
 #include <NinthEngine\Camera\FPSGameCamera.hpp>
 #include <NinthEngine\Render\Shader.hpp>
@@ -6,9 +5,12 @@
 #include "TestGame.hpp"
 
 TestGame::TestGame(const std::shared_ptr<GameEngine>& engine) 
-	: engine(engine) {
+	: engine(engine)
+	, window(engine->getWindow())
+	, device(engine->getGraphicsDevice())
+	, context(engine->getGraphicsContext()) {
 
-	camera = std::make_shared<FPSGameCamera>(glm::vec3(0, 0, 1));
+	camera = std::make_unique<FPSGameCamera>(glm::vec3(0, 0, 1));
 }
 
 TestGame::~TestGame() {
@@ -17,51 +19,90 @@ TestGame::~TestGame() {
 }
 
 void TestGame::init() {
-	camera->init(engine->getWindow()->getWidth(), engine->getWindow()->getHeight());
+	camera->init(window->getWidth(), window->getHeight());
 	
-	engine->getWindow()->setResizeCallback([this](int width, int height) {
-		getCamera()->setProjMatrix(width, height);
-		engine->getGraphicsContext()->setViewport(0, 0, width, height);
+	window->setResizeCallback([this](int width, int height) {
+		camera->setProjMatrix(width, height);
+		context->setViewport(0, 0, width, height);
 	});
 
-	engine->getWindow()->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
-		if (key == KEY_ESCAPE) engine->getWindow()->close();
-		getCamera()->keyCallback(key, state);
+	window->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
+		if (key == KEY_ESCAPE) {
+			window->close();
+		}
+		camera->keyCallback(key, state);
 	});
 
-	engine->getWindow()->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
-		getCamera()->mouseButtonCallback(engine->getWindow(), btn, state);
+	window->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
+		camera->mouseButtonCallback(window, btn, state);
 	});
 
-	engine->getWindow()->getMouse()->setMoveCallback([this](int mx, int my) {
-		getCamera()->mouseMoveCallback(engine->getWindow(), mx, my);
+	window->getMouse()->setMoveCallback([this](int mx, int my) {
+		camera->mouseMoveCallback(window, mx, my);
 	});
 
-	std::vector<short> indices = {
-		0, 1, 2
-	};
-
-	indexBuffer = engine->getManager()->addBuffer("IndexBuffer", BufferConfig(INDEX_BT)
-		.setData(indices.data(), sizeof(short), sizeof(short) * indices.size()));
+	// Constants Buffers
 	
-	std::vector<glm::vec3> vertices = {
-		glm::vec3(-1, -1, 0), glm::vec3(1, -1, 0), glm::vec3(0, 1, 0)
-	};
+	constantsBufferVPM = std::move(
+		device->createConstantsBuffer(
+			BufferConfig()
+			.asConstantsBuffer()
+			.setBinding(0)
+			.setInputLayout(InputLayoutConfig().mat4())
+			.setData(camera->getViewProjMatrix())));
 
-	vertexBuffer = engine->getManager()->addBuffer("VertexBuffer", BufferConfig(VERTEX_BT)
-		.setData(vertices.data(), sizeof(glm::vec3), sizeof(glm::vec3) * vertices.size()));
+	constantsBufferWM = std::move(
+		device->createConstantsBuffer(
+			BufferConfig()
+			.asConstantsBuffer()
+			.setBinding(1)
+			.setInputLayout(InputLayoutConfig().mat4())
+			.setData(glm::mat4(1))));
 
-	simpleShader = engine->getManager()->addShader("SimpleShader", ShaderConfig()
+	// Shader
+
+	auto inputs = InputLayoutConfig().float3();
+	
+	simpleShader = device->createShader(
+		ShaderConfig()
 		.setGLSLVertexShader("res/shaders/GLSL/simple.vs.glsl")
 		.setGLSLPixelShader("res/shaders/GLSL/simple.ps.glsl")
 		.setHLSLVertexShader("res/shaders/HLSL/simple.vs.hlsl", "main")
 		.setHLSLPixelShader("res/shaders/HLSL/simple.ps.hlsl", "main")
-		.addConstant<glm::mat4>("mvpMatrix")
-		.setLayout(InputLayoutConfig()
-			.add(FLOAT3_T, POSITION_SEM, 0)));
+		.setInputLayout(inputs));
 	
-	simpleShader->bindBuffer(0, vertexBuffer);
+	// Index Buffer
 
+	std::vector<short> indices = {
+		0, 1, 2
+	};
+	
+	indexBuffer = std::move(
+		device->createIndexBuffer(
+			BufferConfig()
+			.asIndexBuffer()
+			.setInputLayout(InputLayoutConfig().short1())
+			.setData(indices.data(), indices.size())));
+
+	// Vertex Buffer
+
+	std::vector<glm::vec3> vertices = {
+		glm::vec3(-1, -1, 0), glm::vec3(1, -1, 0), glm::vec3(0, 1, 0)
+	};
+
+	vertexBuffer = std::move(
+		device->createVertexBuffer(
+			BufferConfig()
+			.asVertexBuffer()
+			.setInputLayout(InputLayoutConfig().float3())
+			//.setSemanticLayout(SemanticLayoutConfig().position())
+			.setData(vertices.data(), vertices.size())));
+
+	// Vertex Array Object
+
+	vertexArray = std::move(device->createVertexArray(InputLayoutConfig().float3()));
+	vertexArray->addVertexBuffer(vertexBuffer);
+	
 }
 
 void TestGame::update(const double deltaTime) {
@@ -71,17 +112,20 @@ void TestGame::update(const double deltaTime) {
 
 void TestGame::render() {
 	
-	engine->getGraphicsContext()->clear();
-
-	engine->getGraphicsContext()->setViewport(engine->getWindow());
+	context->clear();
 
 	simpleShader->bind();
 
-	simpleShader->setConstant("mvpMatrix", camera->getViewProjMatrix());
+	sizeof(glm::mat4);
 
-	vertexBuffer->bind();
-	
-	engine->getGraphicsContext()->drawIndexed(indexBuffer, 3, 0);
+	constantsBufferVPM->setData((void*)glm::value_ptr(camera->getViewProjMatrix()));
+	//constantsBufferWM->setData((void*)glm::value_ptr(glm::mat4(1)));
+		
+	vertexArray->bind();
+		
+	context->drawIndexed(indexBuffer, 3, 0);
+
+	vertexArray->unbind();
 
 	simpleShader->unbind();
 

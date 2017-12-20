@@ -10,8 +10,11 @@ public:
 	GLGraphicsDevice();
 	~GLGraphicsDevice();
 
-	std::shared_ptr<Shader> createShader(ShaderConfig& config);
-	std::shared_ptr<Buffer> createBuffer(BufferConfig& config);
+	std::unique_ptr<Shader> createShader(ShaderConfig& config) override;
+	std::unique_ptr<ConstantsBuffer> createConstantsBuffer(BufferConfig& config) override;
+	std::unique_ptr<IndexBuffer> createIndexBuffer(BufferConfig& config) override;
+	std::unique_ptr<VertexBuffer> createVertexBuffer(BufferConfig& config) override;
+	std::unique_ptr<VertexArray> createVertexArray(InputLayoutConfig& config) override;
 
 private:
 

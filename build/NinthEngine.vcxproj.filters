@@ -25,9 +25,6 @@
     <Filter Include="Header Files\Camera">
       <UniqueIdentifier>{b6c96740-6382-434b-a12e-a4aa9493dc14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Application">
-      <UniqueIdentifier>{c18641e7-c8a8-4c8a-aef3-89e31105b1fc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Camera">
       <UniqueIdentifier>{0da8423f-547d-414b-9571-2eb912355c18}</UniqueIdentifier>
     </Filter>
@@ -52,11 +49,17 @@
     <Filter Include="Source Files\Render\D3D">
       <UniqueIdentifier>{b7014396-4553-4cc0-98f1-2ef4b9090ebb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Resource">
-      <UniqueIdentifier>{b7064351-b0f4-4de3-9925-c4e29812467c}</UniqueIdentifier>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{509ac03a-6db2-4cb3-bbb1-82c808759c87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Resource">
-      <UniqueIdentifier>{4471bce7-a3f3-449b-a292-d0022d47b12b}</UniqueIdentifier>
+    <Filter Include="Header Files\Utils\GL">
+      <UniqueIdentifier>{742f5917-e835-4651-bd8f-d965cf7f8801}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils\D3D">
+      <UniqueIdentifier>{e1cab9b9-ddf1-47ec-bf02-1645656b89b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderConfig">
+      <UniqueIdentifier>{0c009436-a4cc-43b3-a7cf-c8e2f48c3329}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +108,6 @@
     <ClInclude Include="..\src\Win32\Win32GameEngine.hpp">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Render\GL\GLUtils.hpp">
-      <Filter>Header Files\Render\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Win32\Win32GLContext.hpp">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
@@ -126,22 +126,10 @@
     <ClInclude Include="..\src\Render\GL\GLGraphicsDevice.hpp">
       <Filter>Header Files\Render\GL</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Render\D3D\D3DUtils.hpp">
-      <Filter>Header Files\Render\D3D</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsContext.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsDevice.hpp">
-      <Filter>Header Files\Render\D3D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Resource\ResourceManager.hpp">
-      <Filter>Header Files\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\ShaderConfig.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Render\D3D\D3DBuffer.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp">
@@ -156,26 +144,65 @@
     <ClInclude Include="..\src\Render\GL\GLShader.hpp">
       <Filter>Header Files\Render\GL</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Render\GL\GLBuffer.hpp">
+    <ClInclude Include="..\include\NinthEngine\Utils\MathUtils.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Utils\GL\GLUtils.hpp">
+      <Filter>Header Files\Utils\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Utils\D3D\D3DUtils.hpp">
+      <Filter>Header Files\Utils\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\InputLayoutConfig.hpp">
+      <Filter>Header Files\RenderConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\ConstantsConfig.hpp">
+      <Filter>Header Files\RenderConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\ShaderConfig.hpp">
+      <Filter>Header Files\RenderConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Utils\FileUtils.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\BufferConfig.hpp">
+      <Filter>Header Files\RenderConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\VertexArray.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLVertexArray.hpp">
       <Filter>Header Files\Render\GL</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\BufferConfig.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\InputLayout.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Render\D3D\D3DInputLayout.hpp">
+    <ClInclude Include="..\src\Render\D3D\D3DVertexArray.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Render\GL\GLInputLayout.hpp">
-      <Filter>Header Files\Render\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\InputLayoutConfig.hpp">
+    <ClInclude Include="..\include\NinthEngine\Render\ConstantsBuffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Resource\MathUtils.hpp">
-      <Filter>Header Files\Resource</Filter>
+    <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLConstantsBuffer.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLVertexBuffer.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLIndexBuffer.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DConstantsBuffer.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DIndexBuffer.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DVertexBuffer.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,29 +239,35 @@
     <ClCompile Include="..\src\Render\D3D\D3DGraphicsContext.cpp">
       <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Resource\ResourceManager.cpp">
-      <Filter>Source Files\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Render\ShaderConfig.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Render\D3D\D3DShader.cpp">
       <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Render\GL\GLShader.cpp">
       <Filter>Source Files\Render\GL</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\BufferConfig.cpp">
-      <Filter>Source Files\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Render\D3D\D3DBuffer.cpp">
-      <Filter>Source Files\Render\D3D</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Render\GL\GLBuffer.cpp">
+    <ClCompile Include="..\src\Render\GL\GLVertexArray.cpp">
       <Filter>Source Files\Render\GL</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\InputLayoutConfig.cpp">
-      <Filter>Source Files\Render</Filter>
+    <ClCompile Include="..\src\Render\D3D\D3DVertexArray.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLConstantsBuffer.cpp">
+      <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLIndexBuffer.cpp">
+      <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLVertexBuffer.cpp">
+      <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DConstantsBuffer.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DVertexBuffer.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DIndexBuffer.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

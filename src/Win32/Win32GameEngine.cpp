@@ -2,7 +2,7 @@
 
 #include <plog\Log.h>
 #include "..\..\include\NinthEngine\Application\Game.hpp"
-#include "..\Render\GL\GLUtils.hpp"
+#include "..\Utils\GL\GLUtils.hpp"
 #include "..\Render\GL\GLGraphicsDevice.hpp"
 #include "..\Render\GL\GLGraphicsContext.hpp"
 #include "..\Render\D3D\D3DGraphicsDevice.hpp"
@@ -13,11 +13,11 @@
 namespace NinthEngine {
 
 Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window, const bool vsync, const bool useGL)
-	: window(window) {
+	: m_window(window) {
 	
 	if (useGL) {
 
-		auto glContext = std::make_shared<Win32GLContext>(window->getHandle());
+		auto glContext = std::make_unique<Win32GLContext>(window->getHandle());
 
 		if (glewInit() != GLEW_OK) {
 			LOG_ERROR << "Failed to initialize GLEW";
@@ -26,54 +26,52 @@ Win32GameEngine::Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window,
 
 		glContext->makeCurrent();
 
-		device = std::make_shared<GLGraphicsDevice>();
+		m_device = std::make_shared<GLGraphicsDevice>();
 
-		context = std::make_shared<GLGraphicsContext>(glContext, window, vsync);
+		m_context = std::make_shared<GLGraphicsContext>(std::move(glContext), window, vsync);
 	}
 	else {
 
 		auto d3dDevice = std::make_shared<D3DGraphicsDevice>();
 
-		context = std::make_shared<D3DGraphicsContext>(
+		m_context = std::make_shared<D3DGraphicsContext>(
 			d3dDevice->getDevice(), 
 			d3dDevice->getDeviceContext(), 
 			window, vsync);
 
-		device = std::move(d3dDevice);
+		m_device = std::move(d3dDevice);
 	}
 
-	manager = std::make_shared<ResourceManager>(device);
-	timer = std::make_shared<Win32GameTimer>();
+	m_timer = std::make_shared<Win32GameTimer>();
 
-	context->setViewport(window);
+	m_context->setViewport(0, 0, window->getWidth(), window->getHeight());
 }
 
 Win32GameEngine::~Win32GameEngine() {
 
-	manager.reset();
-	device.reset();
-	context.reset();
-	timer.reset();
+	m_device.reset();
+	m_context.reset();
+	m_timer.reset();
 }
 
-void Win32GameEngine::run(const std::shared_ptr<Game>& game) {
+void Win32GameEngine::run(std::unique_ptr<Game> game) {
 	
 	game->init();
 
-	const std::string title = window->getTitle();
+	const std::string title = m_window->getTitle();
 	double deltaTime = 0.0;
 	int frames = 0;
 
-	while (!window->isClosed()) {
+	while (!m_window->isClosed()) {
 
-		deltaTime = timer->elapsed();
-		timer->reset();
+		deltaTime = m_timer->elapsed();
+		m_timer->reset();
 
 		game->update(deltaTime);
 		game->render();
-		context->swapBuffers();
+		m_context->swapBuffers();
 		
-		window->update();
+		m_window->update();
 		frames++;
 
 		/*
@@ -84,6 +82,8 @@ void Win32GameEngine::run(const std::shared_ptr<Game>& game) {
 		}
 		*/
 	}
+
+	game.reset();
 }
 
 } // namespace NinthEngine

@@ -21,43 +21,42 @@ public:
 	void update();
 	void close();
 
-	bool isClosed() const { return closed; }
+	void setResizeCallback(const std::function<void(int, int)>& callback) override { m_resizeCB = callback; };
+	void resizeCallback(const int _width, const int _height) override { if(m_resizeCB) m_resizeCB(_width, _height); };
 
-	void setResizeCallback(const std::function<void(int, int)>& callback) { resizeCB = callback; };
-	void resizeCallback(const int _width, const int _height) { if(resizeCB) resizeCB(_width, _height); };
+	std::shared_ptr<Keyboard> getKeyboard() override { return m_keyboard; }
+	std::shared_ptr<Mouse> getMouse() override { return m_mouse; }
 
-	std::shared_ptr<Keyboard> getKeyboard() { return keyboard; }
-	std::shared_ptr<Mouse> getMouse() { return mouse; }
+	HWND getHandle() { return m_handle; }
+	HINSTANCE getInstance() { return m_instance; }
 
-	HWND getHandle() { return handle; }
-	HINSTANCE getInstance() { return instance; }
+	const std::string getTitle() const override { return m_title; };
+	const int getWidth() const override { return m_width; };
+	const int getHeight() const override { return m_height; };
+	const bool isMouseVisible() const override { return m_mouseVisible; };
+	const bool isClosed() const override { return m_closed; }
 
-	std::string getTitle() const { return title; };
-	int getWidth() const { return width; };
-	int getHeight() const { return height; };
-	bool isMouseVisible() const { return mouseVisible; };
-
-	void setTitle(const std::string);
-	void setWidth(const int _width) { width = _width; };
-	void setHeight(const int _height) { height = _height; };
-	void setMouseVisible(const bool);
-	void setWindowSize(const int width, const int height);
+	void setTitle(const std::string) override;
+	void setWidth(const int width) override { m_width = width; };
+	void setHeight(const int height) override { m_height = height; };
+	void setMouseVisible(const bool visible) override;
+	void setWindowSize(const int width, const int height) override;
 
 	LRESULT CALLBACK wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
-	std::string title;
-	int width, height;
-	bool mouseVisible, closed;
+	HWND m_handle;
+	HINSTANCE m_instance;
+	int m_cmdShow;
 
-	HWND handle;
-	HINSTANCE instance;
-	int cmdShow;
+	std::string m_title;
+	int m_width, m_height;
+	bool m_mouseVisible, m_closed;
+	
+	std::function<void(int, int)> m_resizeCB;
 
-	std::function<void(int, int)> resizeCB;
-
-	std::shared_ptr<Keyboard> keyboard;
-	std::shared_ptr<Mouse> mouse;
+	std::shared_ptr<Keyboard> m_keyboard;
+	std::shared_ptr<Mouse> m_mouse;
 
 };
 

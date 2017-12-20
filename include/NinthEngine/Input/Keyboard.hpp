@@ -34,11 +34,17 @@ enum KeyState {
 
 class Keyboard {
 public:
+	Keyboard() = default;
+	Keyboard(const Keyboard&) = delete;
+	Keyboard& operator=(const Keyboard&) = delete;
+
+	virtual ~Keyboard() = default;
+
 	virtual void setKeyCallback(const std::function<void(Key, KeyState)>&) = 0;
 
-	virtual void keyCallback(int, int) = 0;
+	virtual void keyCallback(int key, int state) = 0;
 
-	virtual KeyState getKey(Key) const = 0;
+	virtual const KeyState getKey(Key key) const = 0;
 };
 
 } // namespace NinthEngine

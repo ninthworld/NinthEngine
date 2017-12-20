@@ -1,10 +1,11 @@
 #ifdef _WIN32
 
 #include <plog\Log.h>
-#include "..\..\..\include\NinthEngine\Render\ShaderConfig.hpp"
-#include "..\..\..\include\NinthEngine\Render\BufferConfig.hpp"
 #include "D3DShader.hpp"
-#include "D3DBuffer.hpp"
+#include "D3DConstantsBuffer.hpp"
+#include "D3DIndexBuffer.hpp"
+#include "D3DVertexBuffer.hpp"
+#include "D3DVertexArray.hpp"
 #include "D3DGraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -33,7 +34,7 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 		createDeviceFlags, 
 		featureLevels, _countof(featureLevels), 
 		D3D11_SDK_VERSION, 
-		&device, &featureLevel, &deviceContext);
+		&m_device, &featureLevel, &m_deviceContext);
 
 	if (hr == E_INVALIDARG) {
 		hr = D3D11CreateDevice(
@@ -41,7 +42,7 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 			createDeviceFlags,
 			&featureLevels[1], _countof(featureLevels)-1,
 			D3D11_SDK_VERSION,
-			&device, &featureLevel, &deviceContext);
+			&m_device, &featureLevel, &m_deviceContext);
 	}
 
 	if (FAILED(hr)) {
@@ -53,23 +54,35 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 D3DGraphicsDevice:: ~D3DGraphicsDevice() {
 }
 
-std::shared_ptr<Shader> D3DGraphicsDevice::createShader(ShaderConfig& config) {
+std::unique_ptr<Shader> D3DGraphicsDevice::createShader(ShaderConfig& config) {
 
-	auto shader = std::make_shared<D3DShader>(deviceContext);
-	shader->createVertexShader(device, config.getHLSLVertexShader(), config.getHLSLVertexShaderEntry(), config.getLayout());
-	shader->createPixelShader(device, config.getHLSLPixelShader(), config.getHLSLPixelShaderEntry());
-	for (auto it = config.getConstants().begin(); it != config.getConstants().end(); ++it) {
-		shader->createConstant(device, it->first, it->second);
-	}
+	auto shader = std::make_unique<D3DShader>(m_deviceContext);
+	shader->createVertexShader(m_device, config);
+	shader->createPixelShader(m_device, config);
 
 	return std::move(shader);
 }
 
-std::shared_ptr<Buffer> D3DGraphicsDevice::createBuffer(BufferConfig& config) {
+std::unique_ptr<ConstantsBuffer> D3DGraphicsDevice::createConstantsBuffer(BufferConfig& config) {
 
-	auto buffer = std::make_shared<D3DBuffer>(device, deviceContext, config);
+	return std::make_unique<D3DConstantsBuffer>(m_device, m_deviceContext, config);
+}
 
-	return std::move(buffer);
+std::unique_ptr<IndexBuffer> D3DGraphicsDevice::createIndexBuffer(BufferConfig& config) {
+
+	return std::make_unique<D3DIndexBuffer>(m_device, m_deviceContext, config);
+}
+
+std::unique_ptr<VertexBuffer> D3DGraphicsDevice::createVertexBuffer(BufferConfig& config) {
+
+	return std::make_unique<D3DVertexBuffer>(m_device, m_deviceContext, config);
+}
+
+std::unique_ptr<VertexArray> D3DGraphicsDevice::createVertexArray(InputLayoutConfig& config) {
+
+	auto vertexArray = std::make_unique<D3DVertexArray>(m_deviceContext, config);
+
+	return std::move(vertexArray);
 }
 
 } // namespace NinthEngine

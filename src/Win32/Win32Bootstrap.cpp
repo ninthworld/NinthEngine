@@ -7,25 +7,36 @@
 
 namespace NinthEngine {
 
-Win32Bootstrap::Win32Bootstrap(const std::string title, const int width, const int height, const bool vsync, HINSTANCE hInstance, int cmdShow, const bool useGL)
-	: title(title), width(width), height(height), vsync(vsync), hInstance(hInstance), cmdShow(cmdShow), useGL(useGL) {
+Win32Bootstrap::Win32Bootstrap(
+	const std::string title, 
+	const int width, 
+	const int height, 
+	const bool vsync, 
+	HINSTANCE hInstance, 
+	int cmdShow, 
+	const bool useGL)
+	: m_title(title)
+	, m_width(width)
+	, m_height(height)
+	, m_vsync(vsync)
+	, m_hInstance(hInstance)
+	, m_cmdShow(cmdShow)
+	, m_useGL(useGL) {
 }
 
 Win32Bootstrap::~Win32Bootstrap() {
 }
 
-void Win32Bootstrap::run(const std::function<std::shared_ptr<Game>(const std::shared_ptr<GameEngine>&)>& app) {
+void Win32Bootstrap::run(const std::function<std::unique_ptr<Game>(const std::shared_ptr<GameEngine>&)>& app) {
 
 	try {
-		auto window = std::make_shared<Win32GameWindow>(title, width, height, hInstance, cmdShow);
-
-		auto engine = std::make_shared<Win32GameEngine>(window, vsync, useGL);
+		auto window = std::make_shared<Win32GameWindow>(m_title, m_width, m_height, m_hInstance, m_cmdShow);
+		auto engine = std::make_shared<Win32GameEngine>(window, m_vsync, m_useGL);
 
 		auto game = app(engine);
 
-		engine->run(game);
+		engine->run(std::move(game));
 
-		game.reset();
 		engine.reset();
 		window.reset();
 	}

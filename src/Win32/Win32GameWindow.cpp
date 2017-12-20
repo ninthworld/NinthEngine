@@ -16,15 +16,15 @@ LRESULT CALLBACK wndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 namespace NinthEngine {
 
 Win32GameWindow::Win32GameWindow(const std::string title, const int width, const int height, HINSTANCE hInstance, int cmdShow)
-	: title(title), width(width), height(height), instance(hInstance), cmdShow(cmdShow)
-	, mouseVisible(true), closed(false)
-	, handle(NULL) {
+	: m_title(title), m_width(width), m_height(height), m_instance(hInstance), m_cmdShow(cmdShow)
+	, m_mouseVisible(true), m_closed(false)
+	, m_handle(NULL) {
 
 	WNDCLASSEX wndClass = { 0 };
 	wndClass.cbSize = sizeof(WNDCLASSEX);
 	wndClass.style = CS_HREDRAW | CS_VREDRAW;
 	wndClass.lpfnWndProc = &wndProc;
-	wndClass.hInstance = instance;
+	wndClass.hInstance = m_instance;
 	wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wndClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wndClass.lpszMenuName = nullptr;
@@ -38,29 +38,28 @@ Win32GameWindow::Win32GameWindow(const std::string title, const int width, const
 	RECT windowRect = { 0, 0, width, height };
 	AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
-	handle = CreateWindowA(wndClass.lpszClassName, title.c_str(),
+	m_handle = CreateWindowA(wndClass.lpszClassName, title.c_str(),
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		windowRect.right - windowRect.left,
 		windowRect.bottom - windowRect.top,
-		nullptr, nullptr, instance, this
-	);
+		nullptr, nullptr, m_instance, this);
 
-	if (!handle) {
+	if (!m_handle) {
 		LOG_ERROR << "Failed to create window";
 		throw std::exception();
 	}
 
-	ShowWindow(handle, cmdShow);
-	UpdateWindow(handle);
+	ShowWindow(m_handle, cmdShow);
+	UpdateWindow(m_handle);
 
-	keyboard = std::make_shared<Win32Keyboard>();
-	mouse = std::make_shared<Win32Mouse>();
+	m_keyboard = std::make_shared<Win32Keyboard>();
+	m_mouse = std::make_shared<Win32Mouse>();
 }
 
 Win32GameWindow::~Win32GameWindow() {
 
-	mouse.reset();
-	keyboard.reset();
+	m_mouse.reset();
+	m_keyboard.reset();
 }
 
 void Win32GameWindow::update() {
@@ -74,23 +73,23 @@ void Win32GameWindow::update() {
 
 void Win32GameWindow::close() {
 
-	closed = true;
-	DestroyWindow(handle);
+	m_closed = true;
+	DestroyWindow(m_handle);
 }
 
-void Win32GameWindow::setTitle(const std::string _title) {
-	title = _title;
+void Win32GameWindow::setTitle(const std::string title) {
+	m_title = title;
 
-	SetWindowText(handle, title.c_str());
+	SetWindowText(m_handle, title.c_str());
 }
 
-void Win32GameWindow::setMouseVisible(const bool _mouseVisible) {
-	mouseVisible = _mouseVisible;
+void Win32GameWindow::setMouseVisible(const bool visible) {
+	m_mouseVisible = visible;
 
-	ShowCursor(_mouseVisible);
+	ShowCursor(visible);
 }
 
-void Win32GameWindow::setWindowSize(const int _width, const int _height) {
+void Win32GameWindow::setWindowSize(const int width, const int height) {
 	// Send resize command
 }
 
@@ -107,37 +106,37 @@ LRESULT CALLBACK Win32GameWindow::wndProcCallback(HWND hwnd, UINT message, WPARA
 		EndPaint(hwnd, &paintStruct);
 		break;
 	case WM_SIZE:
-		width = LOWORD(lParam);
-		height = HIWORD(lParam);
-		resizeCallback(width, height);
+		m_width = LOWORD(lParam);
+		m_height = HIWORD(lParam);
+		resizeCallback(m_width, m_height);
 		break;
 	case WM_KEYDOWN:
-		keyboard->keyCallback(wParam, KS_PRESSED);
+		m_keyboard->keyCallback(wParam, KS_PRESSED);
 		break;
 	case WM_KEYUP:
-		keyboard->keyCallback(wParam, KS_RELEASED);
+		m_keyboard->keyCallback(wParam, KS_RELEASED);
 		break;
 	case WM_LBUTTONDOWN:
-		mouse->buttonCallback(MB_LEFT_BTN, MS_PRESSED);
+		m_mouse->buttonCallback(MB_LEFT_BTN, MS_PRESSED);
 		break;
 	case WM_LBUTTONUP:
-		mouse->buttonCallback(MB_LEFT_BTN, MS_RELEASED);
+		m_mouse->buttonCallback(MB_LEFT_BTN, MS_RELEASED);
 		break;
 	case WM_RBUTTONDOWN:
-		mouse->buttonCallback(MB_RIGHT_BTN, MS_PRESSED);
+		m_mouse->buttonCallback(MB_RIGHT_BTN, MS_PRESSED);
 		break;
 	case WM_RBUTTONUP:
-		mouse->buttonCallback(MB_RIGHT_BTN, MS_RELEASED);
+		m_mouse->buttonCallback(MB_RIGHT_BTN, MS_RELEASED);
 		break;
 	case WM_MOUSEMOVE:
-		GetWindowRect(handle, &rect);
-		mouse->moveCallback(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-		pos = { width / 2, height / 2 };
-		ClientToScreen(handle, &pos);
-		if(mouse->isMouseCentered()) SetCursorPos(pos.x, pos.y);
+		GetWindowRect(m_handle, &rect);
+		m_mouse->moveCallback(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+		pos = { m_width / 2, m_height / 2 };
+		ClientToScreen(m_handle, &pos);
+		if(m_mouse->isMouseCentered()) SetCursorPos(pos.x, pos.y);
 		break;
 	case WM_CLOSE:
-		closed = true;
+		m_closed = true;
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);

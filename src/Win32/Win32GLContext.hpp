@@ -14,15 +14,15 @@ public:
 	Win32GLContext(HWND handle);
 	~Win32GLContext();
 
-	void makeCurrent();
-	void clearCurrent();
-	void swapBuffers();
+	void makeCurrent() override;
+	void clearCurrent() override;
+	void swapBuffers() override;
 
 private:
-	HWND handle;
+	HWND m_handle;
 
-	std::unique_ptr<std::remove_pointer<HDC>::type, std::function<void(HDC)>> hdc;
-	std::unique_ptr<std::remove_pointer<HGLRC>::type, std::function<void(HGLRC)>> glrc;
+	std::unique_ptr<std::remove_pointer<HDC>::type, std::function<void(HDC)>> m_hdc;
+	std::unique_ptr<std::remove_pointer<HGLRC>::type, std::function<void(HGLRC)>> m_glrc;
 
 };
 

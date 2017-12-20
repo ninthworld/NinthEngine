@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "..\Resource\MathUtils.hpp"
+#include "..\Utils\MathUtils.hpp"
 
 namespace NinthEngine {
 
@@ -15,15 +15,21 @@ class GameWindow;
 
 class GameCamera {
 public:
+	GameCamera() = default;
+	GameCamera(const GameCamera&) = delete;
+	GameCamera& operator=(const GameCamera&) = delete;
+
+	virtual ~GameCamera() = default;
+
 	virtual void init(const int width, const int height) = 0;
 	virtual void update(const std::shared_ptr<GameWindow>& window, const double deltaTime) = 0;
 
-	virtual GameCameraSettings getSettings() const = 0;
-	virtual glm::vec3 getPosition() const = 0;
-	virtual glm::vec3 getRotation() const = 0;
-	virtual glm::mat4 getProjMatrix() const = 0;
-	virtual glm::mat4 getViewMatrix() const = 0;
-	virtual glm::mat4 getViewProjMatrix() const = 0;
+	virtual const GameCameraSettings getSettings() const = 0;
+	virtual const glm::vec3 getPosition() const = 0;
+	virtual const glm::vec3 getRotation() const = 0;
+	virtual const glm::mat4 getProjMatrix() const = 0;
+	virtual const glm::mat4 getViewMatrix() const = 0;
+	virtual const glm::mat4 getViewProjMatrix() const = 0;
 
 	virtual void setSettings(GameCameraSettings) = 0;
 	virtual void setPosition(const glm::vec3) = 0;

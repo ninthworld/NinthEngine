@@ -12,23 +12,21 @@ namespace NinthEngine {
 
 class Win32GameEngine : public GameEngine {
 public:
-	Win32GameEngine(const std::shared_ptr<Win32GameWindow>&, const bool vsync, const bool useGL);
+	Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window, const bool vsync, const bool useGL);
 	~Win32GameEngine();
 
-	void run(const std::shared_ptr<Game>&);
+	void run(std::unique_ptr<Game> game);
 
-	std::shared_ptr<GameWindow> getWindow() { return window; };
-	std::shared_ptr<GameTimer> getTimer() { return timer; };
-	std::shared_ptr<GraphicsDevice> getGraphicsDevice() { return device; };
-	std::shared_ptr<GraphicsContext> getGraphicsContext() { return context; };
-	std::shared_ptr<ResourceManager> getManager() { return manager; };
+	std::shared_ptr<GameWindow> getWindow() override { return m_window; };
+	std::shared_ptr<GameTimer> getTimer() override { return m_timer; };
+	std::shared_ptr<GraphicsDevice> getGraphicsDevice() override { return m_device; };
+	std::shared_ptr<GraphicsContext> getGraphicsContext() override { return m_context; };
 
 private:
-	std::shared_ptr<Win32GameWindow> window;
-	std::shared_ptr<Win32GameTimer> timer;
-	std::shared_ptr<GraphicsDevice> device;
-	std::shared_ptr<GraphicsContext> context;
-	std::shared_ptr<ResourceManager> manager;
+	std::shared_ptr<Win32GameWindow> m_window;
+	std::shared_ptr<Win32GameTimer> m_timer;
+	std::shared_ptr<GraphicsDevice> m_device;
+	std::shared_ptr<GraphicsContext> m_context;
 
 };
 

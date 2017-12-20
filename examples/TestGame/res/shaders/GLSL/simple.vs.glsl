@@ -1,10 +1,17 @@
 #version 330
 
-layout (location = 0) in vec3 in_position;
+layout (location=0) in vec3 in_position;
 
-uniform mat4 mvpMatrix;
+layout (std140, binding=0) uniform ViewProjMatrix {
+	mat4 viewProjMatrix;
+};
+
+layout (std140, binding=1) uniform ModelMatrix {
+	mat4 modelMatrix;
+};
 
 void main(){
 
-	gl_Position = mvpMatrix * vec4(in_position, 1.0);
+	//gl_Position = vec4(in_position, 1.0);
+	gl_Position = viewProjMatrix * modelMatrix * vec4(in_position, 1.0);
 }

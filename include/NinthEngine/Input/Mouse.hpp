@@ -20,18 +20,24 @@ enum MouseState {
 
 class Mouse {
 public:
+	Mouse() = default;
+	Mouse(const Mouse&) = delete;
+	Mouse& operator=(const Mouse&) = delete;
+
+	virtual ~Mouse() = default;
+
 	virtual void setButtonCallback(const std::function<void(MouseButton, MouseState)>&) = 0;
 	virtual void setMoveCallback(const std::function<void(int, int)>&) = 0;
 
-	virtual void buttonCallback(int, int) = 0;
-	virtual void moveCallback(int, int) = 0;
+	virtual void buttonCallback(int button, int state) = 0;
+	virtual void moveCallback(int x, int y) = 0;
 
-	virtual MouseState getButton(MouseButton) const = 0;
-	virtual double getMouseX() const = 0;
-	virtual double getMouseY() const = 0;
+	virtual const MouseState getButton(MouseButton button) const = 0;
+	virtual const double getMouseX() const = 0;
+	virtual const double getMouseY() const = 0;
 
 	virtual void setMouseCentered(const bool) = 0;
-	virtual bool isMouseCentered() const = 0;
+	virtual const bool isMouseCentered() const = 0;
 };
 
 } // namespace NinthEngine

@@ -3,7 +3,7 @@
 #ifdef _WIN32
 
 #include <memory>
-#include "D3DUtils.hpp"
+#include "..\..\Utils\D3D\D3DUtils.hpp"
 #include "..\..\..\include\NinthEngine\Render\GraphicsContext.hpp"
 
 namespace NinthEngine {
@@ -16,25 +16,24 @@ public:
 	D3DGraphicsContext(const ComPtr<ID3D11Device>&, const ComPtr<ID3D11DeviceContext>&, const std::shared_ptr<Win32GameWindow>&, const bool vsync);
 	~D3DGraphicsContext();
 
-	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex);
+	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
 
-	void swapBuffers();
+	void swapBuffers() override;
 
-	void clear();
+	void clear() override;
 
-	bool isVsync() const { return vsync; };
+	const bool isVsync() const override { return m_vsync; };
 
-	void setVsync(const bool _vsync) { vsync = _vsync; };
-	void setViewport(const float x, const float y, const float width, const float height);
-	void setViewport(const std::shared_ptr<GameWindow>&);
+	void setVsync(const bool vsync) override { m_vsync = vsync; };
+	void setViewport(const float x, const float y, const float width, const float height) override;
 
 private:
-	ComPtr<ID3D11DeviceContext> context;
-	ComPtr<IDXGISwapChain> swapChain;	
-	ComPtr<ID3D11RenderTargetView> renderTargetView;
-	ComPtr<ID3D11RasterizerState> rasterizerState;
+	ComPtr<ID3D11DeviceContext> m_deviceContext;
+	ComPtr<IDXGISwapChain> m_swapChain;	
+	ComPtr<ID3D11RenderTargetView> m_renderTargetView;
+	ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
-	bool vsync;
+	bool m_vsync;
 
 };
 

@@ -13,6 +13,12 @@ class Mouse;
 
 class GameWindow {
 public:
+	GameWindow() = default;
+	GameWindow(const GameWindow&) = delete;
+	GameWindow& operator=(const GameWindow&) = delete;
+
+	virtual ~GameWindow() = default;
+
 	virtual void update() = 0;
 	virtual void close() = 0;
 	
@@ -22,11 +28,11 @@ public:
 	virtual std::shared_ptr<Keyboard> getKeyboard() = 0;
 	virtual std::shared_ptr<Mouse> getMouse() = 0;
 
-	virtual std::string getTitle() const = 0;
-	virtual int getWidth() const = 0;
-	virtual int getHeight() const = 0;
-	virtual bool isMouseVisible() const = 0;
-	virtual bool isClosed() const = 0;
+	virtual const std::string getTitle() const = 0;
+	virtual const int getWidth() const = 0;
+	virtual const int getHeight() const = 0;
+	virtual const bool isMouseVisible() const = 0;
+	virtual const bool isClosed() const = 0;
 
 	virtual void setTitle(const std::string) = 0;
 	virtual void setWidth(const int) = 0;

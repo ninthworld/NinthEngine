@@ -19,16 +19,17 @@ public:
 	Win32Bootstrap(const std::string title, const int width, const int height, const bool vsync, HINSTANCE hInstance, int cmdShow, const bool useGL = true);
 	~Win32Bootstrap();
 
-	void run(const std::function<std::shared_ptr<Game>(const std::shared_ptr<GameEngine>&)>& app);
+	void run(const std::function<std::unique_ptr<Game>(const std::shared_ptr<GameEngine>&)>& app);
 
 private:
-	std::string title;
-	int width, height;
-	bool vsync;
-	HINSTANCE hInstance;
-	int cmdShow;
+	HINSTANCE m_hInstance;
+	int m_cmdShow;
+
+	std::string m_title;
+	int m_width, m_height;
+	bool m_vsync;
 	
-	bool useGL;
+	bool m_useGL;
 };
 
 } // namespace NinthEngine

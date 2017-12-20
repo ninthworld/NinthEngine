@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "GLUtils.hpp"
+#include "..\..\Utils\GL\GLUtils.hpp"
 #include "..\..\..\include\NinthEngine\Render\GraphicsContext.hpp"
 
 namespace NinthEngine {
@@ -11,26 +11,26 @@ class GameWindow;
 
 class GLGraphicsContext : public GraphicsContext {
 public:
-	GLGraphicsContext(const std::shared_ptr<GLContext>&, const std::shared_ptr<GameWindow>&, const bool vsync);
+	GLGraphicsContext(std::unique_ptr<GLContext>, const std::shared_ptr<GameWindow>&, const bool vsync);
 	~GLGraphicsContext();
 	
-	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex);
+	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
 
-	void swapBuffers();
+	void swapBuffers() override;
 
-	void clear();
+	void clear() override;
 
-	bool isVsync() const { return vsync; };
+	const bool isVsync() const override { return m_vsync; };
 
-	void setVsync(const bool _vsync) { vsync = _vsync; };
-	void setViewport(const float x, const float y, const float width, const float height);
-	void setViewport(const std::shared_ptr<GameWindow>&);
+	void setVsync(const bool vsync) override { m_vsync = vsync; };
+
+	void setViewport(const float x, const float y, const float width, const float height) override;
 
 private:
-	std::shared_ptr<GLContext> glContext;
-	std::shared_ptr<GameWindow> window;
+	std::unique_ptr<GLContext> m_glContext;
+	std::shared_ptr<GameWindow> m_window;
 
-	bool vsync;
+	bool m_vsync;
 
 };
 
