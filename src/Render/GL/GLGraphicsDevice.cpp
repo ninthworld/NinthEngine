@@ -1,3 +1,4 @@
+#include <plog\Log.h>
 #include "GLShader.hpp"
 #include "GLConstantsBuffer.hpp"
 #include "GLIndexBuffer.hpp"
@@ -8,6 +9,28 @@
 namespace NinthEngine {
 
 GLGraphicsDevice::GLGraphicsDevice() {
+
+#ifdef _DEBUG
+	
+	std::stringstream str;
+
+	GLint num;
+	glGetIntegerv(GL_NUM_EXTENSIONS, &num);
+
+	str << "\nOpenGL --- "
+		<< "\nVersion: " << glGetString(GL_VERSION)
+		<< "\nVendor: " << glGetString(GL_VENDOR)
+		<< "\nRenderer: " << glGetString(GL_RENDERER)
+		<< "\nExtensions (" << num << "):";
+
+	for (int i = 0; i < num; ++i) {
+		str << "\n" << glGetStringi(GL_EXTENSIONS, i);
+	}
+
+	LOG_DEBUG << str.str();
+
+#endif
+
 }
 
 GLGraphicsDevice::~GLGraphicsDevice() {

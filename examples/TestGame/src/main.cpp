@@ -18,11 +18,12 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 
 	UNREFERENCED_PARAMETER(prevInstance);
 	UNREFERENCED_PARAMETER(cmdLine);
-	
-	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
-	plog::init(plog::verbose, &consoleAppender);
 
-	Win32Bootstrap bootstrap("Test Game", 1600, 900, false, hInstance, cmdShow, false);
+	static plog::RollingFileAppender<plog::TxtFormatter> fileAppender("plog.txt", 8000, 1);
+	static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
+	plog::init(plog::verbose, &consoleAppender).addAppender(&fileAppender);
+
+	Win32Bootstrap bootstrap("Test Game", 1600, 900, false, hInstance, cmdShow, true);
 	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
 		return std::make_unique<TestGame>(engine);
 	});
