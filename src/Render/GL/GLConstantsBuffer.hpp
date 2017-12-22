@@ -10,6 +10,8 @@ public:
 	GLConstantsBuffer(BufferConfig& config);
 	~GLConstantsBuffer();
 
+	const GLuint getBinding() const { return m_binding; };
+
 	void setData(void* data) override;
 	
 private:

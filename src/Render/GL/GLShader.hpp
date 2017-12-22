@@ -15,7 +15,9 @@ public:
 	void createVertexShader(ShaderConfig& config);
 	void createPixelShader(ShaderConfig& config);
 	void createProgram();
-	
+
+	void bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) override;
+
 	void bind() override;
 	void unbind() override;
 	

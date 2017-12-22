@@ -4,7 +4,7 @@
 #include <string>
 #include "..\Utils\FileUtils.hpp"
 #include "InputLayoutConfig.hpp"
-#include "ConstantsConfig.hpp"
+#include "SemanticLayoutConfig.hpp"
 
 namespace NinthEngine {
 
@@ -37,17 +37,17 @@ public:
 		return *this;
 	};
 
-	ShaderConfig& addConstants(const std::string name, ConstantsConfig& config) {
-		m_constants.insert(std::make_pair(name, config));
+	ShaderConfig& setSemanticLayout(const SemanticLayoutConfig& config) {
+		m_semanticLayout = config;
 		return *this;
-	};
+	}
 
 private:
 	std::string m_glslVS, m_glslPS;
 	std::string m_hlslVS, m_hlslPS;
 	std::string m_hlslVSEntry, m_hlslPSEntry;
 	InputLayoutConfig m_inputLayout;
-	std::map<const std::string, ConstantsConfig> m_constants;
+	SemanticLayoutConfig m_semanticLayout;
 
 	friend class GLShader;
 	friend class D3DShader;

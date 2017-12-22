@@ -29,7 +29,7 @@ void GLGraphicsContext::swapBuffers() {
 
 void GLGraphicsContext::clear() {
 
-	glClearColor(0, 0, 1, 1);
+	glClearColor(0x64 / 255.f, 0x95 / 255.f, 0xED / 255.f, 0xFF / 255.f);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

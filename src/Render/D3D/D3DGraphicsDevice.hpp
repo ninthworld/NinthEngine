@@ -14,10 +14,14 @@ public:
 	~D3DGraphicsDevice();
 
 	std::unique_ptr<Shader> createShader(ShaderConfig& config) override;
+
 	std::unique_ptr<ConstantsBuffer> createConstantsBuffer(BufferConfig& config) override;
 	std::unique_ptr<IndexBuffer> createIndexBuffer(BufferConfig& config) override;
 	std::unique_ptr<VertexBuffer> createVertexBuffer(BufferConfig& config) override;
+
 	std::unique_ptr<VertexArray> createVertexArray(InputLayoutConfig& config) override;
+
+	std::unique_ptr<Rasterizer> createRasterizer(RasterizerConfig& config) override;
 
 	ComPtr<ID3D11Device> getDevice() const { return m_device; };
 	ComPtr<ID3D11DeviceContext> getDeviceContext() const { return m_deviceContext; };

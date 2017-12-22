@@ -31,7 +31,6 @@ private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<IDXGISwapChain> m_swapChain;	
 	ComPtr<ID3D11RenderTargetView> m_renderTargetView;
-	ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
 	bool m_vsync;
 

@@ -156,9 +156,6 @@
     <ClInclude Include="..\include\NinthEngine\RenderConfig\InputLayoutConfig.hpp">
       <Filter>Header Files\RenderConfig</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\RenderConfig\ConstantsConfig.hpp">
-      <Filter>Header Files\RenderConfig</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\RenderConfig\ShaderConfig.hpp">
       <Filter>Header Files\RenderConfig</Filter>
     </ClInclude>
@@ -202,6 +199,21 @@
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DVertexBuffer.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\SemanticLayoutConfig.hpp">
+      <Filter>Header Files\RenderConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\RasterizerConfig.hpp">
+      <Filter>Header Files\RenderConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Rasterizer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLRasterizer.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DRasterizer.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
   </ItemGroup>
@@ -268,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Render\D3D\D3DIndexBuffer.cpp">
       <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DRasterizer.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLRasterizer.cpp">
+      <Filter>Source Files\Render\GL</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -37,7 +37,7 @@ public:
 		m_inputLayout = config;
 		return *this;
 	}
-
+	
 	BufferConfig& setData(void* data, const unsigned unitCount) {
 		m_data = data;
 		m_unitCount = unitCount;

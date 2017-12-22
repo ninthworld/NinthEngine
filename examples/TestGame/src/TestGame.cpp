@@ -41,6 +41,12 @@ void TestGame::init() {
 		camera->mouseMoveCallback(window, mx, my);
 	});
 
+	// Rasterizer
+
+	rasterizer = std::move(device->createRasterizer(RasterizerConfig()));
+
+	rasterizer->bind();
+
 	// Constants Buffers
 	
 	constantsBufferVPM = std::move(
@@ -51,7 +57,7 @@ void TestGame::init() {
 			.setInputLayout(InputLayoutConfig().mat4())
 			.setData(camera->getViewProjMatrix())));
 
-	constantsBufferWM = std::move(
+	constantsBufferMM = std::move(
 		device->createConstantsBuffer(
 			BufferConfig()
 			.asConstantsBuffer()
@@ -69,8 +75,12 @@ void TestGame::init() {
 		.setGLSLPixelShader("res/shaders/GLSL/simple.ps.glsl")
 		.setHLSLVertexShader("res/shaders/HLSL/simple.vs.hlsl", "main")
 		.setHLSLPixelShader("res/shaders/HLSL/simple.ps.hlsl", "main")
-		.setInputLayout(inputs));
+		.setInputLayout(inputs)
+		.setSemanticLayout(SemanticLayoutConfig().position()));
 	
+	simpleShader->bindConstants("ViewProjMatrix", constantsBufferVPM);
+	simpleShader->bindConstants("ModelMatrix", constantsBufferMM);
+
 	// Index Buffer
 
 	std::vector<short> indices = {
@@ -95,7 +105,6 @@ void TestGame::init() {
 			BufferConfig()
 			.asVertexBuffer()
 			.setInputLayout(InputLayoutConfig().float3())
-			//.setSemanticLayout(SemanticLayoutConfig().position())
 			.setData(vertices.data(), vertices.size())));
 
 	// Vertex Array Object
@@ -119,7 +128,7 @@ void TestGame::render() {
 	sizeof(glm::mat4);
 
 	constantsBufferVPM->setData((void*)glm::value_ptr(camera->getViewProjMatrix()));
-	//constantsBufferWM->setData((void*)glm::value_ptr(glm::mat4(1)));
+	//constantsBufferMM->setData((void*)glm::value_ptr(glm::mat4(1)));
 		
 	vertexArray->bind();
 		

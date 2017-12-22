@@ -6,6 +6,7 @@
 #include "D3DIndexBuffer.hpp"
 #include "D3DVertexBuffer.hpp"
 #include "D3DVertexArray.hpp"
+#include "D3DRasterizer.hpp"
 #include "D3DGraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -80,9 +81,12 @@ std::unique_ptr<VertexBuffer> D3DGraphicsDevice::createVertexBuffer(BufferConfig
 
 std::unique_ptr<VertexArray> D3DGraphicsDevice::createVertexArray(InputLayoutConfig& config) {
 
-	auto vertexArray = std::make_unique<D3DVertexArray>(m_deviceContext, config);
+	return std::make_unique<D3DVertexArray>(m_deviceContext, config);
+}
 
-	return std::move(vertexArray);
+std::unique_ptr<Rasterizer> D3DGraphicsDevice::createRasterizer(RasterizerConfig& config) {
+
+	return std::make_unique<D3DRasterizer>(m_device, m_deviceContext, config);
 }
 
 } // namespace NinthEngine

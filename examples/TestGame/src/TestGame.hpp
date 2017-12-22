@@ -37,8 +37,10 @@ private:
 
 	std::unique_ptr<Shader> simpleShader;
 
+	std::unique_ptr<Rasterizer> rasterizer;
+
 	std::shared_ptr<ConstantsBuffer> constantsBufferVPM;
-	std::shared_ptr<ConstantsBuffer> constantsBufferWM;
+	std::shared_ptr<ConstantsBuffer> constantsBufferMM;
 	std::shared_ptr<IndexBuffer> indexBuffer;
 	std::shared_ptr<VertexBuffer> vertexBuffer;
 

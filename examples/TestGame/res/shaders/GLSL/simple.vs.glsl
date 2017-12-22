@@ -2,11 +2,11 @@
 
 layout (location=0) in vec3 in_position;
 
-layout (std140, binding=0) uniform ViewProjMatrix {
+layout (std140) uniform ViewProjMatrix {
 	mat4 viewProjMatrix;
 };
 
-layout (std140, binding=1) uniform ModelMatrix {
+layout (std140) uniform ModelMatrix {
 	mat4 modelMatrix;
 };
 

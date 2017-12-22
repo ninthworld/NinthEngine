@@ -4,7 +4,7 @@
 
 namespace NinthEngine {
 
-enum InputLayoutTypes {
+enum InputLayoutType {
 	INT1,
 	SHORT1,
 	FLOAT1,
@@ -59,7 +59,7 @@ public:
 	};
 
 private:
-	std::vector<InputLayoutTypes> m_stack;
+	std::vector<InputLayoutType> m_stack;
 
 	unsigned m_unitSize = 0;
 

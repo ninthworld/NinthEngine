@@ -2,11 +2,14 @@
 
 #include <plog\Log.h>
 #include "..\..\..\include\NinthEngine\Render\Buffer.hpp"
+#include "..\..\..\include\NinthEngine\RenderConfig\SemanticLayoutConfig.hpp"
 #include "D3DShader.hpp"
 
 namespace {
 
 ComPtr<ID3DBlob> compileShader(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry, const std::string target);
+
+const char* getSemanticName(const NinthEngine::SemanticLayoutType);
 
 } // namespace
 
@@ -30,13 +33,18 @@ void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, ShaderCon
 		throw std::exception();
 	}
 
+	if (config.m_inputLayout.m_stack.size() != config.m_semanticLayout.m_stack.size()) {
+		LOG_ERROR << "Invalid semantic/input layout";
+		throw std::exception();
+	}
+
 	std::vector<D3D11_INPUT_ELEMENT_DESC> vertexLayoutDesc;
 	for (unsigned i = 0; i < config.m_inputLayout.m_stack.size(); ++i) {
 
 		D3D11_INPUT_ELEMENT_DESC desc;
 
-		desc.SemanticName = "POSITION";
-		desc.SemanticIndex = 0;
+		desc.SemanticName = getSemanticName(config.m_semanticLayout.m_stack[i].type);
+		desc.SemanticIndex = config.m_semanticLayout.m_stack[i].index;
 
 		switch (config.m_inputLayout.m_stack[i]) {
 		case FLOAT1: desc.Format = DXGI_FORMAT_R32_FLOAT; break;
@@ -72,12 +80,14 @@ void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, ShaderConf
 	}
 }
 
+void D3DShader::bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) {
+
+}
+
 void D3DShader::bind() {
 
 	m_deviceContext->IASetInputLayout(m_inputLayout.Get());
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	//m_deviceContext->VSSetConstantBuffers(0, 1, constants[0].GetAddressOf());
-	//m_deviceContext->VSSetConstantBuffers(1, 1, constants[1].GetAddressOf());
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 }
 
@@ -114,6 +124,16 @@ ComPtr<ID3DBlob> compileShader(const ComPtr<ID3D11Device>& device, const std::st
 	}
 
 	return std::move(compiledCode);
+}
+
+const char* getSemanticName(const NinthEngine::SemanticLayoutType type) {
+	switch (type) {
+	case NinthEngine::POSITION: return "POSITION";
+	case NinthEngine::COLOR: return "COLOR";
+	case NinthEngine::NORMAL: return "NORMAL";
+	case NinthEngine::TEXCOORD: return "TEXCOORD";
+	default: return "";
+	}
 }
 
 } // namespace

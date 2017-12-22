@@ -28,14 +28,16 @@
     <ClInclude Include="..\include\NinthEngine\Input\Keyboard.hpp" />
     <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp" />
     <ClInclude Include="..\include\NinthEngine\RenderConfig\BufferConfig.hpp" />
-    <ClInclude Include="..\include\NinthEngine\RenderConfig\ConstantsConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\RenderConfig\InputLayoutConfig.hpp" />
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\RasterizerConfig.hpp" />
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\SemanticLayoutConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\RenderConfig\ShaderConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\ConstantsBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Rasterizer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Shader.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\VertexArray.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp" />
@@ -46,6 +48,7 @@
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsContext.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsDevice.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DIndexBuffer.hpp" />
+    <ClInclude Include="..\src\Render\D3D\D3DRasterizer.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DShader.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DVertexArray.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DVertexBuffer.hpp" />
@@ -54,6 +57,7 @@
     <ClInclude Include="..\src\Render\GL\GLGraphicsContext.hpp" />
     <ClInclude Include="..\src\Render\GL\GLGraphicsDevice.hpp" />
     <ClInclude Include="..\src\Render\GL\GLIndexBuffer.hpp" />
+    <ClInclude Include="..\src\Render\GL\GLRasterizer.hpp" />
     <ClInclude Include="..\src\Render\GL\GLShader.hpp" />
     <ClInclude Include="..\src\Render\GL\GLVertexArray.hpp" />
     <ClInclude Include="..\src\Render\GL\GLVertexBuffer.hpp" />
@@ -73,6 +77,7 @@
     <ClCompile Include="..\src\Render\D3D\D3DGraphicsContext.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DGraphicsDevice.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DIndexBuffer.cpp" />
+    <ClCompile Include="..\src\Render\D3D\D3DRasterizer.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DShader.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DVertexArray.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DVertexBuffer.cpp" />
@@ -80,6 +85,7 @@
     <ClCompile Include="..\src\Render\GL\GLGraphicsContext.cpp" />
     <ClCompile Include="..\src\Render\GL\GLGraphicsDevice.cpp" />
     <ClCompile Include="..\src\Render\GL\GLIndexBuffer.cpp" />
+    <ClCompile Include="..\src\Render\GL\GLRasterizer.cpp" />
     <ClCompile Include="..\src\Render\GL\GLShader.cpp" />
     <ClCompile Include="..\src\Render\GL\GLVertexArray.cpp" />
     <ClCompile Include="..\src\Render\GL\GLVertexBuffer.cpp" />

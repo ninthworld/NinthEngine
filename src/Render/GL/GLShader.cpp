@@ -1,4 +1,5 @@
 #include <plog\Log.h>
+#include "GLConstantsBuffer.hpp"
 #include "GLShader.hpp"
 
 namespace {
@@ -22,6 +23,15 @@ GLShader::~GLShader() {
 	if (m_programId != GL_FALSE) {
 		glDeleteProgram(m_programId);
 	}
+}
+
+void GLShader::bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) {
+
+	auto glBuffer = std::dynamic_pointer_cast<GLConstantsBuffer>(buffer);
+	
+	GLuint blockIndex = glGetUniformBlockIndex(m_programId, name.c_str());
+	glUniformBlockBinding(m_programId, blockIndex, glBuffer->getBinding());
+
 }
 
 void GLShader::bind() {
