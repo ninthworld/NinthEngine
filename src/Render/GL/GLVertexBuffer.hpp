@@ -8,7 +8,7 @@ namespace NinthEngine {
 
 class GLVertexBuffer : public VertexBuffer {
 public:
-	GLVertexBuffer(BufferConfig& config);
+	GLVertexBuffer(const BufferConfig& config);
 	~GLVertexBuffer();
 	
 	const GLuint getBufferId() const { return m_bufferId; };

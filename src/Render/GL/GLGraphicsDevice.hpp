@@ -10,15 +10,15 @@ public:
 	GLGraphicsDevice();
 	~GLGraphicsDevice();
 
-	std::unique_ptr<Shader> createShader(ShaderConfig& config) override;
+	std::unique_ptr<Shader> createShader(const ShaderConfig& config) override;
 
-	std::unique_ptr<ConstantsBuffer> createConstantsBuffer(BufferConfig& config) override;
-	std::unique_ptr<IndexBuffer> createIndexBuffer(BufferConfig& config) override;
-	std::unique_ptr<VertexBuffer> createVertexBuffer(BufferConfig& config) override;
+	std::unique_ptr<ConstantsBuffer> createConstantsBuffer(const BufferConfig& config) override;
+	std::unique_ptr<IndexBuffer> createIndexBuffer(const BufferConfig& config) override;
+	std::unique_ptr<VertexBuffer> createVertexBuffer(const BufferConfig& config) override;
 
 	std::unique_ptr<VertexArray> createVertexArray() override;
 
-	std::unique_ptr<Rasterizer> createRasterizer(RasterizerConfig& config) override;
+	std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) override;
 
 private:
 

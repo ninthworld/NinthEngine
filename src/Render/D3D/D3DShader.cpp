@@ -22,7 +22,7 @@ D3DShader::D3DShader(const ComPtr<ID3D11DeviceContext>& deviceContext)
 D3DShader::~D3DShader() {
 }
 
-void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, ShaderConfig& config) {
+void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
 
 	auto compiledCode = compileShader(device, config.m_hlslVS, config.m_hlslVSEntry, "vs_5_0");
 
@@ -68,7 +68,7 @@ void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, ShaderCon
 	}
 }
 
-void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, ShaderConfig& config) {
+void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
 
 	auto compiledCode = compileShader(device, config.m_hlslPS, config.m_hlslPSEntry, "ps_5_0");
 

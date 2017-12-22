@@ -12,8 +12,8 @@ public:
 	GLShader();
 	~GLShader();
 
-	void createVertexShader(ShaderConfig& config);
-	void createPixelShader(ShaderConfig& config);
+	void createVertexShader(const ShaderConfig& config);
+	void createPixelShader(const ShaderConfig& config);
 	void createProgram();
 
 	void bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) override;

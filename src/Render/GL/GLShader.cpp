@@ -43,12 +43,12 @@ void GLShader::unbind() {
 	glUseProgram(0);
 }
 
-void GLShader::createVertexShader(ShaderConfig& config) {
+void GLShader::createVertexShader(const ShaderConfig& config) {
 
 	m_vertexShader = compileShader(config.m_glslVS, GL_VERTEX_SHADER);
 }
 
-void GLShader::createPixelShader(ShaderConfig& config) {
+void GLShader::createPixelShader(const ShaderConfig& config) {
 
 	m_pixelShader = compileShader(config.m_glslPS, GL_FRAGMENT_SHADER);
 }

@@ -4,7 +4,7 @@
 
 namespace NinthEngine {
 
-GLRasterizer::GLRasterizer(RasterizerConfig& config)
+GLRasterizer::GLRasterizer(const RasterizerConfig& config)
 	: m_config(config) {
 }
 

@@ -3,7 +3,7 @@
 
 namespace NinthEngine {
 
-GLConstantsBuffer::GLConstantsBuffer(BufferConfig& config)
+GLConstantsBuffer::GLConstantsBuffer(const BufferConfig& config)
 	: m_bufferId(0)
 	, m_binding(config.m_binding)
 	, m_unitSize(config.getUnitSize()) {

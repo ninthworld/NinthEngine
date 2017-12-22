@@ -55,7 +55,7 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 D3DGraphicsDevice:: ~D3DGraphicsDevice() {
 }
 
-std::unique_ptr<Shader> D3DGraphicsDevice::createShader(ShaderConfig& config) {
+std::unique_ptr<Shader> D3DGraphicsDevice::createShader(const ShaderConfig& config) {
 
 	auto shader = std::make_unique<D3DShader>(m_deviceContext);
 	shader->createVertexShader(m_device, config);
@@ -64,17 +64,17 @@ std::unique_ptr<Shader> D3DGraphicsDevice::createShader(ShaderConfig& config) {
 	return std::move(shader);
 }
 
-std::unique_ptr<ConstantsBuffer> D3DGraphicsDevice::createConstantsBuffer(BufferConfig& config) {
+std::unique_ptr<ConstantsBuffer> D3DGraphicsDevice::createConstantsBuffer(const BufferConfig& config) {
 
 	return std::make_unique<D3DConstantsBuffer>(m_device, m_deviceContext, config);
 }
 
-std::unique_ptr<IndexBuffer> D3DGraphicsDevice::createIndexBuffer(BufferConfig& config) {
+std::unique_ptr<IndexBuffer> D3DGraphicsDevice::createIndexBuffer(const BufferConfig& config) {
 
 	return std::make_unique<D3DIndexBuffer>(m_device, m_deviceContext, config);
 }
 
-std::unique_ptr<VertexBuffer> D3DGraphicsDevice::createVertexBuffer(BufferConfig& config) {
+std::unique_ptr<VertexBuffer> D3DGraphicsDevice::createVertexBuffer(const BufferConfig& config) {
 
 	return std::make_unique<D3DVertexBuffer>(m_device, m_deviceContext, config);
 }
@@ -84,7 +84,7 @@ std::unique_ptr<VertexArray> D3DGraphicsDevice::createVertexArray() {
 	return std::make_unique<D3DVertexArray>(m_deviceContext);
 }
 
-std::unique_ptr<Rasterizer> D3DGraphicsDevice::createRasterizer(RasterizerConfig& config) {
+std::unique_ptr<Rasterizer> D3DGraphicsDevice::createRasterizer(const RasterizerConfig& config) {
 
 	return std::make_unique<D3DRasterizer>(m_device, m_deviceContext, config);
 }

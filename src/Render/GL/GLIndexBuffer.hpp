@@ -7,7 +7,7 @@ namespace NinthEngine {
 
 class GLIndexBuffer : public IndexBuffer {
 public:
-	GLIndexBuffer(BufferConfig& config);
+	GLIndexBuffer(const BufferConfig& config);
 	~GLIndexBuffer();
 	
 	void bind() override;

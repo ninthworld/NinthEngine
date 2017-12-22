@@ -8,7 +8,7 @@ namespace NinthEngine {
 D3DVertexBuffer::D3DVertexBuffer(
 	const ComPtr<ID3D11Device>& device,
 	const ComPtr<ID3D11DeviceContext>& deviceContext,
-	BufferConfig& config)
+	const BufferConfig& config)
 	: m_deviceContext(deviceContext)
 	, m_unitSize(config.getUnitSize()) {
 	

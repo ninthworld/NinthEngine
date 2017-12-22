@@ -3,7 +3,7 @@
 
 namespace NinthEngine {
 
-GLIndexBuffer::GLIndexBuffer(BufferConfig& config)
+GLIndexBuffer::GLIndexBuffer(const BufferConfig& config)
 	: m_bufferId(0)
 	, m_unitSize(config.getUnitSize()) {
 

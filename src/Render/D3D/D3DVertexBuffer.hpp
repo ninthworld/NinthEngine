@@ -12,7 +12,7 @@ public:
 	D3DVertexBuffer(
 		const ComPtr<ID3D11Device>& device, 
 		const ComPtr<ID3D11DeviceContext>& deviceContext,
-		BufferConfig& config);
+		const BufferConfig& config);
 	~D3DVertexBuffer();
 	
 	ComPtr<ID3D11Buffer> getBuffer() { return m_buffer; };

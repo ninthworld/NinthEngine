@@ -37,7 +37,7 @@ GLGraphicsDevice::GLGraphicsDevice() {
 GLGraphicsDevice::~GLGraphicsDevice() {
 }
 
-std::unique_ptr<Shader> GLGraphicsDevice::createShader(ShaderConfig& config) {
+std::unique_ptr<Shader> GLGraphicsDevice::createShader(const ShaderConfig& config) {
 
 	auto shader = std::make_unique<GLShader>();
 	shader->createVertexShader(config);
@@ -47,17 +47,17 @@ std::unique_ptr<Shader> GLGraphicsDevice::createShader(ShaderConfig& config) {
 	return std::move(shader);
 }
 
-std::unique_ptr<ConstantsBuffer> GLGraphicsDevice::createConstantsBuffer(BufferConfig& config) {
+std::unique_ptr<ConstantsBuffer> GLGraphicsDevice::createConstantsBuffer(const BufferConfig& config) {
 
 	return std::make_unique<GLConstantsBuffer>(config);
 }
 
-std::unique_ptr<IndexBuffer> GLGraphicsDevice::createIndexBuffer(BufferConfig& config) {
+std::unique_ptr<IndexBuffer> GLGraphicsDevice::createIndexBuffer(const BufferConfig& config) {
 
 	return std::make_unique<GLIndexBuffer>(config);
 }
 
-std::unique_ptr<VertexBuffer> GLGraphicsDevice::createVertexBuffer(BufferConfig& config) {
+std::unique_ptr<VertexBuffer> GLGraphicsDevice::createVertexBuffer(const BufferConfig& config) {
 
 	return std::make_unique<GLVertexBuffer>(config);
 }
@@ -69,7 +69,7 @@ std::unique_ptr<VertexArray> GLGraphicsDevice::createVertexArray() {
 	return std::move(vertexArray);
 }
 
-std::unique_ptr<Rasterizer> GLGraphicsDevice::createRasterizer(RasterizerConfig& config) {
+std::unique_ptr<Rasterizer> GLGraphicsDevice::createRasterizer(const RasterizerConfig& config) {
 
 	return std::make_unique<GLRasterizer>(config);
 }

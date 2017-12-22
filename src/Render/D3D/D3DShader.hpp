@@ -14,8 +14,8 @@ public:
 	D3DShader(const ComPtr<ID3D11DeviceContext>& deviceContext);
 	~D3DShader();
 
-	void createVertexShader(const ComPtr<ID3D11Device>& device, ShaderConfig& config);
-	void createPixelShader(const ComPtr<ID3D11Device>& device, ShaderConfig& config);
+	void createVertexShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config);
+	void createPixelShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config);
 
 	void bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) override;
 

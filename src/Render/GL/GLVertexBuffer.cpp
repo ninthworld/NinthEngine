@@ -3,7 +3,7 @@
 
 namespace NinthEngine {
 
-GLVertexBuffer::GLVertexBuffer(BufferConfig& config)
+GLVertexBuffer::GLVertexBuffer(const BufferConfig& config)
 	: m_bufferId(0)
 	, m_unitSize(config.getUnitSize())
 	, m_inputLayout(config.m_inputLayout) {

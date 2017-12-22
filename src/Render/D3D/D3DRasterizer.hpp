@@ -12,7 +12,7 @@ public:
 	D3DRasterizer(
 		const ComPtr<ID3D11Device>& device,
 		const ComPtr<ID3D11DeviceContext>& deviceContext, 
-		RasterizerConfig& config);
+		const RasterizerConfig& config);
 	~D3DRasterizer();
 
 	void bind() override;

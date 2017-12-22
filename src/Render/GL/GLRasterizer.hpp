@@ -6,7 +6,7 @@ namespace NinthEngine {
 
 class GLRasterizer : public Rasterizer {
 public:
-	GLRasterizer(RasterizerConfig& config);
+	GLRasterizer(const RasterizerConfig& config);
 	~GLRasterizer();
 
 	void bind() override;

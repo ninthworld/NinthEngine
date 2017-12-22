@@ -18,15 +18,15 @@ public:
 
 	virtual ~GraphicsDevice() = default;
 
-	virtual std::unique_ptr<Shader> createShader(ShaderConfig& config) = 0;
+	virtual std::unique_ptr<Shader> createShader(const ShaderConfig& config) = 0;
 
-	virtual std::unique_ptr<ConstantsBuffer> createConstantsBuffer(BufferConfig& config) = 0;
-	virtual std::unique_ptr<IndexBuffer> createIndexBuffer(BufferConfig& config) = 0;
-	virtual std::unique_ptr<VertexBuffer> createVertexBuffer(BufferConfig& config) = 0;
+	virtual std::unique_ptr<ConstantsBuffer> createConstantsBuffer(const BufferConfig& config) = 0;
+	virtual std::unique_ptr<IndexBuffer> createIndexBuffer(const BufferConfig& config) = 0;
+	virtual std::unique_ptr<VertexBuffer> createVertexBuffer(const BufferConfig& config) = 0;
 
 	virtual std::unique_ptr<VertexArray> createVertexArray() = 0;
 
-	virtual std::unique_ptr<Rasterizer> createRasterizer(RasterizerConfig& config) = 0;
+	virtual std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) = 0;
 };
 
 } // namespace NinthEngine

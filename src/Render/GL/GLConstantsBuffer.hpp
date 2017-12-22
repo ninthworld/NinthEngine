@@ -7,7 +7,7 @@ namespace NinthEngine {
 
 class GLConstantsBuffer : public ConstantsBuffer {
 public:
-	GLConstantsBuffer(BufferConfig& config);
+	GLConstantsBuffer(const BufferConfig& config);
 	~GLConstantsBuffer();
 
 	const GLuint getBinding() const { return m_binding; };
