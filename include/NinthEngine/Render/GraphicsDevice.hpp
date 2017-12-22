@@ -24,7 +24,7 @@ public:
 	virtual std::unique_ptr<IndexBuffer> createIndexBuffer(BufferConfig& config) = 0;
 	virtual std::unique_ptr<VertexBuffer> createVertexBuffer(BufferConfig& config) = 0;
 
-	virtual std::unique_ptr<VertexArray> createVertexArray(InputLayoutConfig& config) = 0;
+	virtual std::unique_ptr<VertexArray> createVertexArray() = 0;
 
 	virtual std::unique_ptr<Rasterizer> createRasterizer(RasterizerConfig& config) = 0;
 };

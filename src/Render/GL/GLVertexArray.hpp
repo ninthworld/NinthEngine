@@ -10,7 +10,7 @@ class GLVertexBuffer;
 
 class GLVertexArray : public VertexArray {
 public:
-	GLVertexArray(InputLayoutConfig& config);
+	GLVertexArray();
 	~GLVertexArray();
 
 	void addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) override;

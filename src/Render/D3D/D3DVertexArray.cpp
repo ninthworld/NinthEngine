@@ -6,7 +6,7 @@
 
 namespace NinthEngine {
 
-D3DVertexArray::D3DVertexArray(const ComPtr<ID3D11DeviceContext>& deviceContext, InputLayoutConfig& config)
+D3DVertexArray::D3DVertexArray(const ComPtr<ID3D11DeviceContext>& deviceContext)
 	: m_deviceContext(deviceContext) {
 }
 
@@ -29,7 +29,7 @@ void D3DVertexArray::bind() {
 
 		unitSize = m_buffers[i]->getUnitSize();
 
-		m_deviceContext->IASetVertexBuffers(i, m_buffers.size(), 
+		m_deviceContext->IASetVertexBuffers(i, 1, 
 			m_buffers[i]->getBuffer().GetAddressOf(), 
 			&unitSize, &offset);
 	}

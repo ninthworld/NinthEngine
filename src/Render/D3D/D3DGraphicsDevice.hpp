@@ -19,7 +19,7 @@ public:
 	std::unique_ptr<IndexBuffer> createIndexBuffer(BufferConfig& config) override;
 	std::unique_ptr<VertexBuffer> createVertexBuffer(BufferConfig& config) override;
 
-	std::unique_ptr<VertexArray> createVertexArray(InputLayoutConfig& config) override;
+	std::unique_ptr<VertexArray> createVertexArray() override;
 
 	std::unique_ptr<Rasterizer> createRasterizer(RasterizerConfig& config) override;
 

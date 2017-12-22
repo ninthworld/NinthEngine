@@ -19,8 +19,8 @@ void FPSGameCamera::init(const int width, const int height) {
 
 void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const double deltaTime) {
 	
-	m_rotation.x += m_mouseDelta.y * deltaTime;
-	m_rotation.y += m_mouseDelta.x * deltaTime;
+	m_rotation.x += m_mouseDelta.y; // *deltaTime;
+	m_rotation.y += m_mouseDelta.x; // *deltaTime;
 	m_mouseDelta = glm::vec2();
 	
 	m_rotation.x = std::max<float>(-PI / 2.0, fmin(PI / 2.0, m_rotation.x));

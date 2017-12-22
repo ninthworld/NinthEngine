@@ -79,9 +79,9 @@ std::unique_ptr<VertexBuffer> D3DGraphicsDevice::createVertexBuffer(BufferConfig
 	return std::make_unique<D3DVertexBuffer>(m_device, m_deviceContext, config);
 }
 
-std::unique_ptr<VertexArray> D3DGraphicsDevice::createVertexArray(InputLayoutConfig& config) {
+std::unique_ptr<VertexArray> D3DGraphicsDevice::createVertexArray() {
 
-	return std::make_unique<D3DVertexArray>(m_deviceContext, config);
+	return std::make_unique<D3DVertexArray>(m_deviceContext);
 }
 
 std::unique_ptr<Rasterizer> D3DGraphicsDevice::createRasterizer(RasterizerConfig& config) {

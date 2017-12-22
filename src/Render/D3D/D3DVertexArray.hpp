@@ -12,7 +12,7 @@ class D3DVertexBuffer;
 
 class D3DVertexArray : public VertexArray {
 public:
-	D3DVertexArray(const ComPtr<ID3D11DeviceContext>& deviceContext, InputLayoutConfig& config);
+	D3DVertexArray(const ComPtr<ID3D11DeviceContext>& deviceContext);
 	~D3DVertexArray();
 
 	void addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) override;

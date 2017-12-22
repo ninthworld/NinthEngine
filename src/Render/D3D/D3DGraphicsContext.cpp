@@ -14,8 +14,15 @@ D3DGraphicsContext::D3DGraphicsContext(
 	const std::shared_ptr<Win32GameWindow>& window,
 	const bool vsync)
 	: m_deviceContext(deviceContext)
-	, m_vsync(vsync) {
+	, m_vsync(vsync)
+	, m_primitive(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST) {
 	
+	ZeroMemory(&m_clearColor, 4 * sizeof(float));
+
+	HRESULT hr;
+
+	// Initialize Swap Chain
+
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
 	ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
 
@@ -31,8 +38,6 @@ D3DGraphicsContext::D3DGraphicsContext(
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	swapChainDesc.Windowed = TRUE;
-
-	HRESULT hr;
 
 	ComPtr<IDXGIDevice1> dxgiDevice;
 	hr = device.As(&dxgiDevice);
@@ -61,32 +66,82 @@ D3DGraphicsContext::D3DGraphicsContext(
 		throw std::exception();
 	}
 
-	ID3D11Texture2D *backBuffer;
-	hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
+	// Initialize Depth Stencil
+
+	D3D11_TEXTURE2D_DESC depthStencilBufferDesc;
+	ZeroMemory(&depthStencilBufferDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	depthStencilBufferDesc.ArraySize = 1;
+	depthStencilBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilBufferDesc.CPUAccessFlags = 0;
+	depthStencilBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilBufferDesc.Width = window->getWidth();
+	depthStencilBufferDesc.Height = window->getHeight();
+	depthStencilBufferDesc.MipLevels = 1;
+	depthStencilBufferDesc.SampleDesc.Count = 1;
+	depthStencilBufferDesc.SampleDesc.Quality = 0;
+	depthStencilBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+
+	hr = device->CreateTexture2D(&depthStencilBufferDesc, nullptr, &m_depthStencilBuffer);
+	if (FAILED(hr)) {
+		LOG_ERROR << "Failed to create Depth Stencil Texture";
+		throw std::exception();
+	}
+
+	hr = device->CreateDepthStencilView(m_depthStencilBuffer.Get(), nullptr, &m_depthStencilView);
+	if (FAILED(hr)) {
+		LOG_ERROR << "Failed to create Depth Stencil View";
+		throw std::exception();
+	}
+
+	D3D11_DEPTH_STENCIL_DESC depthStencilStateDesc;
+	ZeroMemory(&depthStencilStateDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+
+	depthStencilStateDesc.DepthEnable = TRUE;
+	depthStencilStateDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilStateDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	depthStencilStateDesc.StencilEnable = FALSE;
+
+	hr = device->CreateDepthStencilState(&depthStencilStateDesc, &m_depthStencilState);
+	if (FAILED(hr)) {
+		LOG_ERROR << "Failed to create Depth Stencil State";
+		throw std::exception();
+	}
+
+	// Initialize Back Buffer
+
+	ID3D11Texture2D *backBufferTexture;
+	hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferTexture);
 	if (FAILED(hr)) {
 		LOG_ERROR << "Failed to create BackBuffer Texture";
 		throw std::exception();
 	}
 
-	hr = device->CreateRenderTargetView(backBuffer, nullptr, &m_renderTargetView);
+	hr = device->CreateRenderTargetView(backBufferTexture, nullptr, &m_backBuffer);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create RenderTargetView";
+		LOG_ERROR << "Failed to create BackBuffer";
 		throw std::exception();
 	}
 
-	backBuffer->Release();
+	backBufferTexture->Release();
 
 }
 
 D3DGraphicsContext:: ~D3DGraphicsContext() {
 }
 
+void D3DGraphicsContext::draw(const unsigned vertexCount, const unsigned startIndex) {
+
+	m_deviceContext->IASetPrimitiveTopology(m_primitive);
+	m_deviceContext->Draw(3, 0);
+}
+
 void D3DGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
 
 	indexBuffer->bind();
-	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_deviceContext->IASetPrimitiveTopology(m_primitive);
 	m_deviceContext->DrawIndexed(indexCount, startIndex, 0);
-	//m_deviceContext->Draw(3, 0);
+	m_deviceContext->Draw(3, 0);
 }
 
 void D3DGraphicsContext::swapBuffers() {
@@ -99,11 +154,26 @@ void D3DGraphicsContext::swapBuffers() {
 	}
 }
 
-void D3DGraphicsContext::clear() {
+void D3DGraphicsContext::clearBackBuffer() {
 
-	m_deviceContext->ClearRenderTargetView(m_renderTargetView.Get(), DirectX::Colors::CornflowerBlue);
+	m_deviceContext->ClearRenderTargetView(m_backBuffer.Get(), m_clearColor);
+	m_deviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 }
 
+void D3DGraphicsContext::bindBackBuffer() {
+
+	m_deviceContext->OMSetRenderTargets(1, m_backBuffer.GetAddressOf(), m_depthStencilView.Get());
+}
+
+void D3DGraphicsContext::setPrimitive(const PrimitiveType primitive) {
+	switch (primitive) {
+	case POINTS_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; break;
+	case LINES_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; break;
+	case LINE_STRIP_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; break;
+	case TRIANGLES_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST; break;
+	case TRIANGLE_STRIP_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP; break;
+	}
+}
 
 void D3DGraphicsContext::setViewport(const float x, const float y, const float width, const float height) {
 
@@ -115,7 +185,6 @@ void D3DGraphicsContext::setViewport(const float x, const float y, const float w
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 
-	m_deviceContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), NULL);
 	m_deviceContext->RSSetViewports(1, &vp);
 }
 

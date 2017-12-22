@@ -62,9 +62,9 @@ std::unique_ptr<VertexBuffer> GLGraphicsDevice::createVertexBuffer(BufferConfig&
 	return std::make_unique<GLVertexBuffer>(config);
 }
 
-std::unique_ptr<VertexArray> GLGraphicsDevice::createVertexArray(InputLayoutConfig& config) {
+std::unique_ptr<VertexArray> GLGraphicsDevice::createVertexArray() {
 
-	auto vertexArray = std::make_unique<GLVertexArray>(config);
+	auto vertexArray = std::make_unique<GLVertexArray>();
 
 	return std::move(vertexArray);
 }

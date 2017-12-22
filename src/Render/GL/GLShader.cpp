@@ -31,7 +31,6 @@ void GLShader::bindConstants(const std::string name, const std::shared_ptr<Const
 	
 	GLuint blockIndex = glGetUniformBlockIndex(m_programId, name.c_str());
 	glUniformBlockBinding(m_programId, blockIndex, glBuffer->getBinding());
-
 }
 
 void GLShader::bind() {

@@ -4,8 +4,8 @@
 
 namespace NinthEngine {
 
-GLVertexArray::GLVertexArray(InputLayoutConfig& config)
-	: m_vaoId(0), m_attribCount(config.m_stack.size()) {
+GLVertexArray::GLVertexArray()
+	: m_vaoId(0), m_attribCount(0) {
 
 	glCreateVertexArrays(1, &m_vaoId);
 }
@@ -25,22 +25,22 @@ void GLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)
 	glBindBuffer(GL_ARRAY_BUFFER, glBuffer->getBufferId());
 
 	GLuint unitFlag = 0;
-	unsigned unitCount = 0;
-	unsigned unitBytes = 0;
-	unsigned totalBytes = 0;
+	int unitCount = 0;
+	int totalBytes = 0;
 	for (unsigned i = 0; i < glBuffer->getInputLayout().m_stack.size(); ++i) {
 
 		if (glBuffer->getInputLayout().m_stack[i] >= FLOAT1 
 			&& glBuffer->getInputLayout().m_stack[i] <= FLOAT4) {
 			unitFlag = GL_FLOAT;
 			unitCount = glBuffer->getInputLayout().m_stack[i] - FLOAT1 + 1;
-			unitBytes = unitCount * sizeof(float);
 		}
 
-		glVertexAttribPointer(i, unitCount, unitFlag, GL_FALSE, unitBytes, (int*)totalBytes);
+		glVertexAttribPointer(i + m_attribCount, unitCount, unitFlag, GL_FALSE, glBuffer->getInputLayout().m_unitSize, reinterpret_cast<void*>(totalBytes));
 
-		totalBytes += unitBytes;
+		totalBytes += unitCount * sizeof(float);
 	}
+
+	m_attribCount += glBuffer->getInputLayout().m_stack.size();
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -50,15 +50,14 @@ void GLVertexArray::bind() {
 
 	glBindVertexArray(m_vaoId);
 
-	for (unsigned i = 0; i < m_attribCount; ++i) {
+	for (int i = 0; i < m_attribCount; ++i) {
 		glEnableVertexAttribArray(i);
 	}
-
 }
 
 void GLVertexArray::unbind() {
 
-	for (unsigned i = 0; i < m_attribCount; ++i) {
+	for (int i = 0; i < m_attribCount; ++i) {
 		glDisableVertexAttribArray(i);
 	}
 
