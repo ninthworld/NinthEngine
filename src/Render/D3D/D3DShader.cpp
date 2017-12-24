@@ -84,6 +84,10 @@ void D3DShader::bindConstants(const std::string name, const std::shared_ptr<Cons
 
 }
 
+void D3DShader::bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) {
+
+}
+
 void D3DShader::bind() {
 
 	m_deviceContext->IASetInputLayout(m_inputLayout.Get());

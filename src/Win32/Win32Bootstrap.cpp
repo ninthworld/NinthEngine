@@ -1,5 +1,7 @@
 #ifdef _WIN32
 
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "..\..\include\NinthEngine\Application\Game.hpp"
 #include "..\..\include\NinthEngine\Win32\Win32Bootstrap.hpp"
 #include "Win32GameEngine.hpp"

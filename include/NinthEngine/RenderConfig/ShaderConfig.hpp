@@ -8,6 +8,15 @@
 
 namespace NinthEngine {
 
+enum ShaderTypeFlag : unsigned {
+	VERTEX_SHADER_BIT	= 0x1,
+	PIXEL_SHADER_BIT	= 0x10,
+	GEOMETRY_SHADER_BIT = 0x100,
+	COMPUTE_SHADER_BIT	= 0x1000,
+	TC_SHADER_BIT		= 0x10000,
+	TE_SHADER_BIT		= 0x100000
+};
+
 class ShaderConfig {
 public:
 	ShaderConfig& setGLSLVertexShader(const std::string file) {

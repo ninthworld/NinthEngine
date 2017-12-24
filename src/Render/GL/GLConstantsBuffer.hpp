@@ -13,6 +13,8 @@ public:
 	const GLuint getBinding() const { return m_binding; };
 
 	void setData(void* data) override;
+
+	void bind(const ShaderTypeFlag flag) override;
 	
 private:
 	GLuint m_bufferId;

@@ -16,6 +16,8 @@ public:
 	~D3DConstantsBuffer();
 
 	void setData(void* data) override;
+
+	void bind(const ShaderTypeFlag flag) override;
 	
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;

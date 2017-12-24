@@ -1,9 +1,20 @@
+Texture2D blockTexture : register(t0);
+SamplerState blockSampler : register(s0)
+{
+    Filter = MIN_MAG_MIP_LINEAR;
+    AddressU = Wrap;
+    AddressV = Wrap;
+};
+
 struct input {
 	float4 position : SV_POSITION;
-	float3 color : COLOR;
+	float3 color : COLOR0;
+	float2 texCoord : TEXCOORD0;
 };
 
 float4 main(input IN) : SV_TARGET {
-	float4 OUT = { IN.color, 1.0f }; //{ 1.0f, 0.0f, 0.0f, 1.0f };
+
+	float4 OUT = blockTexture.Sample(blockSampler, IN.texCoord);
+	
 	return OUT;
 }

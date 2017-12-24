@@ -1,11 +1,15 @@
 #version 330
 
 in vec3 vs_color;
+in vec2 vs_texCoord;
 
 out vec4 out_fragColor;
 
+uniform sampler2D blockTexture;
+
 void main(){
 	
-	out_fragColor = vec4(vs_color, 1.0);
-	//out_fragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	vec3 texColor = texture(blockTexture, vs_texCoord).rgb;
+
+	out_fragColor = vec4(texColor, 1.0);
 }

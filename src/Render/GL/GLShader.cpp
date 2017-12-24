@@ -1,5 +1,6 @@
 #include <plog\Log.h>
 #include "GLConstantsBuffer.hpp"
+#include "GLTexture.hpp"
 #include "GLShader.hpp"
 
 namespace {
@@ -31,6 +32,18 @@ void GLShader::bindConstants(const std::string name, const std::shared_ptr<Const
 	
 	GLuint blockIndex = glGetUniformBlockIndex(m_programId, name.c_str());
 	glUniformBlockBinding(m_programId, blockIndex, glBuffer->getBinding());
+}
+
+void GLShader::bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) {
+
+	auto glTexture = std::dynamic_pointer_cast<GLTexture>(texture);
+
+	GLuint binding;
+	if ((binding = glGetUniformLocation(m_programId, name.c_str())) < GL_FALSE) {
+		LOG_ERROR << "Failed to find Uniform in GLSL shader";
+		throw std::exception();
+	}
+	glTexture->m_binding = binding;
 }
 
 void GLShader::bind() {

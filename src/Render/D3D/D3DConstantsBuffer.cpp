@@ -32,8 +32,6 @@ D3DConstantsBuffer::D3DConstantsBuffer(
 		LOG_ERROR << "Failed to create Buffer";
 		throw std::exception();
 	}
-
-	m_deviceContext->VSSetConstantBuffers(m_binding, 1, m_buffer.GetAddressOf());
 }
 
 D3DConstantsBuffer::~D3DConstantsBuffer() {
@@ -42,6 +40,17 @@ D3DConstantsBuffer::~D3DConstantsBuffer() {
 void D3DConstantsBuffer::setData(void* data) {
 
 	m_deviceContext->UpdateSubresource(m_buffer.Get(), 0, nullptr, data, 0, 0);
+}
+
+void D3DConstantsBuffer::bind(const ShaderTypeFlag flag) {
+
+	if (flag & VERTEX_SHADER_BIT) {
+		m_deviceContext->VSSetConstantBuffers(m_binding, 1, m_buffer.GetAddressOf());
+	}
+
+	if (flag & PIXEL_SHADER_BIT) {
+		m_deviceContext->PSSetConstantBuffers(m_binding, 1, m_buffer.GetAddressOf());
+	}
 }
 
 } // namespace NinthEngine

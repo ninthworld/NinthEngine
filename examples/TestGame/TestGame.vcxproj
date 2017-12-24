@@ -70,25 +70,25 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glew\lib\Release\Win32;$(ProjectDir)..\..\build\Debug\Win32</LibraryPath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glew\lib\Release\x64;$(ProjectDir)..\..\build\Debug\x64</LibraryPath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glew\lib\Release\Win32;$(ProjectDir)..\..\build\Release\Win32</LibraryPath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include</IncludePath>
+    <IncludePath>$(IncludePath);$(ProjectDir)..\..\include;$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\glew\include;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb</IncludePath>
     <LibraryPath>$(LibraryPath);$(ProjectDir)..\..\dependencies\glew\lib\Release\x64;$(ProjectDir)..\..\build\Release\x64</LibraryPath>
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>

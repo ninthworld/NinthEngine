@@ -39,6 +39,8 @@ private:
 
 	std::unique_ptr<Rasterizer> rasterizer;
 
+	std::shared_ptr<Texture> texture;
+
 	std::shared_ptr<ConstantsBuffer> constantsBufferVPM;
 	std::shared_ptr<ConstantsBuffer> constantsBufferMM;
 	std::shared_ptr<IndexBuffer> indexBuffer;

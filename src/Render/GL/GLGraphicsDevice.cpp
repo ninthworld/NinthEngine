@@ -5,6 +5,7 @@
 #include "GLVertexBuffer.hpp"
 #include "GLVertexArray.hpp"
 #include "GLRasterizer.hpp"
+#include "GLTexture.hpp"
 #include "GLGraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -72,6 +73,11 @@ std::unique_ptr<VertexArray> GLGraphicsDevice::createVertexArray() {
 std::unique_ptr<Rasterizer> GLGraphicsDevice::createRasterizer(const RasterizerConfig& config) {
 
 	return std::make_unique<GLRasterizer>(config);
+}
+
+std::unique_ptr<Texture> GLGraphicsDevice::createTexture(const TextureConfig& config) {
+
+	return std::make_unique<GLTexture>(config);
 }
 
 } // namespace NinthEngine

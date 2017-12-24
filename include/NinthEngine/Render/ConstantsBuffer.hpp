@@ -1,5 +1,6 @@
 #pragma once
 
+#include "..\RenderConfig\ShaderConfig.hpp"
 #include "Buffer.hpp"
 
 namespace NinthEngine {
@@ -13,6 +14,8 @@ public:
 	virtual ~ConstantsBuffer() = default;
 
 	virtual void setData(void* data) = 0;
+
+	virtual void bind(const ShaderTypeFlag flag = VERTEX_SHADER_BIT) = 0;
 };
 
 } // namespace NinthEngine

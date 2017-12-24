@@ -7,6 +7,7 @@
 #include "VertexBuffer.hpp"
 #include "VertexArray.hpp"
 #include "Rasterizer.hpp"
+#include "Texture.hpp"
 
 namespace NinthEngine {
 
@@ -27,6 +28,8 @@ public:
 	virtual std::unique_ptr<VertexArray> createVertexArray() = 0;
 
 	virtual std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) = 0;
+
+	virtual std::unique_ptr<Texture> createTexture(const TextureConfig& config) = 0;
 };
 
 } // namespace NinthEngine

@@ -17,6 +17,7 @@ public:
 	void createProgram();
 
 	void bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) override;
+	void bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) override;
 
 	void bind() override;
 	void unbind() override;

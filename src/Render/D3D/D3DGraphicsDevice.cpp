@@ -7,6 +7,7 @@
 #include "D3DVertexBuffer.hpp"
 #include "D3DVertexArray.hpp"
 #include "D3DRasterizer.hpp"
+#include "D3DTexture.hpp"
 #include "D3DGraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -87,6 +88,11 @@ std::unique_ptr<VertexArray> D3DGraphicsDevice::createVertexArray() {
 std::unique_ptr<Rasterizer> D3DGraphicsDevice::createRasterizer(const RasterizerConfig& config) {
 
 	return std::make_unique<D3DRasterizer>(m_device, m_deviceContext, config);
+}
+
+std::unique_ptr<Texture> D3DGraphicsDevice::createTexture(const TextureConfig& config) {
+	
+	return std::make_unique<D3DTexture>(m_device, m_deviceContext, config);
 }
 
 } // namespace NinthEngine

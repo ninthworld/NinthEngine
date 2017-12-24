@@ -7,8 +7,8 @@ namespace NinthEngine {
 
 struct FPSGameCameraSettings : public GameCameraSettings {
 	float moveSpeedFactor = 16.f;
-	float yawSensitivity = 5.f * 0.0001f;
-	float pitchSensitivity = 5.f * 0.0001f;
+	float yawSensitivity = 0.001f;
+	float pitchSensitivity = 0.001f;
 };
 
 enum Key;

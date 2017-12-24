@@ -13,8 +13,6 @@ GLConstantsBuffer::GLConstantsBuffer(const BufferConfig& config)
 	glBindBuffer(GL_UNIFORM_BUFFER, m_bufferId);
 	glBufferData(GL_UNIFORM_BUFFER, m_unitSize, config.m_data, GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	glBindBufferBase(GL_UNIFORM_BUFFER, m_binding, m_bufferId);
 }
 
 GLConstantsBuffer::~GLConstantsBuffer() {
@@ -28,6 +26,13 @@ void GLConstantsBuffer::setData(void* data) {
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, m_unitSize, data);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
+}
+
+void GLConstantsBuffer::bind(const ShaderTypeFlag flag) {
+
+	if (flag) {
+		glBindBufferBase(GL_UNIFORM_BUFFER, m_binding, m_bufferId);
+	}
 }
 
 } // namespace NinthEngine

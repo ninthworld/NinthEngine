@@ -23,6 +23,8 @@ public:
 
 	std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) override;
 
+	std::unique_ptr<Texture> createTexture(const TextureConfig& config) override;
+
 	ComPtr<ID3D11Device> getDevice() const { return m_device; };
 	ComPtr<ID3D11DeviceContext> getDeviceContext() const { return m_deviceContext; };
 

@@ -20,6 +20,8 @@ public:
 
 	std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) override;
 
+	std::unique_ptr<Texture> createTexture(const TextureConfig& config) override;
+
 private:
 
 };

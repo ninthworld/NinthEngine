@@ -52,6 +52,14 @@ void TestGame::init() {
 
 	rasterizer->bind();
 
+	// Texture
+
+	texture = std::move(
+		device->createTexture(
+			TextureConfig()
+			.loadFile("res/textures/blocks.bmp")
+			.setBinding(0)));
+
 	// Constants Buffers
 
 	constantsBufferVPM = std::move(
@@ -72,7 +80,7 @@ void TestGame::init() {
 
 	// Shader
 
-	auto inputs = InputLayoutConfig().float3().float3();
+	auto inputs = InputLayoutConfig().float3().float3().float2();
 	
 	simpleShader = device->createShader(
 		ShaderConfig()
@@ -81,10 +89,11 @@ void TestGame::init() {
 		.setHLSLVertexShader("res/shaders/HLSL/simple.vs.hlsl", "main")
 		.setHLSLPixelShader("res/shaders/HLSL/simple.ps.hlsl", "main")
 		.setInputLayout(inputs)
-		.setSemanticLayout(SemanticLayoutConfig().position().color()));
+		.setSemanticLayout(SemanticLayoutConfig().position().color().texcoord()));
 	
 	simpleShader->bindConstants("ViewProjMatrix", constantsBufferVPM);
 	simpleShader->bindConstants("ModelMatrix", constantsBufferMM);
+	simpleShader->bindTexture("blockTexture", texture);
 
 	// Index Buffer
 
@@ -106,15 +115,16 @@ void TestGame::init() {
 
 	// Vertex Buffer
 
-	std::vector<glm::vec3> vertices = {
-		glm::vec3(0, 0, 0), glm::vec3(0, 0, 0),
-		glm::vec3(0, 0, 1), glm::vec3(0, 0, 1),
-		glm::vec3(0, 1, 0), glm::vec3(0, 1, 0),
-		glm::vec3(0, 1, 1), glm::vec3(0, 1, 1),
-		glm::vec3(1, 0, 0), glm::vec3(1, 0, 0),
-		glm::vec3(1, 0, 1), glm::vec3(1, 0, 1),
-		glm::vec3(1, 1, 0), glm::vec3(1, 1, 0),
-		glm::vec3(1, 1, 1), glm::vec3(1, 1, 1)
+	struct Vertex { glm::vec3 pos, color; glm::vec2 texCoord; };
+	std::vector<Vertex> vertices = {
+		{glm::vec3(0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0)},
+		{glm::vec3(0, 0, 1), glm::vec3(0, 0, 1), glm::vec2(0, 1)},
+		{glm::vec3(0, 1, 0), glm::vec3(0, 1, 0), glm::vec2(1, 0)},
+		{glm::vec3(0, 1, 1), glm::vec3(0, 1, 1), glm::vec2(1, 1)},
+		{glm::vec3(1, 0, 0), glm::vec3(1, 0, 0), glm::vec2(0, 0)},
+		{glm::vec3(1, 0, 1), glm::vec3(1, 0, 1), glm::vec2(0, 1)},
+		{glm::vec3(1, 1, 0), glm::vec3(1, 1, 0), glm::vec2(1, 0)},
+		{glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), glm::vec2(1, 1)}
 	};
 
 	vertexBuffer = std::move(
@@ -128,7 +138,15 @@ void TestGame::init() {
 
 	vertexArray = std::move(device->createVertexArray());
 	vertexArray->addVertexBuffer(vertexBuffer);
-	
+
+	simpleShader->bind();
+
+	constantsBufferVPM->bind();
+	constantsBufferMM->bind();
+
+	texture->bind();
+
+	vertexArray->bind();
 }
 
 void TestGame::update(const double deltaTime) {
@@ -141,17 +159,17 @@ void TestGame::render() {
 	context->bindBackBuffer();
 	context->clearBackBuffer();
 
-	simpleShader->bind();
+	//simpleShader->bind();
 	
 	constantsBufferVPM->setData((void*)glm::value_ptr(camera->getViewProjMatrix()));
 	//constantsBufferMM->setData((void*)glm::value_ptr(glm::mat4(1)));
 		
-	vertexArray->bind();
+	//vertexArray->bind();
 		
 	context->drawIndexed(indexBuffer, 36, 0);
 
-	vertexArray->unbind();
+	//vertexArray->unbind();
 
-	simpleShader->unbind();
+	//simpleShader->unbind();
 
 }
