@@ -22,7 +22,6 @@ public:
 	virtual void bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) = 0;
 
 	virtual void bind() = 0;
-	virtual void unbind() = 0;
 
 };
 

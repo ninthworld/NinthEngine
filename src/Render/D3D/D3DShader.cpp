@@ -95,10 +95,6 @@ void D3DShader::bind() {
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 }
 
-void D3DShader::unbind() {
-
-}
-
 } // namespace NinthEngine
 
 namespace {

@@ -42,9 +42,6 @@ void D3DIndexBuffer::bind() {
 	m_deviceContext->IASetIndexBuffer(m_buffer.Get(), (m_unitSize == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT), 0);
 }
 
-void D3DIndexBuffer::unbind() {
-}
-
 } // namespace NinthEngine
 
 #endif

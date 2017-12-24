@@ -19,7 +19,7 @@ GLShader::GLShader()
 
 GLShader::~GLShader() {
 
-	unbind();
+	glUseProgram(0);
 
 	if (m_programId != GL_FALSE) {
 		glDeleteProgram(m_programId);
@@ -43,17 +43,12 @@ void GLShader::bindTexture(const std::string name, const std::shared_ptr<Texture
 		LOG_ERROR << "Failed to find Uniform in GLSL shader";
 		throw std::exception();
 	}
-	glTexture->m_binding = binding;
+	glTexture->m_glBinding = binding;
 }
 
 void GLShader::bind() {
 	
 	glUseProgram(m_programId);
-}
-
-void GLShader::unbind() {
-
-	glUseProgram(0);
 }
 
 void GLShader::createVertexShader(const ShaderConfig& config) {

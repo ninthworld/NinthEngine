@@ -20,7 +20,6 @@ public:
 	void bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) override;
 
 	void bind() override;
-	void unbind() override;
 	
 private:
 	GLuint m_programId;

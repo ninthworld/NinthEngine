@@ -3569,3 +3569,4 @@ GL_SGIS_texture_lod
 GL_SUN_multi_draw_arrays
 GL_WIN_swap_hint
 WGL_EXT_swap_control
+2017-12-24 02:37:53.830 ERROR [9532] [NinthEngine::D3DTexture::D3DTexture@34] Failed to create D3DTexture2D

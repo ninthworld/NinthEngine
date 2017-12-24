@@ -24,6 +24,7 @@ void TestGame::init() {
 	window->setResizeCallback([this](int width, int height) {
 		camera->setProjMatrix(width, height);
 		context->setViewport(0, 0, width, height);
+		renderTarget->setViewport(0, 0, window->getWidth(), window->getHeight());
 	});
 
 	window->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
@@ -41,16 +42,21 @@ void TestGame::init() {
 		camera->mouseMoveCallback(window, mx, my);
 	});
 
+	context->setClearColor(0, 1, 0, 1);
+
 	// Rasterizer
 
-	rasterizer = std::move(
+	rasterizer3d = std::move(
 		device->createRasterizer(
 			RasterizerConfig()
 			.depthClipping()
 			.cullBack()
 			.frontCCW()));
 
-	rasterizer->bind();
+	rasterizer2d = std::move(
+		device->createRasterizer(
+			RasterizerConfig()
+			.frontCCW()));
 
 	// Texture
 
@@ -89,12 +95,12 @@ void TestGame::init() {
 		.setHLSLVertexShader("res/shaders/HLSL/simple.vs.hlsl", "main")
 		.setHLSLPixelShader("res/shaders/HLSL/simple.ps.hlsl", "main")
 		.setInputLayout(inputs)
-		.setSemanticLayout(SemanticLayoutConfig().position().color().texcoord()));
+		.setSemanticLayout(SemanticLayoutConfig().position().color().texCoord()));
 	
 	simpleShader->bindConstants("ViewProjMatrix", constantsBufferVPM);
 	simpleShader->bindConstants("ModelMatrix", constantsBufferMM);
 	simpleShader->bindTexture("blockTexture", texture);
-
+	
 	// Index Buffer
 
 	std::vector<short> indices = {
@@ -124,10 +130,9 @@ void TestGame::init() {
 		{glm::vec3(1, 0, 0), glm::vec3(1, 0, 0), glm::vec2(0, 0)},
 		{glm::vec3(1, 0, 1), glm::vec3(1, 0, 1), glm::vec2(0, 1)},
 		{glm::vec3(1, 1, 0), glm::vec3(1, 1, 0), glm::vec2(1, 0)},
-		{glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), glm::vec2(1, 1)}
-	};
+		{glm::vec3(1, 1, 1), glm::vec3(1, 1, 1), glm::vec2(1, 1)}};
 
-	vertexBuffer = std::move(
+	std::shared_ptr<VertexBuffer> vertexBuffer = std::move(
 		device->createVertexBuffer(
 			BufferConfig()
 			.asVertexBuffer()
@@ -139,14 +144,57 @@ void TestGame::init() {
 	vertexArray = std::move(device->createVertexArray());
 	vertexArray->addVertexBuffer(vertexBuffer);
 
-	simpleShader->bind();
+	// Render Target
 
+	renderTarget = std::move(
+		device->createRenderTarget(
+			RenderTargetConfig()
+			.setColorTextureBinding(0)
+			.setDepthTextureBinding(1)
+			.setWidth(window->getWidth())
+			.setHeight(window->getHeight())));
+	
+	auto quadInputs = InputLayoutConfig().float2().float2();
+
+	quadShader = device->createShader(
+		ShaderConfig()
+		.setGLSLVertexShader("res/shaders/GLSL/quad.vs.glsl")
+		.setGLSLPixelShader("res/shaders/GLSL/quad.ps.glsl")
+		.setHLSLVertexShader("res/shaders/HLSL/quad.vs.hlsl", "main")
+		.setHLSLPixelShader("res/shaders/HLSL/quad.ps.hlsl", "main")
+		.setInputLayout(quadInputs)
+		.setSemanticLayout(SemanticLayoutConfig().position().texCoord()));
+
+	simpleShader->bindTexture("blockTexture", renderTarget->getColorTexture());
+	//quadShader->bindTexture("quadTexture", renderTarget->getColorTexture());
+
+	struct Quad { glm::vec2 pos, texCoord; };
+	std::vector<Quad> quad{
+		{ glm::vec2(-1, -1), glm::vec2(0, 0) },
+		{ glm::vec2(-1, 1), glm::vec2(0, 1) },
+		{ glm::vec2(1, -1), glm::vec2(1, 0) },
+		{ glm::vec2(1, -1), glm::vec2(1, 0) },
+		{ glm::vec2(-1, 1), glm::vec2(0, 1) },
+		{ glm::vec2(1, 1), glm::vec2(1, 1) }};
+
+	std::shared_ptr<VertexBuffer> quadVBuffer = std::move(
+		device->createVertexBuffer(
+			BufferConfig()
+			.asVertexBuffer()
+			.setInputLayout(quadInputs)
+			.setData(quad.data(), quad.size())));
+
+	quadVertexArray = std::move(device->createVertexArray());
+	quadVertexArray->addVertexBuffer(quadVBuffer);
+
+	simpleShader->bind();
 	constantsBufferVPM->bind();
 	constantsBufferMM->bind();
 
-	texture->bind();
-
+	rasterizer3d->bind();
+	simpleShader->bind();
 	vertexArray->bind();
+
 }
 
 void TestGame::update(const double deltaTime) {
@@ -155,21 +203,51 @@ void TestGame::update(const double deltaTime) {
 }
 
 void TestGame::render() {
+
+	constantsBufferVPM->setData((void*)glm::value_ptr(camera->getViewProjMatrix()));
+
+	renderTarget->bind();
+	renderTarget->clear();
+
+	texture->bind();
+	
+	context->drawIndexed(indexBuffer, 36, 0);
 	
 	context->bindBackBuffer();
 	context->clearBackBuffer();
 
-	//simpleShader->bind();
-	
-	constantsBufferVPM->setData((void*)glm::value_ptr(camera->getViewProjMatrix()));
-	//constantsBufferMM->setData((void*)glm::value_ptr(glm::mat4(1)));
-		
-	//vertexArray->bind();
-		
+	renderTarget->getColorTexture()->bind();
+
 	context->drawIndexed(indexBuffer, 36, 0);
 
-	//vertexArray->unbind();
+	/* WORKING VERSION
+	renderTarget->bind();
+	renderTarget->clear();
 
-	//simpleShader->unbind();
+	rasterizer3d->bind();
+
+	simpleShader->bind();
+
+	texture->bind();
+
+	constantsBufferVPM->setData((void*)glm::value_ptr(camera->getViewProjMatrix()));
+
+	vertexArray->bind();
+
+	context->drawIndexed(indexBuffer, 36, 0);
+
+	context->bindBackBuffer();
+	context->clearBackBuffer();
+
+	rasterizer2d->bind();
+
+	quadShader->bind();
+
+	renderTarget->getColorTexture()->bind();
+
+	quadVertexArray->bind();
+
+	context->draw(6, 0);
+	*/	
 
 }

@@ -6,13 +6,14 @@
 #include "GLVertexArray.hpp"
 #include "GLRasterizer.hpp"
 #include "GLTexture.hpp"
+#include "GLRenderTarget.hpp"
 #include "GLGraphicsDevice.hpp"
 
 namespace NinthEngine {
 
 GLGraphicsDevice::GLGraphicsDevice() {
 
-#ifdef _DEBUG
+#if defined(_DEBUG) && defined(_GL_DEBUG)
 	
 	std::stringstream str;
 
@@ -78,6 +79,14 @@ std::unique_ptr<Rasterizer> GLGraphicsDevice::createRasterizer(const RasterizerC
 std::unique_ptr<Texture> GLGraphicsDevice::createTexture(const TextureConfig& config) {
 
 	return std::make_unique<GLTexture>(config);
+}
+
+std::unique_ptr<RenderTarget> GLGraphicsDevice::createRenderTarget(const RenderTargetConfig& config) {
+	
+	return std::make_unique<GLRenderTarget>(
+		config,
+		std::move(createTexture(TextureConfig().asRenderTarget().setBinding(config.m_colorTextureBinding).setWidth(config.m_width).setHeight(config.m_height))),
+		std::move(createTexture(TextureConfig().asDepthType().asRenderTarget().setBinding(config.m_depthTextureBinding).setWidth(config.m_width).setHeight(config.m_height))));
 }
 
 } // namespace NinthEngine

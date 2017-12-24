@@ -51,12 +51,24 @@
     <None Include="res\shaders\GLSL\simple.ps.glsl">
       <Filter>Resource Files\shaders\GLSL</Filter>
     </None>
+    <None Include="res\shaders\GLSL\quad.vs.glsl">
+      <Filter>Resource Files\shaders\GLSL</Filter>
+    </None>
+    <None Include="res\shaders\GLSL\quad.ps.glsl">
+      <Filter>Resource Files\shaders\GLSL</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="res\shaders\HLSL\simple.vs.hlsl">
       <Filter>Resource Files\shaders\HLSL</Filter>
     </FxCompile>
     <FxCompile Include="res\shaders\HLSL\simple.ps.hlsl">
+      <Filter>Resource Files\shaders\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\HLSL\quad.ps.hlsl">
+      <Filter>Resource Files\shaders\HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\HLSL\quad.vs.hlsl">
       <Filter>Resource Files\shaders\HLSL</Filter>
     </FxCompile>
   </ItemGroup>

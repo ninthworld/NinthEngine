@@ -44,6 +44,8 @@ void GLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	m_vertexBuffers.push_back(glBuffer);
 }
 
 void GLVertexArray::bind() {
@@ -53,15 +55,6 @@ void GLVertexArray::bind() {
 	for (int i = 0; i < m_attribCount; ++i) {
 		glEnableVertexAttribArray(i);
 	}
-}
-
-void GLVertexArray::unbind() {
-
-	for (int i = 0; i < m_attribCount; ++i) {
-		glDisableVertexAttribArray(i);
-	}
-
-	glBindVertexArray(0);
 }
 
 } // namespace NinthEngine

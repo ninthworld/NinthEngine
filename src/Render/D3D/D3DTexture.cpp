@@ -24,8 +24,8 @@ D3DTexture::D3DTexture(
 	textureDesc.MipLevels = textureDesc.ArraySize = 1;
 	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	textureDesc.SampleDesc.Count = 1;
-	textureDesc.Usage = D3D11_USAGE_DYNAMIC;
-	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.Usage = (config.m_renderTarget ? D3D11_USAGE_DEFAULT : D3D11_USAGE_DYNAMIC);
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | (config.m_renderTarget ? D3D11_BIND_RENDER_TARGET : 0);
 	textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	textureDesc.MiscFlags = 0;
 
@@ -37,14 +37,16 @@ D3DTexture::D3DTexture(
 
 	// Map texture data to Texture 2D
 
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	hr = m_deviceContext->Map(m_texture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to map texture data";
-		throw std::exception();
+	if (config.m_data != nullptr) {
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		hr = m_deviceContext->Map(m_texture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		if (FAILED(hr)) {
+			LOG_ERROR << "Failed to map texture data";
+			throw std::exception();
+		}
+		memcpy(mappedResource.pData, config.m_data, config.m_width * config.m_height * 4);
+		m_deviceContext->Unmap(m_texture.Get(), 0);
 	}
-	memcpy(mappedResource.pData, config.m_data, config.m_width * config.m_height * 4);
-	m_deviceContext->Unmap(m_texture.Get(), 0);
 
 	// Create Shader Resource View
 

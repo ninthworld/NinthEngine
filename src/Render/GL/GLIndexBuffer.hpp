@@ -11,7 +11,6 @@ public:
 	~GLIndexBuffer();
 	
 	void bind() override;
-	void unbind() override;
 
 	const unsigned getUnitSize() const { return m_unitSize; };
 

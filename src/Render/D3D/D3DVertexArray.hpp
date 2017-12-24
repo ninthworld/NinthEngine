@@ -18,7 +18,6 @@ public:
 	void addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) override;
 
 	void bind() override;
-	void unbind() override;
 
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;

@@ -17,6 +17,8 @@ public:
 
 	void bind(const ShaderTypeFlag flag) override;
 
+	ComPtr<ID3D11Texture2D> getTexture() { return m_texture; };
+
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11Texture2D> m_texture;

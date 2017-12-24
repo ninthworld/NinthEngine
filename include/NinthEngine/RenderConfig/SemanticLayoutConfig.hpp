@@ -33,7 +33,7 @@ public:
 		return *this;
 	}
 
-	SemanticLayoutConfig& texcoord(const unsigned index = 0) {
+	SemanticLayoutConfig& texCoord(const unsigned index = 0) {
 		m_stack.push_back(SemanticLayoutStruct{ TEXCOORD, index });
 		return *this;
 	}

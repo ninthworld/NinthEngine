@@ -228,6 +228,18 @@
     <ClInclude Include="..\include\NinthEngine\RenderConfig\TextureConfig.hpp">
       <Filter>Header Files\RenderConfig</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\RenderConfig\RenderTargetConfig.hpp">
+      <Filter>Header Files\RenderConfig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\RenderTarget.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLRenderTarget.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DRenderTarget.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Win32\Win32Bootstrap.cpp">
@@ -304,6 +316,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Render\GL\GLTexture.cpp">
       <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLRenderTarget.cpp">
+      <Filter>Source Files\Render\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DRenderTarget.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

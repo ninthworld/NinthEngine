@@ -1,10 +1,5 @@
 Texture2D blockTexture : register(t0);
-SamplerState blockSampler : register(s0)
-{
-    Filter = MIN_MAG_MIP_LINEAR;
-    AddressU = Wrap;
-    AddressV = Wrap;
-};
+SamplerState blockSampler : register(s0);
 
 struct input {
 	float4 position : SV_POSITION;

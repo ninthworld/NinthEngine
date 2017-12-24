@@ -10,7 +10,7 @@ GLGraphicsContext::GLGraphicsContext(std::unique_ptr<GLContext> glContext, const
 	: m_glContext(std::move(glContext))
 	, m_window(window)
 	, m_vsync(vsync)
-	, m_clearColor(ClearColor{0.f, 0.f, 0.f, 0.f})
+	, m_clearColor(ClearColor{0.f, 0.f, 0.f, 1.f})
 	, m_primitive(GL_TRIANGLES) {
 }
 
@@ -30,7 +30,6 @@ void GLGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuf
 	
 	indexBuffer->bind();
 	glDrawElements(m_primitive, indexCount, (glBuffer->getUnitSize() == sizeof(short) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT), reinterpret_cast<void*>(startIndex));
-	indexBuffer->unbind();
 }
 
 void GLGraphicsContext::swapBuffers() {

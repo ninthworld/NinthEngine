@@ -8,6 +8,7 @@
 #include "D3DVertexArray.hpp"
 #include "D3DRasterizer.hpp"
 #include "D3DTexture.hpp"
+#include "D3DRenderTarget.hpp"
 #include "D3DGraphicsDevice.hpp"
 
 namespace NinthEngine {
@@ -93,6 +94,14 @@ std::unique_ptr<Rasterizer> D3DGraphicsDevice::createRasterizer(const Rasterizer
 std::unique_ptr<Texture> D3DGraphicsDevice::createTexture(const TextureConfig& config) {
 	
 	return std::make_unique<D3DTexture>(m_device, m_deviceContext, config);
+}
+
+std::unique_ptr<RenderTarget> D3DGraphicsDevice::createRenderTarget(const RenderTargetConfig& config) {
+
+	return std::make_unique<D3DRenderTarget>(
+		m_device, m_deviceContext, config,
+		std::move(createTexture(TextureConfig().asRenderTarget().setBinding(config.m_colorTextureBinding).setWidth(config.m_width).setHeight(config.m_height))),
+		std::move(createTexture(TextureConfig().asDepthType().asRenderTarget().setBinding(config.m_depthTextureBinding).setWidth(config.m_width).setHeight(config.m_height))));
 }
 
 } // namespace NinthEngine

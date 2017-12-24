@@ -35,9 +35,6 @@ void D3DVertexArray::bind() {
 	}
 }
 
-void D3DVertexArray::unbind() {
-}
-
 } // namespace NinthEngine
 
 #endif

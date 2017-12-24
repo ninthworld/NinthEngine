@@ -22,6 +22,8 @@ public:
 
 	std::unique_ptr<Texture> createTexture(const TextureConfig& config) override;
 
+	std::unique_ptr<RenderTarget> createRenderTarget(const RenderTargetConfig& config) override;
+
 private:
 
 };
