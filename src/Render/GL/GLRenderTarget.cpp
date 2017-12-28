@@ -36,6 +36,11 @@ void GLRenderTarget::bind() {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_framebufferId);
 }
 
+void GLRenderTarget::unbind() {
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
 void GLRenderTarget::clear() {
 
 	glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);

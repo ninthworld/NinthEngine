@@ -16,6 +16,7 @@ public:
 	virtual void setData(void* data) = 0;
 
 	virtual void bind(const ShaderTypeFlag flag = VERTEX_SHADER_BIT) = 0;
+	virtual void unbind(const ShaderTypeFlag flag = VERTEX_SHADER_BIT) = 0;
 };
 
 } // namespace NinthEngine

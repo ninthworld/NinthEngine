@@ -11,6 +11,7 @@ public:
 	~GLTexture();
 
 	void bind(const ShaderTypeFlag flag) override;
+	void unbind(const ShaderTypeFlag flag) override;
 
 	const GLuint getTextureId() const { return m_textureId; };
 

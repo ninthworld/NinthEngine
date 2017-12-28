@@ -35,6 +35,21 @@ void D3DVertexArray::bind() {
 	}
 }
 
+void D3DVertexArray::unbind() {
+
+	ID3D11Buffer* nullB = NULL;
+
+	UINT unitSize = 0;
+	UINT offset = 0;
+
+	for (unsigned i = 0; i < m_buffers.size(); ++i) {
+
+		unitSize = m_buffers[i]->getUnitSize();
+
+		m_deviceContext->IASetVertexBuffers(i, 1, &nullB, &unitSize, &offset);
+	}
+}
+
 } // namespace NinthEngine
 
 #endif

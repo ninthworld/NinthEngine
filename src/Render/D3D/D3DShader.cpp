@@ -95,6 +95,17 @@ void D3DShader::bind() {
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 }
 
+void D3DShader::unbind() {
+
+	ID3D11InputLayout* nullIL = NULL;
+	ID3D11VertexShader* nullVS = NULL;
+	ID3D11PixelShader* nullPS = NULL;
+
+	m_deviceContext->IASetInputLayout(nullIL);
+	m_deviceContext->VSSetShader(nullVS, nullptr, 0);
+	m_deviceContext->PSSetShader(nullPS, nullptr, 0);
+}
+
 } // namespace NinthEngine
 
 namespace {

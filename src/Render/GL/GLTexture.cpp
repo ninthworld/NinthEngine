@@ -43,6 +43,11 @@ void GLTexture::bind(const ShaderTypeFlag flag) {
 	glUniform1i(m_glBinding, m_binding);
 }
 
+void GLTexture::unbind(const ShaderTypeFlag flag) {
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void GLTexture::setSize(const int width, const int height) {
 
 	glBindTexture(GL_TEXTURE_2D, m_textureId);

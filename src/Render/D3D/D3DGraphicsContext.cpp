@@ -142,6 +142,7 @@ void D3DGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBu
 	m_deviceContext->IASetPrimitiveTopology(m_primitive);
 	m_deviceContext->DrawIndexed(indexCount, startIndex, 0);
 	m_deviceContext->Draw(3, 0);
+	indexBuffer->unbind();
 }
 
 void D3DGraphicsContext::swapBuffers() {

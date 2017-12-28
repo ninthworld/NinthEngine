@@ -212,13 +212,19 @@ void TestGame::render() {
 	texture->bind();
 	
 	context->drawIndexed(indexBuffer, 36, 0);
-	
+
+	texture->unbind();
+
+	renderTarget->unbind();
+
 	context->bindBackBuffer();
 	context->clearBackBuffer();
 
 	renderTarget->getColorTexture()->bind();
 
 	context->drawIndexed(indexBuffer, 36, 0);
+
+	renderTarget->getColorTexture()->unbind();
 
 	/* WORKING VERSION
 	renderTarget->bind();

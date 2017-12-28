@@ -19,6 +19,7 @@ public:
 	~GLRenderTarget();
 
 	void bind() override;
+	void unbind() override;
 
 	void clear() override;
 

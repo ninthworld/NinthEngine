@@ -16,6 +16,7 @@ public:
 	~D3DIndexBuffer();
 	
 	void bind() override;
+	void unbind() override;
 
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;

@@ -101,6 +101,22 @@ void D3DTexture::bind(const ShaderTypeFlag flag) {
 	}
 }
 
+void D3DTexture::unbind(const ShaderTypeFlag flag) {
+
+	ID3D11ShaderResourceView* nullSRV = NULL;
+	ID3D11SamplerState* nullSS = NULL;
+
+	if (flag & PIXEL_SHADER_BIT) {
+		m_deviceContext->PSSetShaderResources(m_binding, 1, &nullSRV);
+		m_deviceContext->PSSetSamplers(m_binding, 1, &nullSS);
+	}
+
+	if (flag & VERTEX_SHADER_BIT) {
+		m_deviceContext->VSSetShaderResources(m_binding, 1, &nullSRV);
+		m_deviceContext->VSSetSamplers(m_binding, 1, &nullSS);
+	}
+}
+
 } // namespace NinthEngine
 
 #endif

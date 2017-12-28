@@ -53,6 +53,19 @@ void D3DConstantsBuffer::bind(const ShaderTypeFlag flag) {
 	}
 }
 
+void D3DConstantsBuffer::unbind(const ShaderTypeFlag flag) {
+
+	ID3D11Buffer* nullB = NULL;
+
+	if (flag & VERTEX_SHADER_BIT) {
+		m_deviceContext->VSSetConstantBuffers(m_binding, 1, &nullB);
+	}
+
+	if (flag & PIXEL_SHADER_BIT) {
+		m_deviceContext->PSSetConstantBuffers(m_binding, 1, &nullB);
+	}
+}
+
 } // namespace NinthEngine
 
 #endif

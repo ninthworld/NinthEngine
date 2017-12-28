@@ -15,6 +15,7 @@ public:
 	void setData(void* data) override;
 
 	void bind(const ShaderTypeFlag flag) override;
+	void unbind(const ShaderTypeFlag flag) override;
 	
 private:
 	GLuint m_bufferId;

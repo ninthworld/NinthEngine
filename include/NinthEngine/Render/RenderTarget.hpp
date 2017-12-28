@@ -16,6 +16,7 @@ public:
 	virtual ~RenderTarget() = default;
 
 	virtual void bind() = 0;
+	virtual void unbind() = 0;
 
 	virtual void clear() = 0;
 

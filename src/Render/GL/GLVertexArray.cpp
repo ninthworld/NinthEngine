@@ -57,4 +57,13 @@ void GLVertexArray::bind() {
 	}
 }
 
+void GLVertexArray::unbind() {
+
+	for (int i = 0; i < m_attribCount; ++i) {
+		glDisableVertexAttribArray(i);
+	}
+
+	glBindVertexArray(0);
+}
+
 } // namespace NinthEngine

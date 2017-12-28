@@ -35,4 +35,11 @@ void GLConstantsBuffer::bind(const ShaderTypeFlag flag) {
 	}
 }
 
+void GLConstantsBuffer::unbind(const ShaderTypeFlag flag) {
+
+	if (flag) {
+		glBindBufferBase(GL_UNIFORM_BUFFER, m_binding, 0);
+	}
+}
+
 } // namespace NinthEngine

@@ -30,6 +30,8 @@ void GLGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuf
 	
 	indexBuffer->bind();
 	glDrawElements(m_primitive, indexCount, (glBuffer->getUnitSize() == sizeof(short) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT), reinterpret_cast<void*>(startIndex));
+	indexBuffer->unbind();
+
 }
 
 void GLGraphicsContext::swapBuffers() {

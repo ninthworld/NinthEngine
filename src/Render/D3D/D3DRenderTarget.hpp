@@ -19,6 +19,7 @@ public:
 	~D3DRenderTarget();
 
 	void bind() override;
+	void unbind() override;
 
 	void clear() override;
 

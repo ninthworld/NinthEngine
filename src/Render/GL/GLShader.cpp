@@ -51,6 +51,12 @@ void GLShader::bind() {
 	glUseProgram(m_programId);
 }
 
+void GLShader::unbind() {
+
+	glUseProgram(0);
+}
+
+
 void GLShader::createVertexShader(const ShaderConfig& config) {
 
 	m_vertexShader = compileShader(config.m_glslVS, GL_VERTEX_SHADER);

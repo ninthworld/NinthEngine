@@ -32,6 +32,13 @@ void D3DRenderTarget::bind() {
 	m_deviceContext->OMSetRenderTargets(1, m_colorRenderTarget.GetAddressOf(), nullptr);
 }
 
+void D3DRenderTarget::unbind() {
+
+	ID3D11RenderTargetView* nullRTV = NULL;
+
+	m_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
+}
+
 void D3DRenderTarget::clear() {
 
 	m_deviceContext->ClearRenderTargetView(m_colorRenderTarget.Get(), m_clearColor);
