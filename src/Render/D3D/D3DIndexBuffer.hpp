@@ -18,11 +18,15 @@ public:
 	void bind() override;
 	void unbind() override;
 
+	const unsigned getUnitSize() const override { return m_unitSize; };
+	const unsigned getUnitCount() const override { return m_unitCount; };
+
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11Buffer> m_buffer;
 
 	unsigned m_unitSize;
+	unsigned m_unitCount;
 
 };
 

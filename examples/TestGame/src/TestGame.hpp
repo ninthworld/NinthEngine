@@ -18,6 +18,8 @@ class FPSGameCamera;
 
 using namespace NinthEngine;
 
+class Skydome;
+
 class TestGame : public Game {
 public:
 	TestGame(const std::shared_ptr<GameEngine>& engine);
@@ -29,27 +31,19 @@ public:
 
 protected:
 private:
-	std::shared_ptr<GameEngine> engine;
-	std::shared_ptr<GameWindow> window;
-	std::shared_ptr<GraphicsDevice> device;
-	std::shared_ptr<GraphicsContext> context;
+	std::shared_ptr<GameEngine> m_engine;
+	std::shared_ptr<GameWindow> m_window;
+	std::shared_ptr<GraphicsDevice> m_device;
+	std::shared_ptr<GraphicsContext> m_context;
 
-	std::unique_ptr<FPSGameCamera> camera;
+	std::shared_ptr<FPSGameCamera> m_camera;
 
-	std::unique_ptr<Rasterizer> rasterizer3d;
-	std::unique_ptr<Rasterizer> rasterizer2d;
+	std::unique_ptr<Skydome> m_skydome;
 
-	std::shared_ptr<ConstantsBuffer> constantsBufferVPM;
-	std::shared_ptr<ConstantsBuffer> constantsBufferMM;
-	std::shared_ptr<IndexBuffer> indexBuffer;
+	std::unique_ptr<Rasterizer> m_rasterizer;
 
-	std::shared_ptr<Texture> texture;
-
-	std::unique_ptr<Shader> simpleShader;
-	std::shared_ptr<VertexArray> vertexArray;
-
-	std::unique_ptr<RenderTarget> renderTarget;
-	std::unique_ptr<Shader> quadShader;
-	std::shared_ptr<VertexArray> quadVertexArray;
+	// Debug
+	bool m_wireframe = false;
+	std::unique_ptr<Rasterizer> m_rasterizerWF;
 
 };

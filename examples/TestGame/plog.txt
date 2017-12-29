@@ -3570,3 +3570,7 @@ GL_SUN_multi_draw_arrays
 GL_WIN_swap_hint
 WGL_EXT_swap_control
 2017-12-24 02:37:53.830 ERROR [9532] [NinthEngine::D3DTexture::D3DTexture@34] Failed to create D3DTexture2D
+2017-12-28 01:33:52.477 ERROR [4872] [NinthEngine::D3DShader::createVertexShader@66] Failed to create HLSL Input Layout
+2017-12-28 01:36:00.449 ERROR [9296] [NinthEngine::D3DShader::createVertexShader@66] Failed to create HLSL Input Layout
+2017-12-28 23:42:42.895 ERROR [2316] [NinthEngine::D3DTexture::D3DTexture@34] Failed to create D3DTexture2D
+2017-12-28 23:43:52.120 ERROR [13680] [NinthEngine::D3DConstantsBuffer::D3DConstantsBuffer@32] Failed to create Buffer

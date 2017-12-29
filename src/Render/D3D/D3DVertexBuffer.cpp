@@ -10,13 +10,14 @@ D3DVertexBuffer::D3DVertexBuffer(
 	const ComPtr<ID3D11DeviceContext>& deviceContext,
 	const BufferConfig& config)
 	: m_deviceContext(deviceContext)
-	, m_unitSize(config.getUnitSize()) {
+	, m_unitSize(config.getUnitSize())
+	, m_unitCount(config.m_unitCount) {
 	
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
 
 	bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bufferDesc.ByteWidth = config.m_unitCount * m_unitSize;
+	bufferDesc.ByteWidth = m_unitCount * m_unitSize;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 

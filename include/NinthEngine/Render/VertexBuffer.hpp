@@ -12,6 +12,9 @@ public:
 
 	virtual ~VertexBuffer() = default;
 
+	virtual const unsigned getUnitSize() const = 0;
+	virtual const unsigned getUnitCount() const = 0;
+
 };
 
 } // namespace NinthEngine

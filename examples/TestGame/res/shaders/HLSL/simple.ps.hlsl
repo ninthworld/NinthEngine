@@ -3,7 +3,6 @@ SamplerState blockSampler : register(s0);
 
 struct input {
 	float4 position : SV_POSITION;
-	float3 color : COLOR0;
 	float2 texCoord : TEXCOORD0;
 };
 

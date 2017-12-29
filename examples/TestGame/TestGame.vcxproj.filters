@@ -13,21 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resource Files\shaders">
-      <UniqueIdentifier>{153699f5-8751-42b8-b178-588931033e8d}</UniqueIdentifier>
+    <Filter Include="Resource Files\skydome">
+      <UniqueIdentifier>{19091f43-301b-4ec7-b6a8-1750f7f12716}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\textures">
-      <UniqueIdentifier>{3f901578-9248-49bf-80b3-b21a367ed985}</UniqueIdentifier>
+    <Filter Include="Resource Files\skydome\textures">
+      <UniqueIdentifier>{8824f766-f4d3-4665-bca4-8ff4fff642c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\shaders\GLSL">
-      <UniqueIdentifier>{8f8c601f-4c91-43b2-b0a5-cd6d1f80376b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\shaders\HLSL">
-      <UniqueIdentifier>{2437a57e-6acb-4732-8edd-b52f8086527d}</UniqueIdentifier>
+    <Filter Include="Resource Files\skydome\shaders">
+      <UniqueIdentifier>{8234b50d-e1f6-4754-8264-a509f3050530}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TestGame.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Skydome.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,38 +38,29 @@
     <ClCompile Include="src\TestGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Skydome.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\textures\blocks.bmp">
-      <Filter>Resource Files\textures</Filter>
+    <None Include="res\skydome\shaders\skydome.ps.glsl">
+      <Filter>Resource Files\skydome\shaders</Filter>
+    </None>
+    <None Include="res\skydome\shaders\skydome.vs.glsl">
+      <Filter>Resource Files\skydome\shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="res\skydome\shaders\skydome.ps.hlsl">
+      <Filter>Resource Files\skydome\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="res\skydome\shaders\skydome.vs.hlsl">
+      <Filter>Resource Files\skydome\shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\skydome\textures\sky.jpg">
+      <Filter>Resource Files\skydome\textures</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\GLSL\simple.vs.glsl">
-      <Filter>Resource Files\shaders\GLSL</Filter>
-    </None>
-    <None Include="res\shaders\GLSL\simple.ps.glsl">
-      <Filter>Resource Files\shaders\GLSL</Filter>
-    </None>
-    <None Include="res\shaders\GLSL\quad.vs.glsl">
-      <Filter>Resource Files\shaders\GLSL</Filter>
-    </None>
-    <None Include="res\shaders\GLSL\quad.ps.glsl">
-      <Filter>Resource Files\shaders\GLSL</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="res\shaders\HLSL\simple.vs.hlsl">
-      <Filter>Resource Files\shaders\HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="res\shaders\HLSL\simple.ps.hlsl">
-      <Filter>Resource Files\shaders\HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="res\shaders\HLSL\quad.ps.hlsl">
-      <Filter>Resource Files\shaders\HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="res\shaders\HLSL\quad.vs.hlsl">
-      <Filter>Resource Files\shaders\HLSL</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

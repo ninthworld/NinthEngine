@@ -15,6 +15,9 @@ public:
 	virtual void bind() = 0;
 	virtual void unbind() = 0;
 
+	virtual const unsigned getUnitSize() const = 0;
+	virtual const unsigned getUnitCount() const = 0;
+
 };
 
 } // namespace NinthEngine

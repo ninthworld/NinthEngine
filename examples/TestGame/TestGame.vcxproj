@@ -151,46 +151,34 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Skydome.hpp" />
     <ClInclude Include="src\TestGame.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Skydome.cpp" />
     <ClCompile Include="src\TestGame.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\textures\blocks.bmp" />
+    <None Include="res\skydome\shaders\skydome.ps.glsl" />
+    <None Include="res\skydome\shaders\skydome.vs.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\GLSL\quad.ps.glsl" />
-    <None Include="res\shaders\GLSL\quad.vs.glsl" />
-    <None Include="res\shaders\GLSL\simple.ps.glsl" />
-    <None Include="res\shaders\GLSL\simple.vs.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="res\shaders\HLSL\quad.ps.hlsl">
+    <FxCompile Include="res\skydome\shaders\skydome.ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="res\shaders\HLSL\quad.vs.hlsl">
+    <FxCompile Include="res\skydome\shaders\skydome.vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="res\shaders\HLSL\simple.ps.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="res\shaders\HLSL\simple.vs.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\skydome\textures\sky.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
