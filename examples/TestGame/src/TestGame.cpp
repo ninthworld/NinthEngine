@@ -33,6 +33,13 @@ void TestGame::init() {
 		}
 		if (key == KEY_1 && state == KS_RELEASED){
 			m_wireframe = !m_wireframe;
+
+			if (!m_wireframe) {
+				m_rasterizer->bind();
+			}
+			else {
+				m_rasterizerWF->bind();
+			}
 		}
 
 		m_camera->keyCallback(key, state);
@@ -58,13 +65,17 @@ void TestGame::init() {
 		.cullBack()
 		.frontCCW());
 
+	m_rasterizer->bind();
+
 	m_rasterizerWF = m_device->createRasterizer(
 		RasterizerConfig()
 		.fillWireframe()
 		.depthClipping()
 		.frontCCW());
 
+	// Initialize Skydome
 	m_skydome = std::make_unique<Skydome>(m_device, m_context, m_camera);
+
 }
 
 void TestGame::update(const double deltaTime) {
@@ -77,12 +88,6 @@ void TestGame::render() {
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
 
-	if (!m_wireframe) {
-		m_rasterizer->bind();
-	}
-	else {
-		m_rasterizerWF->bind();
-	}
 
 	m_skydome->render();
 }

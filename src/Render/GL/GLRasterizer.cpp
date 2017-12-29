@@ -13,9 +13,7 @@ GLRasterizer::~GLRasterizer() {
 
 void GLRasterizer::bind() {
 
-	glPolygonMode(
-		GL_FRONT_AND_BACK,
-		(m_config.m_fillMode == FILL_SOLID ? GL_POLYGON : GL_LINE));
+	glPolygonMode(GL_FRONT_AND_BACK, (m_config.m_fillMode ? GL_LINE : GL_FILL));
 
 	glFrontFace((m_config.m_frontCCW ? GL_CCW : GL_CW));
 

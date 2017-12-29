@@ -10,7 +10,7 @@ Skydome::Skydome(
 	// Load Texture
 	m_texture = device->createTexture(
 		TextureConfig()
-		.loadFile("res/skydome/textures/sky1.jpg")
+		.loadFile("res/skydome/textures/sky4.jpg")
 		.setBinding(0));
 
 	// Initialize Constants Buffer
