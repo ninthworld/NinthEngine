@@ -1,5 +1,5 @@
 # NinthEngine
-C++ Game Engine 
+C++ Graphics Engine 
 
 # Build
 1. Open build/NinthEngine.sln in Visual Studio and build (Debug or Release)
