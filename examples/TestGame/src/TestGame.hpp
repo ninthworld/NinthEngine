@@ -19,6 +19,7 @@ class FPSGameCamera;
 using namespace NinthEngine;
 
 class Skydome;
+class Terrain;
 
 class TestGame : public Game {
 public:
@@ -39,6 +40,7 @@ private:
 	std::shared_ptr<FPSGameCamera> m_camera;
 
 	std::unique_ptr<Skydome> m_skydome;
+	std::unique_ptr<Terrain> m_terrain;
 
 	std::unique_ptr<Rasterizer> m_rasterizer;
 

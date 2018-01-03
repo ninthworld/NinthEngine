@@ -13,7 +13,11 @@ class Win32GameWindow;
 
 class D3DGraphicsContext : public GraphicsContext {
 public:
-	D3DGraphicsContext(const ComPtr<ID3D11Device>&, const ComPtr<ID3D11DeviceContext>&, const std::shared_ptr<Win32GameWindow>&, const bool vsync);
+	D3DGraphicsContext(
+		const ComPtr<ID3D11Device>& device, 
+		const ComPtr<ID3D11DeviceContext>& deviceContext, 
+		const std::shared_ptr<Win32GameWindow>& window, 
+		const bool vsync);
 	~D3DGraphicsContext();
 
 	void draw(const unsigned vertexCount, const unsigned startIndex) override;

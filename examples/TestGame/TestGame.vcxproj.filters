@@ -22,12 +22,27 @@
     <Filter Include="Resource Files\skydome\shaders">
       <UniqueIdentifier>{8234b50d-e1f6-4754-8264-a509f3050530}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\terrain">
+      <UniqueIdentifier>{fbc9a9ff-d3cd-4fd2-aff6-861c013580fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\terrain\textures">
+      <UniqueIdentifier>{e8779177-d581-4a4c-b588-37deb347b4ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\terrain\shaders">
+      <UniqueIdentifier>{4417b680-cbcf-4d1b-b22d-ea7c3ec845a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TestGame.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Skydome.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Terrain.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TerrainNode.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,6 +56,12 @@
     <ClCompile Include="src\Skydome.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TerrainNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\skydome\shaders\skydome.ps.glsl">
@@ -49,6 +70,12 @@
     <None Include="res\skydome\shaders\skydome.vs.glsl">
       <Filter>Resource Files\skydome\shaders</Filter>
     </None>
+    <None Include="res\terrain\shaders\terrain.vs.glsl">
+      <Filter>Resource Files\terrain\shaders</Filter>
+    </None>
+    <None Include="res\terrain\shaders\terrain.ps.glsl">
+      <Filter>Resource Files\terrain\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="res\skydome\shaders\skydome.ps.hlsl">
@@ -56,6 +83,12 @@
     </FxCompile>
     <FxCompile Include="res\skydome\shaders\skydome.vs.hlsl">
       <Filter>Resource Files\skydome\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="res\terrain\shaders\terrain.ps.hlsl">
+      <Filter>Resource Files\terrain\shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="res\terrain\shaders\terrain.vs.hlsl">
+      <Filter>Resource Files\terrain\shaders</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

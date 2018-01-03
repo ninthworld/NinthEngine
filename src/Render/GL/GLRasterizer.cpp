@@ -27,7 +27,7 @@ void GLRasterizer::bind() {
 
 	if (m_config.m_depthClipping) {
 		glEnable(GL_DEPTH_TEST);
-		glDepthRange(m_config.m_depthBias, m_config.m_depthBiasSlopeScaled * m_config.m_depthBiasClamp);
+		//glDepthRange(m_config.m_depthBias, m_config.m_depthBiasSlopeScaled * m_config.m_depthBiasClamp);
 	}
 	else {
 		glDisable(GL_DEPTH_TEST);

@@ -15,8 +15,8 @@ public:
 		const TextureConfig& config);
 	~D3DTexture();
 
-	void bind(const ShaderTypeFlag flag) override;
-	void unbind(const ShaderTypeFlag flag) override;
+	void bind(const unsigned flag) override;
+	void unbind(const unsigned flag) override;
 
 	ComPtr<ID3D11Texture2D> getTexture() { return m_texture; };
 

@@ -3,6 +3,7 @@
 layout(location=0) in vec3 in_position;
 layout(location=1) in vec2 in_texCoord;
 
+out vec3 vs_vertex;
 out vec2 vs_texCoord;
 
 layout(std140) uniform ModelViewProjMatrix {
@@ -11,6 +12,7 @@ layout(std140) uniform ModelViewProjMatrix {
 
 void main(){
 	
+	vs_vertex = in_position;
 	vs_texCoord = in_texCoord;
 	
 	gl_Position = modelViewProjMatrix * vec4(in_position, 1.0);

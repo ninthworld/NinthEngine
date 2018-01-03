@@ -116,7 +116,7 @@ void Skydome::render() {
 	// Update ModelViewProjMatrix Constant Buffer
 	auto mvp = m_camera->getViewProjMatrix()
 		* glm::translate(glm::mat4(1), m_camera->getPosition() - glm::vec3(0, 10, 0))
-		* glm::scale(glm::mat4(1), glm::vec3(100, 100, 100));
+		* glm::scale(glm::mat4(1), glm::vec3(256));
 	m_constantsMVP->setData((void*)glm::value_ptr(mvp));
 	
 	// Draw Skydome

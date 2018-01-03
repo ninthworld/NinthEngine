@@ -88,7 +88,7 @@ D3DTexture::~D3DTexture() {
 
 }
 
-void D3DTexture::bind(const ShaderTypeFlag flag) {
+void D3DTexture::bind(const unsigned flag) {
 
 	if (flag & PIXEL_SHADER_BIT) {
 		m_deviceContext->PSSetShaderResources(m_binding, 1, m_shaderRV.GetAddressOf());
@@ -101,7 +101,7 @@ void D3DTexture::bind(const ShaderTypeFlag flag) {
 	}
 }
 
-void D3DTexture::unbind(const ShaderTypeFlag flag) {
+void D3DTexture::unbind(const unsigned flag) {
 
 	ID3D11ShaderResourceView* nullSRV = NULL;
 	ID3D11SamplerState* nullSS = NULL;

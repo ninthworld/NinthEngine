@@ -13,8 +13,8 @@ public:
 
 	virtual ~Texture() = default;
 
-	virtual void bind(const ShaderTypeFlag flag = PIXEL_SHADER_BIT) = 0;
-	virtual void unbind(const ShaderTypeFlag flag = PIXEL_SHADER_BIT) = 0;
+	virtual void bind(const unsigned flag = PIXEL_SHADER_BIT) = 0;
+	virtual void unbind(const unsigned flag = PIXEL_SHADER_BIT) = 0;
 };
 
 } // namespace NinthEngine

@@ -3,6 +3,7 @@
 #include <NinthEngine\Render\Shader.hpp>
 #include <NinthEngine\Render\Buffer.hpp>
 #include "Skydome.hpp"
+#include "Terrain.hpp"
 #include "TestGame.hpp"
 
 TestGame::TestGame(const std::shared_ptr<GameEngine>& engine) 
@@ -11,7 +12,9 @@ TestGame::TestGame(const std::shared_ptr<GameEngine>& engine)
 	, m_device(engine->getGraphicsDevice())
 	, m_context(engine->getGraphicsContext()) {
 
-	m_camera = std::make_unique<FPSGameCamera>(glm::vec3(0, 0, 2));
+	m_camera = std::make_unique<FPSGameCamera>(glm::vec3(0, 64, 0));
+	m_camera->setProjMatrix(m_window->getWidth(), m_window->getHeight());
+
 }
 
 TestGame::~TestGame() {
@@ -20,8 +23,7 @@ TestGame::~TestGame() {
 }
 
 void TestGame::init() {
-	m_camera->init(m_window->getWidth(), m_window->getHeight());
-	
+
 	m_window->setResizeCallback([this](int width, int height) {
 		m_camera->setProjMatrix(width, height);
 		m_context->setViewport(0, 0, width, height);
@@ -55,13 +57,14 @@ void TestGame::init() {
 
 
 	// Set Backbuffer Clear Color
-	m_context->setClearColor(0.57, 0.67, 0.87, 1);
+	m_context->setClearColor(0.57, 0.67, 0.87, 1.0);
 
 	// Initialize Rasterizers
 	m_rasterizer = m_device->createRasterizer(
 		RasterizerConfig()
 		.fillSolid()
 		.depthClipping()
+		.multisampling()
 		.cullBack()
 		.frontCCW());
 
@@ -76,11 +79,15 @@ void TestGame::init() {
 	// Initialize Skydome
 	m_skydome = std::make_unique<Skydome>(m_device, m_context, m_camera);
 
+	// Initialize Terrain
+	m_terrain = std::make_unique<Terrain>(m_device, m_context, m_camera);
+
 }
 
 void TestGame::update(const double deltaTime) {
 
 	m_camera->update(m_window, deltaTime);
+	m_terrain->update();
 }
 
 void TestGame::render() {
@@ -88,6 +95,7 @@ void TestGame::render() {
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
 
-
 	m_skydome->render();
+
+	m_terrain->render();
 }

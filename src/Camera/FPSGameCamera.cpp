@@ -13,10 +13,6 @@ FPSGameCamera::FPSGameCamera(const glm::vec3 position, const glm::vec3 rotation,
 FPSGameCamera::~FPSGameCamera() {
 }
 
-void FPSGameCamera::init(const int width, const int height) {
-	setProjMatrix(width, height);
-}
-
 void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const double deltaTime) {
 	
 	m_rotation.x += m_mouseDelta.y; // *deltaTime;

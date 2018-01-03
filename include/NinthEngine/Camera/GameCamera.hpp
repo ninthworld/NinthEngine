@@ -21,7 +21,6 @@ public:
 
 	virtual ~GameCamera() = default;
 
-	virtual void init(const int width, const int height) = 0;
 	virtual void update(const std::shared_ptr<GameWindow>& window, const double deltaTime) = 0;
 
 	virtual const GameCameraSettings getSettings() const = 0;

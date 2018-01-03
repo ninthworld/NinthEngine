@@ -48,7 +48,6 @@ Win32GLContext::Win32GLContext(HWND handle)
 		LOG_ERROR << "Failed to make wGL current";
 		throw std::exception();
 	}
-
 }
 
 Win32GLContext::~Win32GLContext() {

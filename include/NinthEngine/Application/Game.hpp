@@ -1,10 +1,10 @@
 #pragma once
 
 #include <memory>
+#include "GameWindow.hpp"
+#include "..\Utils\MathUtils.hpp"
 
 namespace NinthEngine {
-
-class GameWindow;
 
 class Game {
 public:

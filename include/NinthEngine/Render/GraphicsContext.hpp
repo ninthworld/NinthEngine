@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace NinthEngine {
 
 class GameWindow;

@@ -15,7 +15,10 @@ class GLGraphicsContext : public GraphicsContext {
 	};
 
 public:
-	GLGraphicsContext(std::unique_ptr<GLContext>, const std::shared_ptr<GameWindow>&, const bool vsync);
+	GLGraphicsContext(
+		std::unique_ptr<GLContext> glContext, 
+		const std::shared_ptr<GameWindow>& gameWindow, 
+		const bool vsync);
 	~GLGraphicsContext();
 	
 	void draw(const unsigned vertexCount, const unsigned startIndex) override;

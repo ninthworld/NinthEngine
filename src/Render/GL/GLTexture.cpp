@@ -22,6 +22,8 @@ GLTexture::GLTexture(const TextureConfig& config)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, m_format, config.m_width, config.m_height, 0, m_format, m_type, config.m_data);
 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -36,14 +38,14 @@ GLTexture::~GLTexture() {
 	}
 }
 
-void GLTexture::bind(const ShaderTypeFlag flag) {
+void GLTexture::bind(const unsigned flag) {
 
 	glActiveTexture(GL_TEXTURE0 + m_binding);
 	glBindTexture(GL_TEXTURE_2D, m_textureId);
 	glUniform1i(m_glBinding, m_binding);
 }
 
-void GLTexture::unbind(const ShaderTypeFlag flag) {
+void GLTexture::unbind(const unsigned flag) {
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
