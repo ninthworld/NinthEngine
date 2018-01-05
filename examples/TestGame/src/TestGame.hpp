@@ -8,7 +8,7 @@ namespace NinthEngine {
 class Shader;
 class VertexBuffer;
 class IndexBuffer;
-class ConstantsBuffer;
+class ConstantBuffer;
 class VertexArray;
 class RenderTarget;
 class GameWindow;
@@ -37,15 +37,21 @@ private:
 	std::shared_ptr<GraphicsDevice> m_device;
 	std::shared_ptr<GraphicsContext> m_context;
 
+	// Camera
 	std::shared_ptr<FPSGameCamera> m_camera;
 
-	std::unique_ptr<Skydome> m_skydome;
-	std::unique_ptr<Terrain> m_terrain;
-
-	std::unique_ptr<Rasterizer> m_rasterizer;
-
-	// Debug
+	// Rasterizers
 	bool m_wireframe = false;
 	std::unique_ptr<Rasterizer> m_rasterizerWF;
+	std::unique_ptr<Rasterizer> m_rasterizer;
 
+	// Constants
+	std::shared_ptr<ConstantBuffer> m_constantCamera;
+
+	// Skydome
+	std::unique_ptr<Skydome> m_skydome;
+
+	// Terrain
+	std::unique_ptr<Terrain> m_terrain;
+		
 };

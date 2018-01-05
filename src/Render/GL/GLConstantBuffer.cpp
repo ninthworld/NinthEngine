@@ -1,9 +1,9 @@
 #include <plog\Log.h>
-#include "GLConstantsBuffer.hpp"
+#include "GLConstantBuffer.hpp"
 
 namespace NinthEngine {
 
-GLConstantsBuffer::GLConstantsBuffer(const BufferConfig& config)
+GLConstantBuffer::GLConstantBuffer(const BufferConfig& config)
 	: m_bufferId(0)
 	, m_binding(config.m_binding)
 	, m_unitSize(config.getUnitSize()) {
@@ -15,12 +15,12 @@ GLConstantsBuffer::GLConstantsBuffer(const BufferConfig& config)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-GLConstantsBuffer::~GLConstantsBuffer() {
+GLConstantBuffer::~GLConstantBuffer() {
 
 	glDeleteBuffers(1, &m_bufferId);
 }
 
-void GLConstantsBuffer::setData(void* data) {
+void GLConstantBuffer::setData(void* data) {
 
 	glBindBuffer(GL_UNIFORM_BUFFER, m_bufferId);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, m_unitSize, data);
@@ -28,14 +28,14 @@ void GLConstantsBuffer::setData(void* data) {
 
 }
 
-void GLConstantsBuffer::bind(const ShaderTypeFlag flag) {
+void GLConstantBuffer::bind(const unsigned flag) {
 
 	if (flag) {
 		glBindBufferBase(GL_UNIFORM_BUFFER, m_binding, m_bufferId);
 	}
 }
 
-void GLConstantsBuffer::unbind(const ShaderTypeFlag flag) {
+void GLConstantBuffer::unbind(const unsigned flag) {
 
 	if (flag) {
 		glBindBufferBase(GL_UNIFORM_BUFFER, m_binding, 0);

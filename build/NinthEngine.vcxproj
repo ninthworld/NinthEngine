@@ -35,7 +35,7 @@
     <ClInclude Include="..\include\NinthEngine\RenderConfig\ShaderConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\RenderConfig\TextureConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\ConstantsBuffer.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\ConstantBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp" />
@@ -48,7 +48,7 @@
     <ClInclude Include="..\include\NinthEngine\Utils\FileUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\Utils\MathUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\Win32\Win32Bootstrap.hpp" />
-    <ClInclude Include="..\src\Render\D3D\D3DConstantsBuffer.hpp" />
+    <ClInclude Include="..\src\Render\D3D\D3DConstantBuffer.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsContext.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DGraphicsDevice.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DIndexBuffer.hpp" />
@@ -58,7 +58,7 @@
     <ClInclude Include="..\src\Render\D3D\D3DTexture.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DVertexArray.hpp" />
     <ClInclude Include="..\src\Render\D3D\D3DVertexBuffer.hpp" />
-    <ClInclude Include="..\src\Render\GL\GLConstantsBuffer.hpp" />
+    <ClInclude Include="..\src\Render\GL\GLConstantBuffer.hpp" />
     <ClInclude Include="..\src\Render\GL\GLContext.hpp" />
     <ClInclude Include="..\src\Render\GL\GLGraphicsContext.hpp" />
     <ClInclude Include="..\src\Render\GL\GLGraphicsDevice.hpp" />
@@ -81,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp" />
-    <ClCompile Include="..\src\Render\D3D\D3DConstantsBuffer.cpp" />
+    <ClCompile Include="..\src\Render\D3D\D3DConstantBuffer.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DGraphicsContext.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DGraphicsDevice.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DIndexBuffer.cpp" />
@@ -91,7 +91,7 @@
     <ClCompile Include="..\src\Render\D3D\D3DTexture.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DVertexArray.cpp" />
     <ClCompile Include="..\src\Render\D3D\D3DVertexBuffer.cpp" />
-    <ClCompile Include="..\src\Render\GL\GLConstantsBuffer.cpp" />
+    <ClCompile Include="..\src\Render\GL\GLConstantBuffer.cpp" />
     <ClCompile Include="..\src\Render\GL\GLGraphicsContext.cpp" />
     <ClCompile Include="..\src\Render\GL\GLGraphicsDevice.cpp" />
     <ClCompile Include="..\src\Render\GL\GLIndexBuffer.cpp" />

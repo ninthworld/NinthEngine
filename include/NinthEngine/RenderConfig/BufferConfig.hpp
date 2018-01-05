@@ -23,7 +23,7 @@ public:
 		return *this;
 	};
 
-	BufferConfig& asConstantsBuffer() {
+	BufferConfig& asConstantBuffer() {
 		m_type = CONSTANTS;
 		return *this;
 	};
@@ -37,16 +37,20 @@ public:
 		m_inputLayout = config;
 		return *this;
 	}
-	
+
 	BufferConfig& setData(void* data, const unsigned unitCount) {
 		m_data = data;
 		m_unitCount = unitCount;
 		return *this;
 	};
 
+	BufferConfig& setData(void* data) {
+		return setData(data, 1);
+	};
+
 	BufferConfig& setData(const glm::mat4 data) {
 		return setData((void*)glm::value_ptr(data), 1);
-	}
+	};
 
 protected:
 	const unsigned getUnitSize() const {
@@ -63,12 +67,12 @@ private:
 	friend class GLGraphicsDevice;
 	friend class GLIndexBuffer;
 	friend class GLVertexBuffer;
-	friend class GLConstantsBuffer;
+	friend class GLConstantBuffer;
 
 	friend class D3DGraphicsDevice;
 	friend class D3DIndexBuffer;
 	friend class D3DVertexBuffer;
-	friend class D3DConstantsBuffer;
+	friend class D3DConstantBuffer;
 };
 
 } // namespace NinthEngine

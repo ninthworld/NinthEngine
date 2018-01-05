@@ -1,117 +1,95 @@
+#include <NinthEngine\Camera\GameCamera.hpp>
+#include <NinthEngine\Render\GraphicsDevice.hpp>
 #include <NinthEngine\Render\GraphicsContext.hpp>
-#include <NinthEngine\Render\IndexBuffer.hpp>
-#include <NinthEngine\Render\ConstantsBuffer.hpp>
+#include <NinthEngine\Render\Shader.hpp>
+#include <NinthEngine\Render\Buffer.hpp>
 #include "TerrainNode.hpp"
 
 namespace {
-
-static const unsigned maxSize = 1024;
-static const unsigned maxLevel = 8;
-
-const bool inRange(const glm::vec3 camPos, const glm::vec3 worldPos, const float scale) {
-	return ((abs(camPos.x - worldPos.x) + abs(camPos.z - worldPos.z)) < (scale * 2.0f + 32.0f));
-}
 
 } // namespace
 
 TerrainNode::TerrainNode(
 	const std::shared_ptr<GraphicsContext>& context,
-	const std::vector<std::shared_ptr<IndexBuffer>>& indexBuffers,
-	const std::shared_ptr<ConstantsBuffer>& constantsModel,
-	const glm::vec3 worldPos,
-	const glm::vec2 localPos,
-	const unsigned level) 
+	const std::shared_ptr<VertexArray>& vertexArray,
+	const std::shared_ptr<IndexBuffer>& indexBuffer,
+	const std::shared_ptr<ConstantBuffer>& constantNode,
+	const glm::vec2 location,
+	const int lod,
+	const glm::vec2 index)
 	: m_context(context)
-	, m_indexBuffers(indexBuffers)
-	, m_constantsModel(constantsModel)
-	, m_worldPos(worldPos)
-	, m_localPos(localPos)
-	, m_level(level)
-	, m_scale(maxSize / pow<float>(2, m_level))
-	, m_root(true)
-	, m_sideFlag(0) {
+	, m_vertexArray(vertexArray)
+	, m_indexBuffer(indexBuffer)
+	, m_constantNode(constantNode)
+	, m_location(location)
+	, m_index(index)
+	, m_lod(lod)
+	, m_size(0.0f)
+	, m_localMatrix(glm::mat4(1))
+	, m_worldPos(glm::vec3(0))
+	, m_leaf(true) {
 
-	m_worldMatrix = glm::translate(glm::mat4(1), m_worldPos);
-	m_worldMatrix = glm::scale(m_worldMatrix, glm::vec3(m_scale, 1.0f, m_scale));
+	m_size = 1.0f / ((float)rootPatches * pow(2.0f, (float)m_lod));
 
+	glm::vec2 pos = (location + m_size / 2.0f) * scaleXZ - scaleXZ / 2.0f;
+	m_worldPos = glm::vec3(pos.x, 0.0f, pos.y);
+
+	m_localMatrix = glm::translate(m_localMatrix, glm::vec3(m_location.x, 0.0f, m_location.y));
+	m_localMatrix = glm::scale(m_localMatrix, glm::vec3(m_size, 0.0f, m_size));
 }
 
 TerrainNode::~TerrainNode() {
 }
 
-void TerrainNode::update(const glm::vec3 camPos) {
+void TerrainNode::update(const glm::vec3 cameraPos) {
 
-	if (inRange(camPos, m_worldPos, m_scale)) {
-		if (m_level < maxLevel && m_root) {
-			m_root = false;
-			float offset = maxSize / pow<float>(2, m_level + 1);
+	float distance = glm::length(cameraPos - m_worldPos);
+
+	if (distance < lodRange[m_lod]) {
+		if(m_leaf) m_leaf = false;
+		if (!m_children.size()) {
 			for (unsigned i = 0; i < 2; ++i) {
 				for (unsigned j = 0; j < 2; ++j) {
-					m_children.push_back(std::make_shared<TerrainNode>(
-						m_context,
-						m_indexBuffers,
-						m_constantsModel,
-						m_worldPos - glm::vec3(offset / 2.0f, 0.0f, offset / 2.0f) + glm::vec3(i * offset, 0.0f, j * offset), 
-						glm::vec2(i, j), 
-						m_level + 1));
+					m_children.push_back(
+						std::make_unique<TerrainNode>(
+							m_context,
+							m_vertexArray,
+							m_indexBuffer,
+							m_constantNode,
+							m_location + glm::vec2(i * m_size / 2.0f, j * m_size / 2.0f),
+							m_lod + 1,
+							glm::vec2(i, j)));
 				}
 			}
 		}
 	}
-	else if(!m_root) {
-		m_root = true;
-		m_children.clear();
+	else if (distance >= lodRange[m_lod]) {
+		if (!m_leaf) m_leaf = true;
+		if(m_children.size()) m_children.clear();
 	}
 
-	if (!m_root) {
-		for (unsigned i = 0; i < m_children.size(); ++i) {
-			m_children[i]->update(camPos);
-		}
-	}
-	else {
-		m_sideFlag = 0;
-
-		float parentScale = m_scale * 2.0f;
-		glm::vec3 parentPos = m_worldPos - glm::vec3((m_localPos.x * 2.0f - 1.0f) * m_scale / 2.0f, 0.0f, (m_localPos.y * 2.0f - 1.0f) * m_scale / 2.0f);
-
-		if (!inRange(camPos, parentPos - glm::vec3(parentScale, 0.0f, 0.0f), parentScale) && m_localPos.x < 1) {
-			m_sideFlag |= NORTH;
-		}
-		if (!inRange(camPos, parentPos + glm::vec3(parentScale, 0.0f, 0.0f), parentScale) && m_localPos.x > 0) {
-			m_sideFlag |= SOUTH;
-		}
-		if (!inRange(camPos, parentPos - glm::vec3(0.0f, 0.0f, parentScale), parentScale) && m_localPos.y < 1) {
-			m_sideFlag |= WEST;
-		}
-		if (!inRange(camPos, parentPos + glm::vec3(0.0f, 0.0f, parentScale), parentScale) && m_localPos.y > 0) {
-			m_sideFlag |= EAST;
-		}
-
-			/*
-		if (!inRange(camPos, m_worldPos - glm::vec3(m_scale, 0.0f, 0.0f), m_scale) && m_localPos.x < 1) {
-			m_sideFlag |= NORTH;
-		}
-
-		if (!inRange(camPos, m_worldPos + glm::vec3(m_scale, 0.0f, 0.0f), m_scale) && m_localPos.x > 0) {
-			m_sideFlag |= SOUTH;
-		}
-
-		if (!inRange(camPos, m_worldPos + glm::vec3(0.0f, 0.0f, m_scale), m_scale) && m_localPos.y > 0) {
-			m_sideFlag |= EAST;
-		}
-
-		if (!inRange(camPos, m_worldPos - glm::vec3(0.0f, 0.0f, m_scale), m_scale) && m_localPos.y < 1) {
-			m_sideFlag |= WEST;
-		}
-		*/
+	for (unsigned i = 0; i < m_children.size(); ++i) {
+		m_children[i]->update(cameraPos);
 	}
 }
 
 void TerrainNode::render() {
 
-	if (m_root) {
-		m_constantsModel->setData((void*)glm::value_ptr(m_worldMatrix));
-		m_context->drawIndexed(m_indexBuffers[m_sideFlag], m_indexBuffers[m_sideFlag]->getUnitCount(), 0);
+	if (m_leaf) {
+		// Bind Constants
+		//m_constantNode->bind(VERTEX_SHADER_BIT);
+
+		// Update Constants
+		NodeData data{ m_localMatrix, m_location, m_index, m_size, m_lod, glm::vec2() };
+		m_constantNode->setData(&data);
+
+		// Draw Terrain
+		m_vertexArray->bind();
+		m_context->drawIndexed(m_indexBuffer, m_indexBuffer->getUnitCount(), 0);
+		m_vertexArray->unbind();
+
+		// Unbind All
+		//m_constantNode->unbind(VERTEX_SHADER_BIT);
 	}
 	else {
 		for (unsigned i = 0; i < m_children.size(); ++i) {

@@ -3,40 +3,15 @@
 Skydome::Skydome(
 	const std::shared_ptr<GraphicsDevice>& device, 
 	const std::shared_ptr<GraphicsContext>& context,
-	const std::shared_ptr<GameCamera>& camera)
+	const std::shared_ptr<GameCamera>& camera,
+	const std::shared_ptr<ConstantBuffer>& constantCamera)
 	: m_context(context)
-	, m_camera(camera) {
-
-	// Load Texture
-	m_texture = device->createTexture(
-		TextureConfig()
-		.loadFile("res/skydome/textures/sky4.jpg")
-		.setBinding(0));
-
-	// Initialize Constants Buffer
-	m_constantsMVP = device->createConstantsBuffer(
-		BufferConfig()
-		.asConstantsBuffer()
-		.setBinding(0)
-		.setInputLayout(InputLayoutConfig().mat4())
-		.setData(glm::mat4(1)));
-
-	// Load Shader
+	, m_camera(camera)
+	, m_constantCamera(constantCamera)
+	, m_skydomeData(SkydomeData{ glm::vec4(0.57, 0.67, 0.87, 1.0), glm::vec4(1024.0) }) {
+	
 	auto inputLayout = InputLayoutConfig().float3().float2();
 	auto semanticLayout = SemanticLayoutConfig().position().texCoord();
-
-	m_shader = device->createShader(
-		ShaderConfig()
-		.setGLSLVertexShader("res/skydome/shaders/skydome.vs.glsl")
-		.setGLSLPixelShader("res/skydome/shaders/skydome.ps.glsl")
-		.setHLSLVertexShader("res/skydome/shaders/skydome.vs.hlsl", "main")
-		.setHLSLPixelShader("res/skydome/shaders/skydome.ps.hlsl", "main")
-		.setInputLayout(inputLayout)
-		.setSemanticLayout(semanticLayout));
-
-	// Bind Buffers to Shader
-	m_shader->bindConstants("ModelViewProjMatrix", m_constantsMVP);
-	m_shader->bindTexture("skyTexture", m_texture);
 
 	// Generate Model Data
 	struct Vertex { glm::vec3 pos; glm::vec2 texCoord; };
@@ -101,6 +76,35 @@ Skydome::Skydome(
 	// Initialize Vertex Array Object
 	m_vertexArray = device->createVertexArray();
 	m_vertexArray->addVertexBuffer(m_vertexBuffer);
+
+	// Load Textures
+	m_texture = device->createTexture(
+		TextureConfig()
+		.loadFile("res/skydome/textures/sky4.jpg")
+		.setBinding(0));
+	
+	m_constantSkydome = device->createConstantBuffer(
+		BufferConfig()
+		.asConstantBuffer()
+		.setBinding(1)
+		.setInputLayout(InputLayoutConfig().float4().float4())
+		.setData(&m_skydomeData));
+
+	// Load Shader
+	m_shader = device->createShader(
+		ShaderConfig()
+		.setGLSLVertexShader("res/skydome/shaders/skydome.vs.glsl")
+		.setGLSLPixelShader("res/skydome/shaders/skydome.ps.glsl")
+		.setHLSLVertexShader("res/skydome/shaders/skydome.vs.hlsl", "main")
+		.setHLSLPixelShader("res/skydome/shaders/skydome.ps.hlsl", "main")
+		.setInputLayout(inputLayout)
+		.setSemanticLayout(semanticLayout));
+
+	// Bind Buffers to Shader
+	m_shader->bindConstants("Camera", m_constantCamera);
+	m_shader->bindConstants("Skydome", m_constantSkydome);
+	m_shader->bindTexture("skyTexture", m_texture);
+	
 }
 
 Skydome::~Skydome() {
@@ -108,24 +112,26 @@ Skydome::~Skydome() {
 
 void Skydome::render() {
 
-	// Bind
+	// Bind Shader
 	m_shader->bind();
-	m_texture->bind();
-	m_constantsMVP->bind();
 
-	// Update ModelViewProjMatrix Constant Buffer
-	auto mvp = m_camera->getViewProjMatrix()
-		* glm::translate(glm::mat4(1), m_camera->getPosition() - glm::vec3(0, 10, 0))
-		* glm::scale(glm::mat4(1), glm::vec3(256));
-	m_constantsMVP->setData((void*)glm::value_ptr(mvp));
+	// Bind Textures
+	m_texture->bind();
+
+	// Bind Constants
+	m_constantCamera->bind();
+	m_constantSkydome->bind(VERTEX_SHADER_BIT | PIXEL_SHADER_BIT);
 	
 	// Draw Skydome
 	m_vertexArray->bind();
 	m_context->drawIndexed(m_indexBuffer, m_indexBuffer->getUnitCount(), 0);
 	m_vertexArray->unbind();
 
-	// Unbind
-	m_constantsMVP->unbind();
+	// Unbind All
+	m_constantSkydome->unbind(VERTEX_SHADER_BIT | PIXEL_SHADER_BIT);
+	m_constantCamera->unbind();
+
 	m_texture->unbind();
+
 	m_shader->unbind();
 }

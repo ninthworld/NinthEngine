@@ -20,7 +20,7 @@ void main(){
 
 	vec4 pos = modelMatrix * vec4(in_position.x, 0.0, in_position.y, 1.0);
 	vec2 adjPos = (pos.xz + 512.0) / 1024.0;
-	pos.y = texture(heightTexture, adjPos).r * 32.0f;
+	pos.y = texture(heightTexture, adjPos).r * 64.0f;
 
 	gl_Position = viewProjMatrix * pos;
 	vs_position = in_position;

@@ -1,5 +1,5 @@
 #include <plog\Log.h>
-#include "GLConstantsBuffer.hpp"
+#include "GLConstantBuffer.hpp"
 #include "GLTexture.hpp"
 #include "GLShader.hpp"
 
@@ -14,6 +14,9 @@ namespace NinthEngine {
 GLShader::GLShader()
 	: m_programId(0)
 	, m_vertexShader(0)
+	, m_hullShader(0)
+	, m_domainShader(0)
+	, m_geometryShader(0)
 	, m_pixelShader(0) {
 }
 
@@ -26,9 +29,9 @@ GLShader::~GLShader() {
 	}
 }
 
-void GLShader::bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) {
+void GLShader::bindConstants(const std::string name, const std::shared_ptr<ConstantBuffer>& buffer) {
 
-	auto glBuffer = std::dynamic_pointer_cast<GLConstantsBuffer>(buffer);
+	auto glBuffer = std::dynamic_pointer_cast<GLConstantBuffer>(buffer);
 	
 	GLuint blockIndex = glGetUniformBlockIndex(m_programId, name.c_str());
 	glUniformBlockBinding(m_programId, blockIndex, glBuffer->getBinding());
@@ -56,10 +59,24 @@ void GLShader::unbind() {
 	glUseProgram(0);
 }
 
-
 void GLShader::createVertexShader(const ShaderConfig& config) {
 
 	m_vertexShader = compileShader(config.m_glslVS, GL_VERTEX_SHADER);
+}
+
+void GLShader::createHullShader(const ShaderConfig& config) {
+
+	m_hullShader = compileShader(config.m_glslHS, GL_TESS_CONTROL_SHADER);
+}
+
+void GLShader::createDomainShader(const ShaderConfig& config) {
+
+	m_domainShader = compileShader(config.m_glslDS, GL_TESS_EVALUATION_SHADER);
+}
+
+void GLShader::createGeometryShader(const ShaderConfig& config) {
+
+	m_geometryShader = compileShader(config.m_glslGS, GL_GEOMETRY_SHADER);
 }
 
 void GLShader::createPixelShader(const ShaderConfig& config) {
@@ -77,6 +94,18 @@ void GLShader::createProgram() {
 
 	if (m_vertexShader != GL_FALSE) {
 		glAttachShader(m_programId, m_vertexShader);
+	}
+
+	if (m_hullShader != GL_FALSE) {
+		glAttachShader(m_programId, m_hullShader);
+	}
+
+	if (m_domainShader != GL_FALSE) {
+		glAttachShader(m_programId, m_domainShader);
+	}
+
+	if (m_geometryShader != GL_FALSE) {
+		glAttachShader(m_programId, m_geometryShader);
 	}
 
 	if (m_pixelShader != GL_FALSE) {

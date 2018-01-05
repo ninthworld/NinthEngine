@@ -7,7 +7,7 @@
 
 namespace NinthEngine {
 
-class ConstantsBuffer;
+class ConstantBuffer;
 class Texture;
 
 class Shader {
@@ -18,7 +18,7 @@ public:
 
 	virtual ~Shader() = default;
 	
-	virtual void bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) = 0;
+	virtual void bindConstants(const std::string name, const std::shared_ptr<ConstantBuffer>& buffer) = 0;
 	virtual void bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) = 0;
 
 	virtual void bind() = 0;

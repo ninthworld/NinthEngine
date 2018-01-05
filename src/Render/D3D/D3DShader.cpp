@@ -68,6 +68,42 @@ void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, const Sha
 	}
 }
 
+void D3DShader::createHullShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+
+	auto compiledCode = compileShader(device, config.m_hlslHS, config.m_hlslHSEntry, "hs_5_0");
+
+	HRESULT hr;
+	hr = device->CreateHullShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_hullShader);
+	if (FAILED(hr)) {
+		LOG_ERROR << "Failed to create HLSL Hull Shader";
+		throw std::exception();
+	}
+}
+
+void D3DShader::createDomainShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+
+	auto compiledCode = compileShader(device, config.m_hlslDS, config.m_hlslDSEntry, "ds_5_0");
+
+	HRESULT hr;
+	hr = device->CreateDomainShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_domainShader);
+	if (FAILED(hr)) {
+		LOG_ERROR << "Failed to create HLSL Domain Shader";
+		throw std::exception();
+	}
+}
+
+void D3DShader::createGeometryShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+
+	auto compiledCode = compileShader(device, config.m_hlslGS, config.m_hlslGSEntry, "gs_5_0");
+
+	HRESULT hr;
+	hr = device->CreateGeometryShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_geometryShader);
+	if (FAILED(hr)) {
+		LOG_ERROR << "Failed to create HLSL Geometry Shader";
+		throw std::exception();
+	}
+}
+
 void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
 
 	auto compiledCode = compileShader(device, config.m_hlslPS, config.m_hlslPSEntry, "ps_5_0");
@@ -80,7 +116,7 @@ void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, const Shad
 	}
 }
 
-void D3DShader::bindConstants(const std::string name, const std::shared_ptr<ConstantsBuffer>& buffer) {
+void D3DShader::bindConstants(const std::string name, const std::shared_ptr<ConstantBuffer>& buffer) {
 
 }
 
@@ -92,18 +128,20 @@ void D3DShader::bind() {
 
 	m_deviceContext->IASetInputLayout(m_inputLayout.Get());
 	m_deviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
+	if (m_hullShader) m_deviceContext->HSSetShader(m_hullShader.Get(), nullptr, 0);
+	if (m_domainShader) m_deviceContext->DSSetShader(m_domainShader.Get(), nullptr, 0);
+	if (m_geometryShader) m_deviceContext->GSSetShader(m_geometryShader.Get(), nullptr, 0);
 	m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 }
 
 void D3DShader::unbind() {
 
-	ID3D11InputLayout* nullIL = NULL;
-	ID3D11VertexShader* nullVS = NULL;
-	ID3D11PixelShader* nullPS = NULL;
-
-	m_deviceContext->IASetInputLayout(nullIL);
-	m_deviceContext->VSSetShader(nullVS, nullptr, 0);
-	m_deviceContext->PSSetShader(nullPS, nullptr, 0);
+	m_deviceContext->IASetInputLayout(NULL);
+	m_deviceContext->VSSetShader(NULL, nullptr, 0);
+	if (m_hullShader) m_deviceContext->HSSetShader(NULL, nullptr, 0);
+	if (m_domainShader) m_deviceContext->DSSetShader(NULL, nullptr, 0);
+	if (m_geometryShader) m_deviceContext->GSSetShader(NULL, nullptr, 0);
+	m_deviceContext->PSSetShader(NULL, nullptr, 0);
 }
 
 } // namespace NinthEngine
@@ -143,6 +181,8 @@ const char* getSemanticName(const NinthEngine::SemanticLayoutType type) {
 	case NinthEngine::COLOR: return "COLOR";
 	case NinthEngine::NORMAL: return "NORMAL";
 	case NinthEngine::TEXCOORD: return "TEXCOORD";
+	case NinthEngine::BINORMAL: return "BINORMAL";
+	case NinthEngine::TANGENT: return "TANGENT";
 	default: return "";
 	}
 }

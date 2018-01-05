@@ -8,7 +8,9 @@ enum SemanticLayoutType {
 	POSITION,
 	COLOR,
 	NORMAL,
-	TEXCOORD
+	TEXCOORD,
+	BINORMAL,
+	TANGENT
 };
 
 struct SemanticLayoutStruct {
@@ -35,6 +37,16 @@ public:
 
 	SemanticLayoutConfig& texCoord(const unsigned index = 0) {
 		m_stack.push_back(SemanticLayoutStruct{ TEXCOORD, index });
+		return *this;
+	}
+
+	SemanticLayoutConfig& binormal(const unsigned index = 0) {
+		m_stack.push_back(SemanticLayoutStruct{ BINORMAL, index });
+		return *this;
+	}
+
+	SemanticLayoutConfig& tangent(const unsigned index = 0) {
+		m_stack.push_back(SemanticLayoutStruct{ TANGENT, index });
 		return *this;
 	}
 

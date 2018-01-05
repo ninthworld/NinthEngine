@@ -12,7 +12,7 @@ public:
 
 	std::unique_ptr<Shader> createShader(const ShaderConfig& config) override;
 
-	std::unique_ptr<ConstantsBuffer> createConstantsBuffer(const BufferConfig& config) override;
+	std::unique_ptr<ConstantBuffer> createConstantBuffer(const BufferConfig& config) override;
 	std::unique_ptr<IndexBuffer> createIndexBuffer(const BufferConfig& config) override;
 	std::unique_ptr<VertexBuffer> createVertexBuffer(const BufferConfig& config) override;
 

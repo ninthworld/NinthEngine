@@ -5,46 +5,46 @@
 #include <NinthEngine\Application\Game.hpp>
 #include "Terrain.hpp"
 
-namespace NinthEngine {
-
-class GraphicsContext;
-class IndexBuffer;
-class ConstantsBuffer;
-
-} // namespace NinthEngine
-
 using namespace NinthEngine;
 
 class TerrainNode {
 public:
 	TerrainNode(
 		const std::shared_ptr<GraphicsContext>& context,
-		const std::vector<std::shared_ptr<IndexBuffer>>& indexBuffers,
-		const std::shared_ptr<ConstantsBuffer>& constantsModel,
-		const glm::vec3 worldPos,
-		const glm::vec2 localPos,
-		const unsigned level);
+		const std::shared_ptr<VertexArray>& vertexArray,
+		const std::shared_ptr<IndexBuffer>& indexBuffer,
+		const std::shared_ptr<ConstantBuffer>& constantNode,
+		const glm::vec2 location,
+		const int lod,
+		const glm::vec2 index);
 	~TerrainNode();
 
-	void update(const glm::vec3 camPos);
+	void update(const glm::vec3 cameraPos);
 
 	void render();
 
 private:
 	std::shared_ptr<GraphicsContext> m_context;
-	std::vector<std::shared_ptr<IndexBuffer>> m_indexBuffers;
-	std::shared_ptr<ConstantsBuffer> m_constantsModel;
 	
-	bool m_root;
-	std::vector<std::shared_ptr<TerrainNode>> m_children;
+	// Constant Buffers
+	std::shared_ptr<ConstantBuffer> m_constantNode;
 
-	unsigned m_level;
+	// Index Buffers
+	std::shared_ptr<IndexBuffer> m_indexBuffer;
+
+	// Vertex Array
+	std::shared_ptr<VertexArray> m_vertexArray;
+
+	// Node
+	glm::mat4 m_localMatrix;
 	glm::vec3 m_worldPos;
-	glm::vec2 m_localPos;
-	float m_scale;
+	glm::vec2 m_location;
+	glm::vec2 m_index;
+	float m_size;
+	int m_lod;
+	bool m_leaf;
 
-	unsigned m_sideFlag;
-
-	glm::mat4 m_worldMatrix;
+	// Children
+	std::vector<std::unique_ptr<TerrainNode>> m_children;
 
 };

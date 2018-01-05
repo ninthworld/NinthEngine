@@ -2,7 +2,7 @@
 
 #include <memory>
 #include "Shader.hpp"
-#include "ConstantsBuffer.hpp"
+#include "ConstantBuffer.hpp"
 #include "IndexBuffer.hpp"
 #include "VertexBuffer.hpp"
 #include "VertexArray.hpp"
@@ -22,7 +22,7 @@ public:
 
 	virtual std::unique_ptr<Shader> createShader(const ShaderConfig& config) = 0;
 
-	virtual std::unique_ptr<ConstantsBuffer> createConstantsBuffer(const BufferConfig& config) = 0;
+	virtual std::unique_ptr<ConstantBuffer> createConstantBuffer(const BufferConfig& config) = 0;
 	virtual std::unique_ptr<IndexBuffer> createIndexBuffer(const BufferConfig& config) = 0;
 	virtual std::unique_ptr<VertexBuffer> createVertexBuffer(const BufferConfig& config) = 0;
 

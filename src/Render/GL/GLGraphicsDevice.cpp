@@ -1,6 +1,6 @@
 #include <plog\Log.h>
 #include "GLShader.hpp"
-#include "GLConstantsBuffer.hpp"
+#include "GLConstantBuffer.hpp"
 #include "GLIndexBuffer.hpp"
 #include "GLVertexBuffer.hpp"
 #include "GLVertexArray.hpp"
@@ -43,15 +43,18 @@ std::unique_ptr<Shader> GLGraphicsDevice::createShader(const ShaderConfig& confi
 
 	auto shader = std::make_unique<GLShader>();
 	shader->createVertexShader(config);
+	if (config.m_glslHS != "") shader->createHullShader(config);
+	if (config.m_glslDS != "") shader->createDomainShader(config);
+	if (config.m_glslGS != "") shader->createGeometryShader(config);
 	shader->createPixelShader(config);
 	shader->createProgram();
 	
 	return std::move(shader);
 }
 
-std::unique_ptr<ConstantsBuffer> GLGraphicsDevice::createConstantsBuffer(const BufferConfig& config) {
+std::unique_ptr<ConstantBuffer> GLGraphicsDevice::createConstantBuffer(const BufferConfig& config) {
 
-	return std::make_unique<GLConstantsBuffer>(config);
+	return std::make_unique<GLConstantBuffer>(config);
 }
 
 std::unique_ptr<IndexBuffer> GLGraphicsDevice::createIndexBuffer(const BufferConfig& config) {

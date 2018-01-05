@@ -5,10 +5,16 @@
 
 namespace NinthEngine {
 
+struct Camera {
+	glm::mat4 viewMatrix;
+	glm::mat4 viewProjMatrix;
+	glm::vec4 position;
+};
+
 struct GameCameraSettings {
 	float FOV = 45.f;
 	float zNear = 0.1f;
-	float zFar = 1000.f;
+	float zFar = 4096.f;
 };
 
 class GameWindow;
@@ -36,6 +42,8 @@ public:
 	virtual void setProjMatrix(const int width, const int height) = 0;
 	virtual void setViewMatrix() = 0;
 	virtual void setViewProjMatrix() = 0;
+
+	virtual Camera data() = 0;
 
 };
 

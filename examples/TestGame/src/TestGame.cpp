@@ -12,7 +12,7 @@ TestGame::TestGame(const std::shared_ptr<GameEngine>& engine)
 	, m_device(engine->getGraphicsDevice())
 	, m_context(engine->getGraphicsContext()) {
 
-	m_camera = std::make_unique<FPSGameCamera>(glm::vec3(0, 64, 0));
+	m_camera = std::make_unique<FPSGameCamera>(glm::vec3(0, 200, 0));
 	m_camera->setProjMatrix(m_window->getWidth(), m_window->getHeight());
 
 }
@@ -76,18 +76,32 @@ void TestGame::init() {
 		.depthClipping()
 		.frontCCW());
 
+	// Initialize Constant Buffers
+	m_constantCamera = m_device->createConstantBuffer(
+		BufferConfig()
+		.asConstantBuffer()
+		.setBinding(0)
+		.setInputLayout(InputLayoutConfig().mat4().mat4().float4())
+		.setData(&m_camera->data()));
+	
 	// Initialize Skydome
-	m_skydome = std::make_unique<Skydome>(m_device, m_context, m_camera);
-
+	m_skydome = std::make_unique<Skydome>(m_device, m_context, m_camera, m_constantCamera);
+	
 	// Initialize Terrain
-	m_terrain = std::make_unique<Terrain>(m_device, m_context, m_camera);
+	m_terrain = std::make_unique<Terrain>(m_device, m_context, m_camera, m_constantCamera);
 
 }
 
 void TestGame::update(const double deltaTime) {
 
+	// Update Camera
 	m_camera->update(m_window, deltaTime);
+	
+	// Update Terrain
 	m_terrain->update();
+
+	// Update Constant Buffers
+	m_constantCamera->setData(&m_camera->data());
 }
 
 void TestGame::render() {
@@ -95,7 +109,10 @@ void TestGame::render() {
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
 
+	// Render Skydome
 	m_skydome->render();
 
+	// Render Terrain
 	m_terrain->render();
+
 }

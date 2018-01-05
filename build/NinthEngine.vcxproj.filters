@@ -174,26 +174,17 @@
     <ClInclude Include="..\src\Render\D3D\D3DVertexArray.hpp">
       <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\ConstantsBuffer.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Render\GL\GLConstantsBuffer.hpp">
-      <Filter>Header Files\Render\GL</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Render\GL\GLVertexBuffer.hpp">
       <Filter>Header Files\Render\GL</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\GL\GLIndexBuffer.hpp">
       <Filter>Header Files\Render\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Render\D3D\D3DConstantsBuffer.hpp">
-      <Filter>Header Files\Render\D3D</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DIndexBuffer.hpp">
       <Filter>Header Files\Render\D3D</Filter>
@@ -239,6 +230,15 @@
     </ClInclude>
     <ClInclude Include="..\src\Render\D3D\D3DRenderTarget.hpp">
       <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3D\D3DConstantBuffer.hpp">
+      <Filter>Header Files\Render\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GL\GLConstantBuffer.hpp">
+      <Filter>Header Files\Render\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\ConstantBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,17 +287,11 @@
     <ClCompile Include="..\src\Render\D3D\D3DVertexArray.cpp">
       <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Render\GL\GLConstantsBuffer.cpp">
-      <Filter>Source Files\Render\GL</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Render\GL\GLIndexBuffer.cpp">
       <Filter>Source Files\Render\GL</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Render\GL\GLVertexBuffer.cpp">
       <Filter>Source Files\Render\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Render\D3D\D3DConstantsBuffer.cpp">
-      <Filter>Source Files\Render\D3D</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Render\D3D\D3DVertexBuffer.cpp">
       <Filter>Source Files\Render\D3D</Filter>
@@ -322,6 +316,12 @@
     </ClCompile>
     <ClCompile Include="..\src\Render\D3D\D3DRenderTarget.cpp">
       <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\D3D\D3DConstantBuffer.cpp">
+      <Filter>Source Files\Render\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Render\GL\GLConstantBuffer.cpp">
+      <Filter>Source Files\Render\GL</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

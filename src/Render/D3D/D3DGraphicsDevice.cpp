@@ -2,7 +2,7 @@
 
 #include <plog\Log.h>
 #include "D3DShader.hpp"
-#include "D3DConstantsBuffer.hpp"
+#include "D3DConstantBuffer.hpp"
 #include "D3DIndexBuffer.hpp"
 #include "D3DVertexBuffer.hpp"
 #include "D3DVertexArray.hpp"
@@ -61,14 +61,17 @@ std::unique_ptr<Shader> D3DGraphicsDevice::createShader(const ShaderConfig& conf
 
 	auto shader = std::make_unique<D3DShader>(m_deviceContext);
 	shader->createVertexShader(m_device, config);
+	if (config.m_hlslHS != "") shader->createHullShader(m_device, config);
+	if (config.m_hlslDS != "") shader->createDomainShader(m_device, config);
+	if (config.m_hlslGS != "") shader->createGeometryShader(m_device, config);
 	shader->createPixelShader(m_device, config);
 
 	return std::move(shader);
 }
 
-std::unique_ptr<ConstantsBuffer> D3DGraphicsDevice::createConstantsBuffer(const BufferConfig& config) {
+std::unique_ptr<ConstantBuffer> D3DGraphicsDevice::createConstantBuffer(const BufferConfig& config) {
 
-	return std::make_unique<D3DConstantsBuffer>(m_device, m_deviceContext, config);
+	return std::make_unique<D3DConstantBuffer>(m_device, m_deviceContext, config);
 }
 
 std::unique_ptr<IndexBuffer> D3DGraphicsDevice::createIndexBuffer(const BufferConfig& config) {

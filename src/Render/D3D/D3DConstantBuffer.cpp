@@ -1,11 +1,11 @@
 #ifdef _WIN32
 
 #include <plog\Log.h>
-#include "D3DConstantsBuffer.hpp"
+#include "D3DConstantBuffer.hpp"
 
 namespace NinthEngine {
 
-D3DConstantsBuffer::D3DConstantsBuffer(
+D3DConstantBuffer::D3DConstantBuffer(
 	const ComPtr<ID3D11Device>& device,
 	const ComPtr<ID3D11DeviceContext>& deviceContext,
 	const BufferConfig& config)
@@ -34,18 +34,30 @@ D3DConstantsBuffer::D3DConstantsBuffer(
 	}
 }
 
-D3DConstantsBuffer::~D3DConstantsBuffer() {
+D3DConstantBuffer::~D3DConstantBuffer() {
 }
 
-void D3DConstantsBuffer::setData(void* data) {
+void D3DConstantBuffer::setData(void* data) {
 
 	m_deviceContext->UpdateSubresource(m_buffer.Get(), 0, nullptr, data, 0, 0);
 }
 
-void D3DConstantsBuffer::bind(const ShaderTypeFlag flag) {
+void D3DConstantBuffer::bind(const unsigned flag) {
 
 	if (flag & VERTEX_SHADER_BIT) {
 		m_deviceContext->VSSetConstantBuffers(m_binding, 1, m_buffer.GetAddressOf());
+	}
+
+	if (flag & HULL_SHADER_BIT) {
+		m_deviceContext->HSSetConstantBuffers(m_binding, 1, m_buffer.GetAddressOf());
+	}
+
+	if (flag & DOMAIN_SHADER_BIT) {
+		m_deviceContext->DSSetConstantBuffers(m_binding, 1, m_buffer.GetAddressOf());
+	}
+
+	if (flag & GEOMETRY_SHADER_BIT) {
+		m_deviceContext->GSSetConstantBuffers(m_binding, 1, m_buffer.GetAddressOf());
 	}
 
 	if (flag & PIXEL_SHADER_BIT) {
@@ -53,16 +65,26 @@ void D3DConstantsBuffer::bind(const ShaderTypeFlag flag) {
 	}
 }
 
-void D3DConstantsBuffer::unbind(const ShaderTypeFlag flag) {
-
-	ID3D11Buffer* nullB = NULL;
+void D3DConstantBuffer::unbind(const unsigned flag) {
 
 	if (flag & VERTEX_SHADER_BIT) {
-		m_deviceContext->VSSetConstantBuffers(m_binding, 1, &nullB);
+		m_deviceContext->VSSetConstantBuffers(m_binding, 1, NULL);
+	}
+
+	if (flag & HULL_SHADER_BIT) {
+		m_deviceContext->HSSetConstantBuffers(m_binding, 1, NULL);
+	}
+
+	if (flag & DOMAIN_SHADER_BIT) {
+		m_deviceContext->DSSetConstantBuffers(m_binding, 1, NULL);
+	}
+
+	if (flag & GEOMETRY_SHADER_BIT) {
+		m_deviceContext->GSSetConstantBuffers(m_binding, 1, NULL);
 	}
 
 	if (flag & PIXEL_SHADER_BIT) {
-		m_deviceContext->PSSetConstantBuffers(m_binding, 1, &nullB);
+		m_deviceContext->PSSetConstantBuffers(m_binding, 1, NULL);
 	}
 }
 

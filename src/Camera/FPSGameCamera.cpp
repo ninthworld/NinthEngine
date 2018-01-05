@@ -6,8 +6,11 @@
 
 namespace NinthEngine {
 
-FPSGameCamera::FPSGameCamera(const glm::vec3 position, const glm::vec3 rotation,const FPSGameCameraSettings settings)
-	: m_position(position), m_rotation(rotation), m_settings(settings), m_mouseDelta(glm::vec2()) {
+FPSGameCamera::FPSGameCamera(const glm::vec3 position, const glm::vec3 rotation, const FPSGameCameraSettings settings)
+	: m_position(position)
+	, m_rotation(rotation)
+	, m_settings(settings)
+	, m_mouseDelta(glm::vec2()) {
 }
 
 FPSGameCamera::~FPSGameCamera() {
@@ -63,6 +66,8 @@ void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const doub
 
 	m_position += movement;
 
+	m_data.position = glm::vec4(m_position, 0.0f);
+
 	setViewMatrix();
 }
 
@@ -81,11 +86,15 @@ void FPSGameCamera::setViewMatrix() {
 	m_viewMatrix = glm::rotate(m_viewMatrix, m_rotation.z, glm::vec3(0, 0, 1));
 	m_viewMatrix = glm::translate(m_viewMatrix, -m_position);
 
+	m_data.viewMatrix = m_viewMatrix;
+
 	setViewProjMatrix();
 }
 
 void FPSGameCamera::setViewProjMatrix() {
 	m_viewProjMatrix = m_projMatrix * m_viewMatrix;
+	m_data.viewProjMatrix = m_viewProjMatrix;
+
 }
 
 void FPSGameCamera::mouseMoveCallback(const std::shared_ptr<GameWindow>& window, int x, int y) {
