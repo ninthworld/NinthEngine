@@ -5,11 +5,11 @@
 #pragma comment(lib, "NinthEngineCore.lib")
 
 // Game Application
-#include "TestGame.hpp"
+#include "TerrainGame.hpp"
 
 // Render Engine
-//#define _USE_GL
-#define _USE_DX
+#define _USE_GL
+//#define _USE_DX
 
 using namespace NinthEngine;
 
@@ -42,14 +42,14 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 #endif
 
 	Win32::Win32Bootstrap bootstrap(
-		"Test Game", 
+		"TerrainGame Game", 
 		1600, 900, 
 		false, 
 		hInstance, cmdShow, 
 		std::move(renderEngine));
 
 	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
-		return std::make_unique<TestGame>(engine);
+		return std::make_unique<TerrainGame>(engine);
 	});
 
 	return 0;

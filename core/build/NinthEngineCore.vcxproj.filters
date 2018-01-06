@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Application">
+      <UniqueIdentifier>{1622ff07-21be-4a9c-bd9d-a0afdaa8de3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{a1ccc152-10a1-42ad-bde3-3a02d2d7920b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{d36b8843-bfee-4c80-b8c0-9e9840ff8f7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{0466b456-1523-4be6-bd44-f037010eed31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render">
+      <UniqueIdentifier>{8b645637-3822-4741-862f-f9b151ff50bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Render\Config">
+      <UniqueIdentifier>{307e3c82-8ed1-4a35-92a2-1dc8c0d2018a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utils">
+      <UniqueIdentifier>{98df2339-dc2c-4666-b8a6-fb212e8f5bcb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\NinthEngine\Application\Game.hpp">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Application\GameEngine.hpp">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Application\GameTimer.hpp">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Application\GameWindow.hpp">
+      <Filter>Header Files\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Camera\FPSGameCamera.hpp">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Camera\GameCamera.hpp">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Input\Keyboard.hpp">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Utils\FileUtils.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Utils\MathUtils.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\ConstantBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Rasterizer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\RenderTarget.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Shader.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Texture.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\VertexArray.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\BufferConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\InputLayoutConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\RasterizerConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\RenderTargetConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\SemanticLayoutConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\ShaderConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\TextureConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\RenderEngine.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\Camera\FPSGameCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

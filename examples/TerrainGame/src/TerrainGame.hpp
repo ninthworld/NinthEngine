@@ -6,10 +6,13 @@
 
 using namespace NinthEngine;
 
-class TestGame : public Game {
+class Skydome;
+class Terrain;
+
+class TerrainGame : public Game {
 public:
-	TestGame(const std::shared_ptr<GameEngine>& engine);
-	~TestGame();
+	TerrainGame(const std::shared_ptr<GameEngine>& engine);
+	~TerrainGame();
 
 	void init();
 	void update(const double deltaTime);
@@ -26,17 +29,17 @@ private:
 	std::shared_ptr<FPSGameCamera> m_camera;
 
 	// Rasterizers
+	bool m_wireframe = false;
+	std::unique_ptr<Rasterizer> m_rasterizerWF;
 	std::unique_ptr<Rasterizer> m_rasterizer;
 
 	// Constants
 	std::shared_ptr<ConstantBuffer> m_constantCamera;
 
-	// Shaders
-	std::unique_ptr<Shader> m_shader;
-		
-	// Buffers
-	std::shared_ptr<IndexBuffer> m_indexBuffer;
-	std::shared_ptr<VertexBuffer> m_vertexBuffer;
-	std::shared_ptr<VertexArray> m_vertexArray;
+	// Skydome
+	std::unique_ptr<Skydome> m_skydome;
 
+	// Terrain
+	std::unique_ptr<Terrain> m_terrain;
+		
 };
