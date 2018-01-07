@@ -125,7 +125,7 @@ Terrain::Terrain(
 		.setBinding(t++));
 
 	// Initialize Constant Buffers
-	TerrainData terrainData{ glm::mat4(1), scaleXZ, scaleY, detailRange - 50, detailRange };
+	TerrainData terrainData{ glm::mat4(1), scaleXZ, scaleY, detailRangeNear, detailRangeFar };
 	terrainData.worldMatrix = glm::translate(terrainData.worldMatrix, glm::vec3(-terrainData.scaleXZ / 2.0f, 0.0f, -terrainData.scaleXZ / 2.0f));
 	terrainData.worldMatrix = glm::scale(terrainData.worldMatrix, glm::vec3(terrainData.scaleXZ, terrainData.scaleY, terrainData.scaleXZ));
 	for (unsigned i = 0; i < 8; ++i) terrainData.lodRange[i] = lodRange[i];

@@ -7,8 +7,8 @@ const static int patchSize = 16;
 const static int rootPatches = 8;
 const static float scaleXZ = 6000.0f;
 const static float scaleY = 400.0f;
-const static int detailRange = 400;
-const static float sightRangeFactor = 2.0f;
+const static int detailRangeFar = 400;
+const static int detailRangeNear = 350;
 const static float lodRange[8]{
 	1750,
 	874,
