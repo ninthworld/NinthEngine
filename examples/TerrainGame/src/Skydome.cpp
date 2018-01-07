@@ -8,7 +8,7 @@ Skydome::Skydome(
 	: m_context(context)
 	, m_camera(camera)
 	, m_constantCamera(constantCamera)
-	, m_skydomeData(SkydomeData{ glm::vec4(0.57, 0.67, 0.87, 1.0), glm::vec4(1024.0) }) {
+	, m_skydomeData(SkydomeData{ glm::vec4(0.57, 0.67, 0.87, 1.0), glm::vec4(4000.0) }) {
 	
 	auto inputLayout = InputLayoutConfig().float3().float2();
 	auto semanticLayout = SemanticLayoutConfig().position().texCoord();

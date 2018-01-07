@@ -18,6 +18,8 @@ public:
 
 	void addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) override;
 
+	void setPatchSize(const int patchSize) override;
+
 	void bind() override;
 	void unbind() override;
 

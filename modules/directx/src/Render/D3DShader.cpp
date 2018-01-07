@@ -30,7 +30,7 @@ void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, const Sha
 	HRESULT hr;
 	hr = device->CreateVertexShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_vertexShader);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Vertex Shader";
+		LOG_ERROR << "Failed to create HLSL Vertex Shader: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
@@ -64,7 +64,7 @@ void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, const Sha
 
 	hr = device->CreateInputLayout(&vertexLayoutDesc[0], vertexLayoutDesc.size(), compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), &m_inputLayout);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Input Layout";
+		LOG_ERROR << "Failed to create HLSL Input Layout: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }
@@ -76,7 +76,7 @@ void D3DShader::createHullShader(const ComPtr<ID3D11Device>& device, const Shade
 	HRESULT hr;
 	hr = device->CreateHullShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_hullShader);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Hull Shader";
+		LOG_ERROR << "Failed to create HLSL Hull Shader: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }
@@ -88,7 +88,7 @@ void D3DShader::createDomainShader(const ComPtr<ID3D11Device>& device, const Sha
 	HRESULT hr;
 	hr = device->CreateDomainShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_domainShader);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Domain Shader";
+		LOG_ERROR << "Failed to create HLSL Domain Shader: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }
@@ -100,7 +100,7 @@ void D3DShader::createGeometryShader(const ComPtr<ID3D11Device>& device, const S
 	HRESULT hr;
 	hr = device->CreateGeometryShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_geometryShader);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Geometry Shader";
+		LOG_ERROR << "Failed to create HLSL Geometry Shader: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }
@@ -112,7 +112,7 @@ void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, const Shad
 	HRESULT hr;
 	hr = device->CreatePixelShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_pixelShader);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Pixel Shader";
+		LOG_ERROR << "Failed to create HLSL Pixel Shader: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }
@@ -164,7 +164,7 @@ ComPtr<ID3DBlob> compileShader(const ComPtr<ID3D11Device>& device, const std::st
 			LOG_ERROR << msg;
 		}
 
-		LOG_ERROR << "Failed to compile HLSL Shader";
+		LOG_ERROR << "Failed to compile HLSL Shader: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 	else {

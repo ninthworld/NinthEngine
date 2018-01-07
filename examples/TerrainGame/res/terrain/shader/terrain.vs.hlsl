@@ -17,7 +17,7 @@ cbuffer Camera : register(b0) {
 Texture2D heightmap : register(t0);
 SamplerState heightmapSampler : register(s0);
 
-output main(input IN){
+output main(input IN) {
 	output OUT;
 	
 	float3 localPos = float3(IN.position.x, 0.0, IN.position.y);

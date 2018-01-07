@@ -16,6 +16,7 @@ D3DGraphicsContext::D3DGraphicsContext(
 	const bool vsync)
 	: m_deviceContext(deviceContext)
 	, m_vsync(vsync)
+	, m_primitiveType(TRIANGLES_TYPE)
 	, m_primitive(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST) {
 	
 	ZeroMemory(&m_clearColor, 4 * sizeof(float));
@@ -43,27 +44,27 @@ D3DGraphicsContext::D3DGraphicsContext(
 	ComPtr<IDXGIDevice1> dxgiDevice;
 	hr = device.As(&dxgiDevice);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create IDXGIDevice1";
+		LOG_ERROR << "Failed to create IDXGIDevice1: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
 	ComPtr<IDXGIAdapter> dxgiAdapter;
 	hr = dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf());
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create IDXGIAdapter";
+		LOG_ERROR << "Failed to create IDXGIAdapter: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
 	ComPtr<IDXGIFactory1> dxgiFactory;
 	hr = dxgiAdapter->GetParent(__uuidof(IDXGIFactory1), &dxgiFactory);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create IDXGIFactory1";
+		LOG_ERROR << "Failed to create IDXGIFactory1: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
 	hr = dxgiFactory->CreateSwapChain(device.Get(), &swapChainDesc, &m_swapChain);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create IDXGISwapChain";
+		LOG_ERROR << "Failed to create IDXGISwapChain: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
@@ -85,13 +86,13 @@ D3DGraphicsContext::D3DGraphicsContext(
 
 	hr = device->CreateTexture2D(&depthStencilBufferDesc, nullptr, &m_depthStencilBuffer);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create Depth Stencil Texture";
+		LOG_ERROR << "Failed to create Depth Stencil Texture: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
 	hr = device->CreateDepthStencilView(m_depthStencilBuffer.Get(), nullptr, &m_depthStencilView);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create Depth Stencil View";
+		LOG_ERROR << "Failed to create Depth Stencil View: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
@@ -105,7 +106,7 @@ D3DGraphicsContext::D3DGraphicsContext(
 
 	hr = device->CreateDepthStencilState(&depthStencilStateDesc, &m_depthStencilState);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create Depth Stencil State";
+		LOG_ERROR << "Failed to create Depth Stencil State: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
@@ -114,13 +115,13 @@ D3DGraphicsContext::D3DGraphicsContext(
 	ID3D11Texture2D *backBufferTexture;
 	hr = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferTexture);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create BackBuffer Texture";
+		LOG_ERROR << "Failed to create BackBuffer Texture: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
 	hr = device->CreateRenderTargetView(backBufferTexture, nullptr, &m_backBuffer);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create BackBuffer";
+		LOG_ERROR << "Failed to create BackBuffer: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
@@ -167,6 +168,9 @@ void D3DGraphicsContext::bindBackBuffer() {
 }
 
 void D3DGraphicsContext::setPrimitive(const PrimitiveType primitive) {
+
+	m_primitiveType = primitive;
+
 	switch (primitive) {
 	case POINTS_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST; break;
 	case LINES_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_LINELIST; break;

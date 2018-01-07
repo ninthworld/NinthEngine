@@ -50,7 +50,7 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 	}
 
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create ID3D11Device";
+		LOG_ERROR << "Failed to create ID3D11Device: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }

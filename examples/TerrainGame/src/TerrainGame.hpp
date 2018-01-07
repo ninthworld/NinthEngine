@@ -40,6 +40,6 @@ private:
 	std::unique_ptr<Skydome> m_skydome;
 
 	// Terrain
-	std::unique_ptr<Terrain> m_terrain;
+	std::shared_ptr<Terrain> m_terrain;
 		
 };

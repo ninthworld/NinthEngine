@@ -12,6 +12,7 @@ GLGraphicsContext::GLGraphicsContext(std::unique_ptr<GLContext> glContext, const
 	, m_window(window)
 	, m_vsync(vsync)
 	, m_clearColor(ClearColor{0.f, 0.f, 0.f, 1.f})
+	, m_primitiveType(TRIANGLES_TYPE)
 	, m_primitive(GL_TRIANGLES) {
 }
 
@@ -52,12 +53,16 @@ void GLGraphicsContext::clearBackBuffer() {
 }
 
 void GLGraphicsContext::setPrimitive(const PrimitiveType primitive) {
+
+	m_primitiveType = primitive;
+
 	switch (primitive) {
 	case POINTS_TYPE: m_primitive = GL_POINTS; break;
 	case LINES_TYPE: m_primitive = GL_LINES; break;
 	case LINE_STRIP_TYPE: m_primitive = GL_LINE_STRIP; break;
 	case TRIANGLES_TYPE: m_primitive = GL_TRIANGLES; break;
 	case TRIANGLE_STRIP_TYPE: m_primitive = GL_TRIANGLE_STRIP; break;
+	case PATCHES_TYPE: m_primitive = GL_PATCHES; break;
 	}
 }
 

@@ -12,7 +12,7 @@ layout(std140) uniform Skydome {
 
 uniform sampler2D skyTexture;
 
-void main(){
+void main() {
 	
 	vec4 skyTex = texture(skyTexture, vs_texCoord);
 	

@@ -1,14 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <NinthEngine\Camera\GameCamera.hpp>
-#include <NinthEngine\Render\GraphicsDevice.hpp>
-#include <NinthEngine\Render\GraphicsContext.hpp>
-#include <NinthEngine\Render\IndexBuffer.hpp>
-#include <NinthEngine\Render\VertexBuffer.hpp>
-#include <NinthEngine\Render\VertexArray.hpp>
-#include <NinthEngine\Render\Texture.hpp>
-#include <NinthEngine\Render\Shader.hpp>
+#include <NinthEngine\Application\Game.hpp>
 
 using namespace NinthEngine;
 

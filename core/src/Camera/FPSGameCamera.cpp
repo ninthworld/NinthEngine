@@ -22,7 +22,7 @@ void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const doub
 	m_rotation.y += m_mouseDelta.x; // *deltaTime;
 	m_mouseDelta = glm::vec2();
 	
-	m_rotation.x = std::max<float>(-PI / 2.0, fmin(PI / 2.0, m_rotation.x));
+	m_rotation.x = std::max<float>(-PI / 2.001, fmin(PI / 2.001, m_rotation.x));
 	m_rotation.y += (m_rotation.y < 0 ? 2.0 * PI : (m_rotation.y > 2.0 * PI ? -2.0 * PI : 0));
 	
 	auto movement = glm::vec3();
@@ -74,9 +74,26 @@ void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const doub
 void FPSGameCamera::setProjMatrix(const int width, const int height) {
 	float w = std::max<float>(width, 1);
 	float h = std::max<float>(height, 1);
+	float wDivH = w / h;
 
-	m_projMatrix = glm::perspective(getSettings().FOV, w / h, getSettings().zNear, getSettings().zFar);
+	m_projMatrix = glm::perspective(getSettings().FOV, wDivH, getSettings().zNear, getSettings().zFar);
 
+	float tanFov = tan((getSettings().FOV / 2.0f) * PI / 180.0);
+
+	for (unsigned i = 0; i < 6; ++i) {
+
+		float inv = (i % 2 ? -1 : 1);
+		int half = floor(i / 2);
+
+		m_frustumPlanes[i] = glm::normalize(glm::vec4(
+			m_projMatrix[3][0] + inv * m_projMatrix[half][0] * (i < 2 ? tanFov * wDivH : 1),
+			m_projMatrix[3][1] + inv * m_projMatrix[half][1] * (i >= 2 && i < 4 ? tanFov : 1),
+			m_projMatrix[3][2] + inv * m_projMatrix[half][2],
+			m_projMatrix[3][3] + inv * m_projMatrix[half][3]));
+
+		m_data.frustumPlanes[i] = m_frustumPlanes[i];
+	}
+	
 	setViewMatrix();
 }
 
@@ -87,7 +104,7 @@ void FPSGameCamera::setViewMatrix() {
 	m_viewMatrix = glm::translate(m_viewMatrix, -m_position);
 
 	m_data.viewMatrix = m_viewMatrix;
-
+	
 	setViewProjMatrix();
 }
 

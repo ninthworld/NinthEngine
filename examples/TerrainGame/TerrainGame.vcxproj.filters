@@ -81,5 +81,11 @@
     <None Include="res\terrain\shader\terrain.gs.glsl">
       <Filter>Resource Files\terrain</Filter>
     </None>
+    <None Include="res\terrain\shader\terrain.hs.glsl">
+      <Filter>Resource Files\terrain</Filter>
+    </None>
+    <None Include="res\terrain\shader\terrain.ds.glsl">
+      <Filter>Resource Files\terrain</Filter>
+    </None>
   </ItemGroup>
 </Project>

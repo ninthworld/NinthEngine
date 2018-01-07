@@ -21,7 +21,7 @@ cbuffer Skydome : register(b1) {
 	float4 scale;
 };
 
-output main(input IN){
+output main(input IN) {
 	output OUT;
 	
 	OUT.texCoord = IN.texCoord;

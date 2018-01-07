@@ -25,6 +25,7 @@ void GLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)
 	glBindVertexArray(m_vaoId);
 	glBindBuffer(GL_ARRAY_BUFFER, glBuffer->getBufferId());
 
+
 	GLuint unitFlag = 0;
 	int unitCount = 0;
 	int totalBytes = 0;
@@ -37,7 +38,7 @@ void GLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)
 		}
 
 		glVertexAttribPointer(i + m_attribCount, unitCount, unitFlag, GL_FALSE, glBuffer->getInputLayout().m_config.m_unitSize, reinterpret_cast<void*>(totalBytes));
-
+		
 		totalBytes += unitCount * sizeof(float);
 	}
 
@@ -47,6 +48,15 @@ void GLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)
 	glBindVertexArray(0);
 
 	m_vertexBuffers.push_back(glBuffer);
+}
+
+void GLVertexArray::setPatchSize(const int patchSize) {
+
+	glBindVertexArray(m_vaoId);
+
+	glPatchParameteri(GL_PATCH_VERTICES, patchSize);
+
+	glBindVertexArray(0);
 }
 
 void GLVertexArray::bind() {

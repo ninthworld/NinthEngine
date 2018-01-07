@@ -28,14 +28,15 @@ public:
 	void bindBackBuffer() override;
 	void clearBackBuffer() override;
 
-	const bool isVsync() const override { return m_vsync; };
-
 	void setVsync(const bool vsync) override { m_vsync = vsync; };
 	void setClearColor(const float r, const float g, const float b, const float a) override {
 		m_clearColor[0] = r; m_clearColor[1] = g; m_clearColor[2] = b; m_clearColor[3] = a;
 	};
 	void setPrimitive(const PrimitiveType primitive) override;
 	void setViewport(const float x, const float y, const float width, const float height) override;
+
+	const bool isVsync() const override { return m_vsync; };
+	const PrimitiveType getPrimitive() const override { return m_primitiveType; };
 
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
@@ -47,6 +48,7 @@ private:
 
 	bool m_vsync;
 	float m_clearColor[4];
+	PrimitiveType m_primitiveType;
 	D3D11_PRIMITIVE_TOPOLOGY m_primitive;
 
 };

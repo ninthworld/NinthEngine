@@ -9,6 +9,7 @@ struct Camera {
 	glm::mat4 viewMatrix;
 	glm::mat4 viewProjMatrix;
 	glm::vec4 position;
+	glm::vec4 frustumPlanes[6];
 };
 
 struct GameCameraSettings {

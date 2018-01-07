@@ -29,7 +29,7 @@ D3DRasterizer::D3DRasterizer(
 
 	HRESULT hr = device->CreateRasterizerState(&rasterizerDesc, &m_rasterizerState);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create RasterizerState";
+		LOG_ERROR << "Failed to create RasterizerState: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }

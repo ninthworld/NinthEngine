@@ -16,6 +16,8 @@ public:
 
 	virtual void addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) = 0;
 
+	virtual void setPatchSize(const int patchSize) = 0;
+
 	virtual void bind() = 0;
 	virtual void unbind() = 0;
 

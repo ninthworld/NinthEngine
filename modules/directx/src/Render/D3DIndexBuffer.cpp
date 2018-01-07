@@ -30,7 +30,7 @@ D3DIndexBuffer::D3DIndexBuffer(
 	HRESULT hr;
 	hr = device->CreateBuffer(&bufferDesc, &resourceData, &m_buffer);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create Buffer";
+		LOG_ERROR << "Failed to create IndexBuffer: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 

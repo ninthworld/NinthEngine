@@ -17,7 +17,7 @@ layout(std140) uniform Skydome {
 	vec4 scale;
 };
 
-void main(){
+void main() {
 	
 	vs_texCoord = in_texCoord;
 	vs_blend = pow(1.0 - in_position.y, 2.0);

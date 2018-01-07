@@ -88,7 +88,8 @@ void TerrainGame::init() {
 	m_skydome = std::make_unique<Skydome>(m_device, m_context, m_camera, m_constantCamera);
 	
 	// Initialize Terrain
-	m_terrain = std::make_unique<Terrain>(m_device, m_context, m_camera, m_constantCamera);
+	m_terrain = std::make_shared<Terrain>(m_device, m_context, m_camera, m_constantCamera);
+	m_terrain->init();
 
 }
 

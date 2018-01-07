@@ -30,7 +30,7 @@ D3DConstantBuffer::D3DConstantBuffer(
 	HRESULT hr;
 	hr = device->CreateBuffer(&bufferDesc, &resourceData, &m_buffer);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create Buffer";
+		LOG_ERROR << "Failed to create ConstantBuffer: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }

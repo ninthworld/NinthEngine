@@ -57,6 +57,7 @@ private:
 	glm::mat4 m_projMatrix;
 	glm::mat4 m_viewMatrix;
 	glm::mat4 m_viewProjMatrix;
+	glm::vec4 m_frustumPlanes[6];
 
 	glm::vec2 m_mouseDelta;
 

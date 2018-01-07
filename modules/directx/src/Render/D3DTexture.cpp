@@ -32,7 +32,7 @@ D3DTexture::D3DTexture(
 
 	hr = device->CreateTexture2D(&textureDesc, NULL, &m_texture);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create D3DTexture2D";
+		LOG_ERROR << "Failed to create D3DTexture2D: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
@@ -42,7 +42,7 @@ D3DTexture::D3DTexture(
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		hr = m_deviceContext->Map(m_texture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		if (FAILED(hr)) {
-			LOG_ERROR << "Failed to map texture data";
+			LOG_ERROR << "Failed to map texture data: " << _com_error(hr).ErrorMessage();
 			throw std::exception();
 		}
 		memcpy(mappedResource.pData, config.m_config.m_data, config.m_config.m_width * config.m_config.m_height * 4);
@@ -61,7 +61,7 @@ D3DTexture::D3DTexture(
 
 	hr = device->CreateShaderResourceView(m_texture.Get(), &shaderRVDesc, &m_shaderRV);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create D3DShaderResourceView";
+		LOG_ERROR << "Failed to create D3DShaderResourceView: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 
@@ -80,7 +80,7 @@ D3DTexture::D3DTexture(
 
 	hr = device->CreateSamplerState(&samplerDesc, &m_sampler);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create D3DSampler";
+		LOG_ERROR << "Failed to create D3DSampler: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 }

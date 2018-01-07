@@ -30,7 +30,7 @@ D3DVertexBuffer::D3DVertexBuffer(
 	HRESULT hr;
 	hr = device->CreateBuffer(&bufferDesc, &resourceData, &m_buffer);
 	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create Buffer";
+		LOG_ERROR << "Failed to create VertexBuffer: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
 

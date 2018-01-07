@@ -1,0 +1,24 @@
+﻿2018-01-07 00:00:19.766 ERROR [9416] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-07 00:00:19.794 ERROR [9416] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-07 00:06:14.897 ERROR [9276] [`anonymous-namespace'::compileShader@160] Geometry shader failed to compile with the following errors:
+ERROR: 0:66: error(#143) Undeclared identifier: mapCoords
+ERROR: 0:66: error(#202) No matching overloaded function found: texture
+ERROR: 0:67: error(#202) No matching overloaded function found: texture
+ERROR: 0:68: error(#202) No matching overloaded function found: texture
+ERROR: 0:69: error(#202) No matching overloaded function found: texture
+ERROR: error(#273) 5 compilation errors.  No code generated
+
+
+2018-01-07 00:06:14.899 ERROR [9276] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-07 00:06:14.923 ERROR [9276] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-07 00:06:19.561 ERROR [16220] [`anonymous-namespace'::compileShader@160] Geometry shader failed to compile with the following errors:
+ERROR: 0:66: error(#143) Undeclared identifier: mapCoords
+ERROR: 0:66: error(#202) No matching overloaded function found: texture
+ERROR: 0:67: error(#202) No matching overloaded function found: texture
+ERROR: 0:68: error(#202) No matching overloaded function found: texture
+ERROR: 0:69: error(#202) No matching overloaded function found: texture
+ERROR: error(#273) 5 compilation errors.  No code generated
+
+
+2018-01-07 00:06:19.562 ERROR [16220] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-07 00:06:19.583 ERROR [16220] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception

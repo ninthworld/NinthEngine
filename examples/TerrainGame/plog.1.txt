@@ -1,0 +1,113 @@
+﻿2018-01-06 22:53:07.139 ERROR [16000] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 22:53:07.163 ERROR [16000] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 22:53:09.665 ERROR [11208] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:26: error(#162) Wrong operand types: no operation "-" exists that takes a left-hand operand of type "unknown qualifier highp 4-component vector of vec4" and a right operand of type "default in highp 3-component vector of vec3" (or there is no acceptable conversion)
+ERROR: 0:29: error(#143) Undeclared identifier: position
+ERROR: 0:29: error(#216) Vector field selection out of range "xyz"
+ERROR: 0:29: error(#160) Cannot convert from: "float" to: "highp 2-component vector of vec2"
+ERROR: error(#273) 4 compilation errors.  No code generated
+
+
+2018-01-06 22:53:09.667 ERROR [11208] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 22:53:09.682 ERROR [11208] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 22:53:39.699 ERROR [4244] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:29: error(#143) Undeclared identifier: position
+ERROR: 0:29: error(#216) Vector field selection out of range "xyz"
+ERROR: 0:29: error(#160) Cannot convert from: "float" to: "highp 2-component vector of vec2"
+ERROR: error(#273) 3 compilation errors.  No code generated
+
+
+2018-01-06 22:53:39.700 ERROR [4244] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 22:53:39.719 ERROR [4244] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 22:53:42.103 ERROR [3716] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:29: error(#143) Undeclared identifier: position
+ERROR: 0:29: error(#216) Vector field selection out of range "xyz"
+ERROR: 0:29: error(#160) Cannot convert from: "float" to: "highp 2-component vector of vec2"
+ERROR: error(#273) 3 compilation errors.  No code generated
+
+
+2018-01-06 22:53:42.104 ERROR [3716] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 22:53:42.120 ERROR [3716] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 22:53:54.749 ERROR [10664] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:29: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp 2-component vector of vec2"
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+
+2018-01-06 22:53:54.756 ERROR [10664] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 22:53:54.790 ERROR [10664] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 22:53:56.806 ERROR [15864] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:29: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp 2-component vector of vec2"
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+
+2018-01-06 22:53:56.807 ERROR [15864] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 22:53:56.822 ERROR [15864] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 23:16:12.522 ERROR [14468] [`anonymous-namespace'::compileShader@160] Geometry shader failed to compile with the following errors:
+ERROR: 0:63: error(#314) No such field in interface block length
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+
+2018-01-06 23:16:12.523 ERROR [14468] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 23:16:12.541 ERROR [14468] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 23:16:15.012 ERROR [3916] [`anonymous-namespace'::compileShader@160] Geometry shader failed to compile with the following errors:
+ERROR: 0:63: error(#314) No such field in interface block length
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+
+2018-01-06 23:16:15.013 ERROR [3916] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 23:16:15.029 ERROR [3916] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 23:24:00.894 ERROR [12272] [`anonymous-namespace'::compileShader@160] Geometry shader failed to compile with the following errors:
+ERROR: 0:63: error(#314) No such field in interface block length
+ERROR: 0:75: error(#143) Undeclared identifier: attenuation
+ERROR: error(#273) 2 compilation errors.  No code generated
+
+
+2018-01-06 23:24:00.895 ERROR [12272] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 23:24:00.913 ERROR [12272] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 23:24:03.477 ERROR [10352] [`anonymous-namespace'::compileShader@160] Geometry shader failed to compile with the following errors:
+ERROR: 0:63: error(#314) No such field in interface block length
+ERROR: 0:75: error(#143) Undeclared identifier: attenuation
+ERROR: error(#273) 2 compilation errors.  No code generated
+
+
+2018-01-06 23:24:03.478 ERROR [10352] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 23:24:03.494 ERROR [10352] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 23:26:59.005 ERROR [844] [`anonymous-namespace'::compileShader@160] Geometry shader failed to compile with the following errors:
+ERROR: 0:75: error(#143) Undeclared identifier: attenuation
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+
+2018-01-06 23:26:59.006 ERROR [844] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 23:26:59.028 ERROR [844] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 23:27:14.005 ERROR [2116] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:56: error(#132) Syntax error: "normal" parse error
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+
+2018-01-06 23:27:14.006 ERROR [2116] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 23:27:14.024 ERROR [2116] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-06 23:28:02.092 ERROR [14144] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:57: error(#132) Syntax error: "}" parse error
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+
+2018-01-06 23:28:02.093 ERROR [14144] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-06 23:28:02.110 ERROR [14144] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-07 00:00:14.984 ERROR [16976] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:57: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: 0:58: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: 0:59: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: 0:60: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: error(#273) 4 compilation errors.  No code generated
+
+
+2018-01-07 00:00:14.985 ERROR [16976] [`anonymous-namespace'::compileShader@161] Failed to compile GLSL Shader
+2018-01-07 00:00:15.008 ERROR [16976] [NinthEngine::Win32::Win32Bootstrap::run@55] Unknown exception
+2018-01-07 00:00:19.765 ERROR [9416] [`anonymous-namespace'::compileShader@160] Fragment shader failed to compile with the following errors:
+ERROR: 0:57: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: 0:58: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: 0:59: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: 0:60: error(#160) Cannot convert from: "3-component vector of vec3" to: "highp float"
+ERROR: error(#273) 4 compilation errors.  No code generated
+
+

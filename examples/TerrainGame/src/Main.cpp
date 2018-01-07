@@ -42,7 +42,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 #endif
 
 	Win32::Win32Bootstrap bootstrap(
-		"TerrainGame Game", 
+		"Terrain Game", 
 		1600, 900, 
 		false, 
 		hInstance, cmdShow, 

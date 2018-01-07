@@ -51,7 +51,8 @@ void Win32Bootstrap::run(const std::function<std::unique_ptr<Game>(const std::sh
 		engine.reset();
 		window.reset();
 	}
-	catch (std::exception&) {
+	catch (const std::exception& e) {
+		LOG_ERROR << e.what();
 	}
 }
 

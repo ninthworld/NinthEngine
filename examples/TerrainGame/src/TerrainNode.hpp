@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <vector>
-#include <NinthEngine\Application\Game.hpp>
 #include "Terrain.hpp"
 
 using namespace NinthEngine;
@@ -10,9 +9,9 @@ using namespace NinthEngine;
 class TerrainNode {
 public:
 	TerrainNode(
+		const std::shared_ptr<Terrain>& root,
 		const std::shared_ptr<GraphicsContext>& context,
 		const std::shared_ptr<VertexArray>& vertexArray,
-		const std::shared_ptr<IndexBuffer>& indexBuffer,
 		const std::shared_ptr<ConstantBuffer>& constantNode,
 		const glm::vec2 location,
 		const int lod,
@@ -28,12 +27,12 @@ private:
 	
 	// Constant Buffers
 	std::shared_ptr<ConstantBuffer> m_constantNode;
-
-	// Index Buffers
-	std::shared_ptr<IndexBuffer> m_indexBuffer;
-
+	
 	// Vertex Array
 	std::shared_ptr<VertexArray> m_vertexArray;
+
+	// Root
+	std::shared_ptr<Terrain> m_root;
 
 	// Node
 	glm::mat4 m_localMatrix;
@@ -43,8 +42,10 @@ private:
 	float m_size;
 	int m_lod;
 	bool m_leaf;
+	std::vector<bool> m_neighbors;
 
 	// Children
 	std::vector<std::unique_ptr<TerrainNode>> m_children;
 
+	friend class Terrain;
 };
