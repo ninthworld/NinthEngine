@@ -30,4 +30,4 @@ WIP
 
 # Credit
 * Some Graphics Engine inspiration from https://github.com/mogemimi/pomdog
-* Quadtree Terrain for Example/TerrainGame modified from https://github.com/oreonengine/oreon-engine
+* Quadtree/Tessellation Terrain for Example/TerrainGame modified from https://github.com/oreonengine/oreon-engine
