@@ -1,7 +1,8 @@
-struct input {
+struct VertexOut {
+	float2 texCoord : TEXCOORD;
+	float blend : BLENDWEIGHT;
+
 	float4 position : SV_POSITION;
-	float2 texCoord : TEXCOORD0;
-	float blend : BLENDWEIGHT0;
 };
 
 cbuffer Skydome : register(b1) {
@@ -9,19 +10,20 @@ cbuffer Skydome : register(b1) {
 	float4 scale;
 };
 
+SamplerState texSampler : register(s0);
+
 Texture2D skyTexture : register(t0);
-SamplerState skySampler : register(s0);
 
 float4 mix(float4 x, float4 y, float a) {
 	return x * (1.0 - a) + y * a;
 }
 
-float4 main(input IN) : SV_TARGET {
+float4 main(VertexOut IN) : SV_TARGET {
 	float4 OUT;
 
-	float4 skyTex = skyTexture.Sample(skySampler, IN.texCoord);
+	float4 sky = skyTexture.Sample(texSampler, IN.texCoord);
 
-	OUT = mix(skyTex, skyColor, IN.blend);
+	OUT = mix(sky, skyColor, IN.blend);
 	
 	return OUT;
 }

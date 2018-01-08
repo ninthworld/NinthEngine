@@ -10,6 +10,7 @@ layout(std140) uniform Camera {
 	mat4 viewMatrix;
 	mat4 viewProjMatrix;
 	vec4 camPosition;
+	vec4 frustumPlanes[6];
 };
 
 layout(std140) uniform Skydome {

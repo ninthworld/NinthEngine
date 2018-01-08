@@ -66,6 +66,9 @@
     <ClCompile Include="..\src\GLRenderEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Render\GLSampler.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngineGL\GLRenderEngine.hpp">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Render\Win32\Win32GLContext.hpp">
       <Filter>Header Files\Render\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GLSampler.hpp">
+      <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

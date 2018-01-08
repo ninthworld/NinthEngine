@@ -137,6 +137,7 @@
     <ClCompile Include="..\src\Render\GLIndexBuffer.cpp" />
     <ClCompile Include="..\src\Render\GLRasterizer.cpp" />
     <ClCompile Include="..\src\Render\GLRenderTarget.cpp" />
+    <ClCompile Include="..\src\Render\GLSampler.cpp" />
     <ClCompile Include="..\src\Render\GLShader.cpp" />
     <ClCompile Include="..\src\Render\GLTexture.cpp" />
     <ClCompile Include="..\src\Render\GLVertexArray.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="..\src\Render\GLIndexBuffer.hpp" />
     <ClInclude Include="..\src\Render\GLRasterizer.hpp" />
     <ClInclude Include="..\src\Render\GLRenderTarget.hpp" />
+    <ClInclude Include="..\src\Render\GLSampler.hpp" />
     <ClInclude Include="..\src\Render\GLShader.hpp" />
     <ClInclude Include="..\src\Render\GLTexture.hpp" />
     <ClInclude Include="..\src\Render\GLVertexArray.hpp" />

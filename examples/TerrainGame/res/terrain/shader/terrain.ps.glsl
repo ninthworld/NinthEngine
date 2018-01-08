@@ -23,6 +23,16 @@ layout(std140) uniform Terrain {
 	float lodRange[8];
 };
 
+layout(std140) uniform Node {
+	mat4 localMatrix;
+	vec4 neighbors;
+	vec2 location;
+	vec2 index;
+	float size;
+	int lod;
+	vec2 _nPadding;
+};
+
 uniform sampler2D normalmap;
 
 uniform sampler2D material0Dif;

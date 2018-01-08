@@ -77,12 +77,23 @@ Skydome::Skydome(
 	m_vertexArray = device->createVertexArray();
 	m_vertexArray->addVertexBuffer(m_vertexBuffer);
 
+	// Initialize Samplers
+	m_sampler = device->createSampler(
+		SamplerConfig()
+		.setBinding(0)
+		.setMipmap(LINEAR, 0, 8)
+		.setFilter(LINEAR)
+		.setEdge(WRAP));
+
 	// Load Textures
 	m_texture = device->createTexture(
 		TextureConfig()
 		.loadFile("res/skydome/textures/sky4.jpg")
-		.setBinding(0));
+		.setBinding(0)
+		.mipmapping());
+	m_texture->setSampler(m_sampler);
 	
+	// Initialize Constants
 	m_constantSkydome = device->createConstantBuffer(
 		BufferConfig()
 		.asConstantBuffer()
@@ -114,9 +125,9 @@ void Skydome::render() {
 
 	// Bind Shader
 	m_shader->bind();
-
+	
 	// Bind Textures
-	m_texture->bind();
+	m_texture->bind(PIXEL_SHADER_BIT);
 
 	// Bind Constants
 	m_constantCamera->bind();
@@ -131,7 +142,7 @@ void Skydome::render() {
 	m_constantSkydome->unbind(VERTEX_SHADER_BIT | PIXEL_SHADER_BIT);
 	m_constantCamera->unbind();
 
-	m_texture->unbind();
+	m_texture->unbind(PIXEL_SHADER_BIT);
 
 	m_shader->unbind();
 }

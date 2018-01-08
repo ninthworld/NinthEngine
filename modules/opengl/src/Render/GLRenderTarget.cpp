@@ -15,11 +15,11 @@ GLRenderTarget::GLRenderTarget(
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 
 	auto glColor = std::dynamic_pointer_cast<GLTexture>(colorTexture);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glColor->getTextureId(), 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glColor->m_textureId, 0);
 	m_colorTexture = std::move(glColor);
 
 	auto glDepth = std::dynamic_pointer_cast<GLTexture>(depthTexture);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, glDepth->getTextureId(), 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, glDepth->m_textureId, 0);
 	m_depthTexture = std::move(glDepth);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

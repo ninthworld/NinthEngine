@@ -137,6 +137,7 @@
     <ClCompile Include="..\src\Render\D3DIndexBuffer.cpp" />
     <ClCompile Include="..\src\Render\D3DRasterizer.cpp" />
     <ClCompile Include="..\src\Render\D3DRenderTarget.cpp" />
+    <ClCompile Include="..\src\Render\D3DSampler.cpp" />
     <ClCompile Include="..\src\Render\D3DShader.cpp" />
     <ClCompile Include="..\src\Render\D3DTexture.cpp" />
     <ClCompile Include="..\src\Render\D3DVertexArray.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="..\src\Render\D3DIndexBuffer.hpp" />
     <ClInclude Include="..\src\Render\D3DRasterizer.hpp" />
     <ClInclude Include="..\src\Render\D3DRenderTarget.hpp" />
+    <ClInclude Include="..\src\Render\D3DSampler.hpp" />
     <ClInclude Include="..\src\Render\D3DShader.hpp" />
     <ClInclude Include="..\src\Render\D3DTexture.hpp" />
     <ClInclude Include="..\src\Render\D3DVertexArray.hpp" />

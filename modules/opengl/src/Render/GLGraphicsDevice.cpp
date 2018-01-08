@@ -6,6 +6,7 @@
 #include "GLVertexArray.hpp"
 #include "GLRasterizer.hpp"
 #include "GLTexture.hpp"
+#include "GLSampler.hpp"
 #include "GLRenderTarget.hpp"
 #include "GLGraphicsDevice.hpp"
 
@@ -82,7 +83,16 @@ std::unique_ptr<Rasterizer> GLGraphicsDevice::createRasterizer(const RasterizerC
 
 std::unique_ptr<Texture> GLGraphicsDevice::createTexture(const TextureConfig& config) {
 
+#ifdef _DEBUG
+	LOG_DEBUG << "Loading " << config.m_config.m_name << "...";
+#endif
+
 	return std::make_unique<GLTexture>(config);
+}
+
+std::unique_ptr<Sampler> GLGraphicsDevice::createSampler(const SamplerConfig& config) {
+
+	return std::make_unique<GLSampler>(config);
 }
 
 std::unique_ptr<RenderTarget> GLGraphicsDevice::createRenderTarget(const RenderTargetConfig& config) {

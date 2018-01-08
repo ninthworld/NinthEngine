@@ -14,6 +14,7 @@
 #include "..\Render\Rasterizer.hpp"
 #include "..\Render\RenderTarget.hpp"
 #include "..\Render\Texture.hpp"
+#include "..\Render\Sampler.hpp"
 #include "..\Utils\MathUtils.hpp"
 
 namespace NinthEngine {

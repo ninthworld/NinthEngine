@@ -15,6 +15,7 @@ public:
 	};
 
 	TextureConfig& loadFile(const std::string file) {
+		m_config.m_name = file;
 		m_config.m_data = stbi_load(file.c_str(), &m_config.m_width, &m_config.m_height, nullptr, 4);
 		return *this;
 	};
@@ -44,13 +45,20 @@ public:
 		return *this;
 	};
 
+	TextureConfig& mipmapping() {
+		m_config.m_mipmapping = true;
+		return *this;
+	};
+
 public:
 	struct Config {
 	int m_width, m_height;
+	std::string m_name;
 	unsigned m_binding;
 	unsigned char* m_data = nullptr;
 	bool m_depth = false;
 	bool m_renderTarget = false;
+	bool m_mipmapping = false;
 	} m_config;
 
 };

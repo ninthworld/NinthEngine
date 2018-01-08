@@ -1,3 +1,4 @@
+#include "GLSampler.hpp"
 #include "GLTexture.hpp"
 
 namespace NinthEngine {
@@ -6,6 +7,7 @@ namespace GL {
 GLTexture::GLTexture(const TextureConfig& config)
 	: m_textureId(0)
 	, m_glBinding(0)
+	, m_samplerId(0)
 	, m_binding(config.m_config.m_binding) {
 
 	glEnable(GL_TEXTURE_2D);
@@ -23,13 +25,14 @@ GLTexture::GLTexture(const TextureConfig& config)
 
 	glTexImage2D(GL_TEXTURE_2D, 0, m_format, config.m_config.m_width, config.m_config.m_height, 0, m_format, m_type, config.m_config.m_data);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
+	if (config.m_config.m_mipmapping) {
+		glGenerateTextureMipmap(m_textureId);
+	}
+	else {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+	}
+	
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -40,15 +43,23 @@ GLTexture::~GLTexture() {
 	}
 }
 
+void GLTexture::setSampler(const std::shared_ptr<Sampler>& sampler) {
+
+	auto glSampler = std::dynamic_pointer_cast<GLSampler>(sampler);
+	m_samplerId = glSampler->m_samplerId;
+}
+
 void GLTexture::bind(const unsigned flag) {
 
 	glActiveTexture(GL_TEXTURE0 + m_binding);
 	glBindTexture(GL_TEXTURE_2D, m_textureId);
 	glUniform1i(m_glBinding, m_binding);
+	if(m_samplerId) glBindSampler(m_binding, m_samplerId);
 }
 
 void GLTexture::unbind(const unsigned flag) {
 
+	if (m_samplerId) glBindSampler(m_binding, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

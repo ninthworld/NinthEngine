@@ -1,6 +1,7 @@
 #ifdef _WIN32
 
 #include <plog\Log.h>
+#include "D3DSampler.hpp"
 #include "D3DTexture.hpp"
 
 namespace NinthEngine {
@@ -11,6 +12,7 @@ D3DTexture::D3DTexture(
 	const ComPtr<ID3D11DeviceContext>& deviceContext,
 	const TextureConfig& config)
 	: m_deviceContext(deviceContext)
+	, m_samplerBinding(0)
 	, m_binding(config.m_config.m_binding) {
 
 	HRESULT hr;
@@ -64,41 +66,44 @@ D3DTexture::D3DTexture(
 		LOG_ERROR << "Failed to create D3DShaderResourceView: " << _com_error(hr).ErrorMessage();
 		throw std::exception();
 	}
-
-	// Create Sampler
-
-	D3D11_SAMPLER_DESC samplerDesc;
-	ZeroMemory(&samplerDesc, sizeof(samplerDesc));
-
-	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	samplerDesc.MinLOD = 0;
-	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-	hr = device->CreateSamplerState(&samplerDesc, &m_sampler);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create D3DSampler: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
 }
 
 D3DTexture::~D3DTexture() {
 
 }
 
-void D3DTexture::bind(const unsigned flag) {
+void D3DTexture::setSampler(const std::shared_ptr<Sampler>& sampler) {
 
-	if (flag & PIXEL_SHADER_BIT) {
-		m_deviceContext->PSSetShaderResources(m_binding, 1, m_shaderRV.GetAddressOf());
-		m_deviceContext->PSSetSamplers(m_binding, 1, m_sampler.GetAddressOf());
-	}
+	auto d3dSampler = std::dynamic_pointer_cast<D3DSampler>(sampler);
+	m_sampler = d3dSampler->m_sampler;
+	m_samplerBinding = d3dSampler->m_binding;
+}
+
+void D3DTexture::bind(const unsigned flag) {
 
 	if (flag & VERTEX_SHADER_BIT) {
 		m_deviceContext->VSSetShaderResources(m_binding, 1, m_shaderRV.GetAddressOf());
-		m_deviceContext->VSSetSamplers(m_binding, 1, m_sampler.GetAddressOf());
+		m_deviceContext->VSSetSamplers(m_samplerBinding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & HULL_SHADER_BIT) {
+		m_deviceContext->HSSetShaderResources(m_binding, 1, m_shaderRV.GetAddressOf());
+		m_deviceContext->HSSetSamplers(m_samplerBinding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & DOMAIN_SHADER_BIT) {
+		m_deviceContext->DSSetShaderResources(m_binding, 1, m_shaderRV.GetAddressOf());
+		m_deviceContext->DSSetSamplers(m_samplerBinding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & GEOMETRY_SHADER_BIT) {
+		m_deviceContext->GSSetShaderResources(m_binding, 1, m_shaderRV.GetAddressOf());
+		m_deviceContext->GSSetSamplers(m_samplerBinding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & PIXEL_SHADER_BIT) {
+		m_deviceContext->PSSetShaderResources(m_binding, 1, m_shaderRV.GetAddressOf());
+		m_deviceContext->PSSetSamplers(m_samplerBinding, 1, m_sampler.GetAddressOf());
 	}
 }
 
@@ -107,14 +112,29 @@ void D3DTexture::unbind(const unsigned flag) {
 	ID3D11ShaderResourceView* nullSRV = NULL;
 	ID3D11SamplerState* nullSS = NULL;
 
-	if (flag & PIXEL_SHADER_BIT) {
-		m_deviceContext->PSSetShaderResources(m_binding, 1, &nullSRV);
-		m_deviceContext->PSSetSamplers(m_binding, 1, &nullSS);
-	}
-
 	if (flag & VERTEX_SHADER_BIT) {
 		m_deviceContext->VSSetShaderResources(m_binding, 1, &nullSRV);
-		m_deviceContext->VSSetSamplers(m_binding, 1, &nullSS);
+		m_deviceContext->VSSetSamplers(m_samplerBinding, 1, &nullSS);
+	}
+
+	if (flag & HULL_SHADER_BIT) {
+		m_deviceContext->HSSetShaderResources(m_binding, 1, &nullSRV);
+		m_deviceContext->HSSetSamplers(m_samplerBinding, 1, &nullSS);
+	}
+
+	if (flag & DOMAIN_SHADER_BIT) {
+		m_deviceContext->DSSetShaderResources(m_binding, 1, &nullSRV);
+		m_deviceContext->DSSetSamplers(m_samplerBinding, 1, &nullSS);
+	}
+
+	if (flag & GEOMETRY_SHADER_BIT) {
+		m_deviceContext->GSSetShaderResources(m_binding, 1, &nullSRV);
+		m_deviceContext->GSSetSamplers(m_samplerBinding, 1, &nullSS);
+	}
+
+	if (flag & PIXEL_SHADER_BIT) {
+		m_deviceContext->PSSetShaderResources(m_binding, 1, &nullSRV);
+		m_deviceContext->PSSetSamplers(m_samplerBinding, 1, &nullSS);
 	}
 }
 

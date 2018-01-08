@@ -8,6 +8,7 @@
 #include "D3DVertexArray.hpp"
 #include "D3DRasterizer.hpp"
 #include "D3DTexture.hpp"
+#include "D3DSampler.hpp"
 #include "D3DRenderTarget.hpp"
 #include "D3DGraphicsDevice.hpp"
 
@@ -96,8 +97,17 @@ std::unique_ptr<Rasterizer> D3DGraphicsDevice::createRasterizer(const Rasterizer
 }
 
 std::unique_ptr<Texture> D3DGraphicsDevice::createTexture(const TextureConfig& config) {
-	
+
+#ifdef _DEBUG
+	LOG_DEBUG << "Loading " << config.m_config.m_name << "...";
+#endif
+
 	return std::make_unique<D3DTexture>(m_device, m_deviceContext, config);
+}
+
+std::unique_ptr<Sampler> D3DGraphicsDevice::createSampler(const SamplerConfig& config) {
+
+	return std::make_unique<D3DSampler>(m_device, config);
 }
 
 std::unique_ptr<RenderTarget> D3DGraphicsDevice::createRenderTarget(const RenderTargetConfig& config) {

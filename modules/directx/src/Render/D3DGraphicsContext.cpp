@@ -177,6 +177,7 @@ void D3DGraphicsContext::setPrimitive(const PrimitiveType primitive) {
 	case LINE_STRIP_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; break;
 	case TRIANGLES_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST; break;
 	case TRIANGLE_STRIP_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP; break;
+	case PATCHES_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_16_CONTROL_POINT_PATCHLIST; break;
 	}
 }
 

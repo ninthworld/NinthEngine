@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\glsl">
+      <UniqueIdentifier>{483d0874-d010-4931-b7b2-07cd99ce8fb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\hlsl">
+      <UniqueIdentifier>{ce3738bb-76ab-4af7-b19e-538c92b07983}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TestGame.hpp">
@@ -29,18 +35,18 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="res\cube.vs.hlsl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="res\cube.ps.hlsl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\hlsl</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\cube.ps.glsl">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="res\cube.vs.glsl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="res\cube.ps.glsl">
+      <Filter>Resource Files\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

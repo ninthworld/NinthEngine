@@ -41,6 +41,13 @@ struct NodeData {
 	glm::vec2 _padding;
 };
 
+struct Material {
+	std::shared_ptr<Texture> diffuse;
+	std::shared_ptr<Texture> displacement;
+	std::shared_ptr<Texture> normal;
+	std::shared_ptr<Texture> mapAlpha;
+};
+
 class TerrainNode;
 
 class Terrain : public std::enable_shared_from_this<Terrain> {
@@ -71,30 +78,15 @@ private:
 	std::shared_ptr<ConstantBuffer> m_constantTerrain;
 	std::shared_ptr<ConstantBuffer> m_constantNode;
 
+	// Samplers
+	std::shared_ptr<Sampler> m_sampler;
+
 	// Textures
 	std::shared_ptr<Texture> m_heightmap;
 	std::shared_ptr<Texture> m_normalmap;
 	
 	// Materials
-	std::shared_ptr<Texture> m_material0Dif;
-	std::shared_ptr<Texture> m_material0Disp;
-	std::shared_ptr<Texture> m_material0Norm;
-	std::shared_ptr<Texture> m_material0Alpha;
-
-	std::shared_ptr<Texture> m_material1Dif;
-	std::shared_ptr<Texture> m_material1Disp;
-	std::shared_ptr<Texture> m_material1Norm;
-	std::shared_ptr<Texture> m_material1Alpha;
-
-	std::shared_ptr<Texture> m_material2Dif;
-	std::shared_ptr<Texture> m_material2Disp;
-	std::shared_ptr<Texture> m_material2Norm;
-	std::shared_ptr<Texture> m_material2Alpha;
-
-	std::shared_ptr<Texture> m_material3Dif;
-	std::shared_ptr<Texture> m_material3Disp;
-	std::shared_ptr<Texture> m_material3Norm;
-	std::shared_ptr<Texture> m_material3Alpha;
+	std::vector<Material> m_materials;
 	
 	// Vertex Buffers
 	std::shared_ptr<VertexBuffer> m_vertexBuffer;

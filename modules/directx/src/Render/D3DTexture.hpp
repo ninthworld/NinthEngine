@@ -15,6 +15,8 @@ public:
 		const ComPtr<ID3D11DeviceContext>& deviceContext,
 		const TextureConfig& config);
 	~D3DTexture();
+	
+	void setSampler(const std::shared_ptr<Sampler>& sampler) override;
 
 	void bind(const unsigned flag) override;
 	void unbind(const unsigned flag) override;
@@ -25,9 +27,10 @@ private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11Texture2D> m_texture;
 	ComPtr<ID3D11ShaderResourceView> m_shaderRV;
-	ComPtr<ID3D11SamplerState> m_sampler;
-
 	unsigned m_binding;
+
+	ComPtr<ID3D11SamplerState> m_sampler;
+	unsigned m_samplerBinding;
 };
 
 } // namespace DX

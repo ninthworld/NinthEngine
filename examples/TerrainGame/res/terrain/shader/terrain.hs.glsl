@@ -27,9 +27,9 @@ void main() {
 		vec4 side = mix(vec4(tessLevel(lod)), vec4(tessLevel(lod + 1) * 2), neighbors); 
 
 		gl_TessLevelOuter[2] = side.x;
-		gl_TessLevelOuter[3] = side.w;
 		gl_TessLevelOuter[0] = side.y;
 		gl_TessLevelOuter[1] = side.z;
+		gl_TessLevelOuter[3] = side.w;
 		
 		gl_TessLevelInner[0] = (gl_TessLevelOuter[3] + gl_TessLevelOuter[1]) / 4.0;
 		gl_TessLevelInner[1] = (gl_TessLevelOuter[2] + gl_TessLevelOuter[0]) / 4.0;				

@@ -8,6 +8,7 @@
 #include "VertexArray.hpp"
 #include "Rasterizer.hpp"
 #include "Texture.hpp"
+#include "Sampler.hpp"
 #include "RenderTarget.hpp"
 
 namespace NinthEngine {
@@ -31,6 +32,8 @@ public:
 	virtual std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) = 0;
 
 	virtual std::unique_ptr<Texture> createTexture(const TextureConfig& config) = 0;
+
+	virtual std::unique_ptr<Sampler> createSampler(const SamplerConfig& config) = 0;
 
 	virtual std::unique_ptr<RenderTarget> createRenderTarget(const RenderTargetConfig& config) = 0;
 };

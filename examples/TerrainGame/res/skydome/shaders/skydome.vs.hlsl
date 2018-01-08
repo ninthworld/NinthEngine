@@ -1,19 +1,21 @@
 
-struct input {
+struct VertexIn {
 	float3 position : POSITION;
-	float2 texCoord : TEXCOORD0;
+	float2 texCoord : TEXCOORD;
 };
 
-struct output {
+struct VertexOut {
+	float2 texCoord : TEXCOORD;
+	float blend : BLENDWEIGHT;
+
 	float4 position : SV_POSITION;
-	float2 texCoord : TEXCOORD0;
-	float blend : BLENDWEIGHT0;
 };
 
 cbuffer Camera : register(b0) {
-	matrix viewMatrix;
-	matrix viewProjMatrix;
+	float4x4 viewMatrix;
+	float4x4 viewProjMatrix;
 	float4 camPosition;
+	float4 frustumPlanes[6];
 };
 
 cbuffer Skydome : register(b1) {
@@ -21,8 +23,8 @@ cbuffer Skydome : register(b1) {
 	float4 scale;
 };
 
-output main(input IN) {
-	output OUT;
+VertexOut main(VertexIn IN) {
+	VertexOut OUT;
 	
 	OUT.texCoord = IN.texCoord;
 	OUT.blend = pow(1.0 - IN.position.y, 2.0);

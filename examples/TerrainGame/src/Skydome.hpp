@@ -32,6 +32,9 @@ private:
 	std::shared_ptr<ConstantBuffer> m_constantCamera;
 	std::shared_ptr<ConstantBuffer> m_constantSkydome;
 
+	// Samplers
+	std::shared_ptr<Sampler> m_sampler;
+
 	// Textures
 	std::shared_ptr<Texture> m_texture;
 
