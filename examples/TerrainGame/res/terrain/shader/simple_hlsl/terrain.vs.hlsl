@@ -27,21 +27,13 @@ cbuffer Node : register(b2) {
 	float2 _nPadding;
 };
 
-SamplerState texSampler : register(s0);
-
-Texture2D heightmap : register(t0);
-
 VertexOut main(VertexIn IN) {
 	VertexOut OUT;
 	
 	float2 localPos = mul(localMatrix, float4(IN.position.x, 0.0, IN.position.y, 1.0)).xz;
 
 	OUT.texCoord = localPos;
-
-	float height = 0.0;
-	height += heightmap.SampleLevel(texSampler, OUT.texCoord, 0).r;
-	
-	OUT.svPosition = mul(worldMatrix, float4(localPos.x, height, localPos.y, 1.0));
+	OUT.svPosition = mul(worldMatrix, float4(localPos.x, 0, localPos.y, 1.0));
 
 	return OUT;
 }

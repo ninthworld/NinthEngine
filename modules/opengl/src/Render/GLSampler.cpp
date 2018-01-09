@@ -97,5 +97,11 @@ GLSampler::~GLSampler() {
 	}
 }
 
+void GLSampler::bind(const unsigned flag) {
+}
+
+void GLSampler::unbind(const unsigned flag) {
+}
+
 } // namespace GL
 } // namespace NinthEngine

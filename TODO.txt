@@ -1,0 +1,19 @@
+Engine - 
+* Framebuffers
+* Backbuffer multisampling
+* Compute shader
+* BufferConfig improvements (remove as___Buffer)
+* TextureConfig improvements (format type)
+* Logging system (remove plog dependency)
+* Debug logging system
+* Look into timer improvements
+* Input system improvements (to reduce input lag from DX11)
+* Remove imageloader dependency (add headers to core)
+? Remove GLM dependency
+
+(Big tasks)
+* Linux (X11) support
+	* Compile with makefile
+* Vulkan support
+* GUI System
+* Multithreading

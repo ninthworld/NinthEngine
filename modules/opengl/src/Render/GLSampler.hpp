@@ -11,6 +11,9 @@ public:
 	GLSampler(const SamplerConfig& config);
 	~GLSampler();
 
+	void bind(const unsigned flag) override;
+	void unbind(const unsigned flag) override;
+
 private:
 	GLuint m_samplerId;
 

@@ -8,7 +8,7 @@ Skydome::Skydome(
 	: m_context(context)
 	, m_camera(camera)
 	, m_constantCamera(constantCamera)
-	, m_skydomeData(SkydomeData{ glm::vec4(0.57, 0.67, 0.87, 1.0), glm::vec4(4000.0) }) {
+	, m_skydomeData(SkydomeData{ glm::vec4(0.57f, 0.67f, 0.87f, 1.0f), glm::vec4(4000.0f) }) {
 	
 	auto inputLayout = InputLayoutConfig().float3().float2();
 	auto semanticLayout = SemanticLayoutConfig().position().texCoord();
@@ -81,7 +81,6 @@ Skydome::Skydome(
 	m_sampler = device->createSampler(
 		SamplerConfig()
 		.setBinding(0)
-		.setMipmap(LINEAR, 0, 8)
 		.setFilter(LINEAR)
 		.setEdge(WRAP));
 
@@ -89,8 +88,7 @@ Skydome::Skydome(
 	m_texture = device->createTexture(
 		TextureConfig()
 		.loadFile("res/skydome/textures/sky4.jpg")
-		.setBinding(0)
-		.mipmapping());
+		.setBinding(0));
 	m_texture->setSampler(m_sampler);
 	
 	// Initialize Constants
@@ -126,6 +124,9 @@ void Skydome::render() {
 	// Bind Shader
 	m_shader->bind();
 	
+	// Bind Samplers
+	m_sampler->bind(PIXEL_SHADER_BIT);
+
 	// Bind Textures
 	m_texture->bind(PIXEL_SHADER_BIT);
 
@@ -143,6 +144,8 @@ void Skydome::render() {
 	m_constantCamera->unbind();
 
 	m_texture->unbind(PIXEL_SHADER_BIT);
+
+	m_sampler->unbind(PIXEL_SHADER_BIT);
 
 	m_shader->unbind();
 }

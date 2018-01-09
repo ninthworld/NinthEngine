@@ -50,15 +50,6 @@ void GLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer)
 	m_vertexBuffers.push_back(glBuffer);
 }
 
-void GLVertexArray::setPatchSize(const int patchSize) {
-
-	glBindVertexArray(m_vaoId);
-
-	glPatchParameteri(GL_PATCH_VERTICES, patchSize);
-
-	glBindVertexArray(0);
-}
-
 void GLVertexArray::bind() {
 
 	glBindVertexArray(m_vaoId);

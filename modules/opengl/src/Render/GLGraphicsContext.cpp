@@ -23,10 +23,18 @@ GLGraphicsContext::~GLGraphicsContext() {
 
 void GLGraphicsContext::draw(const unsigned vertexCount, const unsigned startIndex) {
 
+	if (m_primitiveType == PATCHES_TYPE) {
+		glPatchParameteri(GL_PATCH_VERTICES, m_patchSize);
+	}
+
 	glDrawArrays(m_primitive, startIndex, vertexCount);
 }
 
 void GLGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
+
+	if (m_primitiveType == PATCHES_TYPE) {
+		glPatchParameteri(GL_PATCH_VERTICES, m_patchSize);
+	}
 
 	auto glBuffer = std::dynamic_pointer_cast<GLIndexBuffer>(indexBuffer);
 	

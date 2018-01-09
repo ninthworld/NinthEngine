@@ -1,15 +1,15 @@
 
 struct VertexOut {
-	float4 position : POSITION;
 	float2 texCoord : TEXCOORD;
+	float4 svPosition : SV_POSITION;
 };
 
 struct HullOut {
-	float4 position : POSITION;
 	float2 texCoord : TEXCOORD;
+	float4 svPosition : SV_POSITION;
 };
 
-struct HullOutPatch {
+struct HullPatchOut {
     float edges[4] : SV_TessFactor;
     float inside[2]  : SV_InsideTessFactor;
 };
@@ -33,29 +33,29 @@ float4 lerp4(float a, float b, float4 x) {
 }
 
 float tessLevel(int _lod) {
-	return lerp(1, 16, float(_lod) / 8.0);
+	return lerp(1, 64, float(_lod) / 8.0);
 }
 
-HullOutPatch mainPatch(
+HullPatchOut mainPatch(
 	InputPatch<VertexOut, 16> IN, 
 	uint id : SV_PrimitiveID) {
-	HullOutPatch OUT;
+	HullPatchOut OUT;
 
-	float4 side = lerp4(tessLevel(lod), tessLevel(lod + 1), neighbors);
+	float4 side = lerp4(tessLevel(lod), tessLevel(lod + 1) * 2, neighbors);
 
-	OUT.edges[2] = side.x;
-	OUT.edges[0] = side.y;
-	OUT.edges[1] = side.z;
-	OUT.edges[3] = side.w;
+	OUT.edges[3] = side.x;
+	OUT.edges[1] = side.y;
+	OUT.edges[0] = side.z;
+	OUT.edges[2] = side.w;
 
 	OUT.inside[0] = (OUT.edges[3] + OUT.edges[1]) / 4.0;
-	OUT.inside[0] = (OUT.edges[2] + OUT.edges[0]) / 4.0;
+	OUT.inside[1] = (OUT.edges[2] + OUT.edges[0]) / 4.0;
 
 	return OUT;
 }
 
 [domain("quad")]
-[partitioning("fractional_odd")]
+[partitioning("integer")]
 [outputtopology("triangle_cw")]
 [outputcontrolpoints(16)]
 [patchconstantfunc("mainPatch")]
@@ -65,7 +65,7 @@ HullOut main(
 	uint patchId : SV_PrimitiveID) {
 	HullOut OUT;
 	
-	OUT.position = IN[id].position;
+	OUT.svPosition = IN[id].svPosition;
 	OUT.texCoord = IN[id].texCoord;
 
 	return OUT;

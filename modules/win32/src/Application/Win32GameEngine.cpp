@@ -17,7 +17,7 @@ Win32GameEngine::Win32GameEngine(
 	m_device = renderEngine->getGraphicsDevice();
 	m_context = renderEngine->getGraphicsContext();
 	
-	m_timer = std::make_shared<Win32GameTimer>();
+	m_timer = std::make_unique<Win32GameTimer>();
 	m_context->setViewport(0, 0, window->getWidth(), window->getHeight());
 }
 
@@ -47,17 +47,14 @@ void Win32GameEngine::run(std::unique_ptr<Game> game) {
 		
 		m_window->update();
 		frames++;
-
-		/*
-		if (fpsTimer.elapsed() > 1.0) {
-		fpsTimer.reset();
-		window->setTitle(title + " - " + std::to_string(frames) + " FPS");
-		frames = 0;
-		}
-		*/
 	}
 
 	game.reset();
+}
+
+std::unique_ptr<GameTimer> Win32GameEngine::createTimer() {
+	
+	return std::make_unique<Win32GameTimer>();
 }
 
 } // namespace Win32

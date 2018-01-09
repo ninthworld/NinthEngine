@@ -107,15 +107,15 @@ void main() {
 		
 		vec4 worldPos = gl_in[i].gl_Position + vec4(displacement[i], 0);
 		gl_Position = viewProjMatrix * worldPos;
-
+		/*
 		gl_ClipDistance[0] = dot(gl_Position, frustumPlanes[0]);
 		gl_ClipDistance[1] = dot(gl_Position, frustumPlanes[1]);
 		gl_ClipDistance[2] = dot(gl_Position, frustumPlanes[2]);
 		gl_ClipDistance[3] = dot(gl_Position, frustumPlanes[3]);
 		gl_ClipDistance[4] = dot(gl_Position, frustumPlanes[4]);
 		gl_ClipDistance[5] = dot(gl_Position, frustumPlanes[5]);
-		//gl_ClipDistance[6] = dot(worldPos, clipPlane);
-
+		*/
+		
 		gs_texCoord = ds_texCoord[i];
 
 		gs_viewSpacePos = viewMatrix * worldPos;

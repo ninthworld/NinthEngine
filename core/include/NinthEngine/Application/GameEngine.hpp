@@ -21,10 +21,10 @@ public:
 	virtual ~GameEngine() = default;
 
 	virtual std::shared_ptr<GameWindow> getWindow() = 0;
-	virtual std::shared_ptr<GameTimer> getTimer() = 0;
 	virtual std::shared_ptr<GraphicsDevice> getGraphicsDevice() = 0;
 	virtual std::shared_ptr<GraphicsContext> getGraphicsContext() = 0;
 
+	virtual std::unique_ptr<GameTimer> createTimer() = 0;
 };
 
 } // namespace NinthEngine

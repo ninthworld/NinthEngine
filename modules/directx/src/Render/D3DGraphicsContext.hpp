@@ -33,6 +33,7 @@ public:
 		m_clearColor[0] = r; m_clearColor[1] = g; m_clearColor[2] = b; m_clearColor[3] = a;
 	};
 	void setPrimitive(const PrimitiveType primitive) override;
+	void setPatchSize(const int patchSize) override { m_patchSize = patchSize; };
 	void setViewport(const float x, const float y, const float width, const float height) override;
 
 	const bool isVsync() const override { return m_vsync; };
@@ -50,7 +51,7 @@ private:
 	float m_clearColor[4];
 	PrimitiveType m_primitiveType;
 	D3D11_PRIMITIVE_TOPOLOGY m_primitive;
-
+	unsigned m_patchSize = 0;
 };
 
 } // namespace DX

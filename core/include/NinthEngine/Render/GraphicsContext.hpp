@@ -35,6 +35,7 @@ public:
 	virtual void setVsync(const bool) = 0;
 	virtual void setClearColor(const float r, const float g, const float b, const float a) = 0;
 	virtual void setPrimitive(const PrimitiveType primitive) = 0;
+	virtual void setPatchSize(const int patchSize) = 0;
 	virtual void setViewport(const float x, const float y, const float width, const float height) = 0;
 
 	virtual const bool isVsync() const = 0;

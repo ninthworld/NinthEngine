@@ -25,6 +25,10 @@ private:
 	std::shared_ptr<GraphicsDevice> m_device;
 	std::shared_ptr<GraphicsContext> m_context;
 
+	// Timer
+	std::unique_ptr<GameTimer> m_timer;
+	unsigned m_frames = 0;
+
 	// Camera
 	std::shared_ptr<FPSGameCamera> m_camera;
 

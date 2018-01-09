@@ -135,7 +135,7 @@ D3DGraphicsContext:: ~D3DGraphicsContext() {
 void D3DGraphicsContext::draw(const unsigned vertexCount, const unsigned startIndex) {
 
 	m_deviceContext->IASetPrimitiveTopology(m_primitive);
-	m_deviceContext->Draw(3, 0);
+	m_deviceContext->Draw(vertexCount, startIndex);
 }
 
 void D3DGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
@@ -177,7 +177,7 @@ void D3DGraphicsContext::setPrimitive(const PrimitiveType primitive) {
 	case LINE_STRIP_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP; break;
 	case TRIANGLES_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST; break;
 	case TRIANGLE_STRIP_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP; break;
-	case PATCHES_TYPE: m_primitive = D3D11_PRIMITIVE_TOPOLOGY_16_CONTROL_POINT_PATCHLIST; break;
+	case PATCHES_TYPE: m_primitive = (D3D_PRIMITIVE_TOPOLOGY)(D3D11_PRIMITIVE_TOPOLOGY_1_CONTROL_POINT_PATCHLIST + (m_patchSize - 1)); break;
 	}
 }
 

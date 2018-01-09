@@ -12,6 +12,14 @@ GLRasterizer::~GLRasterizer() {
 }
 
 void GLRasterizer::bind() {
+	/*
+	glEnable(GL_CLIP_DISTANCE0);
+	glEnable(GL_CLIP_DISTANCE1);
+	glEnable(GL_CLIP_DISTANCE2);
+	glEnable(GL_CLIP_DISTANCE3);
+	glEnable(GL_CLIP_DISTANCE4);
+	glEnable(GL_CLIP_DISTANCE5);
+	*/
 
 	glPolygonMode(GL_FRONT_AND_BACK, (m_config.m_config.m_fillMode ? GL_LINE : GL_FILL));
 

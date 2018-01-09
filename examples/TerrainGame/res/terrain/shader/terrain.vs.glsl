@@ -4,13 +4,6 @@ layout(location=0) in vec2 in_position;
 
 out vec2 vs_texCoord;
 
-layout(std140) uniform Camera {
-	mat4 viewMatrix;
-	mat4 viewProjMatrix;
-	vec4 camPosition;
-	vec4 frustumPlanes[6];
-};
-
 layout(std140) uniform Terrain {
 	mat4 worldMatrix;
 	float scaleXZ;

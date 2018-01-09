@@ -39,7 +39,6 @@ Terrain::Terrain(
 	// Initialize Vertex Array
 	m_vertexArray = device->createVertexArray();
 	m_vertexArray->addVertexBuffer(m_vertexBuffer);
-	m_vertexArray->setPatchSize(patchSize);
 
 	// Initialize Samplers
 	m_sampler = device->createSampler(
@@ -144,7 +143,6 @@ Terrain::Terrain(
 			TextureConfig()
 			.loadFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_COLOR.jpg")
 			.setBinding(t++)
-			.mipmapping()
 			.mipmapping()),
 		device->createTexture(
 			TextureConfig()
@@ -199,6 +197,9 @@ Terrain::Terrain(
 		.setGLSLGeometryShader("res/terrain/shader/terrain.gs.glsl")
 		.setGLSLPixelShader("res/terrain/shader/terrain.ps.glsl")
 		.setHLSLVertexShader("res/terrain/shader/terrain.vs.hlsl", "main")
+		.setHLSLHullShader("res/terrain/shader/terrain.hs.hlsl", "main")
+		.setHLSLDomainShader("res/terrain/shader/terrain.ds.hlsl", "main")
+		.setHLSLGeometryShader("res/terrain/shader/terrain.gs.hlsl", "main")
 		.setHLSLPixelShader("res/terrain/shader/terrain.ps.hlsl", "main")
 		.setInputLayout(inputLayout)
 		.setSemanticLayout(semanticLayout));
@@ -250,6 +251,9 @@ void Terrain::render() {
 	// Bind Shader
 	m_shader->bind();
 
+	// Bind Samplers
+	m_sampler->bind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+
 	// Bind Textures
 	m_heightmap->bind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT);
 	m_normalmap->bind(PIXEL_SHADER_BIT);
@@ -262,12 +266,13 @@ void Terrain::render() {
 	}
 	
 	// Bind Constants
-	m_constantCamera->bind(VERTEX_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+	m_constantCamera->bind(GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
 	m_constantTerrain->bind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
 	m_constantNode->bind(VERTEX_SHADER_BIT | HULL_SHADER_BIT | PIXEL_SHADER_BIT);
 
 	// Draw Terrain
 	auto type = m_context->getPrimitive();
+	m_context->setPatchSize(patchSize); // TODO: Reduce to 4
 	m_context->setPrimitive(PATCHES_TYPE);
 	for (unsigned i = 0; i < m_rootNodes.size(); ++i) {
 		m_rootNodes[i]->render();
@@ -277,7 +282,7 @@ void Terrain::render() {
 	// Unbind All
 	m_constantNode->unbind(VERTEX_SHADER_BIT | HULL_SHADER_BIT | PIXEL_SHADER_BIT);
 	m_constantTerrain->unbind(VERTEX_SHADER_BIT | HULL_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
-	m_constantCamera->unbind(VERTEX_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+	m_constantCamera->unbind(GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
 
 	for (unsigned i = 0; i < m_materials.size(); ++i) {
 		m_materials[i].diffuse->unbind(PIXEL_SHADER_BIT);
@@ -288,6 +293,8 @@ void Terrain::render() {
 
 	m_normalmap->unbind(PIXEL_SHADER_BIT);
 	m_heightmap->unbind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT);
+
+	m_sampler->unbind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
 
 	m_shader->unbind();
 }

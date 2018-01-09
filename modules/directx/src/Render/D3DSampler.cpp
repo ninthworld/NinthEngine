@@ -8,8 +8,10 @@ namespace DX {
 
 D3DSampler::D3DSampler(
 	const ComPtr<ID3D11Device>& device,
+	const ComPtr<ID3D11DeviceContext>& deviceContext,
 	const SamplerConfig& config)
-	: m_binding(config.m_config.m_binding) {
+	: m_deviceContext(deviceContext)
+	, m_binding(config.m_config.m_binding) {
 
 	D3D11_SAMPLER_DESC samplerDesc;
 	ZeroMemory(&samplerDesc, sizeof(samplerDesc));
@@ -20,7 +22,16 @@ D3DSampler::D3DSampler(
 	if (config.m_config.m_compare) {
 		filter |= 0x80;
 
-		samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		switch (config.m_config.m_func) {
+		case NEVER: samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER; break;
+		case LESS: samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS; break;
+		case EQUAL: samplerDesc.ComparisonFunc = D3D11_COMPARISON_EQUAL; break;
+		case LESS_EQUAL: samplerDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL; break;
+		case GREATER: samplerDesc.ComparisonFunc = D3D11_COMPARISON_GREATER; break;
+		case NOT_EQUAL: samplerDesc.ComparisonFunc = D3D11_COMPARISON_NOT_EQUAL; break;
+		case GREATER_EQUAL: samplerDesc.ComparisonFunc = D3D11_COMPARISON_GREATER_EQUAL; break;
+		case ALWAYS: samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS; break;
+		}
 	}
 
 	if (config.m_config.m_anisotropy) {
@@ -77,6 +88,53 @@ D3DSampler::D3DSampler(
 }
 
 D3DSampler::~D3DSampler() {
+}
+
+void D3DSampler::bind(const unsigned flag) {
+
+	if (flag & VERTEX_SHADER_BIT) {
+		m_deviceContext->VSSetSamplers(m_binding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & HULL_SHADER_BIT) {
+		m_deviceContext->HSSetSamplers(m_binding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & DOMAIN_SHADER_BIT) {
+		m_deviceContext->DSSetSamplers(m_binding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & GEOMETRY_SHADER_BIT) {
+		m_deviceContext->GSSetSamplers(m_binding, 1, m_sampler.GetAddressOf());
+	}
+
+	if (flag & PIXEL_SHADER_BIT) {
+		m_deviceContext->PSSetSamplers(m_binding, 1, m_sampler.GetAddressOf());
+	}
+}
+
+void D3DSampler::unbind(const unsigned flag) {
+	ID3D11SamplerState* nullSS = NULL;
+
+	if (flag & VERTEX_SHADER_BIT) {
+		m_deviceContext->VSSetSamplers(m_binding, 1, &nullSS);
+	}
+
+	if (flag & HULL_SHADER_BIT) {
+		m_deviceContext->HSSetSamplers(m_binding, 1, &nullSS);
+	}
+
+	if (flag & DOMAIN_SHADER_BIT) {
+		m_deviceContext->DSSetSamplers(m_binding, 1, &nullSS);
+	}
+
+	if (flag & GEOMETRY_SHADER_BIT) {
+		m_deviceContext->GSSetSamplers(m_binding, 1, &nullSS);
+	}
+
+	if (flag & PIXEL_SHADER_BIT) {
+		m_deviceContext->PSSetSamplers(m_binding, 1, &nullSS);
+	}
 }
 
 } // namespace DX

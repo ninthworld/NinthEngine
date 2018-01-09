@@ -1,12 +1,11 @@
 
 struct GeometryOut {
 	float2 texCoord : TEXCOORD;
-	float4 viewSpacePos : POSITION0;
-	float3 position : POSITION1;
+	float4 viewSpacePos : VIEWSPACE;
+	float3 position : POSITION;
 	float3 tangent : TANGENT;
-
 	float4 svPosition : SV_POSITION;
-	//float4 svClip : SV_ClipDistance;
+	//float svClip[6] : SV_ClipDistance0;
 };
 
 struct PixelOut {
@@ -59,9 +58,9 @@ Texture2D material3Dif : register(t14);
 Texture2D material3Norm : register(t16);
 Texture2D material3Alpha : register(t17);
 
-PixelOut main(GeometryOut IN) {
-	PixelOut OUT;
-
+float4 main(GeometryOut IN) : SV_TARGET {
+	float4 OUT;
+	
 	float dist = length(camPosition.xyz - IN.position);
 	float height = IN.position.y;
 
@@ -91,7 +90,7 @@ PixelOut main(GeometryOut IN) {
 		float3 bitangent = normalize(cross(IN.tangent, normal));
 		float3x3 TBN = float3x3(IN.tangent, bitangent, normal);
 
-		float3 bumpNormal = float3(0);
+		float3 bumpNormal = float3(0, 0, 0);
 		bumpNormal += (material0Norm.Sample(texSampler, IN.texCoord / material0Scale).rgb * 2.0 - 1.0) * alpha0;
 		bumpNormal += (material1Norm.Sample(texSampler, IN.texCoord / material1Scale).rgb * 2.0 - 1.0) * alpha1;
 		bumpNormal += (material2Norm.Sample(texSampler, IN.texCoord / material2Scale).rgb * 2.0 - 1.0) * alpha2;
@@ -113,7 +112,9 @@ PixelOut main(GeometryOut IN) {
 		color2 * alpha2 +
 		color3 * alpha3;
 
-	OUT.color = float4(fragColor * cosTheta, 1.0);
+	fragColor *= cosTheta;
+	
+	OUT = float4(fragColor, 1.0);
 
 	return OUT;
 }

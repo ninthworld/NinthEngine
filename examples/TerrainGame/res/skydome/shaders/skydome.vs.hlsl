@@ -27,7 +27,7 @@ VertexOut main(VertexIn IN) {
 	VertexOut OUT;
 	
 	OUT.texCoord = IN.texCoord;
-	OUT.blend = pow(1.0 - IN.position.y, 2.0);
+	OUT.blend = pow(1.0 - IN.position.y, 3.0);
 
 	OUT.position = mul(viewProjMatrix, float4(IN.position * scale.xyz + camPosition.xyz, 1.0f));
 

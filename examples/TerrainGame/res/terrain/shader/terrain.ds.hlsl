@@ -1,17 +1,17 @@
 
 struct HullOut {
-	float4 position : POSITION;
 	float2 texCoord : TEXCOORD;
+	float4 svPosition : SV_POSITION;
 };
 
-struct HullOutPatch {
+struct HullPatchOut {
     float edges[4] : SV_TessFactor;
     float inside[2]  : SV_InsideTessFactor;
 };
 
 struct DomainOut {
-	float4 position : POSITION;
 	float2 texCoord : TEXCOORD0;
+	float4 svPosition : SV_POSITION;
 };
 
 cbuffer Terrain : register(b1) {
@@ -29,28 +29,22 @@ Texture2D heightmap : register(t0);
 
 [domain("quad")]
 DomainOut main(
-	HullOutPatch PATCH,
+	HullPatchOut PATCH,
 	float2 UV : SV_DomainLocation,
 	const OutputPatch<HullOut, 16> IN) {
 	DomainOut OUT;
 
-	float u0 = UV.x;
-	float v0 = UV.y;
-	float u1 = (1 - u0);
-	float v1 = (1 - v0);
+	float2 posTopMid = lerp(IN[0].svPosition.xz, IN[3].svPosition.xz, UV.x);
+	float2 posBotMid = lerp(IN[12].svPosition.xz, IN[15].svPosition.xz, UV.x);
 
-	float4 position =
-		u1 * v1 * IN[12].position +
-		u0 * v1 * IN[0].position +
-		u0 * v0 * IN[3].position +
-		u1 * v0 * IN[15].position;
+	float2 texCoordTopMid = lerp(IN[0].texCoord, IN[3].texCoord, UV.x);
+	float2 texCoordBotMid = lerp(IN[12].texCoord, IN[15].texCoord, UV.x);
 
-	float2 texCoord =
-		u1 * v1 * IN[12].texCoord +
-		u0 * v1 * IN[0].texCoord +
-		u0 * v0 * IN[3].texCoord +
-		u1 * v0 * IN[15].texCoord;
+	float2 pos = lerp(posBotMid, posTopMid, UV.y);
+	float4 position = float4(pos.x, 0, pos.y, 1);
 
+	float2 texCoord = lerp(texCoordBotMid, texCoordTopMid, UV.y);
+	
 	float height = 0;
 	height += heightmap.SampleLevel(texSampler, texCoord, 0).r;
 	height *= scaleY;
@@ -58,7 +52,7 @@ DomainOut main(
 	position.y = height;
 
 	OUT.texCoord = texCoord * 1000; // TODO: Replace with texDetail
-	OUT.position = position;
+	OUT.svPosition = position;
 
 	return OUT;
 }

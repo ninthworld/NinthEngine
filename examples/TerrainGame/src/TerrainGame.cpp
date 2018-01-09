@@ -18,6 +18,8 @@ TerrainGame::TerrainGame(const std::shared_ptr<GameEngine>& engine)
 
 	m_camera = std::make_unique<FPSGameCamera>(glm::vec3(0, 200, 0), glm::vec3(0), camSettings);
 	m_camera->setProjMatrix(m_window->getWidth(), m_window->getHeight());
+
+	m_timer = m_engine->createTimer();
 }
 
 TerrainGame::~TerrainGame() {
@@ -57,7 +59,7 @@ void TerrainGame::init() {
 	});
 
 	// Set Backbuffer Clear Color
-	m_context->setClearColor(0.57, 0.67, 0.87, 1.0);
+	m_context->setClearColor(0.57f, 0.67f, 0.87f, 1.0f);
 
 	// Initialize Rasterizers
 	m_rasterizer = m_device->createRasterizer(
@@ -94,6 +96,16 @@ void TerrainGame::init() {
 }
 
 void TerrainGame::update(const double deltaTime) {
+
+	if (m_timer->elapsed() >= 1) {
+		m_window->setTitle("Terrain Game - " + std::to_string(m_frames) + " FPS");
+
+		m_timer->reset();
+		m_frames = 0;
+	}
+	else {
+		m_frames++;
+	}
 
 	// Update Camera
 	m_camera->update(m_window, deltaTime);

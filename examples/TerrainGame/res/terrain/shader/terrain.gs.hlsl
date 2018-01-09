@@ -1,17 +1,16 @@
 
 struct DomainOut {
-	float4 position : POSITION;
 	float2 texCoord : TEXCOORD0;
+	float4 svPosition : SV_POSITION;
 };
 
 struct GeometryOut {
 	float2 texCoord : TEXCOORD;
-	float4 viewSpacePos : POSITION0;
-	float3 position : POSITION1;
+	float4 viewSpacePos : VIEWSPACE;
+	float3 position : POSITION;
 	float3 tangent : TANGENT;
-
 	float4 svPosition : SV_POSITION;
-	//float svClip[6] : SV_ClipDistance;
+	//float svClip[6] : SV_ClipDistance0;
 };
 
 cbuffer Camera : register(b0) {
@@ -51,11 +50,11 @@ void main(
 	
 	float3 tangent = float3(0, 0, 0);
 	float3 displacement[3] = { float3(0, 0, 0), float3(0, 0, 0), float3(0, 0, 0) };
-
+	
 	float dist = 
-		distance(IN[0].position.xyz, camPosition.xyz) + 
-		distance(IN[1].position.xyz, camPosition.xyz) + 
-		distance(IN[2].position.xyz, camPosition.xyz);
+		distance(IN[0].svPosition.xyz, camPosition.xyz) + 
+		distance(IN[1].svPosition.xyz, camPosition.xyz) + 
+		distance(IN[2].svPosition.xyz, camPosition.xyz);
 	dist /= 3.0;
 
 	if (dist < detailRangeFar) {
@@ -70,9 +69,9 @@ void main(
 		float material2Height = 3.0;
 		float material3Height = 3.0;
 		
-		float3 v0 = IN[0].position.xyz;
-		float3 v1 = IN[1].position.xyz;
-		float3 v2 = IN[2].position.xyz;
+		float3 v0 = IN[0].svPosition.xyz;
+		float3 v1 = IN[1].svPosition.xyz;
+		float3 v2 = IN[2].svPosition.xyz;
 
 		float3 e1 = v1 - v0;
 		float3 e2 = v2 - v0;
@@ -90,11 +89,11 @@ void main(
 
 		for (int i = 0; i < 3; ++i) {
 			
-			float2 mapCoords = (IN[i].position.xz + scaleXZ / 2) / scaleXZ;
+			float2 mapCoords = (IN[i].svPosition.xz + scaleXZ / 2) / scaleXZ;
 
 			displacement[i] = float3(0, 1, 0);
 
-			float height = IN[i].position.y;
+			float height = IN[i].svPosition.y;
 
 			float scale = 0;
 			scale += material0Disp.SampleLevel(texSampler, IN[i].texCoord / material0Scale, 0).r * material0Height * material0Alpha.SampleLevel(texSampler, mapCoords, 0).r;
@@ -102,17 +101,17 @@ void main(
 			scale += material2Disp.SampleLevel(texSampler, IN[i].texCoord / material2Scale, 0).r * material2Height * material2Alpha.SampleLevel(texSampler, mapCoords, 0).r;
 			scale += material3Disp.SampleLevel(texSampler, IN[i].texCoord / material3Scale, 0).r * material3Height * material3Alpha.SampleLevel(texSampler, mapCoords, 0).r;
 
-			float attenuation = clamp(-distance(IN[i].position.xyz, camPosition.xyz) / detailRangeNear + 1, 0, 1);
+			float attenuation = clamp(-distance(IN[i].svPosition.xyz, camPosition.xyz) / detailRangeNear + 1, 0, 1);
 			scale *= attenuation;
 
 			displacement[i] *= scale;
 		}
 	}
-
+	
 	for (int i = 0; i < 3; ++i) {
 		GeometryOut OUT;
 
-		float4 worldPos = IN[i].position + float4(displacement[i], 0);
+		float4 worldPos = IN[i].svPosition + float4(displacement[i], 0);
 		
 		OUT.texCoord = IN[i].texCoord;
 		OUT.viewSpacePos = mul(viewMatrix, worldPos);
@@ -120,20 +119,19 @@ void main(
 		OUT.tangent = tangent;
 		
 		float4 position = mul(viewProjMatrix, worldPos);
-		
-		/*
+		/*		
 		OUT.svClip[0] = dot(position, frustumPlanes[0]);
 		OUT.svClip[1] = dot(position, frustumPlanes[1]);
 		OUT.svClip[2] = dot(position, frustumPlanes[2]);
 		OUT.svClip[3] = dot(position, frustumPlanes[3]);
 		OUT.svClip[4] = dot(position, frustumPlanes[4]);
-		OUT.svClip[5] = dot(position, frustumPlanes[5]);*/
-		//gl_ClipDistance[6] = dot(worldPos, clipPlane);
+		OUT.svClip[5] = dot(position, frustumPlanes[5]);
+		*/
 
 		OUT.svPosition = position;
 
 		stream.Append(OUT);
 	}
-
+	
     stream.RestartStrip();
 }

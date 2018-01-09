@@ -30,7 +30,7 @@ void main() {
 		u0 * v0 * gl_in[3].gl_Position +
 		u1 * v0 * gl_in[15].gl_Position;
 	
-	vec2 texCoord =
+	highp vec2 texCoord =
 		u1 * v1 * hs_texCoord[12] +
 		u0 * v1 * hs_texCoord[0] +
 		u0 * v0 * hs_texCoord[3] +

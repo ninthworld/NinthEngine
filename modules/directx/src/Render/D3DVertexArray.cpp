@@ -21,9 +21,6 @@ void D3DVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer
 	m_buffers.push_back(std::move(d3dBuffer));
 }
 
-void D3DVertexArray::setPatchSize(const int patchSize) {
-}
-
 void D3DVertexArray::bind() {
 	
 	UINT unitSize = 0;

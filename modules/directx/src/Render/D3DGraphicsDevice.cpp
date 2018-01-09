@@ -107,7 +107,7 @@ std::unique_ptr<Texture> D3DGraphicsDevice::createTexture(const TextureConfig& c
 
 std::unique_ptr<Sampler> D3DGraphicsDevice::createSampler(const SamplerConfig& config) {
 
-	return std::make_unique<D3DSampler>(m_device, config);
+	return std::make_unique<D3DSampler>(m_device, m_deviceContext, config);
 }
 
 std::unique_ptr<RenderTarget> D3DGraphicsDevice::createRenderTarget(const RenderTargetConfig& config) {
