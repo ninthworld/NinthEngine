@@ -1,4 +1,9 @@
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
+#include <vector>
 #include <plog\Log.h>
+#include <NinthEngine\Utils\FileUtils.hpp>
 #include "GLShader.hpp"
 #include "GLConstantBuffer.hpp"
 #include "GLIndexBuffer.hpp"
@@ -41,77 +46,137 @@ GLGraphicsDevice::GLGraphicsDevice() {
 GLGraphicsDevice::~GLGraphicsDevice() {
 }
 
-std::unique_ptr<Shader> GLGraphicsDevice::createShader(const ShaderConfig& config) {
-
-	auto shader = std::make_unique<GLShader>();
-	shader->createVertexShader(config);
-	if (config.m_config.m_glslHS != "") shader->createHullShader(config);
-	if (config.m_config.m_glslDS != "") shader->createDomainShader(config);
-	if (config.m_config.m_glslGS != "") shader->createGeometryShader(config);
-	shader->createPixelShader(config);
-	shader->createProgram();
-	
-	return std::move(shader);
+BufferBuilder GLGraphicsDevice::createVertexBuffer() {
+	return BufferBuilder([this](
+		const LayoutConfig layout,
+		const unsigned unitCount, void* data) {
+		return std::move(std::make_unique<GLVertexBuffer>(layout, unitCount, data));
+	});
 }
 
-std::unique_ptr<ConstantBuffer> GLGraphicsDevice::createConstantBuffer(const BufferConfig& config) {
-
-	return std::make_unique<GLConstantBuffer>(config);
+BufferBuilder GLGraphicsDevice::createIndexBuffer() {
+	return BufferBuilder([this](
+		const LayoutConfig layout,
+		const unsigned unitCount, void* data) {
+		return std::move(std::make_unique<GLIndexBuffer>(layout, unitCount, data));
+	});
 }
 
-std::unique_ptr<IndexBuffer> GLGraphicsDevice::createIndexBuffer(const BufferConfig& config) {
-
-	return std::make_unique<GLIndexBuffer>(config);
+BufferBuilder GLGraphicsDevice::createConstantBuffer() {
+	return BufferBuilder([this](
+		const LayoutConfig layout,
+		const unsigned unitCount, void* data) {
+		return std::move(std::make_unique<GLConstantBuffer>(layout, unitCount, data));
+	});
 }
 
-std::unique_ptr<VertexBuffer> GLGraphicsDevice::createVertexBuffer(const BufferConfig& config) {
+ShaderBuilder GLGraphicsDevice::createShader() {
+	return ShaderBuilder([this](
+		const LayoutConfig layout,
+		std::vector<ShaderStruct> hlslShaders,
+		std::vector<ShaderStruct> glslShaders) {
 
-	return std::make_unique<GLVertexBuffer>(config);
+		auto shader = std::make_unique<GLShader>();
+
+		for (unsigned i = 0; i < glslShaders.size(); ++i) {
+			auto ss = glslShaders[i];
+			auto src = readShaderFile(ss.file);
+			switch (ss.type) {
+			case VERTEX_SHADER: shader->createShader<VERTEX_SHADER>(src); break;
+			case HULL_SHADER: shader->createShader<HULL_SHADER>(src); break;
+			case DOMAIN_SHADER: shader->createShader<DOMAIN_SHADER>(src); break;
+			case GEOMETRY_SHADER: shader->createShader<GEOMETRY_SHADER>(src); break;
+			case PIXEL_SHADER: shader->createShader<PIXEL_SHADER>(src); break;
+			case COMPUTE_SHADER: shader->createShader<COMPUTE_SHADER>(src); break;
+			}
+		}
+
+		shader->createProgram();
+
+		return std::move(shader);
+	});
+}
+
+RasterizerBuilder GLGraphicsDevice::createRasterizer() {
+	return RasterizerBuilder([this](
+		const RasterizerStruct rasterizer) {
+		return std::make_unique<GLRasterizer>(rasterizer);
+	});
+}
+
+TextureBuilder GLGraphicsDevice::createTexture() {
+	return TextureBuilder([this](
+		const TextureStruct texture,
+		const std::string file) {
+
+		if (file != "") {
+
+#ifdef _DEBUG
+			LOG_DEBUG << "[TEXTURE] Loading " << file << "...";
+#endif
+
+			int width, height;
+			unsigned char* data = stbi_load(file.c_str(), &width, &height, nullptr, 4);
+
+			TextureStruct tStruct{
+				FORMAT_RGBA_8_UNORM,
+				(unsigned)width,
+				(unsigned)height,
+				texture.mmLevels,
+				texture.msCount };
+			auto glTexture = std::make_unique<GLTexture>(tStruct);
+			glTexture->setData(data);
+
+			stbi_image_free(data);
+
+			return std::move(glTexture);
+		}
+		else {
+			return std::move(std::make_unique<GLTexture>(texture));
+		}
+	});
+}
+
+SamplerBuilder GLGraphicsDevice::createSampler() {
+	return SamplerBuilder([this](
+		const SamplerStruct sampler) {
+		return std::move(std::make_unique<GLSampler>(sampler));
+	});
+}
+
+RenderTargetBuilder GLGraphicsDevice::createRenderTarget() {
+	return RenderTargetBuilder([this](
+		std::vector<RenderTargetStruct> renderTargets,
+		const unsigned msCount) {
+
+		std::vector<std::shared_ptr<GLTexture>> textures;
+		std::shared_ptr<GLTexture> depthTexture;
+
+		for (unsigned i = 0; i < renderTargets.size(); ++i) {
+			auto target = renderTargets[i];
+
+			TextureStruct tStruct{
+				target.format,
+				target.width,
+				target.height,
+				target.mmLevels,
+				msCount
+			};
+
+			if (target.format & FORMAT_DEPTH) {
+				depthTexture = std::make_shared<GLTexture>(tStruct);
+			}
+			else {
+				textures.push_back(std::make_shared<GLTexture>(tStruct));
+			}
+		}
+
+		return std::move(std::make_unique<GLRenderTarget>(textures, depthTexture));
+	});
 }
 
 std::unique_ptr<VertexArray> GLGraphicsDevice::createVertexArray() {
-
-	auto vertexArray = std::make_unique<GLVertexArray>();
-
-	return std::move(vertexArray);
-}
-
-std::unique_ptr<Rasterizer> GLGraphicsDevice::createRasterizer(const RasterizerConfig& config) {
-
-	return std::make_unique<GLRasterizer>(config);
-}
-
-std::unique_ptr<Texture> GLGraphicsDevice::createTexture(const TextureConfig& config) {
-
-#ifdef _DEBUG
-	LOG_DEBUG << "Loading " << config.m_config.m_name << "...";
-#endif
-
-	return std::make_unique<GLTexture>(config);
-}
-
-std::unique_ptr<Sampler> GLGraphicsDevice::createSampler(const SamplerConfig& config) {
-
-	return std::make_unique<GLSampler>(config);
-}
-
-std::unique_ptr<RenderTarget> GLGraphicsDevice::createRenderTarget(const RenderTargetConfig& config) {
-	
-	return std::make_unique<GLRenderTarget>(
-		config,
-		std::move(createTexture(
-			TextureConfig()
-			.asRenderTarget()
-			.setBinding(config.m_config.m_colorTextureBinding)
-			.setWidth(config.m_config.m_width)
-			.setHeight(config.m_config.m_height))),
-		std::move(createTexture(
-			TextureConfig()
-			.asDepthType()
-			.asRenderTarget()
-			.setBinding(config.m_config.m_depthTextureBinding)
-			.setWidth(config.m_config.m_width)
-			.setHeight(config.m_config.m_height))));
+	return std::make_unique<GLVertexArray>();
 }
 
 } // namespace GL

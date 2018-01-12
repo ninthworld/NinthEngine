@@ -12,15 +12,16 @@ class D3DSampler : public Sampler {
 public:
 	D3DSampler(
 		const ComPtr<ID3D11Device>& device,
-		const ComPtr<ID3D11DeviceContext>& deviceContext,
-		const SamplerConfig& config);
+		const SamplerStruct sampler);
 	~D3DSampler();
+	
+	void setBinding(const unsigned binding) override { m_binding = binding; };
 
-	void bind(const unsigned flag) override;
-	void unbind(const unsigned flag) override;
+	const unsigned getBinding() const override { return m_binding; };
+
+	ComPtr<ID3D11SamplerState> getSampler() { return m_sampler; };
 
 private:
-	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11SamplerState> m_sampler;
 
 	unsigned m_binding;

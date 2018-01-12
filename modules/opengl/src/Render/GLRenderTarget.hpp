@@ -8,35 +8,24 @@ namespace NinthEngine {
 namespace GL {
 
 class GLRenderTarget : public RenderTarget {
-	struct ClearColor {
-		float r, g, b, a;
-	};
-
 public:
 	GLRenderTarget(
-		const RenderTargetConfig& config,
-		const std::shared_ptr<Texture>& colorTexture,
-		const std::shared_ptr<Texture>& depthTexture);
+		std::vector<std::shared_ptr<GLTexture>> textures,
+		const std::shared_ptr<GLTexture>& depthTexture);
 	~GLRenderTarget();
 
-	void bind() override;
-	void unbind() override;
-
-	void clear() override;
-
-	std::shared_ptr<Texture> getColorTexture() override { return m_colorTexture; };
+	const unsigned getTextureCount() const override { return m_textures.size(); };
+	std::shared_ptr<Texture> getTexture(const unsigned index) override { return m_textures[index]; };
 	std::shared_ptr<Texture> getDepthTexture() override { return m_depthTexture; };
-
-	void setClearColor(const float r, const float g, const float b, const float a) override { m_clearColor = { r, g, b, a }; };
-	void setViewport(const float x, const float y, const float width, const float height) override;
+	
+	const GLuint getFramebuffer() const { return m_framebuffer; };
 
 private:
-	GLuint m_framebufferId;
-	std::shared_ptr<GLTexture> m_colorTexture;
+	GLuint m_framebuffer;
+
+	std::vector<std::shared_ptr<GLTexture>> m_textures;
 	std::shared_ptr<GLTexture> m_depthTexture;
-
-	ClearColor m_clearColor;
-
+	
 };
 
 } // namespace GL

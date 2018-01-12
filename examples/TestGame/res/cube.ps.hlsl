@@ -1,10 +1,17 @@
 
-struct input {
+struct VertexOut {
 	float4 position : SV_POSITION;
-	float3 color : COLOR0;
+	float3 color : COLOR;
 };
 
-float4 main(input IN) : SV_TARGET {
+struct PixelOut {
+	float4 pixelColor : SV_TARGET0;
+};
 
-	return float4(IN.color, 1.0);
+PixelOut main(VertexOut IN) {
+	PixelOut OUT;
+
+	OUT.pixelColor = float4(IN.color, 1.0);
+
+	return OUT;
 }

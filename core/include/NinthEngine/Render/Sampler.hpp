@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Config\ShaderConfig.hpp"
-#include "Config\SamplerConfig.hpp"
+#include "Builder\SamplerBuilder.hpp"
 
 namespace NinthEngine {
 
@@ -13,9 +12,9 @@ public:
 
 	virtual ~Sampler() = default;
 
-	virtual void bind(const unsigned flag = PIXEL_SHADER_BIT) = 0;
-	virtual void unbind(const unsigned flag = PIXEL_SHADER_BIT) = 0;
+	virtual void setBinding(const unsigned binding) = 0;
 
+	virtual const unsigned getBinding() const = 0;
 };
 
 } // namespace NinthEngine

@@ -9,7 +9,9 @@ struct GeometryOut {
 };
 
 struct PixelOut {
-	float4 color : SV_TARGET;
+	float4 color : SV_TARGET0;
+	float4 normal : SV_TARGET1;
+	float4 position : SV_TARGET2;
 };
 
 cbuffer Camera : register(b0) {
@@ -58,8 +60,8 @@ Texture2D material3Dif : register(t14);
 Texture2D material3Norm : register(t16);
 Texture2D material3Alpha : register(t17);
 
-float4 main(GeometryOut IN) : SV_TARGET {
-	float4 OUT;
+PixelOut main(GeometryOut IN) : SV_TARGET {
+	PixelOut OUT;
 	
 	float dist = length(camPosition.xyz - IN.position);
 	float height = IN.position.y;
@@ -102,19 +104,16 @@ float4 main(GeometryOut IN) : SV_TARGET {
 		normal = normalize(mul(TBN, bumpNormal));
 	}
 	
-	float3 lightDir = normalize(float3(1, 1, 1));
+	OUT.position = float4(IN.position, 1.0);
 
-	float cosTheta = max(dot(normal, lightDir), 0.1);
+	OUT.normal = float4((normal + 1.0) / 2.0, 1.0);
 
-	float3 fragColor = 
+	OUT.color = float4( 
 		color0 * alpha0 +
 		color1 * alpha1 +
 		color2 * alpha2 +
-		color3 * alpha3;
-
-	fragColor *= cosTheta;
-	
-	OUT = float4(fragColor, 1.0);
+		color3 * alpha3,
+		1.0);
 
 	return OUT;
 }

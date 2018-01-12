@@ -14,17 +14,18 @@ public:
 	GLVertexArray();
 	~GLVertexArray();
 
-	void addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) override;
-	
-	void bind() override;
-	void unbind() override;
+	void addVertexBuffer(const std::shared_ptr<Buffer>& buffer) override;
+
+	const GLuint getVertexArray() const { return m_vao; };
+	const unsigned getAttribCount() const { return m_attribCount; };
+	std::vector<std::shared_ptr<GLVertexBuffer>> getVertexBuffers() { return m_buffers; };
 
 private:
-	GLuint m_vaoId;
+	GLuint m_vao;
 
 	unsigned m_attribCount;
+	std::vector<std::shared_ptr<GLVertexBuffer>> m_buffers;
 
-	std::vector<std::shared_ptr<GLVertexBuffer>> m_vertexBuffers;
 };
 
 } // namespace GL

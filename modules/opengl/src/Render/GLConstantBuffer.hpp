@@ -1,28 +1,35 @@
 #pragma once
 
-#include <NinthEngine\Render\ConstantBuffer.hpp>
-#include "..\Utils\GLUtils.hpp"
+#include "GLBuffer.hpp"
 
 namespace NinthEngine {
 namespace GL {
 
-class GLConstantBuffer : public ConstantBuffer {
+class GLConstantBuffer : public GLBuffer {
 public:
-	GLConstantBuffer(const BufferConfig& config);
+	GLConstantBuffer(
+		const LayoutConfig layout,
+		const unsigned unitCount, void* data);
 	~GLConstantBuffer();
 
-	const GLuint getBinding() const { return m_binding; };
+	void setBinding(const unsigned binding) override { m_binding = binding; };
+
+	const unsigned getBinding() const override { return m_binding; };
+	const unsigned getUnitSize() const override { return m_unitSize; };
+	const unsigned getUnitCount() const override { return m_unitCount; };
+
+	const BufferType getBufferType() const override { return CONSTANT; };
+
+	const GLuint getBuffer() const override { return m_buffer; };
 
 	void setData(void* data) override;
 
-	void bind(const unsigned flag) override;
-	void unbind(const unsigned flag) override;
-	
 private:
-	GLuint m_bufferId;
-	GLuint m_binding;
+	GLuint m_buffer;
 	
+	unsigned m_binding;
 	unsigned m_unitSize;
+	unsigned m_unitCount;
 };
 
 } // namespace GL

@@ -1,55 +1,73 @@
 #pragma once
 
 #include <memory>
+#include <NinthEngine\Utils\MathUtils.hpp>
 #include <NinthEngine\Render\GraphicsContext.hpp>
 #include "..\Utils\GLUtils.hpp"
 
 namespace NinthEngine {
-
-class GameWindow;
-
 namespace GL {
 
 class GLContext;
 
 class GLGraphicsContext : public GraphicsContext {
-	struct ClearColor {
-		float r, g, b, a;
-	};
-
 public:
 	GLGraphicsContext(
-		std::unique_ptr<GLContext> glContext, 
-		const std::shared_ptr<GameWindow>& gameWindow, 
-		const bool vsync);
+		std::unique_ptr<GLContext> glContext,
+		const std::shared_ptr<GameWindow>& window);
 	~GLGraphicsContext();
-	
+
 	void draw(const unsigned vertexCount, const unsigned startIndex) override;
-	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
+	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
+	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer) override;
 
 	void swapBuffers() override;
 
 	void bindBackBuffer() override;
 	void clearBackBuffer() override;
 
-	void setVsync(const bool vsync) override { m_vsync = vsync; };
-	void setClearColor(const float r, const float g, const float b, const float a) override { m_clearColor = { r, g, b, a }; };
-	void setPrimitive(const PrimitiveType primitive) override;
-	void setPatchSize(const int patchSize) override { m_patchSize = patchSize; };
-	void setViewport(const float x, const float y, const float width, const float height) override;
+	void clear(const std::shared_ptr<RenderTarget>& renderTarget) override;
+	void resolveToBackBuffer(const unsigned index, const std::shared_ptr<RenderTarget>& renderTarget) override;
+	void resolve(
+		const unsigned indexFrom, const std::shared_ptr<RenderTarget>& renderTargetFrom,
+		const unsigned indexTo, const std::shared_ptr<RenderTarget>& renderTargetTo) override;
 
-	const bool isVsync() const override { return m_vsync; };
-	const PrimitiveType getPrimitive() const override { return m_primitiveType; };
+	void bind(const std::shared_ptr<Shader>& shader) override;
+	void bind(const std::shared_ptr<Rasterizer>& rasterizer) override;
+	void bind(const std::shared_ptr<RenderTarget>& renderTarget) override;
+	void bind(const std::shared_ptr<VertexArray>& vertexArray) override;
+	void bind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = 0) override;
+	void bind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = 0) override;
+	void bind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = 0) override;
+
+	void unbind(const std::shared_ptr<Shader>& shader) override;
+	void unbind(const std::shared_ptr<VertexArray>& vertexArray) override;
+	void unbind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = 0) override;
+	void unbind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = 0) override;
+	void unbind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = 0) override;
+
+	void setData(const std::shared_ptr<Buffer>& buffer, void* data) override;
+	void setData(const std::shared_ptr<Texture>& texture, void* data) override;
+
+	void setClearColor(const Color color) override { m_color = color; };
+	void setViewport(const Viewport viewport) override;
+	void setPrimitive(const PrimitiveType primitive, const int patchSize = 1) override;
+
+	const PrimitiveType getPrimitive() const { return m_primitiveType; };
+	const int getPatchSize() const { return m_patchSize; };
 
 private:
 	std::unique_ptr<GLContext> m_glContext;
-	std::shared_ptr<GameWindow> m_window;
+	GLuint m_boundFBO;
 
-	bool m_vsync;
-	ClearColor m_clearColor;
+	GLuint m_glPrimitive;
+
+	Color m_color;
+	Viewport m_viewport;
+
 	PrimitiveType m_primitiveType;
-	unsigned m_patchSize = 0;
-	GLuint m_primitive;
+	unsigned m_patchSize;
+
 };
 
 } // namespace GL

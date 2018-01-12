@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{98df2339-dc2c-4666-b8a6-fb212e8f5bcb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Render\Builder">
+      <UniqueIdentifier>{68c2a2a3-56f3-41c0-b58c-e769412e2642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngine\Application\Game.hpp">
@@ -69,16 +72,10 @@
     <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\ConstantBuffer.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\Rasterizer.hpp">
@@ -96,22 +93,10 @@
     <ClInclude Include="..\include\NinthEngine\Render\VertexArray.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\Config\BufferConfig.hpp">
       <Filter>Header Files\Render\Config</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\Config\InputLayoutConfig.hpp">
-      <Filter>Header Files\Render\Config</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\Config\RasterizerConfig.hpp">
-      <Filter>Header Files\Render\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\Config\RenderTargetConfig.hpp">
-      <Filter>Header Files\Render\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\NinthEngine\Render\Config\SemanticLayoutConfig.hpp">
       <Filter>Header Files\Render\Config</Filter>
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\Config\ShaderConfig.hpp">
@@ -128,6 +113,27 @@
     </ClInclude>
     <ClInclude Include="..\include\NinthEngine\Render\Config\SamplerConfig.hpp">
       <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\BufferBuilder.hpp">
+      <Filter>Header Files\Render\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\LayoutConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\ShaderBuilder.hpp">
+      <Filter>Header Files\Render\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\RasterizerBuilder.hpp">
+      <Filter>Header Files\Render\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\SamplerBuilder.hpp">
+      <Filter>Header Files\Render\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\TextureBuilder.hpp">
+      <Filter>Header Files\Render\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\RenderTargetBuilder.hpp">
+      <Filter>Header Files\Render\Builder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

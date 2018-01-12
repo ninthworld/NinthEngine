@@ -1,8 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "VertexBuffer.hpp"
-#include "Config\InputLayoutConfig.hpp"
+#include "Buffer.hpp"
 
 namespace NinthEngine {
 
@@ -14,11 +13,8 @@ public:
 
 	virtual ~VertexArray() = default;
 
-	virtual void addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) = 0;
+	virtual void addVertexBuffer(const std::shared_ptr<Buffer>& buffer) = 0;
 	
-	virtual void bind() = 0;
-	virtual void unbind() = 0;
-
 };
 
 } // namespace NinthEngine

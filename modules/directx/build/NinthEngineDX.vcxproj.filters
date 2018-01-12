@@ -101,5 +101,8 @@
     <ClInclude Include="..\src\Render\D3DSampler.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Render\D3DBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

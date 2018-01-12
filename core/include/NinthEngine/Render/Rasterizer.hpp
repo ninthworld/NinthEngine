@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Config\RasterizerConfig.hpp"
+#include "Builder\RasterizerBuilder.hpp"
 
 namespace NinthEngine {
 
@@ -11,8 +11,6 @@ public:
 	Rasterizer& operator=(const Rasterizer&) = delete;
 
 	virtual ~Rasterizer() = default;
-
-	virtual void bind() = 0;
 
 };
 

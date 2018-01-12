@@ -16,7 +16,7 @@ public:
 
 	virtual ~RenderEngine() = default;
 	
-	virtual void init(const std::shared_ptr<GameWindow>& window, const bool vsync, void* hwnd = nullptr) = 0;
+	virtual void init(const std::shared_ptr<GameWindow>& window, void* hwnd = nullptr) = 0;
 
 	virtual std::unique_ptr<GraphicsDevice> getGraphicsDevice() = 0;
 	virtual std::unique_ptr<GraphicsContext> getGraphicsContext() = 0;

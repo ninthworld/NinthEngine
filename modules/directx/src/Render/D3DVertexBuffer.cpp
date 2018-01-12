@@ -8,11 +8,11 @@ namespace DX {
 
 D3DVertexBuffer::D3DVertexBuffer(
 	const ComPtr<ID3D11Device>& device,
-	const ComPtr<ID3D11DeviceContext>& deviceContext,
-	const BufferConfig& config)
-	: m_deviceContext(deviceContext)
-	, m_unitSize(config.m_config.m_inputLayout.m_config.m_unitSize)
-	, m_unitCount(config.m_config.m_unitCount) {
+	const LayoutConfig layout,
+	const unsigned unitCount, void* data)
+	: m_binding(0)
+	, m_unitSize(layout.getUnitSize())
+	, m_unitCount(unitCount) {
 
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
@@ -25,18 +25,18 @@ D3DVertexBuffer::D3DVertexBuffer(
 	D3D11_SUBRESOURCE_DATA resourceData;
 	ZeroMemory(&resourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 
-	resourceData.pSysMem = config.m_config.m_data;
+	resourceData.pSysMem = data;
 
 	HRESULT hr;
 	hr = device->CreateBuffer(&bufferDesc, &resourceData, &m_buffer);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create VertexBuffer: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
-
+	CHECK_ERROR(hr, "(VertexBuffer) ID3D11Buffer");
 }
 
 D3DVertexBuffer::~D3DVertexBuffer() {
+}
+
+void D3DVertexBuffer::setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void* data) {
+	deviceContext->UpdateSubresource(m_buffer.Get(), 0, nullptr, data, 0, 0);
 }
 
 } // namespace DX

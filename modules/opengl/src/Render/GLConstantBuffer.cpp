@@ -4,43 +4,30 @@
 namespace NinthEngine {
 namespace GL {
 
-GLConstantBuffer::GLConstantBuffer(const BufferConfig& config)
-	: m_bufferId(0)
-	, m_binding(config.m_config.m_binding)
-	, m_unitSize(config.m_config.m_inputLayout.m_config.m_unitSize) {
+GLConstantBuffer::GLConstantBuffer(
+	const LayoutConfig layout,
+	const unsigned unitCount, void* data)
+	: m_buffer(0), m_binding(0)
+	, m_unitCount(unitCount)
+	, m_unitSize(layout.getUnitSize()) {
 
-	glGenBuffers(1, &m_bufferId);
-
-	glBindBuffer(GL_UNIFORM_BUFFER, m_bufferId);
-	glBufferData(GL_UNIFORM_BUFFER, m_unitSize, config.m_config.m_data, GL_DYNAMIC_DRAW);
+	glGenBuffers(1, &m_buffer);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_buffer);
+	glBufferData(GL_UNIFORM_BUFFER, m_unitSize, data, GL_DYNAMIC_DRAW);
+	CHECK_ERROR("glBufferData");
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 GLConstantBuffer::~GLConstantBuffer() {
-
-	glDeleteBuffers(1, &m_bufferId);
+	if(m_buffer) glDeleteBuffers(1, &m_buffer);
 }
 
 void GLConstantBuffer::setData(void* data) {
 
-	glBindBuffer(GL_UNIFORM_BUFFER, m_bufferId);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_buffer);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, m_unitSize, data);
+	CHECK_ERROR("glBufferSubData");
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-}
-
-void GLConstantBuffer::bind(const unsigned flag) {
-
-	if (flag) {
-		glBindBufferBase(GL_UNIFORM_BUFFER, m_binding, m_bufferId);
-	}
-}
-
-void GLConstantBuffer::unbind(const unsigned flag) {
-
-	if (flag) {
-		glBindBufferBase(GL_UNIFORM_BUFFER, m_binding, 0);
-	}
 }
 
 } // namespace GL

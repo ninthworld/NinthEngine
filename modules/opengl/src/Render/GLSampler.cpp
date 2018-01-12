@@ -3,19 +3,17 @@
 namespace NinthEngine {
 namespace GL {
 
-GLSampler::GLSampler(const SamplerConfig& config) 
-	: m_samplerId(0) {
+GLSampler::GLSampler(const SamplerStruct sampler)
+	: m_sampler(0) {
 	
-	glGenSamplers(1, &m_samplerId);
-
-	// Filter
+	glGenSamplers(1, &m_sampler);
 	GLint mag, min;
 	for (unsigned i = 0; i < 2; ++i) {
-		SamplerFilter in = (i ? config.m_config.m_magFilter : config.m_config.m_minFilter);
+		auto in = (i ? sampler.mag : sampler.min);
 		GLint &out = (i ? mag : min);
 
-		if (config.m_config.m_mipmapping) {
-			switch (config.m_config.m_mipmapFilter) {
+		if (sampler.mipmapping) {
+			switch (sampler.mipmap) {
 			case LINEAR:
 				switch (in) {
 				case LINEAR: out = GL_LINEAR_MIPMAP_LINEAR; break;
@@ -36,20 +34,18 @@ GLSampler::GLSampler(const SamplerConfig& config)
 		}		
 	}
 
-	glSamplerParameteri(m_samplerId, GL_TEXTURE_MAG_FILTER, mag);
-	glSamplerParameteri(m_samplerId, GL_TEXTURE_MAG_FILTER, min);
+	glSamplerParameteri(m_sampler, GL_TEXTURE_MAG_FILTER, mag);
+	glSamplerParameteri(m_sampler, GL_TEXTURE_MAG_FILTER, min);
 	
-	// Mipmapping
-	if (config.m_config.m_mipmapping) {
-		glSamplerParameterf(m_samplerId, GL_TEXTURE_MIN_LOD, config.m_config.m_minLod);
-		glSamplerParameterf(m_samplerId, GL_TEXTURE_MAX_LOD, config.m_config.m_maxLod);
-		glSamplerParameterf(m_samplerId, GL_TEXTURE_LOD_BIAS, config.m_config.m_biasLod);
+	if (sampler.mipmapping) {
+		glSamplerParameterf(m_sampler, GL_TEXTURE_MIN_LOD, sampler.minLOD);
+		glSamplerParameterf(m_sampler, GL_TEXTURE_MAX_LOD, sampler.maxLOD);
+		glSamplerParameterf(m_sampler, GL_TEXTURE_LOD_BIAS, sampler.biasLOD);
 	}
 
-	// Edge
 	GLint edgeU, edgeV, edgeW;
 	for (unsigned i = 0; i < 3; ++i) {
-		SamplerEdge in = (i == 0 ? config.m_config.m_edgeU : (i == 1 ? config.m_config.m_edgeV : config.m_config.m_edgeW));
+		auto in = (i == 0 ? sampler.u : (i == 1 ? sampler.v : sampler.w));
 		GLint &out = (i == 0 ?  edgeU : (i == 1 ? edgeV : edgeW));
 
 		switch (in) {
@@ -60,21 +56,20 @@ GLSampler::GLSampler(const SamplerConfig& config)
 		}
 	}
 
-	glSamplerParameteri(m_samplerId, GL_TEXTURE_WRAP_S, edgeU);
-	glSamplerParameteri(m_samplerId, GL_TEXTURE_WRAP_T, edgeV);
-	glSamplerParameteri(m_samplerId, GL_TEXTURE_WRAP_R, edgeW);
+	glSamplerParameteri(m_sampler, GL_TEXTURE_WRAP_S, edgeU);
+	glSamplerParameteri(m_sampler, GL_TEXTURE_WRAP_T, edgeV);
+	glSamplerParameteri(m_sampler, GL_TEXTURE_WRAP_R, edgeW);
 
-	// Anisotropy
-	if(config.m_config.m_anisotropy) glSamplerParameterf(m_samplerId, GL_TEXTURE_MAX_ANISOTROPY_EXT, config.m_config.m_maxAnisotropy);
+	if (sampler.anisotropy) {
+		glSamplerParameterf(m_sampler, GL_TEXTURE_MAX_ANISOTROPY_EXT, sampler.maxAnisotropy);
+	}
 
-	// Border color
-	glSamplerParameterfv(m_samplerId, GL_TEXTURE_BORDER_COLOR, (float*)glm::value_ptr(config.m_config.m_borderColor));
+	glSamplerParameterfv(m_sampler, GL_TEXTURE_BORDER_COLOR, (float*)glm::value_ptr(sampler.border));
 
-	// Compare
-	if (config.m_config.m_compare) {
+	if (sampler.compare) {
 		GLint func;
 
-		switch (config.m_config.m_func) {
+		switch (sampler.func) {
 		case LESS_EQUAL: func = GL_LEQUAL; break;
 		case GREATER_EQUAL: func = GL_GEQUAL; break;
 		case LESS: func = GL_LESS; break;
@@ -85,22 +80,13 @@ GLSampler::GLSampler(const SamplerConfig& config)
 		case NEVER: func = GL_NEVER; break;
 		}
 
-		glSamplerParameteri(m_samplerId, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-		glSamplerParameteri(m_samplerId, GL_TEXTURE_COMPARE_FUNC, func);
+		glSamplerParameteri(m_sampler, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+		glSamplerParameteri(m_sampler, GL_TEXTURE_COMPARE_FUNC, func);
 	}
 }
 
 GLSampler::~GLSampler() {
-
-	if (m_samplerId) {
-		glDeleteSamplers(1, &m_samplerId);
-	}
-}
-
-void GLSampler::bind(const unsigned flag) {
-}
-
-void GLSampler::unbind(const unsigned flag) {
+	if (m_sampler) glDeleteSamplers(1, &m_sampler);
 }
 
 } // namespace GL

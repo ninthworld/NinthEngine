@@ -1,7 +1,5 @@
 #ifdef _WIN32
 
-#define STB_IMAGE_IMPLEMENTATION
-
 #include <plog\Log.h>
 #include <plog\Appenders\ColorConsoleAppender.h>
 
@@ -16,14 +14,12 @@ Win32Bootstrap::Win32Bootstrap(
 	const std::string title, 
 	const int width, 
 	const int height, 
-	const bool vsync, 
 	HINSTANCE hInstance, 
 	int cmdShow, 
 	const std::shared_ptr<RenderEngine>& renderEngine)
 	: m_title(title)
 	, m_width(width)
 	, m_height(height)
-	, m_vsync(vsync)
 	, m_hInstance(hInstance)
 	, m_cmdShow(cmdShow)
 	, m_renderEngine(renderEngine) {
@@ -41,7 +37,7 @@ void Win32Bootstrap::run(const std::function<std::unique_ptr<Game>(const std::sh
 
 	try {
 		auto window = std::make_shared<Win32GameWindow>(m_title, m_width, m_height, m_hInstance, m_cmdShow);
-		auto engine = std::make_shared<Win32GameEngine>(window, m_vsync, m_renderEngine);
+		auto engine = std::make_shared<Win32GameEngine>(window, m_renderEngine);
 		m_renderEngine.reset();
 
 		auto game = app(engine);

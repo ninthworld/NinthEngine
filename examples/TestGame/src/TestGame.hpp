@@ -26,17 +26,20 @@ private:
 	std::shared_ptr<FPSGameCamera> m_camera;
 
 	// Rasterizers
-	std::unique_ptr<Rasterizer> m_rasterizer;
+	std::shared_ptr<Rasterizer> m_rasterizer;
 
 	// Constants
-	std::shared_ptr<ConstantBuffer> m_constantCamera;
+	std::shared_ptr<Buffer> m_constantCamera;
 
 	// Shaders
-	std::unique_ptr<Shader> m_shader;
+	std::shared_ptr<Shader> m_shader;
 		
 	// Buffers
-	std::shared_ptr<IndexBuffer> m_indexBuffer;
-	std::shared_ptr<VertexBuffer> m_vertexBuffer;
+	std::shared_ptr<Buffer> m_indexBuffer;
+	std::shared_ptr<Buffer> m_vertexBuffer;
 	std::shared_ptr<VertexArray> m_vertexArray;
+
+	// Render Pass
+	std::shared_ptr<RenderPass> m_renderPass;
 
 };

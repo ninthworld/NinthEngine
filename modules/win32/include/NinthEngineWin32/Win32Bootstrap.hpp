@@ -25,7 +25,6 @@ public:
 		const std::string title, 
 		const int width, 
 		const int height, 
-		const bool vsync, 
 		HINSTANCE hInstance, 
 		int cmdShow, 
 		const std::shared_ptr<RenderEngine>& renderEngine);
@@ -38,8 +37,7 @@ private:
 	int m_cmdShow;
 
 	std::string m_title;
-	int m_width, m_height;
-	bool m_vsync;	
+	int m_width, m_height;	
 	std::shared_ptr<RenderEngine> m_renderEngine;
 
 };

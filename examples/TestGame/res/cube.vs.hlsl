@@ -1,12 +1,12 @@
 
-struct input {
+struct VertexIn {
 	float3 position : POSITION0;
-	float3 color : COLOR0;
+	float3 color : COLOR;
 };
 
-struct output {
-	float4 position : SV_POSITION;
-	float3 color : COLOR0;
+struct VertexOut {
+	float4 svPosition : SV_POSITION;
+	float3 color : COLOR;
 };
 
 cbuffer Camera : register(b0) {
@@ -15,12 +15,12 @@ cbuffer Camera : register(b0) {
 	float4 camPosition;
 };
 
-output main(input IN) {
-	output OUT;
+VertexOut main(VertexIn IN) {
+	VertexOut OUT;
 
 	OUT.color = IN.color;
 
-	OUT.position = mul(viewProjMatrix, float4(IN.position, 1.0));
+	OUT.svPosition = mul(viewProjMatrix, float4(IN.position, 1.0));
 
 	return OUT;
 }

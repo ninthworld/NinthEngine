@@ -9,16 +9,15 @@ namespace Win32 {
 
 Win32GameEngine::Win32GameEngine(
 	const std::shared_ptr<Win32GameWindow>& window, 
-	const bool vsync, 
 	const std::shared_ptr<RenderEngine>& renderEngine)
 	: m_window(window) {
 
-	renderEngine->init(window, vsync, window->getHandle());
+	renderEngine->init(window, window->getHandle());
 	m_device = renderEngine->getGraphicsDevice();
 	m_context = renderEngine->getGraphicsContext();
 	
 	m_timer = std::make_unique<Win32GameTimer>();
-	m_context->setViewport(0, 0, window->getWidth(), window->getHeight());
+	m_context->setViewport({ 0.0f, 0.0f, (float)window->getWidth(), (float)window->getHeight() });
 }
 
 Win32GameEngine::~Win32GameEngine() {

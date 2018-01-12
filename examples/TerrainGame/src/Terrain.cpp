@@ -10,13 +10,12 @@ Terrain::Terrain(
 	const std::shared_ptr<GraphicsDevice>& device,
 	const std::shared_ptr<GraphicsContext>& context,
 	const std::shared_ptr<GameCamera>& camera,
-	const std::shared_ptr<ConstantBuffer>& constantCamera)
+	const std::shared_ptr<Buffer>& constantCamera)
 	: m_context(context)
 	, m_camera(camera)
 	, m_constantCamera(constantCamera) {
 	
-	auto inputLayout = InputLayoutConfig().float2();
-	auto semanticLayout = SemanticLayoutConfig().position();
+	auto inputLayout = LayoutConfig().float2(POSITION);
 
 	// Generate Model Data
 	std::vector<glm::vec2> vertices;
@@ -30,142 +29,30 @@ Terrain::Terrain(
 	}
 	
 	// Initialize Vertex Buffer
-	m_vertexBuffer = device->createVertexBuffer(
-		BufferConfig()
-		.asVertexBuffer()
-		.setInputLayout(inputLayout)
-		.setData(vertices.data(), vertices.size()));
+	m_vertexBuffer = device->createVertexBuffer()
+		.withLayout(inputLayout)
+		.withData(vertices.size(), vertices.data())
+		.build();
 
 	// Initialize Vertex Array
 	m_vertexArray = device->createVertexArray();
 	m_vertexArray->addVertexBuffer(m_vertexBuffer);
 
-	// Initialize Samplers
-	m_sampler = device->createSampler(
-		SamplerConfig()
-		.setBinding(0)
-		.setMipmap(LINEAR, 0, 8)
-		.setFilter(LINEAR)
-		.setEdge(WRAP));
-
-	// Load Textures
-	unsigned t = 0;
-	m_heightmap = device->createTexture(
-		TextureConfig()
-		.loadFile("res/terrain/map/heightmap.bmp")
-		.setBinding(t++)
-		.mipmapping());
-	m_heightmap->setSampler(m_sampler);
-
-	m_normalmap = device->createTexture(
-		TextureConfig()
-		.loadFile("res/terrain/map/normalmap.bmp")
-		.setBinding(t++)
-		.mipmapping());
-	m_normalmap->setSampler(m_sampler);
-	
-	// Material - Grass
-	m_materials.push_back(
-		Material{
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Grass_001/Grass_001_COLOR.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Grass_001/Grass_001_DISP.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Grass_001/Grass_001_NORM.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/map/alpha0.bmp")
-			.setBinding(t++)
-			.mipmapping()) });
-
-	// Material - Dirt
-	m_materials.push_back(
-		Material{
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Sand_002/Sand_002_COLOR.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Sand_002/Sand_002_DISP.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Sand_002/Sand_002_NRM.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/map/alpha1.bmp")
-			.setBinding(t++)
-			.mipmapping()) });
-
-	// Material - Rock 1
-	m_materials.push_back(
-		Material{
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_COLOR.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_DISP.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_NRM.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/map/alpha2.bmp")
-			.setBinding(t++)
-			.mipmapping()) });
-
-	// Material - Rock 2
-	m_materials.push_back(
-		Material{
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_COLOR.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_DISP.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_NRM.jpg")
-			.setBinding(t++)
-			.mipmapping()),
-		device->createTexture(
-			TextureConfig()
-			.loadFile("res/terrain/map/alpha3.bmp")
-			.setBinding(t++)
-			.mipmapping()) });
-
-	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_materials[i].diffuse->setSampler(m_sampler);
-		m_materials[i].displacement->setSampler(m_sampler);
-		m_materials[i].normal->setSampler(m_sampler);
-		m_materials[i].mapAlpha->setSampler(m_sampler);
-	}
+	// Initialize Shader
+	m_shader = device->createShader()
+		.withLayout(inputLayout)
+		.withGLSL<VERTEX_SHADER>("res/terrain/shader/terrain.vs.glsl")
+		.withGLSL<HULL_SHADER>("res/terrain/shader/terrain.hs.glsl")
+		.withGLSL<DOMAIN_SHADER>("res/terrain/shader/terrain.ds.glsl")
+		.withGLSL<GEOMETRY_SHADER>("res/terrain/shader/terrain.gs.glsl")
+		.withGLSL<PIXEL_SHADER>("res/terrain/shader/terrain.ps.glsl")
+		.withHLSL<VERTEX_SHADER>("res/terrain/shader/terrain.vs.hlsl", "main")
+		.withHLSL<HULL_SHADER>("res/terrain/shader/terrain.hs.hlsl", "main")
+		.withHLSL<DOMAIN_SHADER>("res/terrain/shader/terrain.ds.hlsl", "main")
+		.withHLSL<GEOMETRY_SHADER>("res/terrain/shader/terrain.gs.hlsl", "main")
+		.withHLSL<PIXEL_SHADER>("res/terrain/shader/terrain.ps.hlsl", "main")
+		.build();
+	m_shader->bindConstant("Camera", m_constantCamera);
 
 	// Initialize Constant Buffers
 	TerrainData terrainData{ glm::mat4(1), scaleXZ, scaleY, detailRangeNear, detailRangeFar };
@@ -173,43 +60,141 @@ Terrain::Terrain(
 	terrainData.worldMatrix = glm::scale(terrainData.worldMatrix, glm::vec3(terrainData.scaleXZ, terrainData.scaleY, terrainData.scaleXZ));
 	for (unsigned i = 0; i < 8; ++i) terrainData.lodRange[i] = lodRange[i];
 
-	m_constantTerrain = device->createConstantBuffer(
-		BufferConfig()
-		.asConstantBuffer()
-		.setBinding(1)
-		.setInputLayout(InputLayoutConfig().mat4().float4().float4().float4())
-		.setData(&terrainData));
+	m_constantTerrain = device->createConstantBuffer()
+		.withLayout(LayoutConfig().float4x4().float4().float4().float4())
+		.withData(&terrainData)
+		.build();
+	m_constantTerrain->setBinding(1);
+	m_shader->bindConstant("Terrain", m_constantTerrain);
 
 	NodeData nodeData{};
-	m_constantNode = device->createConstantBuffer(
-		BufferConfig()
-		.asConstantBuffer()
-		.setBinding(2)
-		.setInputLayout(InputLayoutConfig().mat4().float2().float2().float1().int1().float4().float2())
-		.setData(&nodeData));
-	
-	// Initialize Shader
-	m_shader = device->createShader(
-		ShaderConfig()
-		.setGLSLVertexShader("res/terrain/shader/terrain.vs.glsl")
-		.setGLSLHullShader("res/terrain/shader/terrain.hs.glsl")
-		.setGLSLDomainShader("res/terrain/shader/terrain.ds.glsl")
-		.setGLSLGeometryShader("res/terrain/shader/terrain.gs.glsl")
-		.setGLSLPixelShader("res/terrain/shader/terrain.ps.glsl")
-		.setHLSLVertexShader("res/terrain/shader/terrain.vs.hlsl", "main")
-		.setHLSLHullShader("res/terrain/shader/terrain.hs.hlsl", "main")
-		.setHLSLDomainShader("res/terrain/shader/terrain.ds.hlsl", "main")
-		.setHLSLGeometryShader("res/terrain/shader/terrain.gs.hlsl", "main")
-		.setHLSLPixelShader("res/terrain/shader/terrain.ps.hlsl", "main")
-		.setInputLayout(inputLayout)
-		.setSemanticLayout(semanticLayout));
-
-	m_shader->bindConstant("Camera", m_constantCamera);
-	m_shader->bindConstant("Terrain", m_constantTerrain);
+	m_constantNode = device->createConstantBuffer()
+		.withLayout(LayoutConfig().float4x4().float2().float2().float1().int1().float4().float2())
+		.withData(&nodeData)
+		.build();
+	m_constantNode->setBinding(2);
 	m_shader->bindConstant("Node", m_constantNode);
-	m_shader->bindTexture("heightmap", m_heightmap);
-	m_shader->bindTexture("normalmap", m_normalmap);
 
+	// Initialize Samplers
+	m_sampler = device->createSampler()
+		.withFilter(LINEAR)
+		.withEdge(WRAP)
+		.withMipmapping(LINEAR, 0, 8)
+		.build();
+	m_sampler->setBinding(0);
+
+	// Load Textures
+	unsigned t = 0;
+	m_heightmap = device->createTexture()
+		.withFile("res/terrain/map/heightmap.bmp")
+		.withMipmapping()
+		.build();
+	m_heightmap->setBinding(t++);
+	m_heightmap->setSampler(m_sampler);
+	m_shader->bindTexture("heightmap", m_heightmap);
+
+	m_normalmap = device->createTexture()
+		.withFile("res/terrain/map/normalmap.bmp")
+		.withMipmapping()
+		.build();
+	m_normalmap->setBinding(t++);
+	m_normalmap->setSampler(m_sampler);
+	m_shader->bindTexture("normalmap", m_normalmap);
+	
+	// Material - Grass
+	m_materials.push_back(
+		Material{
+		device->createTexture()
+		.withFile("res/terrain/materials/Grass_001/Grass_001_COLOR.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Grass_001/Grass_001_DISP.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Grass_001/Grass_001_NORM.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/map/alpha0.bmp")
+		.withMipmapping()
+		.build() });
+
+	// Material - Dirt
+	m_materials.push_back(
+		Material{
+		device->createTexture()
+		.withFile("res/terrain/materials/Sand_002/Sand_002_COLOR.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Sand_002/Sand_002_DISP.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Sand_002/Sand_002_NRM.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/map/alpha1.bmp")
+		.withMipmapping()
+		.build() });
+
+	// Material - Rock 1
+	m_materials.push_back(
+		Material{
+		device->createTexture()
+		.withFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_COLOR.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_DISP.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_NRM.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/map/alpha2.bmp")
+		.withMipmapping()
+		.build() });
+
+	// Material - Rock 2
+	m_materials.push_back(
+		Material{
+		device->createTexture()
+		.withFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_COLOR.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_DISP.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/materials/Rough_rock_015/Rough_rock_015_NRM.jpg")
+		.withMipmapping()
+		.build(),
+		device->createTexture()
+		.withFile("res/terrain/map/alpha3.bmp")
+		.withMipmapping()
+		.build() });
+
+	for (unsigned i = 0; i < m_materials.size(); ++i) {
+		m_materials[i].diffuse->setBinding(t++);
+		m_materials[i].mapAlpha->setSampler(m_sampler);
+
+		m_materials[i].displacement->setBinding(t++);
+		m_materials[i].displacement->setSampler(m_sampler);
+
+		m_materials[i].normal->setBinding(t++);
+		m_materials[i].normal->setSampler(m_sampler);
+
+		m_materials[i].mapAlpha->setBinding(t++);
+		m_materials[i].mapAlpha->setSampler(m_sampler);
+	}
+	
 	for (unsigned i = 0; i < m_materials.size(); ++i) {
 		m_shader->bindTexture("material" + std::to_string(i) + "Dif", m_materials[i].diffuse);
 		m_shader->bindTexture("material" + std::to_string(i) + "Disp", m_materials[i].displacement);
@@ -249,54 +234,55 @@ void Terrain::update() {
 void Terrain::render() {
 
 	// Bind Shader
-	m_shader->bind();
+	m_context->bind(m_shader);
 
 	// Bind Samplers
-	m_sampler->bind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+	m_context->bind(m_sampler, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
 
 	// Bind Textures
-	m_heightmap->bind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT);
-	m_normalmap->bind(PIXEL_SHADER_BIT);
+	m_context->bind(m_heightmap, VERTEX_SHADER | DOMAIN_SHADER);
+	m_context->bind(m_normalmap, PIXEL_SHADER);
 
 	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_materials[i].diffuse->bind(PIXEL_SHADER_BIT);
-		m_materials[i].displacement->bind(GEOMETRY_SHADER_BIT);
-		m_materials[i].normal->bind(PIXEL_SHADER_BIT);
-		m_materials[i].mapAlpha->bind(GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+		m_context->bind(m_materials[i].diffuse, PIXEL_SHADER);
+		m_context->bind(m_materials[i].displacement, GEOMETRY_SHADER);
+		m_context->bind(m_materials[i].normal, PIXEL_SHADER);
+		m_context->bind(m_materials[i].mapAlpha, GEOMETRY_SHADER | PIXEL_SHADER);
 	}
 	
 	// Bind Constants
-	m_constantCamera->bind(GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
-	m_constantTerrain->bind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
-	m_constantNode->bind(VERTEX_SHADER_BIT | HULL_SHADER_BIT | PIXEL_SHADER_BIT);
+	m_context->bind(m_constantCamera, GEOMETRY_SHADER | PIXEL_SHADER);
+	m_context->bind(m_constantTerrain, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
+	m_context->bind(m_constantNode, VERTEX_SHADER | HULL_SHADER | PIXEL_SHADER);
 
 	// Draw Terrain
 	auto type = m_context->getPrimitive();
-	m_context->setPatchSize(patchSize); // TODO: Reduce to 4
-	m_context->setPrimitive(PATCHES_TYPE);
+	m_context->setPrimitive(PATCHES_TYPE, patchSize);
 	for (unsigned i = 0; i < m_rootNodes.size(); ++i) {
 		m_rootNodes[i]->render();
 	}
 	m_context->setPrimitive(type);
 
-	// Unbind All
-	m_constantNode->unbind(VERTEX_SHADER_BIT | HULL_SHADER_BIT | PIXEL_SHADER_BIT);
-	m_constantTerrain->unbind(VERTEX_SHADER_BIT | HULL_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
-	m_constantCamera->unbind(GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+	// Unbind
+	/*
+	m_context->unbind(m_constantCamera, GEOMETRY_SHADER | PIXEL_SHADER);
+	m_context->unbind(m_constantTerrain, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
+	m_context->unbind(m_constantNode, VERTEX_SHADER | HULL_SHADER | PIXEL_SHADER);
 
 	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_materials[i].diffuse->unbind(PIXEL_SHADER_BIT);
-		m_materials[i].displacement->unbind(GEOMETRY_SHADER_BIT);
-		m_materials[i].normal->unbind(PIXEL_SHADER_BIT);
-		m_materials[i].mapAlpha->unbind(GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+		m_context->unbind(m_materials[i].diffuse, PIXEL_SHADER);
+		m_context->unbind(m_materials[i].displacement, GEOMETRY_SHADER);
+		m_context->unbind(m_materials[i].normal, PIXEL_SHADER);
+		m_context->unbind(m_materials[i].mapAlpha, GEOMETRY_SHADER | PIXEL_SHADER);
 	}
 
-	m_normalmap->unbind(PIXEL_SHADER_BIT);
-	m_heightmap->unbind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT);
+	m_context->unbind(m_heightmap, VERTEX_SHADER | DOMAIN_SHADER);
+	m_context->unbind(m_normalmap, PIXEL_SHADER);
 
-	m_sampler->unbind(VERTEX_SHADER_BIT | DOMAIN_SHADER_BIT | GEOMETRY_SHADER_BIT | PIXEL_SHADER_BIT);
+	m_context->unbind(m_sampler, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
 
-	m_shader->unbind();
+	m_context->unbind(m_shader);
+	*/
 }
 
 const int Terrain::getLodAt(const glm::vec2 pos) {

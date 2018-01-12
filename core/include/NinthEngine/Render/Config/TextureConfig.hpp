@@ -1,66 +1,90 @@
 #pragma once
 
-#include <string>
-#include <stb_image.h>
-
 namespace NinthEngine {
 
-class TextureConfig {
-public:
-	TextureConfig() {};
-	~TextureConfig() {
-		if (m_config.m_data != nullptr) {
-			stbi_image_free(m_config.m_data);
-		}
-	};
+#define FORMAT_RGBA		0b0
+#define FORMAT_RGB		0b1
+#define FORMAT_RG		0b10
+#define FORMAT_R		0b100
 
-	TextureConfig& loadFile(const std::string file) {
-		m_config.m_name = file;
-		m_config.m_data = stbi_load(file.c_str(), &m_config.m_width, &m_config.m_height, nullptr, 4);
-		return *this;
-	};
+#define FORMAT_8		0b0
+#define FORMAT_16		0b1000
+#define FORMAT_32		0b10000
 
-	TextureConfig& setBinding(const unsigned binding) {
-		m_config.m_binding = binding;
-		return *this;
-	};
+#define FORMAT_UNORM	0b0
+#define FORMAT_SNORM	0b100000
+#define FORMAT_UINT		0b1000000
+#define FORMAT_SINT		0b10000000
+#define FORMAT_FLOAT	0b100000000
 
-	TextureConfig& asDepthType() {
-		m_config.m_depth = true;
-		return *this;
-	};
-	
-	TextureConfig& asRenderTarget() {
-		m_config.m_renderTarget = true;
-		return *this;
-	};
+#define FORMAT_DEPTH	0b1000000000
 
-	TextureConfig& setWidth(const int width) {
-		m_config.m_width = width;
-		return *this;
-	};
+enum FormatType : unsigned {
+	FORMAT_RGBA_8_UNORM	= FORMAT_RGBA | FORMAT_8 | FORMAT_UNORM,
+	FORMAT_RGB_8_UNORM = FORMAT_RGB | FORMAT_8 | FORMAT_UNORM,
+	FORMAT_RG_8_UNORM = FORMAT_RG | FORMAT_8 | FORMAT_UNORM,
+	FORMAT_R_8_UNORM = FORMAT_R | FORMAT_8 | FORMAT_UNORM,
 
-	TextureConfig& setHeight(const int height) {
-		m_config.m_height = height;
-		return *this;
-	};
+	FORMAT_RGBA_16_UNORM = FORMAT_RGBA | FORMAT_16 | FORMAT_UNORM,
+	FORMAT_RGB_16_UNORM = FORMAT_RGB | FORMAT_16 | FORMAT_UNORM,
+	FORMAT_RG_16_UNORM = FORMAT_RG | FORMAT_16 | FORMAT_UNORM,
+	FORMAT_R_16_UNORM = FORMAT_R | FORMAT_16 | FORMAT_UNORM,
 
-	TextureConfig& mipmapping() {
-		m_config.m_mipmapping = true;
-		return *this;
-	};
+	FORMAT_RGBA_8_SNORM = FORMAT_RGBA | FORMAT_8 | FORMAT_SNORM,
+	FORMAT_RGB_8_SNORM = FORMAT_RGB | FORMAT_8 | FORMAT_SNORM,
+	FORMAT_RG_8_SNORM = FORMAT_RG | FORMAT_8 | FORMAT_SNORM,
+	FORMAT_R_8_SNORM = FORMAT_R | FORMAT_8 | FORMAT_SNORM,
 
-public:
-	struct Config {
-	int m_width, m_height;
-	std::string m_name;
-	unsigned m_binding;
-	unsigned char* m_data = nullptr;
-	bool m_depth = false;
-	bool m_renderTarget = false;
-	bool m_mipmapping = false;
-	} m_config;
+	FORMAT_RGBA_16_SNORM = FORMAT_RGBA | FORMAT_16 | FORMAT_SNORM,
+	FORMAT_RGB_16_SNORM = FORMAT_RGB | FORMAT_16 | FORMAT_SNORM,
+	FORMAT_RG_16_SNORM = FORMAT_RG | FORMAT_16 | FORMAT_SNORM,
+	FORMAT_R_16_SNORM = FORMAT_R | FORMAT_16 | FORMAT_SNORM,
 
+	FORMAT_RGBA_8_UINT = FORMAT_RGBA | FORMAT_8 | FORMAT_UINT,
+	FORMAT_RGB_8_UINT = FORMAT_RGB | FORMAT_8 | FORMAT_UINT,
+	FORMAT_RG_8_UINT = FORMAT_RG | FORMAT_8 | FORMAT_UINT,
+	FORMAT_R_8_UINT = FORMAT_R | FORMAT_8 | FORMAT_UINT,
+
+	FORMAT_RGBA_16_UINT = FORMAT_RGBA | FORMAT_16 | FORMAT_UINT,
+	FORMAT_RGB_16_UINT = FORMAT_RGB | FORMAT_16 | FORMAT_UINT,
+	FORMAT_RG_16_UINT = FORMAT_RG | FORMAT_16 | FORMAT_UINT,
+	FORMAT_R_16_UINT = FORMAT_R | FORMAT_16 | FORMAT_UINT,
+
+	FORMAT_RGBA_32_UINT = FORMAT_RGBA | FORMAT_32 | FORMAT_UINT,
+	FORMAT_RGB_32_UINT = FORMAT_RGB | FORMAT_32 | FORMAT_UINT,
+	FORMAT_RG_32_UINT = FORMAT_RG | FORMAT_32 | FORMAT_UINT,
+	FORMAT_R_32_UINT = FORMAT_R | FORMAT_32 | FORMAT_UINT,
+
+	FORMAT_RGBA_8_SINT = FORMAT_RGBA | FORMAT_8 | FORMAT_SINT,
+	FORMAT_RGB_8_SINT = FORMAT_RGB | FORMAT_8 | FORMAT_SINT,
+	FORMAT_RG_8_SINT = FORMAT_RG | FORMAT_8 | FORMAT_SINT,
+	FORMAT_R_8_SINT = FORMAT_R | FORMAT_8 | FORMAT_SINT,
+
+	FORMAT_RGBA_16_SINT = FORMAT_RGBA | FORMAT_16 | FORMAT_SINT,
+	FORMAT_RGB_16_SINT = FORMAT_RGB | FORMAT_16 | FORMAT_SINT,
+	FORMAT_RG_16_SINT = FORMAT_RG | FORMAT_16 | FORMAT_SINT,
+	FORMAT_R_16_SINT = FORMAT_R | FORMAT_16 | FORMAT_SINT,
+
+	FORMAT_RGBA_32_SINT = FORMAT_RGBA | FORMAT_32 | FORMAT_SINT,
+	FORMAT_RGB_32_SINT = FORMAT_RGB | FORMAT_32 | FORMAT_SINT,
+	FORMAT_RG_32_SINT = FORMAT_RG | FORMAT_32 | FORMAT_SINT,
+	FORMAT_R_32_SINT = FORMAT_R | FORMAT_32 | FORMAT_SINT,
+
+	FORMAT_RGBA_16_FLOAT = FORMAT_RGBA | FORMAT_16 | FORMAT_FLOAT,
+	FORMAT_RGB_16_FLOAT = FORMAT_RGB | FORMAT_16 | FORMAT_FLOAT,
+	FORMAT_RG_16_FLOAT = FORMAT_RG | FORMAT_16 | FORMAT_FLOAT,
+	FORMAT_R_16_FLOAT = FORMAT_R | FORMAT_16 | FORMAT_FLOAT,
+
+	FORMAT_RGBA_32_FLOAT = FORMAT_RGBA | FORMAT_32 | FORMAT_FLOAT,
+	FORMAT_RGB_32_FLOAT = FORMAT_RGB | FORMAT_32 | FORMAT_FLOAT,
+	FORMAT_RG_32_FLOAT = FORMAT_RG | FORMAT_32 | FORMAT_FLOAT,
+	FORMAT_R_32_FLOAT = FORMAT_R | FORMAT_32 | FORMAT_FLOAT,
+
+	FORMAT_DEPTH_16 = FORMAT_DEPTH,
+	FORMAT_DEPTH_32,
+	FORMAT_DEPTH_32F,
+	FORMAT_DEPTH_24_STENCIL_8,
+	FORMAT_DEPTH_32F_STENCIL_8
 };
 
 } // namespace NinthEngine

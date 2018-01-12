@@ -2,13 +2,12 @@
 
 #include <memory>
 #include <string>
-#include "..\Utils\MathUtils.hpp"
+#include "Config\LayoutConfig.hpp"
 #include "Config\ShaderConfig.hpp"
+#include "Buffer.hpp"
+#include "Texture.hpp"
 
 namespace NinthEngine {
-
-class ConstantBuffer;
-class Texture;
 
 class Shader {
 public:
@@ -18,11 +17,8 @@ public:
 
 	virtual ~Shader() = default;
 	
-	virtual void bindConstant(const std::string name, const std::shared_ptr<ConstantBuffer>& buffer) = 0;
+	virtual void bindConstant(const std::string name, const std::shared_ptr<Buffer>& buffer) = 0;
 	virtual void bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) = 0;
-
-	virtual void bind() = 0;
-	virtual void unbind() = 0;
 
 };
 

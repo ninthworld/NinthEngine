@@ -10,7 +10,7 @@ GLRenderEngine::GLRenderEngine() {
 GLRenderEngine::~GLRenderEngine() {
 }
 
-void GLRenderEngine::init(const std::shared_ptr<GameWindow>& window, const bool vsync, void* hwnd) {
+void GLRenderEngine::init(const std::shared_ptr<GameWindow>& window, void* hwnd) {
 	
 	if (hwnd) {
 		auto glContext = std::make_unique<Win32::Win32GLContext>(hwnd);
@@ -23,7 +23,7 @@ void GLRenderEngine::init(const std::shared_ptr<GameWindow>& window, const bool 
 		glContext->makeCurrent();
 
 		m_device = std::make_unique<GLGraphicsDevice>();
-		m_context = std::make_unique<GLGraphicsContext>(std::move(glContext), window, vsync);
+		m_context = std::make_unique<GLGraphicsContext>(std::move(glContext), window);
 	}
 }
 

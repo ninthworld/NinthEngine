@@ -1,30 +1,38 @@
-#pragma once
 
-#include <NinthEngine\Render\Config\InputLayoutConfig.hpp>
-#include <NinthEngine\Render\VertexBuffer.hpp>
-#include "..\Utils\GLUtils.hpp"
+#include "GLBuffer.hpp"
 
 namespace NinthEngine {
 namespace GL {
 
-class GLVertexBuffer : public VertexBuffer {
+class GLVertexBuffer : public GLBuffer {
 public:
-	GLVertexBuffer(const BufferConfig& config);
+	GLVertexBuffer(
+		const LayoutConfig layout,
+		const unsigned unitCount, void* data);
 	~GLVertexBuffer();
-	
-	const GLuint getBufferId() const { return m_bufferId; };
-	const InputLayoutConfig getInputLayout() const { return m_inputLayout; };
 
+	void setBinding(const unsigned binding) override { m_binding = binding; };
+
+	const unsigned getBinding() const override { return m_binding; };
 	const unsigned getUnitSize() const override { return m_unitSize; };
 	const unsigned getUnitCount() const override { return m_unitCount; };
 
-private:
-	GLuint m_bufferId;
+	const BufferType getBufferType() const override { return VERTEX; };
 
+	const LayoutConfig getLayout() const { return m_layout; };
+
+	const GLuint getBuffer() const override { return m_buffer; };
+
+	void setData(void* data) override;
+
+private:
+	GLuint m_buffer;
+
+	unsigned m_binding;
 	unsigned m_unitSize;
 	unsigned m_unitCount;
 
-	InputLayoutConfig m_inputLayout;
+	LayoutConfig m_layout;
 
 };
 

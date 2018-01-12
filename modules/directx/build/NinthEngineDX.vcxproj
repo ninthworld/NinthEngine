@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngineDX\DXRenderEngine.hpp" />
+    <ClInclude Include="..\src\Render\D3DBuffer.hpp" />
     <ClInclude Include="..\src\Render\D3DConstantBuffer.hpp" />
     <ClInclude Include="..\src\Render\D3DGraphicsContext.hpp" />
     <ClInclude Include="..\src\Render\D3DGraphicsDevice.hpp" />

@@ -74,9 +74,6 @@
     <ClInclude Include="..\include\NinthEngineGL\GLRenderEngine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Render\GLVertexBuffer.hpp">
-      <Filter>Header Files\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Render\GLConstantBuffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
@@ -114,6 +111,12 @@
       <Filter>Header Files\Render\Win32</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\GLSampler.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GLBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GLVertexBuffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>

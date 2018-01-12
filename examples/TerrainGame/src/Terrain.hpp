@@ -56,7 +56,7 @@ public:
 		const std::shared_ptr<GraphicsDevice>& device,
 		const std::shared_ptr<GraphicsContext>& context,
 		const std::shared_ptr<GameCamera>& camera,
-		const std::shared_ptr<ConstantBuffer>& constantCamera);
+		const std::shared_ptr<Buffer>& constantCamera);
 	~Terrain();
 		
 	void init();
@@ -71,12 +71,12 @@ private:
 	glm::vec3 m_camLastPos;
 
 	// Shader
-	std::unique_ptr<Shader> m_shader;
+	std::shared_ptr<Shader> m_shader;
 	
 	// Constant Buffers
-	std::shared_ptr<ConstantBuffer> m_constantCamera;
-	std::shared_ptr<ConstantBuffer> m_constantTerrain;
-	std::shared_ptr<ConstantBuffer> m_constantNode;
+	std::shared_ptr<Buffer> m_constantCamera;
+	std::shared_ptr<Buffer> m_constantTerrain;
+	std::shared_ptr<Buffer> m_constantNode;
 
 	// Samplers
 	std::shared_ptr<Sampler> m_sampler;
@@ -89,7 +89,7 @@ private:
 	std::vector<Material> m_materials;
 	
 	// Vertex Buffers
-	std::shared_ptr<VertexBuffer> m_vertexBuffer;
+	std::shared_ptr<Buffer> m_vertexBuffer;
 
 	// Vertex Array
 	std::shared_ptr<VertexArray> m_vertexArray;

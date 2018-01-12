@@ -9,35 +9,52 @@
 namespace NinthEngine {
 namespace DX {
 
-class D3DGraphicsDevice;
-
 class D3DGraphicsContext : public GraphicsContext {
 public:
 	D3DGraphicsContext(
 		const ComPtr<ID3D11Device>& device,
 		const ComPtr<ID3D11DeviceContext>& deviceContext,
-		const std::shared_ptr<GameWindow>& window,
-		const bool vsync);
+		const std::shared_ptr<GameWindow>& window);
 	~D3DGraphicsContext();
 
 	void draw(const unsigned vertexCount, const unsigned startIndex) override;
-	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
+	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
+	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer) override;
 
 	void swapBuffers() override;
 
 	void bindBackBuffer() override;
 	void clearBackBuffer() override;
 
-	void setVsync(const bool vsync) override { m_vsync = vsync; };
-	void setClearColor(const float r, const float g, const float b, const float a) override {
-		m_clearColor[0] = r; m_clearColor[1] = g; m_clearColor[2] = b; m_clearColor[3] = a;
-	};
-	void setPrimitive(const PrimitiveType primitive) override;
-	void setPatchSize(const int patchSize) override { m_patchSize = patchSize; };
-	void setViewport(const float x, const float y, const float width, const float height) override;
+	void clear(const std::shared_ptr<RenderTarget>& renderTarget) override;
+	void resolveToBackBuffer(const unsigned index, const std::shared_ptr<RenderTarget>& renderTarget) override;
+	void resolve(
+		const unsigned indexFrom, const std::shared_ptr<RenderTarget>& renderTargetFrom,
+		const unsigned indexTo, const std::shared_ptr<RenderTarget>& renderTargetTo) override;
 
-	const bool isVsync() const override { return m_vsync; };
-	const PrimitiveType getPrimitive() const override { return m_primitiveType; };
+	void bind(const std::shared_ptr<Shader>& shader) override;
+	void bind(const std::shared_ptr<Rasterizer>& rasterizer) override;
+	void bind(const std::shared_ptr<RenderTarget>& renderTarget) override;
+	void bind(const std::shared_ptr<VertexArray>& vertexArray) override;
+	void bind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = 0) override;
+	void bind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = 0) override;
+	void bind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = 0) override;
+
+	void unbind(const std::shared_ptr<Shader>& shader) override;
+	void unbind(const std::shared_ptr<VertexArray>& vertexArray) override;
+	void unbind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = 0) override;
+	void unbind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = 0) override;
+	void unbind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = 0) override;
+
+	void setData(const std::shared_ptr<Buffer>& buffer, void* data) override;
+	void setData(const std::shared_ptr<Texture>& texture, void* data) override;
+
+	void setClearColor(const Color color) override { m_color = color; };
+	void setViewport(const Viewport viewport) override;
+	void setPrimitive(const PrimitiveType primitive, const int patchSize = 1) override;
+
+	const PrimitiveType getPrimitive() const { return m_primitiveType; };
+	const int getPatchSize() const { return m_patchSize; };
 
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
@@ -47,11 +64,12 @@ private:
 	ComPtr<ID3D11Texture2D> m_depthStencilBuffer;
 	ComPtr<ID3D11DepthStencilState> m_depthStencilState;
 
-	bool m_vsync;
-	float m_clearColor[4];
+	D3D11_PRIMITIVE_TOPOLOGY m_d3dPrimitive;
+
+	Color m_color;
+
 	PrimitiveType m_primitiveType;
-	D3D11_PRIMITIVE_TOPOLOGY m_primitive;
-	unsigned m_patchSize = 0;
+	unsigned m_patchSize;
 };
 
 } // namespace DX

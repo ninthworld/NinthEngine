@@ -1,57 +1,66 @@
 #ifdef _WIN32
 
 #include <plog\Log.h>
-#include <NinthEngine\Render\Buffer.hpp>
-#include <NinthEngine\Render\Config\SemanticLayoutConfig.hpp>
 #include "D3DShader.hpp"
 
 namespace {
 
 ComPtr<ID3DBlob> compileShader(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry, const std::string target);
 
-const char* getSemanticName(const NinthEngine::SemanticLayoutType);
-
 } // namespace
 
 namespace NinthEngine {
 namespace DX {
 
-D3DShader::D3DShader(const ComPtr<ID3D11DeviceContext>& deviceContext)
-	: m_deviceContext(deviceContext) {
+#define HLSL_VERSION(s) (s "_5_0")
+
+D3DShader::D3DShader(const LayoutConfig layout) 
+	: m_layout(layout) {
 }
 
 D3DShader::~D3DShader() {
 }
 
-void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+void D3DShader::bindConstant(const std::string name, const std::shared_ptr<Buffer>& buffer) {
+}
 
-	auto compiledCode = compileShader(device, config.m_config.m_hlslVS, config.m_config.m_hlslVSEntry, "vs_5_0");
+void D3DShader::bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) {
+}
+
+template<>
+void D3DShader::createShader<VERTEX_SHADER>(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
+
+	auto compiledCode = compileShader(device, src, entry, HLSL_VERSION("vs"));
 
 	HRESULT hr;
 	hr = device->CreateVertexShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_vertexShader);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Vertex Shader: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
-
-	if (config.m_config.m_inputLayout.m_config.m_stack.size() != config.m_config.m_semanticLayout.m_config.m_stack.size()) {
-		LOG_ERROR << "Invalid semantic/input layout";
-		throw std::exception();
-	}
+	CHECK_ERROR(hr, "ID3D11VertexShader");
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> vertexLayoutDesc;
-	for (unsigned i = 0; i < config.m_config.m_inputLayout.m_config.m_stack.size(); ++i) {
-
+	for (unsigned i = 0; i < m_layout.getLayoutStack().size(); ++i) {
 		D3D11_INPUT_ELEMENT_DESC desc;
 
-		desc.SemanticName = getSemanticName(config.m_config.m_semanticLayout.m_config.m_stack[i].type);
-		desc.SemanticIndex = config.m_config.m_semanticLayout.m_config.m_stack[i].index;
+		auto unit = m_layout.getLayoutStack()[i];
 
-		switch (config.m_config.m_inputLayout.m_config.m_stack[i]) {
+		desc.SemanticIndex = unit.semanticIndex;
+		switch (unit.semantic) {
+		case POSITION: desc.SemanticName = "POSITION"; break;
+		case COLOR: desc.SemanticName = "COLOR"; break;
+		case NORMAL: desc.SemanticName = "NORMAL"; break;
+		case TEXCOORD: desc.SemanticName = "TEXCOORD"; break;
+		case BINORMAL: desc.SemanticName = "BINORMAL"; break;
+		case TANGENT: desc.SemanticName = "TANGENT"; break;
+		default: desc.SemanticName = ""; break;
+		}
+
+		switch (unit.layout) {
+		case INT1: desc.Format = DXGI_FORMAT_R32_SINT; break;
+		case SHORT1: desc.Format = DXGI_FORMAT_R16_SINT; break;
 		case FLOAT1: desc.Format = DXGI_FORMAT_R32_FLOAT; break;
 		case FLOAT2: desc.Format = DXGI_FORMAT_R32G32_FLOAT; break;
 		case FLOAT3: desc.Format = DXGI_FORMAT_R32G32B32_FLOAT; break;
 		case FLOAT4: desc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT; break;
+		default: desc.Format = DXGI_FORMAT_UNKNOWN; break;
 		}
 
 		desc.InputSlot = 0;
@@ -63,86 +72,57 @@ void D3DShader::createVertexShader(const ComPtr<ID3D11Device>& device, const Sha
 	}
 
 	hr = device->CreateInputLayout(&vertexLayoutDesc[0], vertexLayoutDesc.size(), compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), &m_inputLayout);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Input Layout: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
+	CHECK_ERROR(hr, "ID3D11InputLayout");
 }
 
-void D3DShader::createHullShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+template<>
+void D3DShader::createShader<HULL_SHADER>(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
 
-	auto compiledCode = compileShader(device, config.m_config.m_hlslHS, config.m_config.m_hlslHSEntry, "hs_5_0");
+	auto compiledCode = compileShader(device, src, entry, HLSL_VERSION("hs"));
 
 	HRESULT hr;
 	hr = device->CreateHullShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_hullShader);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Hull Shader: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
+	CHECK_ERROR(hr, "ID3D11HullShader");
 }
 
-void D3DShader::createDomainShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+template<>
+void D3DShader::createShader<DOMAIN_SHADER>(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
 
-	auto compiledCode = compileShader(device, config.m_config.m_hlslDS, config.m_config.m_hlslDSEntry, "ds_5_0");
+	auto compiledCode = compileShader(device, src, entry, HLSL_VERSION("ds"));
 
 	HRESULT hr;
 	hr = device->CreateDomainShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_domainShader);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Domain Shader: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
+	CHECK_ERROR(hr, "ID3D11DomainShader");
 }
 
-void D3DShader::createGeometryShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+template<>
+void D3DShader::createShader<GEOMETRY_SHADER>(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
 
-	auto compiledCode = compileShader(device, config.m_config.m_hlslGS, config.m_config.m_hlslGSEntry, "gs_5_0");
+	auto compiledCode = compileShader(device, src, entry, HLSL_VERSION("gs"));
 
 	HRESULT hr;
 	hr = device->CreateGeometryShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_geometryShader);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Geometry Shader: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
+	CHECK_ERROR(hr, "ID3D11GeometryShader");
 }
 
-void D3DShader::createPixelShader(const ComPtr<ID3D11Device>& device, const ShaderConfig& config) {
+template<>
+void D3DShader::createShader<PIXEL_SHADER>(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
 
-	auto compiledCode = compileShader(device, config.m_config.m_hlslPS, config.m_config.m_hlslPSEntry, "ps_5_0");
+	auto compiledCode = compileShader(device, src, entry, HLSL_VERSION("ps"));
 
 	HRESULT hr;
 	hr = device->CreatePixelShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_pixelShader);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create HLSL Pixel Shader: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
+	CHECK_ERROR(hr, "ID3D11PixelShader");
 }
 
-void D3DShader::bindConstant(const std::string name, const std::shared_ptr<ConstantBuffer>& buffer) {
+template<>
+void D3DShader::createShader<COMPUTE_SHADER>(const ComPtr<ID3D11Device>& device, const std::string src, const std::string entry) {
 
-}
+	auto compiledCode = compileShader(device, src, entry, HLSL_VERSION("cs"));
 
-void D3DShader::bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) {
-
-}
-
-void D3DShader::bind() {
-
-	m_deviceContext->IASetInputLayout(m_inputLayout.Get());
-	m_deviceContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
-	if (m_hullShader) m_deviceContext->HSSetShader(m_hullShader.Get(), nullptr, 0);
-	if (m_domainShader) m_deviceContext->DSSetShader(m_domainShader.Get(), nullptr, 0);
-	if (m_geometryShader) m_deviceContext->GSSetShader(m_geometryShader.Get(), nullptr, 0);
-	m_deviceContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
-}
-
-void D3DShader::unbind() {
-	
-	m_deviceContext->IASetInputLayout(nullptr);
-	m_deviceContext->VSSetShader(nullptr, nullptr, 0);
-	if (m_hullShader) m_deviceContext->HSSetShader(nullptr, nullptr, 0);
-	if (m_domainShader) m_deviceContext->DSSetShader(nullptr, nullptr, 0);
-	if (m_geometryShader) m_deviceContext->GSSetShader(nullptr, nullptr, 0);
-	m_deviceContext->PSSetShader(nullptr, nullptr, 0);
+	HRESULT hr;
+	hr = device->CreateComputeShader(compiledCode->GetBufferPointer(), compiledCode->GetBufferSize(), nullptr, &m_computeShader);
+	CHECK_ERROR(hr, "ID3D11ComputeShader");
 }
 
 } // namespace DX
@@ -175,18 +155,6 @@ ComPtr<ID3DBlob> compileShader(const ComPtr<ID3D11Device>& device, const std::st
 	}
 
 	return std::move(compiledCode);
-}
-
-const char* getSemanticName(const NinthEngine::SemanticLayoutType type) {
-	switch (type) {
-	case NinthEngine::POSITION: return "POSITION";
-	case NinthEngine::COLOR: return "COLOR";
-	case NinthEngine::NORMAL: return "NORMAL";
-	case NinthEngine::TEXCOORD: return "TEXCOORD";
-	case NinthEngine::BINORMAL: return "BINORMAL";
-	case NinthEngine::TANGENT: return "TANGENT";
-	default: return "";
-	}
 }
 
 } // namespace

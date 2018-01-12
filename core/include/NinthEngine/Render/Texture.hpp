@@ -1,12 +1,10 @@
 #pragma once
 
 #include <memory>
-#include "Config\ShaderConfig.hpp"
-#include "Config\TextureConfig.hpp"
+#include "Builder\TextureBuilder.hpp"
+#include "Sampler.hpp"
 
 namespace NinthEngine {
-
-class Sampler;
 
 class Texture {
 public:
@@ -16,10 +14,18 @@ public:
 
 	virtual ~Texture() = default;
 
+	virtual void setBinding(const unsigned binding) = 0;
 	virtual void setSampler(const std::shared_ptr<Sampler>& sampler) = 0;
 
-	virtual void bind(const unsigned flag = PIXEL_SHADER_BIT) = 0;
-	virtual void unbind(const unsigned flag = PIXEL_SHADER_BIT) = 0;
+	virtual const unsigned getBinding() const = 0;
+
+	virtual const unsigned getWidth() const = 0;
+	virtual const unsigned getHeight() const = 0;
+	virtual const FormatType getFormat() const = 0;
+
+	virtual const unsigned getMipmapLevels() const = 0;
+	virtual const unsigned getMultisampleCount() const = 0;
+
 };
 
 } // namespace NinthEngine

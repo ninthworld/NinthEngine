@@ -1,15 +1,19 @@
 #pragma once
 
 #include <memory>
+#include "Buffer.hpp"
 #include "Shader.hpp"
-#include "ConstantBuffer.hpp"
-#include "IndexBuffer.hpp"
-#include "VertexBuffer.hpp"
-#include "VertexArray.hpp"
 #include "Rasterizer.hpp"
 #include "Texture.hpp"
 #include "Sampler.hpp"
 #include "RenderTarget.hpp"
+#include "Builder\BufferBuilder.hpp"
+#include "Builder\ShaderBuilder.hpp"
+#include "Builder\RasterizerBuilder.hpp"
+#include "Builder\TextureBuilder.hpp"
+#include "Builder\SamplerBuilder.hpp"
+#include "Builder\RenderTargetBuilder.hpp"
+#include "VertexArray.hpp"
 
 namespace NinthEngine {
 
@@ -21,21 +25,16 @@ public:
 
 	virtual ~GraphicsDevice() = default;
 
-	virtual std::unique_ptr<Shader> createShader(const ShaderConfig& config) = 0;
-
-	virtual std::unique_ptr<ConstantBuffer> createConstantBuffer(const BufferConfig& config) = 0;
-	virtual std::unique_ptr<IndexBuffer> createIndexBuffer(const BufferConfig& config) = 0;
-	virtual std::unique_ptr<VertexBuffer> createVertexBuffer(const BufferConfig& config) = 0;
-
+	virtual BufferBuilder createVertexBuffer() = 0;
+	virtual BufferBuilder createIndexBuffer() = 0;
+	virtual BufferBuilder createConstantBuffer() = 0;
+	virtual ShaderBuilder createShader() = 0;
+	virtual RasterizerBuilder createRasterizer() = 0;
+	virtual TextureBuilder createTexture() = 0;
+	virtual SamplerBuilder createSampler() = 0;
+	virtual RenderTargetBuilder createRenderTarget() = 0;
 	virtual std::unique_ptr<VertexArray> createVertexArray() = 0;
 
-	virtual std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) = 0;
-
-	virtual std::unique_ptr<Texture> createTexture(const TextureConfig& config) = 0;
-
-	virtual std::unique_ptr<Sampler> createSampler(const SamplerConfig& config) = 0;
-
-	virtual std::unique_ptr<RenderTarget> createRenderTarget(const RenderTargetConfig& config) = 0;
 };
 
 } // namespace NinthEngine

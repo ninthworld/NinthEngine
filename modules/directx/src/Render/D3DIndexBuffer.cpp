@@ -8,12 +8,12 @@ namespace DX {
 
 D3DIndexBuffer::D3DIndexBuffer(
 	const ComPtr<ID3D11Device>& device,
-	const ComPtr<ID3D11DeviceContext>& deviceContext,
-	const BufferConfig& config)
-	: m_deviceContext(deviceContext)
-	, m_unitSize(config.m_config.m_inputLayout.m_config.m_unitSize)
-	, m_unitCount(config.m_config.m_unitCount) {
-	
+	const LayoutConfig layout,
+	const unsigned unitCount, void* data)
+	: m_binding(0)
+	, m_unitSize(layout.getUnitSize())
+	, m_unitCount(unitCount) {
+
 	D3D11_BUFFER_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
 
@@ -25,30 +25,18 @@ D3DIndexBuffer::D3DIndexBuffer(
 	D3D11_SUBRESOURCE_DATA resourceData;
 	ZeroMemory(&resourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 
-	resourceData.pSysMem = config.m_config.m_data;
+	resourceData.pSysMem = data;
 
 	HRESULT hr;
 	hr = device->CreateBuffer(&bufferDesc, &resourceData, &m_buffer);
-	if (FAILED(hr)) {
-		LOG_ERROR << "Failed to create IndexBuffer: " << _com_error(hr).ErrorMessage();
-		throw std::exception();
-	}
-
+	CHECK_ERROR(hr, "(IndexBuffer) ID3D11Buffer");
 }
 
 D3DIndexBuffer::~D3DIndexBuffer() {
 }
 
-void D3DIndexBuffer::bind() {
-
-	m_deviceContext->IASetIndexBuffer(m_buffer.Get(), (m_unitSize == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT), 0);
-}
-
-void D3DIndexBuffer::unbind() {
-
-	ID3D11Buffer* nullB = NULL;
-
-	m_deviceContext->IASetIndexBuffer(nullB, (m_unitSize == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT), 0);
+void D3DIndexBuffer::setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void* data) {
+	deviceContext->UpdateSubresource(m_buffer.Get(), 0, nullptr, data, 0, 0);
 }
 
 } // namespace DX

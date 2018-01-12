@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <NinthEngine\Render\GraphicsDevice.hpp>
+#include "..\Utils\GLUtils.hpp"
 
 namespace NinthEngine {
 namespace GL {
@@ -11,23 +12,15 @@ public:
 	GLGraphicsDevice();
 	~GLGraphicsDevice();
 
-	std::unique_ptr<Shader> createShader(const ShaderConfig& config) override;
-
-	std::unique_ptr<ConstantBuffer> createConstantBuffer(const BufferConfig& config) override;
-	std::unique_ptr<IndexBuffer> createIndexBuffer(const BufferConfig& config) override;
-	std::unique_ptr<VertexBuffer> createVertexBuffer(const BufferConfig& config) override;
-
+	BufferBuilder createVertexBuffer() override;
+	BufferBuilder createIndexBuffer() override;
+	BufferBuilder createConstantBuffer() override;
+	ShaderBuilder createShader() override;
+	RasterizerBuilder createRasterizer() override;
+	TextureBuilder createTexture() override;
+	SamplerBuilder createSampler() override;
+	RenderTargetBuilder createRenderTarget() override;
 	std::unique_ptr<VertexArray> createVertexArray() override;
-
-	std::unique_ptr<Rasterizer> createRasterizer(const RasterizerConfig& config) override;
-
-	std::unique_ptr<Texture> createTexture(const TextureConfig& config) override;
-
-	std::unique_ptr<Sampler> createSampler(const SamplerConfig& config) override;
-
-	std::unique_ptr<RenderTarget> createRenderTarget(const RenderTargetConfig& config) override;
-
-private:
 
 };
 

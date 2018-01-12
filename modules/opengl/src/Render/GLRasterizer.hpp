@@ -8,13 +8,13 @@ namespace GL {
 
 class GLRasterizer : public Rasterizer {
 public:
-	GLRasterizer(const RasterizerConfig& config);
+	GLRasterizer(const RasterizerStruct rasterizer);
 	~GLRasterizer();
-
-	void bind() override;
+	
+	const RasterizerStruct getRasterizer() const { return m_rasterizer; };
 
 private:
-	RasterizerConfig m_config;
+	RasterizerStruct m_rasterizer;
 
 };
 

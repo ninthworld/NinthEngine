@@ -139,18 +139,20 @@
     <ClInclude Include="..\include\NinthEngine\Input\Keyboard.hpp" />
     <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\BufferBuilder.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\RasterizerBuilder.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\RenderTargetBuilder.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\SamplerBuilder.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\ShaderBuilder.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\TextureBuilder.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\BufferConfig.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\Config\InputLayoutConfig.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Config\LayoutConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\RasterizerConfig.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\Config\RenderTargetConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\SamplerConfig.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\Config\SemanticLayoutConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\ShaderConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\TextureConfig.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\ConstantBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Rasterizer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\RenderEngine.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\RenderTarget.hpp" />
@@ -158,7 +160,6 @@
     <ClInclude Include="..\include\NinthEngine\Render\Shader.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Texture.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\VertexArray.hpp" />
-    <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Utils\FileUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\Utils\MathUtils.hpp" />
   </ItemGroup>

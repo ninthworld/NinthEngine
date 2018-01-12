@@ -5,7 +5,9 @@ in vec4 gs_viewSpacePos;
 in vec3 gs_position;
 in vec3 gs_tangent;
 
-out vec4 out_fragColor;
+layout(location=0) out vec4 ps_color;
+layout(location=1) out vec4 ps_normal;
+layout(location=2) out vec4 ps_position;
 
 layout(std140) uniform Camera {
 	mat4 viewMatrix;
@@ -76,7 +78,6 @@ void main() {
 	vec3 color3 = texture(material3Dif, gs_texCoord / material3Scale).rgb;
 
 	if (dist < detailRangeNear) {
-		
 		float attenuation = clamp(-dist / detailRangeNear + 1, 0, 1);
 
 		vec3 bitangent = normalize(cross(gs_tangent, normal));
@@ -93,16 +94,15 @@ void main() {
 
 		normal = normalize(TBN * bumpNormal);
 	}
+
+	ps_position = vec4(gs_position, 1.0);
+
+	ps_normal = vec4((normal + 1.0) / 2.0, 1.0);
 	
-	vec3 lightDir = normalize(vec3(1, 1, 1));
-
-	float cosTheta = max(dot(normal, lightDir), 0.1);
-
-	vec3 fragColor = 
+	ps_color = vec4(
 		color0 * alpha0 +
 		color1 * alpha1 +
 		color2 * alpha2 +
-		color3 * alpha3;
-
-	out_fragColor = vec4(fragColor * cosTheta, 1.0);
+		color3 * alpha3
+		, 1.0);
 }

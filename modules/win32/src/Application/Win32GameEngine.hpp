@@ -16,7 +16,7 @@ namespace Win32 {
 
 class Win32GameEngine : public GameEngine {
 public:
-	Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window, const bool vsync, const std::shared_ptr<RenderEngine>& renderEngine);
+	Win32GameEngine(const std::shared_ptr<Win32GameWindow>& window, const std::shared_ptr<RenderEngine>& renderEngine);
 	~Win32GameEngine();
 
 	void run(std::unique_ptr<Game> game);

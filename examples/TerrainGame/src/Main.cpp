@@ -8,8 +8,8 @@
 #include "TerrainGame.hpp"
 
 // Render Engine
-//#define _USE_GL
-#define _USE_DX
+#define _USE_GL
+//#define _USE_DX
 
 using namespace NinthEngine;
 
@@ -44,7 +44,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 	Win32::Win32Bootstrap bootstrap(
 		"Terrain Game", 
 		1600, 900, 
-		false, 
 		hInstance, cmdShow, 
 		std::move(renderEngine));
 

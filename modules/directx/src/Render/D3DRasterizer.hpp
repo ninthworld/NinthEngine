@@ -12,17 +12,13 @@ class D3DRasterizer : public Rasterizer {
 public:
 	D3DRasterizer(
 		const ComPtr<ID3D11Device>& device,
-		const ComPtr<ID3D11DeviceContext>& deviceContext,
-		const RasterizerConfig& config);
+		const RasterizerStruct rasterizer);
 	~D3DRasterizer();
 
-	void bind() override;
+	ComPtr<ID3D11RasterizerState> getRasterizer() { return m_rasterizerState; };
 
 private:
-	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11RasterizerState> m_rasterizerState;
-
-	RasterizerConfig m_config;
 
 };
 

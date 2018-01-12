@@ -9,7 +9,7 @@ TerrainNode::TerrainNode(
 	const std::shared_ptr<Terrain>& root,
 	const std::shared_ptr<GraphicsContext>& context,
 	const std::shared_ptr<VertexArray>& vertexArray,
-	const std::shared_ptr<ConstantBuffer>& constantNode,
+	const std::shared_ptr<Buffer>& constantNode,
 	const glm::vec2 location,
 	const int lod,
 	const glm::vec2 index)
@@ -96,12 +96,12 @@ void TerrainNode::render() {
 		// Update Constants
 		NodeData data{ m_localMatrix, glm::vec4(), m_location, m_index, m_size, m_lod, glm::vec2() };
 		for (unsigned i = 0; i < 4; ++i) data.neighbors[i] = m_neighbors[i];
-		m_constantNode->setData(&data);
+		m_context->setData(m_constantNode, &data);
 
 		// Draw Terrain
-		m_vertexArray->bind();
-		m_context->draw(patchSize, 0);
-		m_vertexArray->unbind();
+		m_context->bind(m_vertexArray);
+		m_context->draw(patchSize);
 
+		//m_context->unbind(m_vertexArray);
 	}
 }

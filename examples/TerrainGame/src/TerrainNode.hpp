@@ -12,7 +12,7 @@ public:
 		const std::shared_ptr<Terrain>& root,
 		const std::shared_ptr<GraphicsContext>& context,
 		const std::shared_ptr<VertexArray>& vertexArray,
-		const std::shared_ptr<ConstantBuffer>& constantNode,
+		const std::shared_ptr<Buffer>& constantNode,
 		const glm::vec2 location,
 		const int lod,
 		const glm::vec2 index);
@@ -26,7 +26,7 @@ private:
 	std::shared_ptr<GraphicsContext> m_context;
 	
 	// Constant Buffers
-	std::shared_ptr<ConstantBuffer> m_constantNode;
+	std::shared_ptr<Buffer> m_constantNode;
 	
 	// Vertex Array
 	std::shared_ptr<VertexArray> m_vertexArray;

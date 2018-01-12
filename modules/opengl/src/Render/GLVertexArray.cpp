@@ -6,66 +6,63 @@ namespace NinthEngine {
 namespace GL {
 
 GLVertexArray::GLVertexArray()
-	: m_vaoId(0), m_attribCount(0) {
+	: m_vao(0), m_attribCount(0) {
 
-	glCreateVertexArrays(1, &m_vaoId);
+	glCreateVertexArrays(1, &m_vao);
 }
 
 GLVertexArray::~GLVertexArray() {
-
-	if (m_vaoId != GL_FALSE) {
-		glDeleteVertexArrays(1, &m_vaoId);
-	}
+	if (m_vao) glDeleteVertexArrays(1, &m_vao);
 }
 
-void GLVertexArray::addVertexBuffer(const std::shared_ptr<VertexBuffer>& buffer) {
+void GLVertexArray::addVertexBuffer(const std::shared_ptr<Buffer>& buffer) {
 	
-	auto glBuffer = std::dynamic_pointer_cast<GLVertexBuffer>(buffer);
-	
-	glBindVertexArray(m_vaoId);
-	glBindBuffer(GL_ARRAY_BUFFER, glBuffer->getBufferId());
+	if (buffer->getBufferType() == VERTEX) {
+		auto glBuffer = std::dynamic_pointer_cast<GLVertexBuffer>(buffer);
 
+		glBindVertexArray(m_vao);
+		glBindBuffer(GL_ARRAY_BUFFER, glBuffer->getBuffer());
 
-	GLuint unitFlag = 0;
-	int unitCount = 0;
-	int totalBytes = 0;
-	for (unsigned i = 0; i < glBuffer->getInputLayout().m_config.m_stack.size(); ++i) {
+		GLuint unitFlag = 0;
+		int unitCount = 0;
+		int totalBytes = 0;
+		for (unsigned i = 0; i < glBuffer->getLayout().getLayoutStack().size(); ++i) {
+			auto unit = glBuffer->getLayout().getLayoutStack()[i];
 
-		if (glBuffer->getInputLayout().m_config.m_stack[i] >= FLOAT1
-			&& glBuffer->getInputLayout().m_config.m_stack[i] <= FLOAT4) {
-			unitFlag = GL_FLOAT;
-			unitCount = glBuffer->getInputLayout().m_config.m_stack[i] - FLOAT1 + 1;
+			switch (unit.layout) {
+			case INT1: unitFlag = GL_INT; unitCount = 1; break;
+			case SHORT1: unitFlag = GL_SHORT; unitCount = 1; break;
+			case FLOAT1: unitFlag = GL_FLOAT; unitCount = 1; break;
+			case FLOAT2: unitFlag = GL_FLOAT; unitCount = 2; break;
+			case FLOAT3: unitFlag = GL_FLOAT; unitCount = 3; break;
+			case FLOAT4: unitFlag = GL_FLOAT; unitCount = 4; break;
+			default: unitFlag = GL_FLOAT; unitCount = 1; break;
+			}
+
+			glVertexAttribPointer(
+				i + m_attribCount, 
+				unitCount, unitFlag, GL_FALSE, 
+				glBuffer->getLayout().getUnitSize(), 
+				reinterpret_cast<void*>(totalBytes));
+
+			switch (unitFlag) {
+			case GL_INT: totalBytes += unitCount * sizeof(int); break;
+			case GL_SHORT: totalBytes += unitCount * sizeof(short); break;
+			case GL_FLOAT: totalBytes += unitCount * sizeof(float); break;
+			}
+
 		}
 
-		glVertexAttribPointer(i + m_attribCount, unitCount, unitFlag, GL_FALSE, glBuffer->getInputLayout().m_config.m_unitSize, reinterpret_cast<void*>(totalBytes));
-		
-		totalBytes += unitCount * sizeof(float);
+		m_attribCount += glBuffer->getLayout().getLayoutStack().size();
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		m_buffers.push_back(glBuffer);
 	}
-
-	m_attribCount += glBuffer->getInputLayout().m_config.m_stack.size();
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-
-	m_vertexBuffers.push_back(glBuffer);
-}
-
-void GLVertexArray::bind() {
-
-	glBindVertexArray(m_vaoId);
-
-	for (int i = 0; i < m_attribCount; ++i) {
-		glEnableVertexAttribArray(i);
+	else {
+		LOG_WARNING << "Cannot add non-Vertex Buffer to VertexArray.";
 	}
-}
-
-void GLVertexArray::unbind() {
-
-	for (int i = 0; i < m_attribCount; ++i) {
-		glDisableVertexAttribArray(i);
-	}
-
-	glBindVertexArray(0);
 }
 
 } // namespace GL

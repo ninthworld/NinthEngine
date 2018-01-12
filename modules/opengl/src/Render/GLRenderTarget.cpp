@@ -4,56 +4,58 @@ namespace NinthEngine {
 namespace GL {
 
 GLRenderTarget::GLRenderTarget(
-	const RenderTargetConfig& config,
-	const std::shared_ptr<Texture>& colorTexture,
-	const std::shared_ptr<Texture>& depthTexture)
-	: m_framebufferId(0)
-	, m_clearColor(ClearColor{ 0.f, 0.f, 0.f, 1.f }) {
+	std::vector<std::shared_ptr<GLTexture>> textures,
+	const std::shared_ptr<GLTexture>& depthTexture)
+	: m_framebuffer(0)
+	, m_textures(textures)
+	, m_depthTexture(depthTexture) {
+
+	glGenFramebuffers(1, &m_framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
+
+	std::vector<GLenum> colorAttachments;
+	for (unsigned i = 0; i < m_textures.size(); ++i) {
+		colorAttachments.push_back(GL_COLOR_ATTACHMENT0 + i);
+		glFramebufferTexture2D(
+			GL_FRAMEBUFFER,
+			GL_COLOR_ATTACHMENT0 + i,
+			(m_textures[i]->getMultisampleCount() ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D),
+			m_textures[i]->getTexture(), 0);
+		CHECK_ERROR("glFramebufferTexture2D");
+	}
+
+	glDrawBuffers(colorAttachments.size(), &colorAttachments[0]);
+
+	if (m_depthTexture) {
+		glFramebufferTexture2D(
+			GL_FRAMEBUFFER,
+			GL_DEPTH_ATTACHMENT,
+			(m_depthTexture->getMultisampleCount() ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D),
+			m_depthTexture->getTexture(), 0);
+		CHECK_ERROR("glFramebufferTexture2D");
+
+		if (m_depthTexture->getGLFormat() == GL_DEPTH_STENCIL) {
+			glFramebufferTexture2D(
+				GL_FRAMEBUFFER,
+				GL_STENCIL_ATTACHMENT,
+				(m_depthTexture->getMultisampleCount() ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D),
+				m_depthTexture->getTexture(), 0);
+			CHECK_ERROR("glFramebufferTexture2D");
+		}
+	}
 	
-	glGenFramebuffers(1, &m_framebufferId);
-	glBindFramebuffer(GL_FRAMEBUFFER, m_framebufferId);
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-	auto glColor = std::dynamic_pointer_cast<GLTexture>(colorTexture);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, glColor->m_textureId, 0);
-	m_colorTexture = std::move(glColor);
-
-	auto glDepth = std::dynamic_pointer_cast<GLTexture>(depthTexture);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, glDepth->m_textureId, 0);
-	m_depthTexture = std::move(glDepth);
+	switch (glCheckFramebufferStatus(GL_FRAMEBUFFER)) {
+	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT: LOG_WARNING << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT"; break;
+	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT: LOG_WARNING << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT"; break;
+	case GL_FRAMEBUFFER_UNSUPPORTED: LOG_WARNING << "GL_FRAMEBUFFER_UNSUPPORTED"; break;
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 GLRenderTarget::~GLRenderTarget() {
-
-	if (m_framebufferId) {
-		glDeleteFramebuffers(1, &m_framebufferId);
-	}
-}
-
-void GLRenderTarget::bind() {
-
-	glBindFramebuffer(GL_FRAMEBUFFER, m_framebufferId);
-}
-
-void GLRenderTarget::unbind() {
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void GLRenderTarget::clear() {
-
-	glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-}
-
-void GLRenderTarget::setViewport(const float x, const float y, const float width, const float height) {
-
-	m_colorTexture->setSize(width, height);
-	m_depthTexture->setSize(width, height);
-
-	glViewport(x, y, width, height);
+	if (m_framebuffer) glDeleteFramebuffers(1, &m_framebuffer);
 }
 
 } // namespace GL

@@ -8,16 +8,19 @@ namespace GL {
 
 class GLSampler : public Sampler {
 public:
-	GLSampler(const SamplerConfig& config);
+	GLSampler(const SamplerStruct sampler);
 	~GLSampler();
 
-	void bind(const unsigned flag) override;
-	void unbind(const unsigned flag) override;
+	void setBinding(const unsigned binding) override { m_binding = binding; };
+
+	const unsigned getBinding() const override { return m_binding; };
+
+	const GLuint getSampler() const { return m_sampler; };
 
 private:
-	GLuint m_samplerId;
+	GLuint m_sampler;
 
-	friend class GLTexture;
+	unsigned m_binding;
 };
 
 } // namespace GL

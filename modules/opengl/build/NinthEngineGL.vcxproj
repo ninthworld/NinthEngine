@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngineGL\GLRenderEngine.hpp" />
+    <ClInclude Include="..\src\Render\GLBuffer.hpp" />
     <ClInclude Include="..\src\Render\GLConstantBuffer.hpp" />
     <ClInclude Include="..\src\Render\GLContext.hpp" />
     <ClInclude Include="..\src\Render\GLGraphicsContext.hpp" />

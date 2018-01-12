@@ -2,6 +2,7 @@
 
 #ifdef _WIN32
 
+#include <vector>
 #include <NinthEngine\Render\RenderTarget.hpp>
 #include "..\Utils\D3DUtils.hpp"
 #include "D3DTexture.hpp"
@@ -13,34 +14,24 @@ class D3DRenderTarget : public RenderTarget {
 public:
 	D3DRenderTarget(
 		const ComPtr<ID3D11Device>& device,
-		const ComPtr<ID3D11DeviceContext>& deviceContext,
-		const RenderTargetConfig& config,
-		const std::shared_ptr<Texture>& colorTexture,
-		const std::shared_ptr<Texture>& depthTexture);
+		std::vector<std::shared_ptr<D3DTexture>> textures,
+		const std::shared_ptr<D3DTexture>& depthTexture);
 	~D3DRenderTarget();
 
-	void bind() override;
-	void unbind() override;
+	const unsigned getTextureCount() const override { return m_textures.size(); };
+	std::shared_ptr<Texture> getTexture(const unsigned index) { return m_textures[index]; };
+	std::shared_ptr<Texture> getDepthTexture() { return m_depthTexture; };
 
-	void clear() override;
-
-	std::shared_ptr<Texture> getColorTexture() override { return m_colorTexture; };
-	std::shared_ptr<Texture> getDepthTexture() override { return m_depthTexture; };
-
-	void setClearColor(const float r, const float g, const float b, const float a) override {
-		m_clearColor[0] = r; m_clearColor[1] = g; m_clearColor[2] = b; m_clearColor[3] = a;
-	};
-	void setViewport(const float x, const float y, const float width, const float height) override;
+	ComPtr<ID3D11RenderTargetView> getRenderTargetView(const unsigned index) { return m_renderTargetViews[index]; };
+	ComPtr<ID3D11DepthStencilView> getDepthStencilView() { return m_depthStencilView; };
 
 private:
-	ComPtr<ID3D11DeviceContext> m_deviceContext;
-	ComPtr<ID3D11RenderTargetView> m_colorRenderTarget;
-	ComPtr<ID3D11RenderTargetView> m_depthRenderTarget;
-
-	std::shared_ptr<D3DTexture> m_colorTexture;
+	std::vector<std::shared_ptr<D3DTexture>> m_textures;
 	std::shared_ptr<D3DTexture> m_depthTexture;
 
-	float m_clearColor[4];
+	std::vector<ComPtr<ID3D11RenderTargetView>> m_renderTargetViews;
+	ComPtr<ID3D11DepthStencilView> m_depthStencilView;
+
 };
 
 } // namespace DX
