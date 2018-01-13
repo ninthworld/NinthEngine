@@ -116,7 +116,7 @@ void GLShader::createProgram() {
 		glGetShaderInfoLog(m_program, 1024, NULL, infoLog);
 		LOG_ERROR << infoLog;
 		LOG_ERROR << "Failed to validate GL Shader Program";
-		throw std::exception();
+		//throw std::exception();
 	}
 }
 

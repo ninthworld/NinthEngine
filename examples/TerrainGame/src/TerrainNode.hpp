@@ -11,6 +11,7 @@ public:
 	TerrainNode(
 		const std::shared_ptr<Terrain>& root,
 		const std::shared_ptr<GraphicsContext>& context,
+		const std::shared_ptr<GameCamera>& camera,
 		const std::shared_ptr<VertexArray>& vertexArray,
 		const std::shared_ptr<Buffer>& constantNode,
 		const glm::vec2 location,
@@ -18,12 +19,13 @@ public:
 		const glm::vec2 index);
 	~TerrainNode();
 
-	void update(const glm::vec3 cameraPos);
+	void update();
 
 	void render();
 
 private:
 	std::shared_ptr<GraphicsContext> m_context;
+	std::shared_ptr<GameCamera> m_camera;
 	
 	// Constant Buffers
 	std::shared_ptr<Buffer> m_constantNode;
@@ -43,6 +45,7 @@ private:
 	int m_lod;
 	bool m_leaf;
 	std::vector<bool> m_neighbors;
+	AABB m_bounds;
 
 	// Children
 	std::vector<std::unique_ptr<TerrainNode>> m_children;

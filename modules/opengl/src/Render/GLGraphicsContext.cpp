@@ -110,26 +110,28 @@ void GLGraphicsContext::resolveToBackBuffer(const unsigned index, const std::sha
 }
 
 void GLGraphicsContext::resolve(
-	const unsigned indexFrom, const std::shared_ptr<RenderTarget>& renderTargetFrom,
-	const unsigned indexTo, const std::shared_ptr<RenderTarget>& renderTargetTo) {
+	const std::shared_ptr<RenderTarget>& renderTargetFrom,
+	const std::shared_ptr<RenderTarget>& renderTargetTo) {
 
 	auto glRenderTargetFrom = std::dynamic_pointer_cast<GLRenderTarget>(renderTargetFrom);
 	auto glRenderTargetTo = std::dynamic_pointer_cast<GLRenderTarget>(renderTargetTo);
+	for (unsigned i = 0; i < std::min(renderTargetFrom->getTextureCount(), renderTargetTo->getTextureCount()); ++i) {
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, glRenderTargetFrom->getFramebuffer());
+		glReadBuffer(GL_COLOR_ATTACHMENT0 + i);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, glRenderTargetTo->getFramebuffer());
+		glDrawBuffer(GL_COLOR_ATTACHMENT0 + i);
 
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, glRenderTargetFrom->getFramebuffer());
-	glReadBuffer(GL_COLOR_ATTACHMENT0 + indexFrom);
-	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, glRenderTargetTo->getFramebuffer());
-	glDrawBuffer(GL_COLOR_ATTACHMENT0 + indexTo);
+		auto glTextureFrom = std::dynamic_pointer_cast<GLTexture>(glRenderTargetFrom->getTexture(i));
+		auto glTextureTo = std::dynamic_pointer_cast<GLTexture>(glRenderTargetTo->getTexture(i));
+		glBlitFramebuffer(
+			0, 0, glTextureFrom->getWidth(), glTextureFrom->getHeight(),
+			0, 0, glTextureTo->getWidth(), glTextureTo->getHeight(),
+			GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		CHECK_ERROR("glBlitFramebuffer");
 
-	auto glTextureFrom = std::dynamic_pointer_cast<GLTexture>(glRenderTargetFrom->getTexture(indexFrom));
-	auto glTextureTo = std::dynamic_pointer_cast<GLTexture>(glRenderTargetTo->getTexture(indexTo));
-	glBlitFramebuffer(
-		0, 0, glTextureFrom->getWidth(), glTextureFrom->getHeight(),
-		0, 0, glTextureTo->getWidth(), glTextureTo->getHeight(),
-		GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
-	CHECK_ERROR("glBlitFramebuffer");
+	}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, m_boundFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_boundFBO);		
 }
 
 void GLGraphicsContext::bind(const std::shared_ptr<Shader>& shader) {

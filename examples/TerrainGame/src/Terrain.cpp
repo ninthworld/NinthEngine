@@ -1,3 +1,5 @@
+#include <stb_image.h>
+
 #include <NinthEngine\Camera\GameCamera.hpp>
 #include <NinthEngine\Render\GraphicsDevice.hpp>
 #include <NinthEngine\Render\GraphicsContext.hpp>
@@ -201,12 +203,24 @@ Terrain::Terrain(
 		m_shader->bindTexture("material" + std::to_string(i) + "Norm", m_materials[i].normal);
 		m_shader->bindTexture("material" + std::to_string(i) + "Alpha", m_materials[i].mapAlpha);
 	}
+
+	// Initialize Height Data
+	unsigned char* data = stbi_load("res/terrain/map/heightmap.bmp", &m_heightWidth, &m_heightHeight, nullptr, 1);
+	m_heightData = (float*)malloc(m_heightWidth * m_heightHeight * sizeof(float));
+	for (unsigned i = 0; i < m_heightWidth; ++i) {
+		for (unsigned j = 0; j < m_heightHeight; ++j) {
+			unsigned index = i * m_heightHeight + j;
+			m_heightData[index] = (data[index] / 255.0f);
+		}
+	}
+	stbi_image_free(data);
 }
 
 Terrain::~Terrain() {
 }
 
 void Terrain::init() {
+
 
 	// Initialize Root Node
 	for (unsigned i = 0; i < rootPatches; ++i) {
@@ -215,6 +229,7 @@ void Terrain::init() {
 				std::make_unique<TerrainNode>(
 					shared_from_this(),
 					m_context,
+					m_camera,
 					m_vertexArray,
 					m_constantNode,
 					glm::vec2(i / (float)rootPatches, j / (float)rootPatches),
@@ -227,7 +242,7 @@ void Terrain::init() {
 void Terrain::update() {
 
 	for (unsigned i = 0; i < m_rootNodes.size(); ++i) {
-		m_rootNodes[i]->update(m_camera->getPosition());
+		m_rootNodes[i]->update();
 	}
 }
 
@@ -262,27 +277,6 @@ void Terrain::render() {
 		m_rootNodes[i]->render();
 	}
 	m_context->setPrimitive(type);
-
-	// Unbind
-	/*
-	m_context->unbind(m_constantCamera, GEOMETRY_SHADER | PIXEL_SHADER);
-	m_context->unbind(m_constantTerrain, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
-	m_context->unbind(m_constantNode, VERTEX_SHADER | HULL_SHADER | PIXEL_SHADER);
-
-	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_context->unbind(m_materials[i].diffuse, PIXEL_SHADER);
-		m_context->unbind(m_materials[i].displacement, GEOMETRY_SHADER);
-		m_context->unbind(m_materials[i].normal, PIXEL_SHADER);
-		m_context->unbind(m_materials[i].mapAlpha, GEOMETRY_SHADER | PIXEL_SHADER);
-	}
-
-	m_context->unbind(m_heightmap, VERTEX_SHADER | DOMAIN_SHADER);
-	m_context->unbind(m_normalmap, PIXEL_SHADER);
-
-	m_context->unbind(m_sampler, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
-
-	m_context->unbind(m_shader);
-	*/
 }
 
 const int Terrain::getLodAt(const glm::vec2 pos) {
@@ -302,4 +296,28 @@ const int Terrain::getLodAt(const glm::vec2 pos) {
 	}
 
 	return node->m_lod;
+}
+
+const float Terrain::getHeightAt(const glm::vec2 pos) {
+
+	int x = floor(pos.x * m_heightWidth);
+	int y = floor(pos.y * m_heightHeight);
+
+	return m_heightData[x * m_heightHeight + y] * scaleY;
+}
+
+const float Terrain::getMaxHeightAt(const glm::vec2 pos0, const glm::vec2 pos1) {
+
+	int x = floor(pos0.x * m_heightWidth);
+	int y = floor(pos0.y * m_heightHeight);
+	int dX = floor(abs(pos1.x - pos0.x) * m_heightWidth);
+	int dY = floor(abs(pos1.y - pos0.y) * m_heightHeight);
+
+	float maxHeight = 0;
+	for (unsigned i = 0; i < dX; ++i) {
+		for (unsigned j = 0; j < dY; ++j) {
+			maxHeight = std::max(maxHeight, m_heightData[(x + i) * m_heightHeight + (y + i)] * scaleY);
+		}
+	}
+	return maxHeight;
 }

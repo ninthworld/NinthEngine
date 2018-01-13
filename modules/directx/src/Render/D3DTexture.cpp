@@ -31,12 +31,12 @@ D3DTexture::D3DTexture(
 	textureDesc.Width = m_width;
 	textureDesc.Height = m_height;
 	textureDesc.ArraySize = 1;
-	textureDesc.Format = m_dxFormat;
+	textureDesc.Format = (texture.format & FORMAT_DEPTH ? DXGI_FORMAT_R24G8_TYPELESS : m_dxFormat);
 	textureDesc.SampleDesc.Count = pow(2, m_msCount);
-	textureDesc.BindFlags = 
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE |
 		(texture.format & FORMAT_DEPTH ? 
 			D3D11_BIND_DEPTH_STENCIL :
-			D3D11_BIND_SHADER_RESOURCE | 
+			//D3D11_BIND_SHADER_RESOURCE | 
 				(m_dxDefault ? D3D11_BIND_RENDER_TARGET : 0));
 	textureDesc.Usage = (m_dxDefault ? D3D11_USAGE_DEFAULT : D3D11_USAGE_DYNAMIC);
 	textureDesc.CPUAccessFlags = (m_dxDefault ? 0 : D3D11_CPU_ACCESS_WRITE);
@@ -46,11 +46,11 @@ D3DTexture::D3DTexture(
 	hr = device->CreateTexture2D(&textureDesc, NULL, &m_texture);
 	CHECK_ERROR(hr, "ID3D11Texture2D");
 
-	if (!(texture.format & FORMAT_DEPTH)) {
+	//if (!(texture.format & FORMAT_DEPTH)) {
 		D3D11_SHADER_RESOURCE_VIEW_DESC shaderRVDesc;
 		ZeroMemory(&shaderRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 
-		shaderRVDesc.Format = textureDesc.Format;
+		shaderRVDesc.Format = (texture.format & FORMAT_DEPTH ? DXGI_FORMAT_R24_UNORM_X8_TYPELESS : textureDesc.Format);
 		shaderRVDesc.Texture2D.MostDetailedMip = 0;
 		shaderRVDesc.Texture2D.MipLevels = (m_mmLevels ? -1 : textureDesc.MipLevels);
 		shaderRVDesc.ViewDimension = (m_msCount ?
@@ -59,7 +59,7 @@ D3DTexture::D3DTexture(
 
 		hr = device->CreateShaderResourceView(m_texture.Get(), &shaderRVDesc, &m_shaderRV);
 		CHECK_ERROR(hr, "ID3D11ShaderResourceView");
-	}
+	//}
 }
 
 D3DTexture::~D3DTexture() {

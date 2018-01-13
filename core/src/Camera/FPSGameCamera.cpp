@@ -74,26 +74,17 @@ void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const doub
 void FPSGameCamera::setProjMatrix(const int width, const int height) {
 	float w = std::max<float>(width, 1);
 	float h = std::max<float>(height, 1);
-	float wDivH = w / h;
+	float aspect = w / h;
 
-	m_projMatrix = glm::perspective(getSettings().FOV, wDivH, getSettings().zNear, getSettings().zFar);
+	m_projMatrix = glm::perspective(getSettings().FOV, aspect, getSettings().zNear, getSettings().zFar);
 
-	float tanFov = tan((getSettings().FOV / 2.0f) * PI / 180.0);
+	m_dataProj.projMatrix = m_projMatrix;
+	m_dataProj.invProjMatrix = glm::mat4(
+		1 / m_projMatrix[0][0], 0, 0, 0,
+		0, 1 / m_projMatrix[1][1], 0, 0,
+		0, 0, 0, 1 / m_projMatrix[3][2],
+		0, 0, 1 / m_projMatrix[2][3], -m_projMatrix[2][2] / (m_projMatrix[2][3] * m_projMatrix[3][2]));
 
-	for (unsigned i = 0; i < 6; ++i) {
-
-		float inv = (i % 2 ? -1 : 1);
-		int half = floor(i / 2);
-
-		m_frustumPlanes[i] = glm::normalize(glm::vec4(
-			m_projMatrix[3][0] + inv * m_projMatrix[half][0] * (i < 2 ? tanFov * wDivH : 1),
-			m_projMatrix[3][1] + inv * m_projMatrix[half][1] * (i >= 2 && i < 4 ? tanFov : 1),
-			m_projMatrix[3][2] + inv * m_projMatrix[half][2],
-			m_projMatrix[3][3] + inv * m_projMatrix[half][3]));
-
-		m_data.frustumPlanes[i] = m_frustumPlanes[i];
-	}
-	
 	setViewMatrix();
 }
 
@@ -102,16 +93,30 @@ void FPSGameCamera::setViewMatrix() {
 	m_viewMatrix = glm::rotate(m_viewMatrix, m_rotation.y, glm::vec3(0, 1, 0));
 	m_viewMatrix = glm::rotate(m_viewMatrix, m_rotation.z, glm::vec3(0, 0, 1));
 	m_viewMatrix = glm::translate(m_viewMatrix, -m_position);
-
 	m_data.viewMatrix = m_viewMatrix;
-	
+
 	setViewProjMatrix();
+}
+
+void FPSGameCamera::setViewMatrix(const glm::mat4 view) {
+	m_viewMatrix = view;
+	m_data.viewMatrix = m_viewMatrix;
 }
 
 void FPSGameCamera::setViewProjMatrix() {
 	m_viewProjMatrix = m_projMatrix * m_viewMatrix;
 	m_data.viewProjMatrix = m_viewProjMatrix;
 
+	glm::mat4 tViewProjMatrix = glm::transpose(m_viewProjMatrix);
+	for (unsigned i = 0; i < 3; ++i) {
+		m_frustumPlanes[i * 2] = glm::normalize(tViewProjMatrix[i] + tViewProjMatrix[3]);
+		m_frustumPlanes[i * 2 + 1] = glm::normalize(-tViewProjMatrix[i] + tViewProjMatrix[3]);
+	}
+}
+
+void FPSGameCamera::setViewProjMatrix(const glm::mat4 viewProj) {
+	m_viewProjMatrix = viewProj;
+	m_data.viewProjMatrix = m_viewProjMatrix;
 }
 
 void FPSGameCamera::mouseMoveCallback(const std::shared_ptr<GameWindow>& window, int x, int y) {
@@ -138,7 +143,6 @@ void FPSGameCamera::mouseButtonCallback(const std::shared_ptr<GameWindow>& windo
 }
 
 void FPSGameCamera::keyCallback(Key key, KeyState state) {
-	
 }
 
 } // namespace NinthEngine

@@ -37,7 +37,7 @@ float tessLevel(int _lod) {
 }
 
 HullPatchOut mainPatch(
-	InputPatch<VertexOut, 16> IN, 
+	InputPatch<VertexOut, 4> IN, 
 	uint id : SV_PrimitiveID) {
 	HullPatchOut OUT;
 
@@ -57,10 +57,10 @@ HullPatchOut mainPatch(
 [domain("quad")]
 [partitioning("integer")]
 [outputtopology("triangle_cw")]
-[outputcontrolpoints(16)]
+[outputcontrolpoints(4)]
 [patchconstantfunc("mainPatch")]
 HullOut main(
-	InputPatch<VertexOut, 16> IN, 
+	InputPatch<VertexOut, 4> IN, 
 	uint id : SV_OutputControlPointID, 
 	uint patchId : SV_PrimitiveID) {
 	HullOut OUT;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "..\Utils\MathUtils.hpp"
 #include "Builder\TextureBuilder.hpp"
 #include "Sampler.hpp"
 

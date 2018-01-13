@@ -31,14 +31,17 @@
     <Filter Include="Resource Files\skydome\hlsl">
       <UniqueIdentifier>{ec70e86b-f9af-40e7-851e-ad6efb64bb8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\lighting">
-      <UniqueIdentifier>{cacd8298-2e4a-4148-9c6e-aa1f5eaab9d9}</UniqueIdentifier>
+    <Filter Include="Resource Files\fx">
+      <UniqueIdentifier>{af2a4187-1519-4710-bded-97e3df9ac2ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\lighting\glsl">
-      <UniqueIdentifier>{6a905247-5af7-401c-920c-87b927970abf}</UniqueIdentifier>
+    <Filter Include="Resource Files\fx\lighting">
+      <UniqueIdentifier>{0e66797c-0c19-4395-819f-d27a358d7be6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\lighting\hlsl">
-      <UniqueIdentifier>{32a672c4-29ab-4a2c-8aff-a426a6e6b23c}</UniqueIdentifier>
+    <Filter Include="Resource Files\fx\blur">
+      <UniqueIdentifier>{9472077d-10bf-47e6-9b5e-35b522fdfe97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\ssao">
+      <UniqueIdentifier>{2f6df28c-54fa-4a73-935f-1c47c73b7689}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,11 +97,17 @@
     <FxCompile Include="res\terrain\shader\terrain.gs.hlsl">
       <Filter>Resource Files\terrain\hlsl</Filter>
     </FxCompile>
-    <FxCompile Include="res\lighting\lighting.ps.hlsl">
-      <Filter>Resource Files\lighting\hlsl</Filter>
+    <FxCompile Include="res\fx\blur\blur.ps.hlsl">
+      <Filter>Resource Files\fx\blur</Filter>
     </FxCompile>
-    <FxCompile Include="res\lighting\lighting.vs.hlsl">
-      <Filter>Resource Files\lighting\hlsl</Filter>
+    <FxCompile Include="res\fx\lighting\lighting.ps.hlsl">
+      <Filter>Resource Files\fx\lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="res\fx\fx.vs.hlsl">
+      <Filter>Resource Files\fx</Filter>
+    </FxCompile>
+    <FxCompile Include="res\fx\ssao\ssao.ps.hlsl">
+      <Filter>Resource Files\fx\ssao</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -123,11 +132,17 @@
     <None Include="res\terrain\shader\terrain.vs.glsl">
       <Filter>Resource Files\terrain\glsl</Filter>
     </None>
-    <None Include="res\lighting\lighting.ps.glsl">
-      <Filter>Resource Files\lighting\glsl</Filter>
+    <None Include="res\fx\blur\blur.ps.glsl">
+      <Filter>Resource Files\fx\blur</Filter>
     </None>
-    <None Include="res\lighting\lighting.vs.glsl">
-      <Filter>Resource Files\lighting\glsl</Filter>
+    <None Include="res\fx\lighting\lighting.ps.glsl">
+      <Filter>Resource Files\fx\lighting</Filter>
+    </None>
+    <None Include="res\fx\fx.vs.glsl">
+      <Filter>Resource Files\fx</Filter>
+    </None>
+    <None Include="res\fx\ssao\ssao.ps.glsl">
+      <Filter>Resource Files\fx\ssao</Filter>
     </None>
   </ItemGroup>
 </Project>

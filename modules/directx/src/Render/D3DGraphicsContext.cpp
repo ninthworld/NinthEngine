@@ -151,9 +151,11 @@ void D3DGraphicsContext::clear(const std::shared_ptr<RenderTarget>& renderTarget
 
 	auto d3dRenderTarget = std::dynamic_pointer_cast<D3DRenderTarget>(renderTarget);
 
-	m_deviceContext->ClearDepthStencilView(
-		d3dRenderTarget->getDepthStencilView().Get(),
-		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	if (d3dRenderTarget->getDepthStencilView()) {
+		m_deviceContext->ClearDepthStencilView(
+			d3dRenderTarget->getDepthStencilView().Get(),
+			D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	}
 
 	for (unsigned i = 0; i < d3dRenderTarget->getTextureCount(); ++i) {
 		m_deviceContext->ClearRenderTargetView(
@@ -181,20 +183,22 @@ void D3DGraphicsContext::resolveToBackBuffer(const unsigned index, const std::sh
 }
 
 void D3DGraphicsContext::resolve(
-	const unsigned indexFrom, const std::shared_ptr<RenderTarget>& renderTargetFrom,
-	const unsigned indexTo, const std::shared_ptr<RenderTarget>& renderTargetTo) {
+	const std::shared_ptr<RenderTarget>& renderTargetFrom, 
+	const std::shared_ptr<RenderTarget>& renderTargetTo) {
 
-	auto d3dTextureFrom = std::dynamic_pointer_cast<D3DTexture>(renderTargetFrom->getTexture(indexFrom));
-	auto d3dTextureTo = std::dynamic_pointer_cast<D3DTexture>(renderTargetTo->getTexture(indexTo));
+	for (unsigned i = 0; i < std::min(renderTargetFrom->getTextureCount(), renderTargetTo->getTextureCount()); ++i) {
+		auto d3dTextureFrom = std::dynamic_pointer_cast<D3DTexture>(renderTargetFrom->getTexture(i));
+		auto d3dTextureTo = std::dynamic_pointer_cast<D3DTexture>(renderTargetTo->getTexture(i));
 
-	if (d3dTextureFrom->getMultisampleCount()) {
-		m_deviceContext->ResolveSubresource(
-			d3dTextureTo->getTexture().Get(), 0, 
-			d3dTextureFrom->getTexture().Get(), 0, 
-			d3dTextureTo->getDXFormat());
-	}
-	else {
-		m_deviceContext->CopyResource(d3dTextureTo->getTexture().Get(), d3dTextureFrom->getTexture().Get());
+		if (d3dTextureFrom->getMultisampleCount()) {
+			m_deviceContext->ResolveSubresource(
+				d3dTextureTo->getTexture().Get(), 0,
+				d3dTextureFrom->getTexture().Get(), 0,
+				d3dTextureTo->getDXFormat());
+		}
+		else {
+			m_deviceContext->CopyResource(d3dTextureTo->getTexture().Get(), d3dTextureFrom->getTexture().Get());
+		}
 	}
 }
 

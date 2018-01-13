@@ -28,9 +28,7 @@ public:
 
 	void clear(const std::shared_ptr<RenderTarget>& renderTarget) override;
 	void resolveToBackBuffer(const unsigned index, const std::shared_ptr<RenderTarget>& renderTarget) override;
-	void resolve(
-		const unsigned indexFrom, const std::shared_ptr<RenderTarget>& renderTargetFrom,
-		const unsigned indexTo, const std::shared_ptr<RenderTarget>& renderTargetTo) override;
+	void resolve(const std::shared_ptr<RenderTarget>& renderTargetFrom, const std::shared_ptr<RenderTarget>& renderTargetTo) override;
 
 	void bind(const std::shared_ptr<Shader>& shader) override;
 	void bind(const std::shared_ptr<Rasterizer>& rasterizer) override;

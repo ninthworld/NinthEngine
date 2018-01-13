@@ -9,7 +9,11 @@ struct Camera {
 	glm::mat4 viewMatrix;
 	glm::mat4 viewProjMatrix;
 	glm::vec4 position;
-	glm::vec4 frustumPlanes[6];
+};
+
+struct CameraProj {
+	glm::mat4 projMatrix;
+	glm::mat4 invProjMatrix;
 };
 
 struct GameCameraSettings {
@@ -36,15 +40,19 @@ public:
 	virtual const glm::mat4 getProjMatrix() const = 0;
 	virtual const glm::mat4 getViewMatrix() const = 0;
 	virtual const glm::mat4 getViewProjMatrix() const = 0;
+	virtual const glm::vec4* getViewFrustum() const = 0;
 
 	virtual void setSettings(GameCameraSettings) = 0;
 	virtual void setPosition(const glm::vec3) = 0;
 	virtual void setRotation(const glm::vec3) = 0;
 	virtual void setProjMatrix(const int width, const int height) = 0;
 	virtual void setViewMatrix() = 0;
+	virtual void setViewMatrix(const glm::mat4 view) = 0;
 	virtual void setViewProjMatrix() = 0;
+	virtual void setViewProjMatrix(const glm::mat4 viewProj) = 0;
 
 	virtual Camera data() = 0;
+	virtual CameraProj dataProj() = 0;
 
 };
 

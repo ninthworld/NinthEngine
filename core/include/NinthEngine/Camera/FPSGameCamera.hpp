@@ -31,6 +31,7 @@ public:
 	const glm::mat4 getProjMatrix() const override { return m_projMatrix; };
 	const glm::mat4 getViewMatrix() const override { return m_viewMatrix; };
 	const glm::mat4 getViewProjMatrix() const override { return m_viewProjMatrix; };
+	const glm::vec4* getViewFrustum() const override { return m_frustumPlanes; };
 
 	void setSettings(GameCameraSettings settings) override { m_settings.FOV = settings.FOV; m_settings.zFar = settings.zFar; m_settings.zNear = settings.zNear; };
 	void setFPSSettings(FPSGameCameraSettings settings) { m_settings = settings; };
@@ -38,13 +39,16 @@ public:
 	void setRotation(const glm::vec3 rotation) override { m_rotation = rotation; };
 	void setProjMatrix(const int width, const int height) override;
 	void setViewMatrix() override;
+	void setViewMatrix(const glm::mat4 view) override;
 	void setViewProjMatrix() override;
+	void setViewProjMatrix(const glm::mat4 viewProj) override;
 
 	void mouseMoveCallback(const std::shared_ptr<GameWindow>& window, int x, int y);
 	void mouseButtonCallback(const std::shared_ptr<GameWindow>& window, MouseButton button, MouseState state);
 	void keyCallback(Key key, KeyState state);
 
 	Camera data() override { return m_data; };
+	CameraProj dataProj() override { return m_dataProj; };
 
 protected:
 private:
@@ -54,6 +58,7 @@ private:
 	glm::vec3 m_rotation;
 
 	Camera m_data;
+	CameraProj m_dataProj;
 	glm::mat4 m_projMatrix;
 	glm::mat4 m_viewMatrix;
 	glm::mat4 m_viewProjMatrix;

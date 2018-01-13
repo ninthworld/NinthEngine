@@ -31,14 +31,14 @@ Texture2D heightmap : register(t0);
 DomainOut main(
 	HullPatchOut PATCH,
 	float2 UV : SV_DomainLocation,
-	const OutputPatch<HullOut, 16> IN) {
+	const OutputPatch<HullOut, 4> IN) {
 	DomainOut OUT;
 
-	float2 posTopMid = lerp(IN[0].svPosition.xz, IN[3].svPosition.xz, UV.x);
-	float2 posBotMid = lerp(IN[12].svPosition.xz, IN[15].svPosition.xz, UV.x);
+	float2 posTopMid = lerp(IN[0].svPosition.xz, IN[1].svPosition.xz, UV.x);
+	float2 posBotMid = lerp(IN[2].svPosition.xz, IN[3].svPosition.xz, UV.x);
 
-	float2 texCoordTopMid = lerp(IN[0].texCoord, IN[3].texCoord, UV.x);
-	float2 texCoordBotMid = lerp(IN[12].texCoord, IN[15].texCoord, UV.x);
+	float2 texCoordTopMid = lerp(IN[0].texCoord, IN[1].texCoord, UV.x);
+	float2 texCoordBotMid = lerp(IN[2].texCoord, IN[3].texCoord, UV.x);
 
 	float2 pos = lerp(posBotMid, posTopMid, UV.y);
 	float4 position = float4(pos.x, 0, pos.y, 1);

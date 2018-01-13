@@ -23,7 +23,13 @@ D3DRenderTarget::D3DRenderTarget(
 	}
 
 	if (m_depthTexture) {
-		hr = device->CreateDepthStencilView(m_depthTexture->getTexture().Get(), nullptr, &m_depthStencilView);
+		D3D11_DEPTH_STENCIL_VIEW_DESC depthDesc;
+		depthDesc.Flags = 0;
+		depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthDesc.ViewDimension = (m_depthTexture->getMultisampleCount() ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D);
+		depthDesc.Texture2D.MipSlice = 0;
+
+		hr = device->CreateDepthStencilView(m_depthTexture->getTexture().Get(), &depthDesc, &m_depthStencilView);
 		CHECK_ERROR(hr, "ID3D11DepthStencilView");
 	}
 }

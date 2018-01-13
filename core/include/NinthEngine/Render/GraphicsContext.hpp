@@ -41,9 +41,7 @@ public:
 
 	virtual void clear(const std::shared_ptr<RenderTarget>& renderTarget) = 0;
 	virtual void resolveToBackBuffer(const unsigned index, const std::shared_ptr<RenderTarget>& renderTarget) = 0;
-	virtual void resolve(
-		const unsigned indexFrom, const std::shared_ptr<RenderTarget>& renderTargetFrom,
-		const unsigned indexTo, const std::shared_ptr<RenderTarget>& renderTargetTo) = 0;
+	virtual void resolve(const std::shared_ptr<RenderTarget>& renderTargetFrom, const std::shared_ptr<RenderTarget>& renderTargetTo) = 0;
 
 	virtual void bind(const std::shared_ptr<Shader>& shader) = 0;
 	virtual void bind(const std::shared_ptr<Rasterizer>& rasterizer) = 0;

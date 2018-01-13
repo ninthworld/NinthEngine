@@ -8,6 +8,7 @@
 TerrainNode::TerrainNode(
 	const std::shared_ptr<Terrain>& root,
 	const std::shared_ptr<GraphicsContext>& context,
+	const std::shared_ptr<GameCamera>& camera,
 	const std::shared_ptr<VertexArray>& vertexArray,
 	const std::shared_ptr<Buffer>& constantNode,
 	const glm::vec2 location,
@@ -15,6 +16,7 @@ TerrainNode::TerrainNode(
 	const glm::vec2 index)
 	: m_root(root)
 	, m_context(context)
+	, m_camera(camera)
 	, m_vertexArray(vertexArray)
 	, m_constantNode(constantNode)
 	, m_location(location)
@@ -24,12 +26,21 @@ TerrainNode::TerrainNode(
 	, m_localMatrix(glm::mat4(1))
 	, m_worldPos(glm::vec3(0))
 	, m_neighbors(std::vector<bool>(4, false))
+	, m_bounds(AABB{ glm::vec3(0), glm::vec3(0) })
 	, m_leaf(true) {
 	
 	m_size = 1.0f / ((float)rootPatches * pow(2.0f, (float)m_lod));
 
 	glm::vec2 pos = (location + m_size / 2.0f) * scaleXZ - scaleXZ / 2.0f;
 	m_worldPos = glm::vec3(pos.x, 0.0f, pos.y);
+
+	glm::vec2 pos0 = location * scaleXZ - scaleXZ / 2.0f;
+	glm::vec2 pos1 = (location + m_size) * scaleXZ - scaleXZ / 2.0f;
+
+	m_bounds = AABB{
+		glm::vec3(pos0.x, 0, pos0.y),
+		glm::vec3(pos1.x, root->getMaxHeightAt(m_location, m_location + glm::vec2(m_size)) * 1.75f, pos1.y)
+	};
 
 	m_localMatrix = glm::translate(m_localMatrix, glm::vec3(m_location.x, 0.0f, m_location.y));
 	m_localMatrix = glm::scale(m_localMatrix, glm::vec3(m_size, 0.0f, m_size));
@@ -38,13 +49,18 @@ TerrainNode::TerrainNode(
 TerrainNode::~TerrainNode() {
 }
 
-void TerrainNode::update(const glm::vec3 cameraPos) {
+void TerrainNode::update() {
 
 	for (unsigned i = 0; i < m_children.size(); ++i) {
-		m_children[i]->update(cameraPos);
+		m_children[i]->update();
 	}
 
-	float distance = glm::length(glm::vec3(cameraPos.x, 0, cameraPos.z) - m_worldPos);
+	glm::vec3 camPos = m_camera->getPosition();
+	if (camPos.y > m_bounds.max.y) camPos.y -= m_bounds.max.y;
+	else camPos.y = 0;
+
+	float distance = glm::length(camPos - m_worldPos);
+
 	if (distance < lodRange[m_lod]) {
 		m_leaf = false;
 		if (!m_children.size()) {
@@ -54,6 +70,7 @@ void TerrainNode::update(const glm::vec3 cameraPos) {
 						std::make_unique<TerrainNode>(
 							m_root,
 							m_context,
+							m_camera,
 							m_vertexArray,
 							m_constantNode,
 							m_location + glm::vec2(i * m_size / 2.0f, j * m_size / 2.0f),
@@ -91,7 +108,7 @@ void TerrainNode::render() {
 			m_children[i]->render();
 		}
 	}
-	else {
+	else if(isInFrustum(m_bounds, m_camera->getViewFrustum())) {
 
 		// Update Constants
 		NodeData data{ m_localMatrix, glm::vec4(), m_location, m_index, m_size, m_lod, glm::vec2() };
@@ -101,7 +118,5 @@ void TerrainNode::render() {
 		// Draw Terrain
 		m_context->bind(m_vertexArray);
 		m_context->draw(patchSize);
-
-		//m_context->unbind(m_vertexArray);
 	}
 }

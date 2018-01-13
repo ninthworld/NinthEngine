@@ -3,7 +3,7 @@
 #include <memory>
 #include <NinthEngine\Application\Game.hpp>
 
-const static int patchSize = 16;
+const static int patchSize = 4;
 const static int rootPatches = 8;
 const static float scaleXZ = 6000.0f;
 const static float scaleY = 400.0f;
@@ -64,6 +64,8 @@ public:
 	void render();
 
 	const int getLodAt(const glm::vec2 pos);
+	const float getHeightAt(const glm::vec2 pos);
+	const float getMaxHeightAt(const glm::vec2 pos0, const glm::vec2 pos1);
 
 private:
 	std::shared_ptr<GraphicsContext> m_context;
@@ -97,4 +99,7 @@ private:
 	// Terrain Root Nodes
 	std::vector<std::unique_ptr<TerrainNode>> m_rootNodes;
 
+	// Terrain Height Data
+	int m_heightWidth, m_heightHeight;
+	float* m_heightData;
 };

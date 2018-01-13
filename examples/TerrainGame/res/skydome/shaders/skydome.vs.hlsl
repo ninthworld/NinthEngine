@@ -15,7 +15,6 @@ cbuffer Camera : register(b0) {
 	float4x4 viewMatrix;
 	float4x4 viewProjMatrix;
 	float4 camPosition;
-	float4 frustumPlanes[6];
 };
 
 cbuffer Skydome : register(b1) {

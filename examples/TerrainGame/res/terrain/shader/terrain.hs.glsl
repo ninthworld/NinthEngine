@@ -1,6 +1,6 @@
 #version 400
 
-layout(vertices=16) out;
+layout(vertices=4) out;
 
 in vec2 vs_texCoord[];
 

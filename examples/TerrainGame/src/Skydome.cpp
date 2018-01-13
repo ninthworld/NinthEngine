@@ -113,7 +113,7 @@ Skydome::~Skydome() {
 }
 
 void Skydome::render() {
-	
+
 	// Bind Shader
 	m_context->bind(m_shader);
 
@@ -130,18 +130,4 @@ void Skydome::render() {
 	// Draw Skydome
 	m_context->bind(m_vertexArray);
 	m_context->drawIndexed(m_indexBuffer);
-
-	// Unbind
-	/*
-	m_context->unbind(m_vertexArray);
-
-	m_context->unbind(m_constantCamera, VERTEX_SHADER);
-	m_context->unbind(m_constantSkydome, VERTEX_SHADER | PIXEL_SHADER);
-
-	m_context->unbind(m_texture, PIXEL_SHADER);
-
-	m_context->unbind(m_sampler, PIXEL_SHADER);
-
-	m_context->unbind(m_shader);
-	*/
 }

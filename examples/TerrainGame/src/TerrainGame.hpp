@@ -31,6 +31,8 @@ private:
 
 	// Camera
 	std::shared_ptr<FPSGameCamera> m_camera;
+	std::shared_ptr<FPSGameCamera> m_cameraDebug;
+	bool m_camDebug = false;
 
 	// Rasterizers
 	std::shared_ptr<Rasterizer> m_rasterizer;
@@ -39,18 +41,30 @@ private:
 
 	// Multisampled Render Target
 	std::shared_ptr<RenderTarget> m_renderTargetMS;
+	std::shared_ptr<Sampler> m_sampler;
 
 	// Deferred Rendering Pipeline
 	std::shared_ptr<VertexArray> m_vertexArrayQuad;
 	std::shared_ptr<Rasterizer> m_rasterizerQuad;
+	
+	// FX - SSAO
+	std::shared_ptr<Texture> m_textureNoise;
+	std::shared_ptr<RenderTarget> m_renderTargetSSAO;
+	std::shared_ptr<Shader> m_shaderSSAO;
 
-	// Deferred - Lighting
+	// FX - Blur
+	std::shared_ptr<RenderTarget> m_renderTargetBlur;
+	std::shared_ptr<Shader> m_shaderBlur;
+
+	// FX - Lighting
 	std::shared_ptr<RenderTarget> m_renderTargetLighting;
-	std::shared_ptr<Sampler> m_samplerLighting;
 	std::shared_ptr<Shader> m_shaderLighting;
 
 	// Constants
 	std::shared_ptr<Buffer> m_constantCamera;
+	std::shared_ptr<Buffer> m_constantWindow;
+	std::shared_ptr<Buffer> m_constantCameraProj;
+	std::shared_ptr<Buffer> m_constantSSAO;
 
 	// Skydome
 	std::unique_ptr<Skydome> m_skydome;
