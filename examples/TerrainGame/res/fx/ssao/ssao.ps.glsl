@@ -34,7 +34,7 @@ vec4 getViewPos(vec2 texCoord) {
 
 	vec2 pos = texCoord * 2.0 - 1.0;
 	
-	float z = texelFetch(depthTexture, ivec2(texCoord * windowSize.xy), 2).r * 2.0 - 1.0;
+	float z = texelFetch(depthTexture, ivec2(texCoord * windowSize.xy), 0).r * 2.0 - 1.0;
 
 	vec4 posProj = vec4(pos, z, 1.0);
 

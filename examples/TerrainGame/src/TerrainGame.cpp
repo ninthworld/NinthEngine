@@ -110,17 +110,16 @@ void TerrainGame::init() {
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())								// Position
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight(), FORMAT_DEPTH_24_STENCIL_8)	// Depth
 		.build();
+	m_renderTargetMS->getDepthTexture()->setSampler(m_sampler);
 
 	m_renderTargetLighting = m_device->createRenderTarget()
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())								// Color
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())								// Normal
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())								// Position
-		.withRenderTarget(m_window->getWidth(), m_window->getHeight(), FORMAT_DEPTH_24_STENCIL_8)	// Depth
 		.build();
 	m_renderTargetLighting->getTexture(0)->setSampler(m_sampler);
 	m_renderTargetLighting->getTexture(1)->setSampler(m_sampler);
 	m_renderTargetLighting->getTexture(2)->setSampler(m_sampler);
-	m_renderTargetMS->getDepthTexture()->setSampler(m_sampler);
 
 	m_renderTargetSSAO = m_device->createRenderTarget()
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())
@@ -131,6 +130,12 @@ void TerrainGame::init() {
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())
 		.build();
 	m_renderTargetBlur->getTexture(0)->setSampler(m_sampler);
+
+	m_renderTargetSkydome = m_device->createRenderTarget()
+		.withRenderTarget(m_window->getWidth(), m_window->getHeight())
+		.build();
+	m_renderTargetSkydome->getTexture(0)->setSampler(m_sampler);
+
 
 	// Initialize Shaders
 	m_shaderLighting = m_device->createShader()
@@ -218,7 +223,9 @@ void TerrainGame::init() {
 	m_shaderLighting->bind(0, "colorTexture", m_renderTargetLighting->getTexture(0));
 	m_shaderLighting->bind(1, "normalTexture", m_renderTargetLighting->getTexture(1));
 	m_shaderLighting->bind(2, "positionTexture", m_renderTargetLighting->getTexture(2));
-	m_shaderLighting->bind(3, "ssaoTexture", m_renderTargetBlur->getTexture(0));
+	m_shaderLighting->bind(3, "depthTexture", m_renderTargetMS->getDepthTexture());
+	m_shaderLighting->bind(4, "ssaoTexture", m_renderTargetBlur->getTexture(0));
+	m_shaderLighting->bind(5, "skydomeTexture", m_renderTargetSkydome->getTexture(0));
 	
 	// Initialize Skydome
 	m_skydome = std::make_unique<Skydome>(m_device, m_context, m_camera, m_constantCamera);
@@ -259,13 +266,16 @@ void TerrainGame::render() {
 	if (!m_wireframe) m_context->bind(m_rasterizer);
 	else m_context->bind(m_rasterizerWireframe);
 
-	// Bind Multisampled Render Target
-	m_context->bind(m_renderTargetMS);
-	m_context->clear(m_renderTargetMS);
+	m_context->bind(m_renderTargetSkydome);
+	m_context->clear(m_renderTargetSkydome);
 
 	// Render Skydome
 	m_skydome->render();
 
+	// Bind Multisampled Render Target
+	m_context->bind(m_renderTargetMS);
+	m_context->clear(m_renderTargetMS);
+	
 	// Render Terrain
 	m_terrain->render();
 
@@ -299,9 +309,10 @@ void TerrainGame::render() {
 	// Bind Back Buffer
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
-	
+
 	m_context->bind(m_shaderLighting);
 	m_context->bind(m_vertexArrayQuad);
 	m_context->draw(6, 0);
 	m_context->unbind(m_shaderLighting);
+
 }

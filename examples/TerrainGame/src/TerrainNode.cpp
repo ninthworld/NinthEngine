@@ -39,7 +39,7 @@ TerrainNode::TerrainNode(
 
 	m_bounds = AABB{
 		glm::vec3(pos0.x, 0, pos0.y),
-		glm::vec3(pos1.x, root->getMaxHeightAt(m_location, m_location + glm::vec2(m_size)) * 1.75f, pos1.y)
+		glm::vec3(pos1.x, root->getMaxHeightAt(m_location, m_location + glm::vec2(m_size)) * 2.0f, pos1.y)
 	};
 
 	m_localMatrix = glm::translate(m_localMatrix, glm::vec3(m_location.x, 0.0f, m_location.y));

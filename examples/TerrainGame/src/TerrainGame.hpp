@@ -68,6 +68,7 @@ private:
 
 	// Skydome
 	std::unique_ptr<Skydome> m_skydome;
+	std::shared_ptr<RenderTarget> m_renderTargetSkydome;
 
 	// Terrain
 	std::shared_ptr<Terrain> m_terrain;
