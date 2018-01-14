@@ -2,12 +2,13 @@
 
 #ifdef _WIN32
 
+#include <NinthEngine\Render\ConstantBuffer.hpp>
 #include "D3DBuffer.hpp"
 
 namespace NinthEngine {
 namespace DX {
 
-class D3DConstantBuffer : public D3DBuffer {
+class D3DConstantBuffer : public ConstantBuffer, public D3DBuffer {
 public:
 	D3DConstantBuffer(
 		const ComPtr<ID3D11Device>& device,
@@ -15,25 +16,22 @@ public:
 		const unsigned unitCount, void* data);
 	~D3DConstantBuffer();
 
-	void setBinding(const unsigned binding) override { m_binding = binding; };
-
-	const unsigned getBinding() const override { return m_binding; };
+	// Buffer
 	const unsigned getUnitSize() const override { return m_unitSize; };
 	const unsigned getUnitCount() const override { return m_unitCount; };
-
-	const BufferType getBufferType() const override { return CONSTANT; };
-
-	ComPtr<ID3D11Buffer> getBuffer() override { return m_buffer; };
-
+	const LayoutConfig getLayout() const override { return m_layout; };
+	
+	// D3DBuffer
+	ComPtr<ID3D11Buffer> getBufferPtr() override { return m_bufferPtr; };
 	void setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void* data) override;
 
 private:
-	ComPtr<ID3D11Buffer> m_buffer;
+	ComPtr<ID3D11Buffer> m_bufferPtr;
 
-	unsigned m_binding;
 	unsigned m_unitSize;
 	unsigned m_unitCount;
-
+	LayoutConfig m_layout;
+	
 };
 
 } // namespace DX

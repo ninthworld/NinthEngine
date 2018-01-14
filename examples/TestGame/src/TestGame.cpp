@@ -40,13 +40,7 @@ void TestGame::init() {
 
 	// Set Backbuffer Clear Color
 	m_context->setClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
-
-	// Render Pass
-	m_renderPass = m_device->createRenderPass()
-		.withRenderTarget(m_window->getWidth(), m_window->getHeight(), FORMAT_R8G8B8A8_UNORM)
-		.withDepthBuffer(m_window->getWidth(), m_window->getHeight(), DEPTH_24_STENCIL_8, 2)
-		.build();
-
+	
 	// Initialize Rasterizers
 	m_rasterizer = m_device->createRasterizer()
 		.withFill()
@@ -55,13 +49,13 @@ void TestGame::init() {
 		.withCull()
 		.withFrontCCW()
 		.build();
+	m_context->bind(m_rasterizer);
 	
 	// Initialize Constant Buffers
 	m_constantCamera = m_device->createConstantBuffer()
 		.withLayout(LayoutConfig().float4x4().float4x4().float4())
 		.withData(&m_camera->data())
 		.build();
-	m_constantCamera->setBinding(0);
 
 	// Initialize Model Data
 	auto inputLayout = LayoutConfig().float3(POSITION).float3(COLOR);
@@ -88,7 +82,7 @@ void TestGame::init() {
 	};
 
 	// Initialize Vertex Buffer
-	m_vertexBuffer = m_device->createVertexBuffer()
+	std::shared_ptr<VertexBuffer> vertexBuffer = m_device->createVertexBuffer()
 		.withLayout(inputLayout)
 		.withData(vertices.size(), vertices.data())
 		.build();
@@ -101,7 +95,14 @@ void TestGame::init() {
 
 	// Initialize Vertex Array
 	m_vertexArray = m_device->createVertexArray();
-	m_vertexArray->addVertexBuffer(m_vertexBuffer);
+	m_vertexArray->bind(vertexBuffer);
+
+	// Initialize Render Targets
+	m_renderTargetMS = m_device->createRenderTarget()
+		.withMultisampling(2)
+		.withRenderTarget(m_window->getWidth(), m_window->getHeight())								// Color
+		.withRenderTarget(m_window->getWidth(), m_window->getHeight(), FORMAT_DEPTH_24_STENCIL_8)	// Depth
+		.build();
 
 	// Initialize Shader
 	m_shader = m_device->createShader()
@@ -111,44 +112,37 @@ void TestGame::init() {
 		.withHLSL<VERTEX_SHADER>("res/cube.vs.hlsl", "main")
 		.withHLSL<PIXEL_SHADER>("res/cube.ps.hlsl", "main")
 		.build();
-	m_shader->bindConstant("Camera", m_constantCamera);
-	
-	m_context->bind(m_rasterizer);
+
+	// Bind Constants to Shader
+	m_shader->bind(0, "Camera", m_constantCamera);
 }
 
 void TestGame::update(const double deltaTime) {
 
 	// Update Camera
 	m_camera->update(m_window, deltaTime);
+
+	// Update Constant Buffers
+	m_context->setData(m_constantCamera, &m_camera->data());
 }
 
 void TestGame::render() {
 
-	m_context->bindBackBuffer();
-	m_context->clearBackBuffer();
-
-	m_context->bind(m_renderPass);
-	m_context->clear(m_renderPass);
+	// Bind Multisampled Render Target
+	m_context->bind(m_renderTargetMS);
+	m_context->clear(m_renderTargetMS);
 
 	// Bind Shader
 	m_context->bind(m_shader);
 
-	// Bind Constant Buffers
-	m_context->bind(m_constantCamera, VERTEX_SHADER);
-
-	// Update Constant Buffers
-	m_context->setData(m_constantCamera, &m_camera->data());
-
-	// Bind Vertex Array and Draw
+	// Draw Vertex Array
 	m_context->bind(m_vertexArray);
 	m_context->drawIndexed(m_indexBuffer, m_indexBuffer->getUnitCount());
-	m_context->unbind(m_vertexArray);
 
-	// Unbind Constant Buffers
-	m_context->unbind(m_constantCamera, VERTEX_SHADER);
+	// Bind Backbuffer
+	m_context->bindBackBuffer();
+	m_context->clearBackBuffer();
 
-	// Unbind Shader
-	m_context->unbind(m_shader);
-
-	m_context->resolveToBackBuffer(0, m_renderPass);
+	// Resolve Multisampled Scene to Backbuffer
+	m_context->resolveToBackBuffer(0, m_renderTargetMS);
 }

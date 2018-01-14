@@ -4,13 +4,13 @@ struct VertexOut {
 	float4 svPosition : SV_POSITION;
 };
 
-cbuffer Window : register(b1) {
+cbuffer Window : register(b0) {
 	float4 windowSize;
 };
 
 SamplerState texSampler : register(s0);
 
-Texture2D blurTexture : register(t5);
+Texture2D blurTexture : register(t0);
 
 
 float4 main(VertexOut IN) : SV_TARGET {

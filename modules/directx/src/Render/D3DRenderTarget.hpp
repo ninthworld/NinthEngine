@@ -18,10 +18,12 @@ public:
 		const std::shared_ptr<D3DTexture>& depthTexture);
 	~D3DRenderTarget();
 
+	// RenderTarget
 	const unsigned getTextureCount() const override { return m_textures.size(); };
-	std::shared_ptr<Texture> getTexture(const unsigned index) { return m_textures[index]; };
-	std::shared_ptr<Texture> getDepthTexture() { return m_depthTexture; };
+	std::shared_ptr<Texture> getTexture(const unsigned index) override { return m_textures[index]; };
+	std::shared_ptr<Texture> getDepthTexture() override { return m_depthTexture; };
 
+	// Self
 	ComPtr<ID3D11RenderTargetView> getRenderTargetView(const unsigned index) { return m_renderTargetViews[index]; };
 	ComPtr<ID3D11DepthStencilView> getDepthStencilView() { return m_depthStencilView; };
 

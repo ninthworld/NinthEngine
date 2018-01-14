@@ -38,28 +38,23 @@ void GLGraphicsContext::draw(const unsigned vertexCount, const unsigned startInd
 	glDrawArrays(m_glPrimitive, startIndex, vertexCount);
 }
 
-void GLGraphicsContext::drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
+void GLGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
 
 	if (m_primitiveType == PATCHES_TYPE) {
 		glPatchParameteri(GL_PATCH_VERTICES, m_patchSize);
 	}
 
-	if (indexBuffer->getBufferType() == INDEX) {
-		auto glBuffer = std::dynamic_pointer_cast<GLIndexBuffer>(indexBuffer);
+	auto glBuffer = std::dynamic_pointer_cast<GLIndexBuffer>(indexBuffer);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glBuffer->getBuffer());
-		glDrawElements(m_glPrimitive, indexCount, 
-			(glBuffer->getUnitSize() == sizeof(short) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT), 
-			reinterpret_cast<void*>(startIndex));
-		CHECK_ERROR("glDrawElements");
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
-	else {
-		LOG_WARNING << "Cannot drawIndexed with non-Index Buffer.";
-	}
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glBuffer->getBufferId());
+	glDrawElements(m_glPrimitive, indexCount, 
+		(glBuffer->getUnitSize() == sizeof(short) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT), 
+		reinterpret_cast<void*>(startIndex));
+	CHECK_ERROR("glDrawElements");
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void GLGraphicsContext::drawIndexed(const std::shared_ptr<Buffer>& indexBuffer) {
+void GLGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer) {
 	drawIndexed(indexBuffer, indexBuffer->getUnitCount(), 0);
 }
 
@@ -80,8 +75,8 @@ void GLGraphicsContext::bindBackBuffer() {
 void GLGraphicsContext::clear(const std::shared_ptr<RenderTarget>& renderTarget) {
 
 	auto glRenderTarget = std::dynamic_pointer_cast<GLRenderTarget>(renderTarget);
-	if (glRenderTarget->getFramebuffer() != m_boundFBO) {
-		glBindFramebuffer(GL_FRAMEBUFFER, glRenderTarget->getFramebuffer());
+	if (glRenderTarget->getFramebufferId() != m_boundFBO) {
+		glBindFramebuffer(GL_FRAMEBUFFER, glRenderTarget->getFramebufferId());
 		clearBackBuffer();
 		glBindFramebuffer(GL_FRAMEBUFFER, m_boundFBO);
 	}
@@ -94,7 +89,7 @@ void GLGraphicsContext::resolveToBackBuffer(const unsigned index, const std::sha
 	
 	auto glRenderTarget = std::dynamic_pointer_cast<GLRenderTarget>(renderTarget);
 
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, glRenderTarget->getFramebuffer());
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, glRenderTarget->getFramebufferId());
 	glReadBuffer(GL_COLOR_ATTACHMENT0 + index);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	glDrawBuffer(GL_BACK);
@@ -116,9 +111,9 @@ void GLGraphicsContext::resolve(
 	auto glRenderTargetFrom = std::dynamic_pointer_cast<GLRenderTarget>(renderTargetFrom);
 	auto glRenderTargetTo = std::dynamic_pointer_cast<GLRenderTarget>(renderTargetTo);
 	for (unsigned i = 0; i < std::min(renderTargetFrom->getTextureCount(), renderTargetTo->getTextureCount()); ++i) {
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, glRenderTargetFrom->getFramebuffer());
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, glRenderTargetFrom->getFramebufferId());
 		glReadBuffer(GL_COLOR_ATTACHMENT0 + i);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, glRenderTargetTo->getFramebuffer());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, glRenderTargetTo->getFramebufferId());
 		glDrawBuffer(GL_COLOR_ATTACHMENT0 + i);
 
 		auto glTextureFrom = std::dynamic_pointer_cast<GLTexture>(glRenderTargetFrom->getTexture(i));
@@ -134,28 +129,22 @@ void GLGraphicsContext::resolve(
 	glBindFramebuffer(GL_FRAMEBUFFER, m_boundFBO);		
 }
 
-void GLGraphicsContext::bind(const std::shared_ptr<Shader>& shader) {
-
-	auto glShader = std::dynamic_pointer_cast<GLShader>(shader);
-	glUseProgram(glShader->getProgram());
-}
-
 void GLGraphicsContext::bind(const std::shared_ptr<Rasterizer>& rasterizer) {
 
 	auto glRasterizer = std::dynamic_pointer_cast<GLRasterizer>(rasterizer);
 	
-	glPolygonMode(GL_FRONT_AND_BACK, (glRasterizer->getRasterizer().fill == SOLID ? GL_FILL : GL_LINE));
-	glFrontFace((glRasterizer->getRasterizer().frontCCW ? GL_CCW : GL_CW));
+	glPolygonMode(GL_FRONT_AND_BACK, (glRasterizer->getRasterizerStruct().fill == SOLID ? GL_FILL : GL_LINE));
+	glFrontFace((glRasterizer->getRasterizerStruct().frontCCW ? GL_CCW : GL_CW));
 
-	if (glRasterizer->getRasterizer().cull != NONE) {
+	if (glRasterizer->getRasterizerStruct().cull != NONE) {
 		glEnable(GL_CULL_FACE);
-		glCullFace((glRasterizer->getRasterizer().cull == FRONT ? GL_FRONT : GL_BACK));
+		glCullFace((glRasterizer->getRasterizerStruct().cull == FRONT ? GL_FRONT : GL_BACK));
 	}
 	else {
 		glDisable(GL_CULL_FACE);
 	}
 
-	if (glRasterizer->getRasterizer().depthClipping) {
+	if (glRasterizer->getRasterizerStruct().depthClipping) {
 		glEnable(GL_DEPTH_TEST);
 		//glDepthRange(m_config.m_depthBias, m_config.m_depthBiasSlopeScaled * m_config.m_depthBiasClamp);
 	}
@@ -163,21 +152,21 @@ void GLGraphicsContext::bind(const std::shared_ptr<Rasterizer>& rasterizer) {
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	if (glRasterizer->getRasterizer().multisampling) {
+	if (glRasterizer->getRasterizerStruct().multisampling) {
 		glEnable(GL_MULTISAMPLE);
 	}
 	else {
 		glDisable(GL_MULTISAMPLE);
 	}
 
-	if (glRasterizer->getRasterizer().scissoring) {
+	if (glRasterizer->getRasterizerStruct().scissoring) {
 		glEnable(GL_SCISSOR_TEST);
 	}
 	else {
 		glDisable(GL_SCISSOR_TEST);
 	}
 
-	if (glRasterizer->getRasterizer().lineAA) {
+	if (glRasterizer->getRasterizerStruct().lineAA) {
 		glEnable(GL_LINE_SMOOTH);
 		glLineWidth(0.5f);
 	}
@@ -189,84 +178,65 @@ void GLGraphicsContext::bind(const std::shared_ptr<Rasterizer>& rasterizer) {
 void GLGraphicsContext::bind(const std::shared_ptr<RenderTarget>& renderTarget) {
 
 	auto glRenderPass = std::dynamic_pointer_cast<GLRenderTarget>(renderTarget);
-	glBindFramebuffer(GL_FRAMEBUFFER, glRenderPass->getFramebuffer());
-	m_boundFBO = glRenderPass->getFramebuffer();
+	glBindFramebuffer(GL_FRAMEBUFFER, glRenderPass->getFramebufferId());
+	m_boundFBO = glRenderPass->getFramebufferId();
+}
+
+void GLGraphicsContext::bind(const std::shared_ptr<Shader>& shader) {
+
+	auto glShader = std::dynamic_pointer_cast<GLShader>(shader);
+	glUseProgram(glShader->getProgramId());
+
+	auto constants = glShader->getConstants();
+	for (auto it = constants.begin(); it != constants.end(); ++it) {
+		glBindBufferBase(GL_UNIFORM_BUFFER, it->first, it->second);
+	}
+
+	auto textures = glShader->getTextures();
+	for (auto it = textures.begin(); it != textures.end(); ++it) {
+		glActiveTexture(GL_TEXTURE0 + it->first);
+		glBindTexture(
+			(it->second.isMultisampled ? 
+				GL_TEXTURE_2D_MULTISAMPLE : 
+				GL_TEXTURE_2D), 
+			it->second.textureId);
+		glUniform1i(it->second.textureBind, it->first);
+		if (it->second.samplerId) glBindSampler(it->first, it->second.samplerId);
+	}
 }
 
 void GLGraphicsContext::bind(const std::shared_ptr<VertexArray>& vertexArray) {
 
 	auto glVertexArray = std::dynamic_pointer_cast<GLVertexArray>(vertexArray);
-	glBindVertexArray(glVertexArray->getVertexArray());
+	glBindVertexArray(glVertexArray->getVertexArrayId());
 	for (int i = 0; i < glVertexArray->getAttribCount(); ++i) {
 		glEnableVertexAttribArray(i);
 	}
 }
 
-void GLGraphicsContext::bind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType) {
-}
-
-void GLGraphicsContext::bind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType) {
-
-	auto glTexture = std::dynamic_pointer_cast<GLTexture>(texture);
-
-	auto GL_TEX = (glTexture->getMultisampleCount() ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D);
-
-	glActiveTexture(GL_TEXTURE0 + glTexture->getBinding());
-	glBindTexture(GL_TEX, glTexture->getTexture());
-	glUniform1i(glTexture->getGLBinding(), glTexture->getBinding());
-	if (glTexture->getSampler()) glBindSampler(glTexture->getBinding(), glTexture->getSampler());
-}
-
-void GLGraphicsContext::bind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType) {
-
-	auto glBuffer = std::dynamic_pointer_cast<GLBuffer>(buffer);
-	switch (glBuffer->getBufferType()) {
-	case CONSTANT: {
-		glBindBufferBase(GL_UNIFORM_BUFFER, glBuffer->getBinding(), glBuffer->getBuffer());
-	} break;
-	case INDEX: {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glBuffer->getBuffer());
-	} break;
-	case VERTEX: {
-		glBindBuffer(GL_ARRAY_BUFFER, glBuffer->getBuffer());
-	} break;
-	}
-}
-
 void GLGraphicsContext::unbind(const std::shared_ptr<Shader>& shader) {
+
+	auto glShader = std::dynamic_pointer_cast<GLShader>(shader);
 	glUseProgram(0);
+
+	auto constants = glShader->getConstants();
+	for (auto it = constants.begin(); it != constants.end(); ++it) {
+		glBindBufferBase(GL_UNIFORM_BUFFER, it->first, 0);
+	}
+
+	auto textures = glShader->getTextures();
+	for (auto it = textures.begin(); it != textures.end(); ++it) {
+		glBindTexture(
+			(it->second.isMultisampled ?
+				GL_TEXTURE_2D_MULTISAMPLE :
+				GL_TEXTURE_2D),
+			0);
+		if (it->second.samplerId) glBindSampler(it->first, 0);
+	}
 }
 
 void GLGraphicsContext::unbind(const std::shared_ptr<VertexArray>& vertexArray) {
 	glBindVertexArray(0);
-}
-
-void GLGraphicsContext::unbind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType) {
-}
-
-void GLGraphicsContext::unbind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType) {
-
-	auto glTexture = std::dynamic_pointer_cast<GLTexture>(texture);
-
-	auto GL_TEX = (glTexture->getMultisampleCount() ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D);
-
-	if (glTexture->getSampler()) glBindSampler(glTexture->getBinding(), 0);
-	glBindTexture(GL_TEX, 0);
-}
-void GLGraphicsContext::unbind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType) {
-
-	auto glBuffer = std::dynamic_pointer_cast<GLBuffer>(buffer);
-	switch (glBuffer->getBufferType()) {
-	case CONSTANT: {
-		glBindBufferBase(GL_UNIFORM_BUFFER, glBuffer->getBinding(), 0);
-	} break;
-	case INDEX: {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	} break;
-	case VERTEX: {
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	} break;
-	}
 }
 
 void GLGraphicsContext::setData(const std::shared_ptr<Buffer>& buffer, void* data) {

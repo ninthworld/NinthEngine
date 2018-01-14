@@ -15,7 +15,8 @@ public:
 		const RasterizerStruct rasterizer);
 	~D3DRasterizer();
 
-	ComPtr<ID3D11RasterizerState> getRasterizer() { return m_rasterizerState; };
+	// Self
+	ComPtr<ID3D11RasterizerState> getRasterizerState() { return m_rasterizerState; };
 
 private:
 	ComPtr<ID3D11RasterizerState> m_rasterizerState;

@@ -4,7 +4,7 @@
 #include <string>
 #include "Config\LayoutConfig.hpp"
 #include "Config\ShaderConfig.hpp"
-#include "Buffer.hpp"
+#include "ConstantBuffer.hpp"
 #include "Texture.hpp"
 
 namespace NinthEngine {
@@ -17,8 +17,24 @@ public:
 
 	virtual ~Shader() = default;
 	
-	virtual void bindConstant(const std::string name, const std::shared_ptr<Buffer>& buffer) = 0;
-	virtual void bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) = 0;
+	virtual void bind(
+		const unsigned index,
+		const std::string name,
+		const std::shared_ptr<ConstantBuffer>& buffer,
+		const ShaderTypeBit shaderType = VERTEX_SHADER | PIXEL_SHADER) = 0;
+
+	virtual void bind(
+		const unsigned index,
+		const std::string name,
+		const std::shared_ptr<Texture>& texture,
+		const ShaderTypeBit shaderType = PIXEL_SHADER) = 0;
+
+
+	virtual void bind(
+		const unsigned index,
+		const std::string name,
+		const std::shared_ptr<Sampler>& sampler,
+		const ShaderTypeBit shaderType = PIXEL_SHADER) = 0;
 
 };
 

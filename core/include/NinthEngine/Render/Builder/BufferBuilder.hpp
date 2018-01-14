@@ -5,51 +5,136 @@
 #include <functional>
 #include <memory>
 #include "..\Config\LayoutConfig.hpp"
+#include "..\VertexBuffer.hpp"
 
 namespace NinthEngine {
 
-class Buffer;
+// TODO: Use actual OOP on this mess somehow...
 
 class BufferBuilder {
 public:
-	BufferBuilder(const std::function<
-		std::unique_ptr<Buffer>(
-		const LayoutConfig, 
-		const unsigned, void*)>& build)
-		: m_build(build)
-		, m_layout(LayoutConfig())
+	BufferBuilder()
+		: m_layout(LayoutConfig())
 		, m_unitCount(0)
 		, m_data(nullptr) {};
 	~BufferBuilder() {};
 
-	std::unique_ptr<Buffer> build() {
-		return std::move(m_build(m_layout, m_unitCount, m_data));
+protected:
+	LayoutConfig m_layout;
+	unsigned m_unitCount;
+	void* m_data;
+
+};
+
+class VertexBufferBuilder : public BufferBuilder {
+public:
+	VertexBufferBuilder(const std::function<
+		std::unique_ptr<VertexBuffer>(
+			const LayoutConfig,
+			const unsigned, void*)>& build)
+		: m_build(build)
+		, BufferBuilder() {};
+	~VertexBufferBuilder() {};
+
+	std::unique_ptr<VertexBuffer> build() {
+		return std::move(m_build(m_layout, m_unitCount, m_data));		
 	};
 
-	BufferBuilder& withLayout(const LayoutConfig layout) {
+	VertexBufferBuilder& withLayout(const LayoutConfig layout) {
 		m_layout = layout;
 		return *this;
 	};
 
-	BufferBuilder& withData(const unsigned unitCount, void* data) {
+	VertexBufferBuilder& withData(const unsigned unitCount, void* data) {
 		m_unitCount = unitCount;
 		m_data = data;
 		return *this;
 	};
-	
-	BufferBuilder& withData(void* data) {
+
+	VertexBufferBuilder& withData(void* data) {
 		return withData(1, data);
 	};
 
 private:
 	std::function<
-		std::unique_ptr<Buffer>(
-		const LayoutConfig, 
-		const unsigned, void*)> m_build;
+		std::unique_ptr<VertexBuffer>(
+			const LayoutConfig,
+			const unsigned, void*)> m_build;
 
-	LayoutConfig m_layout;
-	unsigned m_unitCount;
-	void* m_data;
+};
+
+class IndexBufferBuilder : public BufferBuilder {
+public:
+	IndexBufferBuilder(const std::function<
+		std::unique_ptr<IndexBuffer>(
+			const LayoutConfig,
+			const unsigned, void*)>& build)
+		: m_build(build)
+		, BufferBuilder() {};
+	~IndexBufferBuilder() {};
+
+	std::unique_ptr<IndexBuffer> build() {
+		return std::move(m_build(m_layout, m_unitCount, m_data));
+	};
+
+	IndexBufferBuilder& withLayout(const LayoutConfig layout) {
+		m_layout = layout;
+		return *this;
+	};
+
+	IndexBufferBuilder& withData(const unsigned unitCount, void* data) {
+		m_unitCount = unitCount;
+		m_data = data;
+		return *this;
+	};
+
+	IndexBufferBuilder& withData(void* data) {
+		return withData(1, data);
+	};
+
+private:
+	std::function<
+		std::unique_ptr<IndexBuffer>(
+			const LayoutConfig,
+			const unsigned, void*)> m_build;
+
+};
+
+class ConstantBufferBuilder : public BufferBuilder {
+public:
+	ConstantBufferBuilder(const std::function<
+		std::unique_ptr<ConstantBuffer>(
+			const LayoutConfig,
+			const unsigned, void*)>& build)
+		: m_build(build)
+		, BufferBuilder() {};
+	~ConstantBufferBuilder() {};
+
+	std::unique_ptr<ConstantBuffer> build() {
+		return std::move(m_build(m_layout, m_unitCount, m_data));
+	};
+
+	ConstantBufferBuilder& withLayout(const LayoutConfig layout) {
+		m_layout = layout;
+		return *this;
+	};
+
+	ConstantBufferBuilder& withData(const unsigned unitCount, void* data) {
+		m_unitCount = unitCount;
+		m_data = data;
+		return *this;
+	};
+
+	ConstantBufferBuilder& withData(void* data) {
+		return withData(1, data);
+	};
+
+private:
+	std::function<
+		std::unique_ptr<ConstantBuffer>(
+			const LayoutConfig,
+			const unsigned, void*)> m_build;
+
 };
 
 } // namespace NinthEngine

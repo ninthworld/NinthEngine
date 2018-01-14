@@ -11,24 +11,24 @@ struct VertexOut {
 	float4 svPosition : SV_POSITION;
 };
 
-cbuffer Window : register(b1) {
+cbuffer Window : register(b0) {
 	float4 windowSize;
 };
 
-cbuffer CameraProj : register(b2) {
+cbuffer CameraProj : register(b1) {
 	float4x4 projMatrix;
 	float4x4 invProjMatrix;
 };
 
-cbuffer SSAO : register(b3) {
+cbuffer SSAO : register(b2) {
 	float4 kernel[32];
 };
 
 SamplerState texSampler : register(s0);
 
-Texture2D normalTexture : register(t1);
-Texture2DMS<float, 4> depthTexture : register(t3);
-Texture2D noiseTexture : register(t4);
+Texture2D normalTexture : register(t0);
+Texture2DMS<float, 4> depthTexture : register(t1);
+Texture2D noiseTexture : register(t2);
 
 float4 getViewPos(float2 texCoord) {
 

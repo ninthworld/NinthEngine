@@ -15,6 +15,7 @@ public:
 	DXRenderEngine();
 	~DXRenderEngine();
 
+	// RenderEngine
 	void init(const std::shared_ptr<GameWindow>& window, void* hwnd = nullptr) override;
 
 	std::unique_ptr<GraphicsDevice> getGraphicsDevice() { return std::move(m_device); };

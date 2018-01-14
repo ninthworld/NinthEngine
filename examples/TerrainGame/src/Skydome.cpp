@@ -4,7 +4,7 @@ Skydome::Skydome(
 	const std::shared_ptr<GraphicsDevice>& device, 
 	const std::shared_ptr<GraphicsContext>& context,
 	const std::shared_ptr<GameCamera>& camera,
-	const std::shared_ptr<Buffer>& constantCamera)
+	const std::shared_ptr<ConstantBuffer>& constantCamera)
 	: m_context(context)
 	, m_camera(camera)
 	, m_constantCamera(constantCamera)
@@ -65,14 +65,26 @@ Skydome::Skydome(
 		.build();
 
 	// Initialize Vertex Buffer
-	m_vertexBuffer = device->createVertexBuffer()
+	std::shared_ptr<VertexBuffer> vertexBuffer = device->createVertexBuffer()
 		.withLayout(inputLayout)
 		.withData(vertices.size(), vertices.data())
 		.build();
 
 	// Initialize Vertex Array Object
 	m_vertexArray = device->createVertexArray();
-	m_vertexArray->addVertexBuffer(m_vertexBuffer);
+	m_vertexArray->bind(vertexBuffer);
+
+	// Initialize Samplers
+	m_sampler = device->createSampler()
+		.withFilter(LINEAR)
+		.withEdge(WRAP)
+		.build();
+
+	// Load Textures
+	m_texture = device->createTexture()
+		.withFile("res/skydome/textures/sky4.jpg")
+		.build();
+	m_texture->setSampler(m_sampler);
 
 	// Load Shader
 	m_shader = device->createShader()
@@ -82,31 +94,22 @@ Skydome::Skydome(
 		.withHLSL<VERTEX_SHADER>("res/skydome/shaders/skydome.vs.hlsl", "main")
 		.withHLSL<PIXEL_SHADER>("res/skydome/shaders/skydome.ps.hlsl", "main")
 		.build();
-	m_shader->bindConstant("Camera", m_constantCamera);
 
 	// Initialize Constants
 	m_constantSkydome = device->createConstantBuffer()
 		.withLayout(LayoutConfig().float4().float4())
 		.withData(&m_skydomeData)
 		.build();
-	m_constantSkydome->setBinding(1);
-	m_shader->bindConstant("Skydome", m_constantSkydome);
 
-	// Initialize Samplers
-	m_sampler = device->createSampler()
-		.withFilter(LINEAR)
-		.withEdge(WRAP)
-		.build();
-	m_sampler->setBinding(0);
+	// Bind Constants to Shader
+	m_shader->bind(0, "Camera", m_constantCamera);
+	m_shader->bind(1, "Skydome", m_constantSkydome);
 
-	// Load Textures
-	m_texture = device->createTexture()
-		.withFile("res/skydome/textures/sky4.jpg")
-		.build();
-	m_texture->setBinding(0);
-	m_texture->setSampler(m_sampler);
-	m_shader->bindTexture("skyTexture", m_texture);
-	
+	// Bind Samplers to Shader
+	m_shader->bind(0, "texSampler", m_sampler);
+
+	// Bind Textures to Shader
+	m_shader->bind(0, "skyTexture", m_texture);
 }
 
 Skydome::~Skydome() {
@@ -117,17 +120,9 @@ void Skydome::render() {
 	// Bind Shader
 	m_context->bind(m_shader);
 
-	// Bind Samplers
-	m_context->bind(m_sampler, PIXEL_SHADER);
-
-	// Bind Textures
-	m_context->bind(m_texture, PIXEL_SHADER);
-
-	// Bind Constant Buffers
-	m_context->bind(m_constantCamera, VERTEX_SHADER);
-	m_context->bind(m_constantSkydome, VERTEX_SHADER | PIXEL_SHADER);
-
 	// Draw Skydome
 	m_context->bind(m_vertexArray);
 	m_context->drawIndexed(m_indexBuffer);
+
+	m_context->unbind(m_shader);
 }

@@ -15,11 +15,8 @@ public:
 
 	virtual ~Texture() = default;
 
-	virtual void setBinding(const unsigned binding) = 0;
 	virtual void setSampler(const std::shared_ptr<Sampler>& sampler) = 0;
-
-	virtual const unsigned getBinding() const = 0;
-
+	
 	virtual const unsigned getWidth() const = 0;
 	virtual const unsigned getHeight() const = 0;
 	virtual const FormatType getFormat() const = 0;

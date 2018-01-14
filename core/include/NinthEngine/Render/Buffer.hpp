@@ -13,13 +13,11 @@ public:
 
 	virtual ~Buffer() = default;
 
-	virtual void setBinding(const unsigned binding) = 0;
-
-	virtual const unsigned getBinding() const = 0;
 	virtual const unsigned getUnitSize() const = 0;
 	virtual const unsigned getUnitCount() const = 0;
-
+	virtual const LayoutConfig getLayout() const = 0;
 	virtual const BufferType getBufferType() const = 0;
+
 };
 
 } // namespace NinthEngine

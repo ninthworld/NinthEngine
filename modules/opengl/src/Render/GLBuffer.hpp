@@ -1,12 +1,11 @@
 #pragma once
 
-#include <NinthEngine\Render\Buffer.hpp>
 #include "..\Utils\GLUtils.hpp"
 
 namespace NinthEngine {
 namespace GL {
 
-class GLBuffer : public Buffer {
+class GLBuffer {
 public:
 	GLBuffer() = default;
 	GLBuffer(const GLBuffer&) = delete;
@@ -14,8 +13,8 @@ public:
 
 	virtual ~GLBuffer() = default;
 
-	virtual const GLuint getBuffer() const = 0;
-
+	// Self
+	virtual const GLuint getBufferId() const = 0;
 	virtual void setData(void* data) = 0;
 
 };

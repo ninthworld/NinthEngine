@@ -17,6 +17,7 @@ public:
 	Win32GLContext(void* handle);
 	~Win32GLContext();
 
+	// GL::GLContext
 	void makeCurrent() override; 
 	void clearCurrent() override;
 	void swapBuffers() override;

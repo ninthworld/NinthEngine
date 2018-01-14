@@ -3,9 +3,9 @@
 namespace NinthEngine {
 
 enum BufferType {
-	INDEX,
-	VERTEX,
-	CONSTANT
+	INDEX_BUFFER,
+	VERTEX_BUFFER,
+	CONSTANT_BUFFER
 };
 
 } // namespace NinthEngine

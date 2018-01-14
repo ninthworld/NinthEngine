@@ -151,8 +151,10 @@
     <ClInclude Include="..\include\NinthEngine\Render\Config\SamplerConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\ShaderConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\TextureConfig.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\ConstantBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsContext.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\GraphicsDevice.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Rasterizer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\RenderEngine.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\RenderTarget.hpp" />
@@ -160,6 +162,7 @@
     <ClInclude Include="..\include\NinthEngine\Render\Shader.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Texture.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\VertexArray.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Utils\FileUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\Utils\MathUtils.hpp" />
   </ItemGroup>

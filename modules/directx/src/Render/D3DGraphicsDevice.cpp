@@ -61,24 +61,24 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 D3DGraphicsDevice:: ~D3DGraphicsDevice() {
 }
 
-BufferBuilder D3DGraphicsDevice::createVertexBuffer() {
-	return BufferBuilder([this](
+VertexBufferBuilder D3DGraphicsDevice::createVertexBuffer() {
+	return VertexBufferBuilder([this](
 		const LayoutConfig layout, 
 		const unsigned unitCount, void* data) {
 		return std::move(std::make_unique<D3DVertexBuffer>(m_device, layout, unitCount, data));
 	});
 }
 
-BufferBuilder D3DGraphicsDevice::createIndexBuffer() {
-	return BufferBuilder([this](
+IndexBufferBuilder D3DGraphicsDevice::createIndexBuffer() {
+	return IndexBufferBuilder([this](
 		const LayoutConfig layout, 
 		const unsigned unitCount, void* data) {
 		return std::move(std::make_unique<D3DIndexBuffer>(m_device, layout, unitCount, data));
 	});
 }
 
-BufferBuilder D3DGraphicsDevice::createConstantBuffer() {
-	return BufferBuilder([this](
+ConstantBufferBuilder D3DGraphicsDevice::createConstantBuffer() {
+	return ConstantBufferBuilder([this](
 		const LayoutConfig layout, 
 		const unsigned unitCount, void* data) {
 		return std::move(std::make_unique<D3DConstantBuffer>(m_device, layout, unitCount, data));

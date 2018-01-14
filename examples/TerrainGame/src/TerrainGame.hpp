@@ -61,10 +61,10 @@ private:
 	std::shared_ptr<Shader> m_shaderLighting;
 
 	// Constants
-	std::shared_ptr<Buffer> m_constantCamera;
-	std::shared_ptr<Buffer> m_constantWindow;
-	std::shared_ptr<Buffer> m_constantCameraProj;
-	std::shared_ptr<Buffer> m_constantSSAO;
+	std::shared_ptr<ConstantBuffer> m_constantCamera;
+	std::shared_ptr<ConstantBuffer> m_constantWindow;
+	std::shared_ptr<ConstantBuffer> m_constantCameraProj;
+	std::shared_ptr<ConstantBuffer> m_constantSSAO;
 
 	// Skydome
 	std::unique_ptr<Skydome> m_skydome;

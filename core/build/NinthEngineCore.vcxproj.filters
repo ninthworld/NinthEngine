@@ -135,6 +135,15 @@
     <ClInclude Include="..\include\NinthEngine\Render\Builder\RenderTargetBuilder.hpp">
       <Filter>Header Files\Render\Builder</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\ConstantBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp">

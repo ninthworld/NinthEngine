@@ -15,16 +15,12 @@ public:
 		const SamplerStruct sampler);
 	~D3DSampler();
 	
-	void setBinding(const unsigned binding) override { m_binding = binding; };
-
-	const unsigned getBinding() const override { return m_binding; };
-
-	ComPtr<ID3D11SamplerState> getSampler() { return m_sampler; };
+	// Self
+	ComPtr<ID3D11SamplerState> getSamplerState() { return m_samplerState; };
 
 private:
-	ComPtr<ID3D11SamplerState> m_sampler;
+	ComPtr<ID3D11SamplerState> m_samplerState;
 
-	unsigned m_binding;
 };
 
 } // namespace DX

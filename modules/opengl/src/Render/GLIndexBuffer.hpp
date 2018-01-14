@@ -1,36 +1,34 @@
 #pragma once
 
+#include <NinthEngine\Render\IndexBuffer.hpp>
 #include "GLBuffer.hpp"
 
 namespace NinthEngine {
 namespace GL {
 
-class GLIndexBuffer : public GLBuffer {
+class GLIndexBuffer : public IndexBuffer, public GLBuffer  {
 public:
 	GLIndexBuffer(
 		const LayoutConfig layout,
 		const unsigned unitCount, void* data);
 	~GLIndexBuffer();
 
-	void setBinding(const unsigned binding) override { m_binding = binding; };
-
-	const unsigned getBinding() const override { return m_binding; };
+	// Buffer
 	const unsigned getUnitSize() const override { return m_unitSize; };
 	const unsigned getUnitCount() const override { return m_unitCount; };
-
-	const BufferType getBufferType() const override { return INDEX; };
-
-	const GLuint getBuffer() const override { return m_buffer; };
-
+	const LayoutConfig getLayout() const override { return m_layout; };
+	
+	// GLBuffer
+	const GLuint getBufferId() const override { return m_bufferId; };
 	void setData(void* data) override;
 
 private:
-	GLuint m_buffer;
+	GLuint m_bufferId;
 
-	unsigned m_binding;
 	unsigned m_unitSize;
 	unsigned m_unitCount;
 
+	LayoutConfig m_layout;
 };
 
 } // namespace GL

@@ -12,9 +12,6 @@ public:
 
 	virtual ~Sampler() = default;
 
-	virtual void setBinding(const unsigned binding) = 0;
-
-	virtual const unsigned getBinding() const = 0;
 };
 
 } // namespace NinthEngine

@@ -17,10 +17,8 @@ public:
 		const bool renderTarget = false);
 	~D3DTexture();
 
-	void setBinding(const unsigned binding) override { m_binding = binding; };
+	// Texture
 	void setSampler(const std::shared_ptr<Sampler>& sampler) override;
-
-	const unsigned getBinding() const override { return m_binding; };
 
 	const unsigned getWidth() const override { return m_width; };
 	const unsigned getHeight() const override { return m_height; };
@@ -29,23 +27,21 @@ public:
 	const unsigned getMipmapLevels() const override { return m_mmLevels; };
 	const unsigned getMultisampleCount() const override { return m_msCount; };
 
+	// Self
 	void setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void* data);
 
-	ComPtr<ID3D11Texture2D> getTexture() { return m_texture; };
-	ComPtr<ID3D11ShaderResourceView> getResourceView() { return m_shaderRV; };
+	ComPtr<ID3D11Texture2D> getTexturePtr() { return m_texturePtr; };
+	ComPtr<ID3D11ShaderResourceView> getResourceView() { return m_shaderView; };
 	DXGI_FORMAT getDXFormat() const { return m_dxFormat; };
 
 private:
-	ComPtr<ID3D11Texture2D> m_texture;
-	ComPtr<ID3D11ShaderResourceView> m_shaderRV;
+	ComPtr<ID3D11Texture2D> m_texturePtr;
+	ComPtr<ID3D11ShaderResourceView> m_shaderView;
 
-	unsigned m_samplerBinding;
 	ComPtr<ID3D11SamplerState> m_sampler;
 	DXGI_FORMAT m_dxFormat;
 	bool m_dxDefault;
-
-	unsigned m_binding;
-
+	
 	FormatType m_format;
 	unsigned m_width, m_height, m_mmLevels, m_msCount;
 

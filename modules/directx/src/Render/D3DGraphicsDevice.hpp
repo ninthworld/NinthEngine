@@ -14,9 +14,9 @@ public:
 	D3DGraphicsDevice();
 	~D3DGraphicsDevice();
 	
-	BufferBuilder createVertexBuffer() override;
-	BufferBuilder createIndexBuffer() override;
-	BufferBuilder createConstantBuffer() override;
+	VertexBufferBuilder createVertexBuffer() override;
+	IndexBufferBuilder createIndexBuffer() override;
+	ConstantBufferBuilder createConstantBuffer() override;
 	ShaderBuilder createShader() override;
 	RasterizerBuilder createRasterizer() override;
 	TextureBuilder createTexture() override;

@@ -113,23 +113,18 @@ void D3DGraphicsContext::draw(const unsigned vertexCount, const unsigned startIn
 	m_deviceContext->Draw(vertexCount, startIndex);
 }
 
-void D3DGraphicsContext::drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
+void D3DGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
 
-	if (indexBuffer->getBufferType() == INDEX) {
-		auto d3dBuffer = std::dynamic_pointer_cast<D3DIndexBuffer>(indexBuffer);
-		m_deviceContext->IASetIndexBuffer(
-			d3dBuffer->getBuffer().Get(), 
-			(d3dBuffer->getUnitSize() == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT), 0);
+	auto d3dBuffer = std::dynamic_pointer_cast<D3DIndexBuffer>(indexBuffer);
+	m_deviceContext->IASetIndexBuffer(
+		d3dBuffer->getBufferPtr().Get(), 
+		(d3dBuffer->getUnitSize() == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT), 0);
 
-		m_deviceContext->IASetPrimitiveTopology(m_d3dPrimitive);
-		m_deviceContext->DrawIndexed(indexCount, startIndex, 0);
-	}
-	else {
-		LOG_WARNING << "Cannot drawIndexed with non-Index Buffer.";
-	}
+	m_deviceContext->IASetPrimitiveTopology(m_d3dPrimitive);
+	m_deviceContext->DrawIndexed(indexCount, startIndex, 0);
 }
 
-void D3DGraphicsContext::drawIndexed(const std::shared_ptr<Buffer>& indexBuffer) {
+void D3DGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer) {
 	drawIndexed(indexBuffer, indexBuffer->getUnitCount(), 0);
 }
 
@@ -174,11 +169,13 @@ void D3DGraphicsContext::resolveToBackBuffer(const unsigned index, const std::sh
 	if (d3dTexture->getMultisampleCount()) {
 		m_deviceContext->ResolveSubresource(
 			backBufferTexture, 0, 
-			d3dTexture->getTexture().Get(), 0, 
+			d3dTexture->getTexturePtr().Get(), 0, 
 			DXGI_FORMAT_R8G8B8A8_UNORM);
 	}
 	else {
-		m_deviceContext->CopyResource(backBufferTexture, d3dTexture->getTexture().Get());
+		m_deviceContext->CopyResource(
+			backBufferTexture, 
+			d3dTexture->getTexturePtr().Get());
 	}
 }
 
@@ -192,32 +189,22 @@ void D3DGraphicsContext::resolve(
 
 		if (d3dTextureFrom->getMultisampleCount()) {
 			m_deviceContext->ResolveSubresource(
-				d3dTextureTo->getTexture().Get(), 0,
-				d3dTextureFrom->getTexture().Get(), 0,
+				d3dTextureTo->getTexturePtr().Get(), 0,
+				d3dTextureFrom->getTexturePtr().Get(), 0,
 				d3dTextureTo->getDXFormat());
 		}
 		else {
-			m_deviceContext->CopyResource(d3dTextureTo->getTexture().Get(), d3dTextureFrom->getTexture().Get());
+			m_deviceContext->CopyResource(
+				d3dTextureTo->getTexturePtr().Get(), 
+				d3dTextureFrom->getTexturePtr().Get());
 		}
 	}
-}
-
-void D3DGraphicsContext::bind(const std::shared_ptr<Shader>& shader) {
-
-	auto d3dShader = std::dynamic_pointer_cast<D3DShader>(shader);
-	m_deviceContext->IASetInputLayout(d3dShader->getInputLayout().Get());
-	m_deviceContext->VSSetShader(d3dShader->getVertexShader().Get(), nullptr, 0);
-	m_deviceContext->HSSetShader(d3dShader->getHullShader().Get(), nullptr, 0);
-	m_deviceContext->DSSetShader(d3dShader->getDomainShader().Get(), nullptr, 0);
-	m_deviceContext->GSSetShader(d3dShader->getGeometryShader().Get(), nullptr, 0);
-	m_deviceContext->PSSetShader(d3dShader->getPixelShader().Get(), nullptr, 0);
-	m_deviceContext->CSSetShader(d3dShader->getComputeShader().Get(), nullptr, 0);
 }
 
 void D3DGraphicsContext::bind(const std::shared_ptr<Rasterizer>& rasterizer) {
 
 	auto d3dRasterizer = std::dynamic_pointer_cast<D3DRasterizer>(rasterizer);
-	m_deviceContext->RSSetState(d3dRasterizer->getRasterizer().Get());
+	m_deviceContext->RSSetState(d3dRasterizer->getRasterizerState().Get());
 }
 
 void D3DGraphicsContext::bind(const std::shared_ptr<RenderTarget>& renderTarget) {
@@ -232,6 +219,57 @@ void D3DGraphicsContext::bind(const std::shared_ptr<RenderTarget>& renderTarget)
 	m_deviceContext->OMSetRenderTargets(targets.size(), &targets.front(), d3dRenderTarget->getDepthStencilView().Get());
 }
 
+void D3DGraphicsContext::bind(const std::shared_ptr<Shader>& shader) {
+
+	auto d3dShader = std::dynamic_pointer_cast<D3DShader>(shader);
+	m_deviceContext->IASetInputLayout(d3dShader->getInputLayout().Get());
+	m_deviceContext->VSSetShader(d3dShader->getVertexShader().Get(), nullptr, 0);
+	m_deviceContext->HSSetShader(d3dShader->getHullShader().Get(), nullptr, 0);
+	m_deviceContext->DSSetShader(d3dShader->getDomainShader().Get(), nullptr, 0);
+	m_deviceContext->GSSetShader(d3dShader->getGeometryShader().Get(), nullptr, 0);
+	m_deviceContext->PSSetShader(d3dShader->getPixelShader().Get(), nullptr, 0);
+	m_deviceContext->CSSetShader(d3dShader->getComputeShader().Get(), nullptr, 0);
+
+	auto constants = d3dShader->getConstants();
+	for (auto it = constants.begin(); it != constants.end(); ++it) {
+		unsigned index = it->first;
+		ShaderTypeBit shaderType = it->second.shaderType;
+		auto buffer = it->second.bufferPtr;
+		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetConstantBuffers(index, 1, buffer.GetAddressOf());
+		if (shaderType & HULL_SHADER) m_deviceContext->HSSetConstantBuffers(index, 1, buffer.GetAddressOf());
+		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetConstantBuffers(index, 1, buffer.GetAddressOf());
+		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetConstantBuffers(index, 1, buffer.GetAddressOf());
+		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetConstantBuffers(index, 1, buffer.GetAddressOf());
+		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetConstantBuffers(index, 1, buffer.GetAddressOf());
+	}
+
+	auto textures = d3dShader->getTextures();
+	for (auto it = textures.begin(); it != textures.end(); ++it) {
+		unsigned index = it->first;
+		ShaderTypeBit shaderType = it->second.shaderType;
+		auto view = it->second.resourceView;
+		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetShaderResources(index, 1, view.GetAddressOf());
+		if (shaderType & HULL_SHADER) m_deviceContext->HSSetShaderResources(index, 1, view.GetAddressOf());
+		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetShaderResources(index, 1, view.GetAddressOf());
+		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetShaderResources(index, 1, view.GetAddressOf());
+		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetShaderResources(index, 1, view.GetAddressOf());
+		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetShaderResources(index, 1, view.GetAddressOf());
+	}
+
+	auto samplers = d3dShader->getSampler();
+	for (auto it = samplers.begin(); it != samplers.end(); ++it) {
+		unsigned index = it->first;
+		ShaderTypeBit shaderType = it->second.shaderType;
+		auto state = it->second.samplerState;
+		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetSamplers(index, 1, state.GetAddressOf());
+		if (shaderType & HULL_SHADER) m_deviceContext->HSSetSamplers(index, 1, state.GetAddressOf());
+		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetSamplers(index, 1, state.GetAddressOf());
+		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetSamplers(index, 1, state.GetAddressOf());
+		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetSamplers(index, 1, state.GetAddressOf());
+		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetSamplers(index, 1, state.GetAddressOf());
+	}
+}
+
 void D3DGraphicsContext::bind(const std::shared_ptr<VertexArray>& vertexArray) {
 
 	UINT unitSize = 0;
@@ -241,61 +279,14 @@ void D3DGraphicsContext::bind(const std::shared_ptr<VertexArray>& vertexArray) {
 		auto buffer = d3dVertexArray->getVertexBuffers()[i];
 		unitSize = buffer->getUnitSize();
 		m_deviceContext->IASetVertexBuffers(i, 1,
-			buffer->getBuffer().GetAddressOf(),
+			buffer->getBufferPtr().GetAddressOf(),
 			&unitSize, &offset);
-	}
-}
-
-void D3DGraphicsContext::bind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType) {
-
-	auto d3dSampler = std::dynamic_pointer_cast<D3DSampler>(sampler);
-	if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetSamplers(d3dSampler->getBinding(), 1, d3dSampler->getSampler().GetAddressOf());
-	if (shaderType & HULL_SHADER) m_deviceContext->HSSetSamplers(d3dSampler->getBinding(), 1, d3dSampler->getSampler().GetAddressOf());
-	if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetSamplers(d3dSampler->getBinding(), 1, d3dSampler->getSampler().GetAddressOf());
-	if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetSamplers(d3dSampler->getBinding(), 1, d3dSampler->getSampler().GetAddressOf());
-	if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetSamplers(d3dSampler->getBinding(), 1, d3dSampler->getSampler().GetAddressOf());
-	if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetSamplers(d3dSampler->getBinding(), 1, d3dSampler->getSampler().GetAddressOf());
-}
-
-void D3DGraphicsContext::bind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType) {
-
-	auto d3dTexture = std::dynamic_pointer_cast<D3DTexture>(texture);
-	if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetShaderResources(d3dTexture->getBinding(), 1, d3dTexture->getResourceView().GetAddressOf());
-	if (shaderType & HULL_SHADER) m_deviceContext->HSSetShaderResources(d3dTexture->getBinding(), 1, d3dTexture->getResourceView().GetAddressOf());
-	if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetShaderResources(d3dTexture->getBinding(), 1, d3dTexture->getResourceView().GetAddressOf());
-	if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetShaderResources(d3dTexture->getBinding(), 1, d3dTexture->getResourceView().GetAddressOf());
-	if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetShaderResources(d3dTexture->getBinding(), 1, d3dTexture->getResourceView().GetAddressOf());
-	if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetShaderResources(d3dTexture->getBinding(), 1, d3dTexture->getResourceView().GetAddressOf());
-}
-
-void D3DGraphicsContext::bind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType) {
-
-	auto d3dBuffer = std::dynamic_pointer_cast<D3DBuffer>(buffer);
-	switch (d3dBuffer->getBufferType()){
-	case CONSTANT: {
-		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetConstantBuffers(d3dBuffer->getBinding(), 1, d3dBuffer->getBuffer().GetAddressOf());
-		if (shaderType & HULL_SHADER) m_deviceContext->HSSetConstantBuffers(d3dBuffer->getBinding(), 1, d3dBuffer->getBuffer().GetAddressOf());
-		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetConstantBuffers(d3dBuffer->getBinding(), 1, d3dBuffer->getBuffer().GetAddressOf());
-		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetConstantBuffers(d3dBuffer->getBinding(), 1, d3dBuffer->getBuffer().GetAddressOf());
-		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetConstantBuffers(d3dBuffer->getBinding(), 1, d3dBuffer->getBuffer().GetAddressOf());
-		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetConstantBuffers(d3dBuffer->getBinding(), 1, d3dBuffer->getBuffer().GetAddressOf());
-	} break;
-	case INDEX: {
-		m_deviceContext->IASetIndexBuffer(
-			d3dBuffer->getBuffer().Get(),
-			(d3dBuffer->getUnitSize() == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT), 0);
-	} break;
-	case VERTEX: {
-		unsigned size = buffer->getUnitSize();
-		m_deviceContext->IASetVertexBuffers(0, 1,
-			d3dBuffer->getBuffer().GetAddressOf(),
-			&size, 0);
-	} break;
 	}
 }
 
 void D3DGraphicsContext::unbind(const std::shared_ptr<Shader>& shader) {
 
+	auto d3dShader = std::dynamic_pointer_cast<D3DShader>(shader);
 	m_deviceContext->IASetInputLayout(nullptr);
 	m_deviceContext->VSSetShader(nullptr, nullptr, 0);
 	m_deviceContext->HSSetShader(nullptr, nullptr, 0);
@@ -303,6 +294,48 @@ void D3DGraphicsContext::unbind(const std::shared_ptr<Shader>& shader) {
 	m_deviceContext->GSSetShader(nullptr, nullptr, 0);
 	m_deviceContext->PSSetShader(nullptr, nullptr, 0);
 	m_deviceContext->CSSetShader(nullptr, nullptr, 0);
+
+	ID3D11Buffer* nullBuffer = nullptr;
+	auto constants = d3dShader->getConstants();
+	for (auto it = constants.begin(); it != constants.end(); ++it) {
+		unsigned index = it->first;
+		ShaderTypeBit shaderType = it->second.shaderType;
+		auto buffer = it->second.bufferPtr;
+		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetConstantBuffers(index, 1, &nullBuffer);
+		if (shaderType & HULL_SHADER) m_deviceContext->HSSetConstantBuffers(index, 1, &nullBuffer);
+		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetConstantBuffers(index, 1, &nullBuffer);
+		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetConstantBuffers(index, 1, &nullBuffer);
+		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetConstantBuffers(index, 1, &nullBuffer);
+		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetConstantBuffers(index, 1, &nullBuffer);
+	}
+
+	ID3D11ShaderResourceView* nullView = nullptr;
+	auto textures = d3dShader->getTextures();
+	for (auto it = textures.begin(); it != textures.end(); ++it) {
+		unsigned index = it->first;
+		ShaderTypeBit shaderType = it->second.shaderType;
+		auto view = it->second.resourceView;
+		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetShaderResources(index, 1, &nullView);
+		if (shaderType & HULL_SHADER) m_deviceContext->HSSetShaderResources(index, 1, &nullView);
+		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetShaderResources(index, 1, &nullView);
+		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetShaderResources(index, 1, &nullView);
+		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetShaderResources(index, 1, &nullView);
+		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetShaderResources(index, 1, &nullView);
+	}
+
+	ID3D11SamplerState* nullState = nullptr;
+	auto samplers = d3dShader->getSampler();
+	for (auto it = samplers.begin(); it != samplers.end(); ++it) {
+		unsigned index = it->first;
+		ShaderTypeBit shaderType = it->second.shaderType;
+		auto state = it->second.samplerState;
+		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetSamplers(index, 1, &nullState);
+		if (shaderType & HULL_SHADER) m_deviceContext->HSSetSamplers(index, 1, &nullState);
+		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetSamplers(index, 1, &nullState);
+		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetSamplers(index, 1, &nullState);
+		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetSamplers(index, 1, &nullState);
+		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetSamplers(index, 1, &nullState);
+	}
 }
 
 void D3DGraphicsContext::unbind(const std::shared_ptr<VertexArray>& vertexArray) {
@@ -313,52 +346,6 @@ void D3DGraphicsContext::unbind(const std::shared_ptr<VertexArray>& vertexArray)
 	auto d3dVertexArray = std::dynamic_pointer_cast<D3DVertexArray>(vertexArray);
 	for (unsigned i = 0; i < d3dVertexArray->getVertexBuffers().size(); ++i) {
 		m_deviceContext->IASetVertexBuffers(i, 1, &null, &unitSize, &offset);
-	}
-}
-
-void D3DGraphicsContext::unbind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType) {
-
-	ID3D11SamplerState* null = nullptr;
-	auto d3dSampler = std::dynamic_pointer_cast<D3DSampler>(sampler);
-	if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetSamplers(d3dSampler->getBinding(), 1, &null);
-	if (shaderType & HULL_SHADER) m_deviceContext->HSSetSamplers(d3dSampler->getBinding(), 1, &null);
-	if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetSamplers(d3dSampler->getBinding(), 1, &null);
-	if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetSamplers(d3dSampler->getBinding(), 1, &null);
-	if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetSamplers(d3dSampler->getBinding(), 1, &null);
-	if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetSamplers(d3dSampler->getBinding(), 1, &null);
-}
-
-void D3DGraphicsContext::unbind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType) {
-
-	ID3D11ShaderResourceView* null = nullptr;
-	auto d3dTexture = std::dynamic_pointer_cast<D3DTexture>(texture);
-	if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetShaderResources(d3dTexture->getBinding(), 1, &null);
-	if (shaderType & HULL_SHADER) m_deviceContext->HSSetShaderResources(d3dTexture->getBinding(), 1, &null);
-	if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetShaderResources(d3dTexture->getBinding(), 1, &null);
-	if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetShaderResources(d3dTexture->getBinding(), 1, &null);
-	if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetShaderResources(d3dTexture->getBinding(), 1, &null);
-	if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetShaderResources(d3dTexture->getBinding(), 1, &null);
-}
-
-void D3DGraphicsContext::unbind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType) {
-
-	ID3D11Buffer* null = nullptr;
-	auto d3dBuffer = std::dynamic_pointer_cast<D3DBuffer>(buffer);
-	switch (d3dBuffer->getBufferType()) {
-	case CONSTANT: {
-		if (shaderType & VERTEX_SHADER) m_deviceContext->VSSetConstantBuffers(d3dBuffer->getBinding(), 1, &null);
-		if (shaderType & HULL_SHADER) m_deviceContext->HSSetConstantBuffers(d3dBuffer->getBinding(), 1, &null);
-		if (shaderType & DOMAIN_SHADER) m_deviceContext->DSSetConstantBuffers(d3dBuffer->getBinding(), 1, &null);
-		if (shaderType & GEOMETRY_SHADER) m_deviceContext->GSSetConstantBuffers(d3dBuffer->getBinding(), 1, &null);
-		if (shaderType & PIXEL_SHADER) m_deviceContext->PSSetConstantBuffers(d3dBuffer->getBinding(), 1, &null);
-		if (shaderType & COMPUTE_SHADER) m_deviceContext->CSSetConstantBuffers(d3dBuffer->getBinding(), 1, &null);
-	} break;
-	case INDEX: {
-		m_deviceContext->IASetIndexBuffer(null, DXGI_FORMAT_R16_UINT, 0);
-	} break;
-	case VERTEX: {
-		m_deviceContext->IASetVertexBuffers(0, 1, &null, 0, 0);
-	} break;
 	}
 }
 

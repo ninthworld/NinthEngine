@@ -46,24 +46,24 @@ GLGraphicsDevice::GLGraphicsDevice() {
 GLGraphicsDevice::~GLGraphicsDevice() {
 }
 
-BufferBuilder GLGraphicsDevice::createVertexBuffer() {
-	return BufferBuilder([this](
+VertexBufferBuilder GLGraphicsDevice::createVertexBuffer() {
+	return VertexBufferBuilder([this](
 		const LayoutConfig layout,
 		const unsigned unitCount, void* data) {
 		return std::move(std::make_unique<GLVertexBuffer>(layout, unitCount, data));
 	});
 }
 
-BufferBuilder GLGraphicsDevice::createIndexBuffer() {
-	return BufferBuilder([this](
+IndexBufferBuilder GLGraphicsDevice::createIndexBuffer() {
+	return IndexBufferBuilder([this](
 		const LayoutConfig layout,
 		const unsigned unitCount, void* data) {
 		return std::move(std::make_unique<GLIndexBuffer>(layout, unitCount, data));
 	});
 }
 
-BufferBuilder GLGraphicsDevice::createConstantBuffer() {
-	return BufferBuilder([this](
+ConstantBufferBuilder GLGraphicsDevice::createConstantBuffer() {
+	return ConstantBufferBuilder([this](
 		const LayoutConfig layout,
 		const unsigned unitCount, void* data) {
 		return std::move(std::make_unique<GLConstantBuffer>(layout, unitCount, data));

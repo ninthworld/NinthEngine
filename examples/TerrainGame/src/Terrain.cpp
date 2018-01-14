@@ -12,7 +12,7 @@ Terrain::Terrain(
 	const std::shared_ptr<GraphicsDevice>& device,
 	const std::shared_ptr<GraphicsContext>& context,
 	const std::shared_ptr<GameCamera>& camera,
-	const std::shared_ptr<Buffer>& constantCamera)
+	const std::shared_ptr<ConstantBuffer>& constantCamera)
 	: m_context(context)
 	, m_camera(camera)
 	, m_constantCamera(constantCamera) {
@@ -31,14 +31,14 @@ Terrain::Terrain(
 	}
 	
 	// Initialize Vertex Buffer
-	m_vertexBuffer = device->createVertexBuffer()
+	std::shared_ptr<VertexBuffer> vertexBuffer = device->createVertexBuffer()
 		.withLayout(inputLayout)
 		.withData(vertices.size(), vertices.data())
 		.build();
 
 	// Initialize Vertex Array
 	m_vertexArray = device->createVertexArray();
-	m_vertexArray->addVertexBuffer(m_vertexBuffer);
+	m_vertexArray->bind(vertexBuffer);
 
 	// Initialize Shader
 	m_shader = device->createShader()
@@ -54,7 +54,6 @@ Terrain::Terrain(
 		.withHLSL<GEOMETRY_SHADER>("res/terrain/shader/terrain.gs.hlsl", "main")
 		.withHLSL<PIXEL_SHADER>("res/terrain/shader/terrain.ps.hlsl", "main")
 		.build();
-	m_shader->bindConstant("Camera", m_constantCamera);
 
 	// Initialize Constant Buffers
 	TerrainData terrainData{ glm::mat4(1), scaleXZ, scaleY, detailRangeNear, detailRangeFar };
@@ -66,16 +65,12 @@ Terrain::Terrain(
 		.withLayout(LayoutConfig().float4x4().float4().float4().float4())
 		.withData(&terrainData)
 		.build();
-	m_constantTerrain->setBinding(1);
-	m_shader->bindConstant("Terrain", m_constantTerrain);
 
 	NodeData nodeData{};
 	m_constantNode = device->createConstantBuffer()
 		.withLayout(LayoutConfig().float4x4().float2().float2().float1().int1().float4().float2())
 		.withData(&nodeData)
 		.build();
-	m_constantNode->setBinding(2);
-	m_shader->bindConstant("Node", m_constantNode);
 
 	// Initialize Samplers
 	m_sampler = device->createSampler()
@@ -83,25 +78,19 @@ Terrain::Terrain(
 		.withEdge(WRAP)
 		.withMipmapping(LINEAR, 0, 8)
 		.build();
-	m_sampler->setBinding(0);
 
 	// Load Textures
-	unsigned t = 0;
 	m_heightmap = device->createTexture()
 		.withFile("res/terrain/map/heightmap.bmp")
 		.withMipmapping()
 		.build();
-	m_heightmap->setBinding(t++);
 	m_heightmap->setSampler(m_sampler);
-	m_shader->bindTexture("heightmap", m_heightmap);
 
 	m_normalmap = device->createTexture()
 		.withFile("res/terrain/map/normalmap.bmp")
 		.withMipmapping()
 		.build();
-	m_normalmap->setBinding(t++);
 	m_normalmap->setSampler(m_sampler);
-	m_shader->bindTexture("normalmap", m_normalmap);
 	
 	// Material - Grass
 	m_materials.push_back(
@@ -183,25 +172,29 @@ Terrain::Terrain(
 		.withMipmapping()
 		.build() });
 
-	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_materials[i].diffuse->setBinding(t++);
-		m_materials[i].mapAlpha->setSampler(m_sampler);
+	// Bind Constants to Shader
+	m_shader->bind(0, "Camera", m_constantCamera, GEOMETRY_SHADER | PIXEL_SHADER);
+	m_shader->bind(1, "Terrain", m_constantTerrain, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
+	m_shader->bind(2, "Node", m_constantNode, VERTEX_SHADER | HULL_SHADER | PIXEL_SHADER);
 
-		m_materials[i].displacement->setBinding(t++);
+	// Bind Samplers to Shader
+	m_shader->bind(0, "texSampler", m_sampler, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
+
+	// Bind Textures to Shader
+	unsigned t = 0;
+	m_shader->bind(t++, "heightmap", m_heightmap, VERTEX_SHADER | DOMAIN_SHADER);
+	m_shader->bind(t++, "normalmap", m_normalmap, PIXEL_SHADER);
+
+	for (unsigned i = 0; i < m_materials.size(); ++i) {
+		m_materials[i].mapAlpha->setSampler(m_sampler);
 		m_materials[i].displacement->setSampler(m_sampler);
-
-		m_materials[i].normal->setBinding(t++);
 		m_materials[i].normal->setSampler(m_sampler);
-
-		m_materials[i].mapAlpha->setBinding(t++);
 		m_materials[i].mapAlpha->setSampler(m_sampler);
-	}
-	
-	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_shader->bindTexture("material" + std::to_string(i) + "Dif", m_materials[i].diffuse);
-		m_shader->bindTexture("material" + std::to_string(i) + "Disp", m_materials[i].displacement);
-		m_shader->bindTexture("material" + std::to_string(i) + "Norm", m_materials[i].normal);
-		m_shader->bindTexture("material" + std::to_string(i) + "Alpha", m_materials[i].mapAlpha);
+
+		m_shader->bind(t++, "material" + std::to_string(i) + "Dif", m_materials[i].diffuse, PIXEL_SHADER);
+		m_shader->bind(t++, "material" + std::to_string(i) + "Disp", m_materials[i].displacement, GEOMETRY_SHADER);
+		m_shader->bind(t++, "material" + std::to_string(i) + "Norm", m_materials[i].normal, PIXEL_SHADER);
+		m_shader->bind(t++, "material" + std::to_string(i) + "Alpha", m_materials[i].mapAlpha, GEOMETRY_SHADER | PIXEL_SHADER);
 	}
 
 	// Initialize Height Data
@@ -247,28 +240,9 @@ void Terrain::update() {
 }
 
 void Terrain::render() {
-
+	
 	// Bind Shader
 	m_context->bind(m_shader);
-
-	// Bind Samplers
-	m_context->bind(m_sampler, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
-
-	// Bind Textures
-	m_context->bind(m_heightmap, VERTEX_SHADER | DOMAIN_SHADER);
-	m_context->bind(m_normalmap, PIXEL_SHADER);
-
-	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_context->bind(m_materials[i].diffuse, PIXEL_SHADER);
-		m_context->bind(m_materials[i].displacement, GEOMETRY_SHADER);
-		m_context->bind(m_materials[i].normal, PIXEL_SHADER);
-		m_context->bind(m_materials[i].mapAlpha, GEOMETRY_SHADER | PIXEL_SHADER);
-	}
-	
-	// Bind Constants
-	m_context->bind(m_constantCamera, GEOMETRY_SHADER | PIXEL_SHADER);
-	m_context->bind(m_constantTerrain, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
-	m_context->bind(m_constantNode, VERTEX_SHADER | HULL_SHADER | PIXEL_SHADER);
 
 	// Draw Terrain
 	auto type = m_context->getPrimitive();
@@ -277,6 +251,8 @@ void Terrain::render() {
 		m_rootNodes[i]->render();
 	}
 	m_context->setPrimitive(type);
+
+	m_context->unbind(m_shader);
 }
 
 const int Terrain::getLodAt(const glm::vec2 pos) {

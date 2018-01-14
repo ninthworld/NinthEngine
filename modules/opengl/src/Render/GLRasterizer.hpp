@@ -11,10 +11,11 @@ public:
 	GLRasterizer(const RasterizerStruct rasterizer);
 	~GLRasterizer();
 	
-	const RasterizerStruct getRasterizer() const { return m_rasterizer; };
+	// Self
+	const RasterizerStruct getRasterizerStruct() const { return m_rasterizerStruct; };
 
 private:
-	RasterizerStruct m_rasterizer;
+	RasterizerStruct m_rasterizerStruct;
 
 };
 

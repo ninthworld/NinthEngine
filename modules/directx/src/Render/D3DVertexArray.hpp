@@ -16,8 +16,10 @@ public:
 	D3DVertexArray();
 	~D3DVertexArray();
 
-	void addVertexBuffer(const std::shared_ptr<Buffer>& buffer) override;
+	// VertexArray
+	void bind(const std::shared_ptr<VertexBuffer>& buffer) override;
 	
+	// Self
 	std::vector<std::shared_ptr<D3DVertexBuffer>> getVertexBuffers() { return m_buffers; };
 
 private:

@@ -17,9 +17,10 @@ public:
 		const std::shared_ptr<GameWindow>& window);
 	~GLGraphicsContext();
 
+	// GraphicsContext
 	void draw(const unsigned vertexCount, const unsigned startIndex) override;
-	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
-	void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer) override;
+	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
+	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer) override;
 
 	void swapBuffers() override;
 
@@ -30,19 +31,13 @@ public:
 	void resolveToBackBuffer(const unsigned index, const std::shared_ptr<RenderTarget>& renderTarget) override;
 	void resolve(const std::shared_ptr<RenderTarget>& renderTargetFrom, const std::shared_ptr<RenderTarget>& renderTargetTo) override;
 
-	void bind(const std::shared_ptr<Shader>& shader) override;
 	void bind(const std::shared_ptr<Rasterizer>& rasterizer) override;
 	void bind(const std::shared_ptr<RenderTarget>& renderTarget) override;
+	void bind(const std::shared_ptr<Shader>& shader) override;
 	void bind(const std::shared_ptr<VertexArray>& vertexArray) override;
-	void bind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = 0) override;
-	void bind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = 0) override;
-	void bind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = 0) override;
 
 	void unbind(const std::shared_ptr<Shader>& shader) override;
 	void unbind(const std::shared_ptr<VertexArray>& vertexArray) override;
-	void unbind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = 0) override;
-	void unbind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = 0) override;
-	void unbind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = 0) override;
 
 	void setData(const std::shared_ptr<Buffer>& buffer, void* data) override;
 	void setData(const std::shared_ptr<Texture>& texture, void* data) override;
@@ -51,8 +46,8 @@ public:
 	void setViewport(const Viewport viewport) override;
 	void setPrimitive(const PrimitiveType primitive, const int patchSize = 1) override;
 
-	const PrimitiveType getPrimitive() const { return m_primitiveType; };
-	const int getPatchSize() const { return m_patchSize; };
+	const PrimitiveType getPrimitive() const override { return m_primitiveType; };
+	const int getPatchSize() const override { return m_patchSize; };
 
 private:
 	std::unique_ptr<GLContext> m_glContext;

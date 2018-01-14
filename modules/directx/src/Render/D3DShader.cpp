@@ -1,6 +1,11 @@
 #ifdef _WIN32
 
+#define HLSL_VERSION(s) (s "_5_0")
+
 #include <plog\Log.h>
+#include "D3DConstantBuffer.hpp"
+#include "D3DTexture.hpp"
+#include "D3DSampler.hpp"
 #include "D3DShader.hpp"
 
 namespace {
@@ -12,8 +17,6 @@ ComPtr<ID3DBlob> compileShader(const ComPtr<ID3D11Device>& device, const std::st
 namespace NinthEngine {
 namespace DX {
 
-#define HLSL_VERSION(s) (s "_5_0")
-
 D3DShader::D3DShader(const LayoutConfig layout) 
 	: m_layout(layout) {
 }
@@ -21,10 +24,40 @@ D3DShader::D3DShader(const LayoutConfig layout)
 D3DShader::~D3DShader() {
 }
 
-void D3DShader::bindConstant(const std::string name, const std::shared_ptr<Buffer>& buffer) {
+void D3DShader::bind(
+	const unsigned index,
+	const std::string name,
+	const std::shared_ptr<ConstantBuffer>& buffer,
+	const ShaderTypeBit shaderType) {
+	
+	auto d3dBuffer = std::dynamic_pointer_cast<D3DConstantBuffer>(buffer);
+	m_constants.insert(std::make_pair(index, D3DConstantStruct{
+		d3dBuffer->getBufferPtr(),
+		shaderType }));
 }
 
-void D3DShader::bindTexture(const std::string name, const std::shared_ptr<Texture>& texture) {
+void D3DShader::bind(
+	const unsigned index,
+	const std::string name,
+	const std::shared_ptr<Texture>& texture,
+	const ShaderTypeBit shaderType) {
+
+	auto d3dTexture = std::dynamic_pointer_cast<D3DTexture>(texture);
+	m_textures.insert(std::make_pair(index, D3DTextureStruct{
+		d3dTexture->getResourceView(),
+		shaderType }));
+}
+
+void D3DShader::bind(
+	const unsigned index,
+	const std::string name,
+	const std::shared_ptr<Sampler>& sampler,
+	const ShaderTypeBit shaderType) {
+
+	auto d3dSampler = std::dynamic_pointer_cast<D3DSampler>(sampler);
+	m_samplers.insert(std::make_pair(index, D3DSamplerStruct{
+		d3dSampler->getSamplerState(),
+		shaderType }));
 }
 
 template<>

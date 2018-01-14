@@ -10,7 +10,7 @@ D3DVertexBuffer::D3DVertexBuffer(
 	const ComPtr<ID3D11Device>& device,
 	const LayoutConfig layout,
 	const unsigned unitCount, void* data)
-	: m_binding(0)
+	: m_layout(layout)
 	, m_unitSize(layout.getUnitSize())
 	, m_unitCount(unitCount) {
 
@@ -28,7 +28,7 @@ D3DVertexBuffer::D3DVertexBuffer(
 	resourceData.pSysMem = data;
 
 	HRESULT hr;
-	hr = device->CreateBuffer(&bufferDesc, &resourceData, &m_buffer);
+	hr = device->CreateBuffer(&bufferDesc, &resourceData, &m_bufferPtr);
 	CHECK_ERROR(hr, "(VertexBuffer) ID3D11Buffer");
 }
 
@@ -36,7 +36,7 @@ D3DVertexBuffer::~D3DVertexBuffer() {
 }
 
 void D3DVertexBuffer::setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void* data) {
-	deviceContext->UpdateSubresource(m_buffer.Get(), 0, nullptr, data, 0, 0);
+	deviceContext->UpdateSubresource(m_bufferPtr.Get(), 0, nullptr, data, 0, 0);
 }
 
 } // namespace DX

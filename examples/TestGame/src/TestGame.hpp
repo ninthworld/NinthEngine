@@ -29,17 +29,16 @@ private:
 	std::shared_ptr<Rasterizer> m_rasterizer;
 
 	// Constants
-	std::shared_ptr<Buffer> m_constantCamera;
+	std::shared_ptr<ConstantBuffer> m_constantCamera;
 
 	// Shaders
 	std::shared_ptr<Shader> m_shader;
 		
 	// Buffers
-	std::shared_ptr<Buffer> m_indexBuffer;
-	std::shared_ptr<Buffer> m_vertexBuffer;
+	std::shared_ptr<IndexBuffer> m_indexBuffer;
 	std::shared_ptr<VertexArray> m_vertexArray;
 
 	// Render Pass
-	std::shared_ptr<RenderPass> m_renderPass;
+	std::shared_ptr<RenderTarget> m_renderTargetMS;
 
 };

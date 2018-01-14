@@ -11,16 +11,12 @@ public:
 	GLSampler(const SamplerStruct sampler);
 	~GLSampler();
 
-	void setBinding(const unsigned binding) override { m_binding = binding; };
-
-	const unsigned getBinding() const override { return m_binding; };
-
-	const GLuint getSampler() const { return m_sampler; };
+	// Self
+	const GLuint getSamplerId() const { return m_samplerId; };
 
 private:
-	GLuint m_sampler;
+	GLuint m_samplerId;
 
-	unsigned m_binding;
 };
 
 } // namespace GL

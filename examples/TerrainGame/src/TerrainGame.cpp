@@ -68,13 +68,13 @@ void TerrainGame::init() {
 		glm::vec2(-1, -1), glm::vec2(1, -1), glm::vec2(1, 1),
 		glm::vec2(1, 1), glm::vec2(-1, 1), glm::vec2(-1, -1) };
 
-	std::shared_ptr<Buffer> vertexBufferQuad = m_device->createVertexBuffer()
+	std::shared_ptr<VertexBuffer> vertexBufferQuad = m_device->createVertexBuffer()
 		.withLayout(inputLayoutQuad)
 		.withData(vertices.size(), vertices.data())
 		.build();
 
 	m_vertexArrayQuad = m_device->createVertexArray();
-	m_vertexArrayQuad->addVertexBuffer(vertexBufferQuad);
+	m_vertexArrayQuad->bind(vertexBufferQuad);
 
 	m_rasterizerQuad = m_device->createRasterizer()
 		.withFill()
@@ -101,7 +101,6 @@ void TerrainGame::init() {
 	
 	// Initialize Samplers
 	m_sampler = m_device->createSampler().build();
-	m_sampler->setBinding(0);
 
 	// Initialize Render Targets
 	m_renderTargetMS = m_device->createRenderTarget()
@@ -118,28 +117,19 @@ void TerrainGame::init() {
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())								// Position
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight(), FORMAT_DEPTH_24_STENCIL_8)	// Depth
 		.build();
-	m_renderTargetLighting->getTexture(0)->setBinding(0);
 	m_renderTargetLighting->getTexture(0)->setSampler(m_sampler);
-
-	m_renderTargetLighting->getTexture(1)->setBinding(1);
 	m_renderTargetLighting->getTexture(1)->setSampler(m_sampler);
-
-	m_renderTargetLighting->getTexture(2)->setBinding(2);
 	m_renderTargetLighting->getTexture(2)->setSampler(m_sampler);
-
-	m_renderTargetMS->getDepthTexture()->setBinding(3);
 	m_renderTargetMS->getDepthTexture()->setSampler(m_sampler);
 
 	m_renderTargetSSAO = m_device->createRenderTarget()
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())
 		.build();
-	m_renderTargetSSAO->getTexture(0)->setBinding(5);
 	m_renderTargetSSAO->getTexture(0)->setSampler(m_sampler);
 
 	m_renderTargetBlur = m_device->createRenderTarget()
 		.withRenderTarget(m_window->getWidth(), m_window->getHeight())
 		.build();
-	m_renderTargetBlur->getTexture(0)->setBinding(6);
 	m_renderTargetBlur->getTexture(0)->setSampler(m_sampler);
 
 	// Initialize Shaders
@@ -171,27 +161,23 @@ void TerrainGame::init() {
 	m_textureNoise = m_device->createTexture()
 		.withFile("res/fx/ssao/noise.bmp")
 		.build();
-	m_textureNoise->setBinding(4);
 
 	// Initialize Constant Buffers
 	m_constantCamera = m_device->createConstantBuffer()
 		.withLayout(LayoutConfig().float4x4().float4x4().float4())
 		.withData(&m_camera->data())
 		.build();
-	m_constantCamera->setBinding(0);
 
 	glm::vec4 windowSize = glm::vec4(m_window->getWidth(), m_window->getHeight(), 0, 0);
 	m_constantWindow = m_device->createConstantBuffer()
 		.withLayout(LayoutConfig().float4())
 		.withData(&windowSize)
 		.build();
-	m_constantWindow->setBinding(1);
 
 	m_constantCameraProj = m_device->createConstantBuffer()
 		.withLayout(LayoutConfig().float4x4().float4x4())
 		.withData(&m_camera->dataProj())
 		.build();
-	m_constantCameraProj->setBinding(2);
 
 	glm::vec4 kernel[32];
 	for (unsigned i = 0; i < 32; ++i) {
@@ -205,26 +191,34 @@ void TerrainGame::init() {
 		.withLayout(LayoutConfig().float4x4().float4x4().float4x4().float4x4().float4x4().float4x4().float4x4().float4x4())
 		.withData(&kernel)
 		.build();
-	m_constantSSAO->setBinding(3);
 
 	// FX - SSAO
-	m_shaderSSAO->bindConstant("Window", m_constantWindow);
-	m_shaderSSAO->bindConstant("CameraProj", m_constantCameraProj);
-	m_shaderSSAO->bindConstant("SSAO", m_constantSSAO);
-	m_shaderSSAO->bindTexture("normalTexture", m_renderTargetLighting->getTexture(1));
-	m_shaderSSAO->bindTexture("depthTexture", m_renderTargetMS->getDepthTexture());
-	m_shaderSSAO->bindTexture("noiseTexture", m_textureNoise);
+	m_shaderSSAO->bind(0, "Window", m_constantWindow);
+	m_shaderSSAO->bind(1, "CameraProj", m_constantCameraProj);
+	m_shaderSSAO->bind(2, "SSAO", m_constantSSAO);
+
+	m_shaderSSAO->bind(0, "texSampler", m_sampler);
+
+	m_shaderSSAO->bind(0, "normalTexture", m_renderTargetLighting->getTexture(1));
+	m_shaderSSAO->bind(1, "depthTexture", m_renderTargetMS->getDepthTexture());
+	m_shaderSSAO->bind(2, "noiseTexture", m_textureNoise);
 
 	// FX - Blur
-	m_shaderBlur->bindConstant("Window", m_constantWindow);
-	m_shaderBlur->bindTexture("blurTexture", m_renderTargetSSAO->getTexture(0));
+	m_shaderBlur->bind(0, "Window", m_constantWindow);
+
+	m_shaderBlur->bind(0, "texSampler", m_sampler);
+
+	m_shaderBlur->bind(0, "blurTexture", m_renderTargetSSAO->getTexture(0));
 
 	// FX - Lighting
-	m_shaderLighting->bindConstant("Window", m_constantWindow);
-	m_shaderLighting->bindTexture("colorTexture", m_renderTargetLighting->getTexture(0));
-	m_shaderLighting->bindTexture("normalTexture", m_renderTargetLighting->getTexture(1));
-	m_shaderLighting->bindTexture("positionTexture", m_renderTargetLighting->getTexture(2));
-	m_shaderLighting->bindTexture("ssaoTexture", m_renderTargetBlur->getTexture(0));
+	m_shaderLighting->bind(0, "Window", m_constantWindow);
+
+	m_shaderLighting->bind(0, "texSampler", m_sampler);
+
+	m_shaderLighting->bind(0, "colorTexture", m_renderTargetLighting->getTexture(0));
+	m_shaderLighting->bind(1, "normalTexture", m_renderTargetLighting->getTexture(1));
+	m_shaderLighting->bind(2, "positionTexture", m_renderTargetLighting->getTexture(2));
+	m_shaderLighting->bind(3, "ssaoTexture", m_renderTargetBlur->getTexture(0));
 	
 	// Initialize Skydome
 	m_skydome = std::make_unique<Skydome>(m_device, m_context, m_camera, m_constantCamera);
@@ -278,7 +272,7 @@ void TerrainGame::render() {
 	// Resolve Multisampled Render Target to Lighting Render Target
 	m_context->resolve(m_renderTargetMS, m_renderTargetLighting);
 
-	m_context->bind(m_sampler);
+	// Use a Non-Wireframeable Rasterizer
 	m_context->bind(m_rasterizerQuad);
 
 	// FX - SSAO
@@ -286,30 +280,20 @@ void TerrainGame::render() {
 	m_context->bind(m_renderTargetSSAO);
 	m_context->clear(m_renderTargetSSAO);
 
-	m_context->bind(m_shaderSSAO); // Have the stuff below auto bind thanks to the binding above ^
-	m_context->bind(m_constantWindow, PIXEL_SHADER);
-	m_context->bind(m_constantCameraProj, PIXEL_SHADER);
-	m_context->bind(m_constantSSAO, PIXEL_SHADER);
-	m_context->bind(m_renderTargetLighting->getTexture(1), PIXEL_SHADER);
-	m_context->bind(m_renderTargetMS->getDepthTexture(), PIXEL_SHADER);
-	m_context->bind(m_textureNoise, PIXEL_SHADER);
-	
+	m_context->bind(m_shaderSSAO);	
 	m_context->bind(m_vertexArrayQuad);
 	m_context->draw(6, 0);
-
-	m_context->unbind(m_renderTargetMS->getDepthTexture(), PIXEL_SHADER);
+	m_context->unbind(m_shaderSSAO);
 
 	// FX - Blur
 	// Bind Blur Render Target
 	m_context->bind(m_renderTargetBlur);
 	m_context->clear(m_renderTargetBlur);
 
-	m_context->bind(m_shaderBlur);
-	m_context->bind(m_constantWindow, PIXEL_SHADER);
-	m_context->bind(m_renderTargetSSAO->getTexture(0), PIXEL_SHADER);
-	
+	m_context->bind(m_shaderBlur);	
 	m_context->bind(m_vertexArrayQuad);
 	m_context->draw(6, 0);
+	m_context->unbind(m_shaderBlur);
 
 	// FX - Lighting
 	// Bind Back Buffer
@@ -317,12 +301,7 @@ void TerrainGame::render() {
 	m_context->clearBackBuffer();
 	
 	m_context->bind(m_shaderLighting);
-	m_context->bind(m_constantWindow, PIXEL_SHADER);
-	m_context->bind(m_renderTargetLighting->getTexture(0), PIXEL_SHADER);
-	m_context->bind(m_renderTargetLighting->getTexture(1), PIXEL_SHADER);
-	m_context->bind(m_renderTargetLighting->getTexture(2), PIXEL_SHADER);
-	m_context->bind(m_renderTargetBlur->getTexture(0), PIXEL_SHADER);
-
 	m_context->bind(m_vertexArrayQuad);
 	m_context->draw(6, 0);
+	m_context->unbind(m_shaderLighting);
 }

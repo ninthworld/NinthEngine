@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "Buffer.hpp"
+#include "VertexBuffer.hpp"
 
 namespace NinthEngine {
 
@@ -13,7 +13,7 @@ public:
 
 	virtual ~VertexArray() = default;
 
-	virtual void addVertexBuffer(const std::shared_ptr<Buffer>& buffer) = 0;
+	virtual void bind(const std::shared_ptr<VertexBuffer>& buffer) = 0;
 	
 };
 

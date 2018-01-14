@@ -13,7 +13,7 @@ public:
 		const std::shared_ptr<GraphicsContext>& context,
 		const std::shared_ptr<GameCamera>& camera,
 		const std::shared_ptr<VertexArray>& vertexArray,
-		const std::shared_ptr<Buffer>& constantNode,
+		const std::shared_ptr<ConstantBuffer>& constantNode,
 		const glm::vec2 location,
 		const int lod,
 		const glm::vec2 index);
@@ -28,7 +28,7 @@ private:
 	std::shared_ptr<GameCamera> m_camera;
 	
 	// Constant Buffers
-	std::shared_ptr<Buffer> m_constantNode;
+	std::shared_ptr<ConstantBuffer> m_constantNode;
 	
 	// Vertex Array
 	std::shared_ptr<VertexArray> m_vertexArray;

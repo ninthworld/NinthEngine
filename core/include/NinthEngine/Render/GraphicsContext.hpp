@@ -3,7 +3,7 @@
 #include <memory>
 #include "..\Application\GameWindow.hpp"
 #include "..\Utils\MathUtils.hpp"
-#include "Buffer.hpp"
+#include "IndexBuffer.hpp"
 #include "Rasterizer.hpp"
 #include "RenderTarget.hpp"
 #include "Sampler.hpp"
@@ -31,8 +31,8 @@ public:
 	virtual ~GraphicsContext() = default;
 
 	virtual void draw(const unsigned vertexCount, const unsigned startIndex = 0) = 0;
-	virtual void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex = 0) = 0;
-	virtual void drawIndexed(const std::shared_ptr<Buffer>& indexBuffer) = 0;
+	virtual void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex = 0) = 0;
+	virtual void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer) = 0;
 	
 	virtual void swapBuffers() = 0;
 
@@ -43,19 +43,13 @@ public:
 	virtual void resolveToBackBuffer(const unsigned index, const std::shared_ptr<RenderTarget>& renderTarget) = 0;
 	virtual void resolve(const std::shared_ptr<RenderTarget>& renderTargetFrom, const std::shared_ptr<RenderTarget>& renderTargetTo) = 0;
 
-	virtual void bind(const std::shared_ptr<Shader>& shader) = 0;
 	virtual void bind(const std::shared_ptr<Rasterizer>& rasterizer) = 0;
 	virtual void bind(const std::shared_ptr<RenderTarget>& renderTarget) = 0;
+	virtual void bind(const std::shared_ptr<Shader>& shader) = 0;
 	virtual void bind(const std::shared_ptr<VertexArray>& vertexArray) = 0;
-	virtual void bind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = PIXEL_SHADER) = 0;
-	virtual void bind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = PIXEL_SHADER) = 0;
-	virtual void bind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = VERTEX_SHADER) = 0;
 
 	virtual void unbind(const std::shared_ptr<Shader>& shader) = 0;
 	virtual void unbind(const std::shared_ptr<VertexArray>& vertexArray) = 0;
-	virtual void unbind(const std::shared_ptr<Sampler>& sampler, const ShaderTypeBit shaderType = PIXEL_SHADER) = 0;
-	virtual void unbind(const std::shared_ptr<Texture>& texture, const ShaderTypeBit shaderType = PIXEL_SHADER) = 0;
-	virtual void unbind(const std::shared_ptr<Buffer>& buffer, const ShaderTypeBit shaderType = VERTEX_SHADER) = 0;
 
 	virtual void setData(const std::shared_ptr<Buffer>& buffer, void* data) = 0;
 	virtual void setData(const std::shared_ptr<Texture>& texture, void* data) = 0;

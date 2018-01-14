@@ -10,7 +10,7 @@ TerrainNode::TerrainNode(
 	const std::shared_ptr<GraphicsContext>& context,
 	const std::shared_ptr<GameCamera>& camera,
 	const std::shared_ptr<VertexArray>& vertexArray,
-	const std::shared_ptr<Buffer>& constantNode,
+	const std::shared_ptr<ConstantBuffer>& constantNode,
 	const glm::vec2 location,
 	const int lod,
 	const glm::vec2 index)

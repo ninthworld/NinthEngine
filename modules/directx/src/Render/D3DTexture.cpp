@@ -7,14 +7,14 @@
 namespace NinthEngine {
 namespace DX {
 
+// TODO: Allow depth texture format to vary
+
 D3DTexture::D3DTexture(
 	const ComPtr<ID3D11Device>& device,
 	const TextureStruct texture,
 	const bool renderTarget)
-	: m_samplerBinding(0)
-	, m_dxFormat(getDXGIFormat(texture.format))
+	: m_dxFormat(getDXGIFormat(texture.format))
 	, m_dxDefault(false)
-	, m_binding(0)
 	, m_format(texture.format)
 	, m_width(texture.width)
 	, m_height(texture.height)
@@ -36,30 +36,27 @@ D3DTexture::D3DTexture(
 	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE |
 		(texture.format & FORMAT_DEPTH ? 
 			D3D11_BIND_DEPTH_STENCIL :
-			//D3D11_BIND_SHADER_RESOURCE | 
-				(m_dxDefault ? D3D11_BIND_RENDER_TARGET : 0));
+			(m_dxDefault ? D3D11_BIND_RENDER_TARGET : 0));
 	textureDesc.Usage = (m_dxDefault ? D3D11_USAGE_DEFAULT : D3D11_USAGE_DYNAMIC);
 	textureDesc.CPUAccessFlags = (m_dxDefault ? 0 : D3D11_CPU_ACCESS_WRITE);
 	textureDesc.MiscFlags = (m_mmLevels ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0);
 	textureDesc.MipLevels = (m_mmLevels ? (m_mmLevels == UINT_MAX ? 0 : pow(2, m_mmLevels)) : 1);
 	
-	hr = device->CreateTexture2D(&textureDesc, NULL, &m_texture);
+	hr = device->CreateTexture2D(&textureDesc, NULL, &m_texturePtr);
 	CHECK_ERROR(hr, "ID3D11Texture2D");
 
-	//if (!(texture.format & FORMAT_DEPTH)) {
-		D3D11_SHADER_RESOURCE_VIEW_DESC shaderRVDesc;
-		ZeroMemory(&shaderRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderRVDesc;
+	ZeroMemory(&shaderRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 
-		shaderRVDesc.Format = (texture.format & FORMAT_DEPTH ? DXGI_FORMAT_R24_UNORM_X8_TYPELESS : textureDesc.Format);
-		shaderRVDesc.Texture2D.MostDetailedMip = 0;
-		shaderRVDesc.Texture2D.MipLevels = (m_mmLevels ? -1 : textureDesc.MipLevels);
-		shaderRVDesc.ViewDimension = (m_msCount ?
-			D3D11_SRV_DIMENSION_TEXTURE2DMS :
-			D3D11_SRV_DIMENSION_TEXTURE2D);
+	shaderRVDesc.Format = (texture.format & FORMAT_DEPTH ? DXGI_FORMAT_R24_UNORM_X8_TYPELESS : textureDesc.Format);
+	shaderRVDesc.Texture2D.MostDetailedMip = 0;
+	shaderRVDesc.Texture2D.MipLevels = (m_mmLevels ? -1 : textureDesc.MipLevels);
+	shaderRVDesc.ViewDimension = (m_msCount ?
+		D3D11_SRV_DIMENSION_TEXTURE2DMS :
+		D3D11_SRV_DIMENSION_TEXTURE2D);
 
-		hr = device->CreateShaderResourceView(m_texture.Get(), &shaderRVDesc, &m_shaderRV);
-		CHECK_ERROR(hr, "ID3D11ShaderResourceView");
-	//}
+	hr = device->CreateShaderResourceView(m_texturePtr.Get(), &shaderRVDesc, &m_shaderView);
+	CHECK_ERROR(hr, "ID3D11ShaderResourceView");
 }
 
 D3DTexture::~D3DTexture() {
@@ -72,13 +69,13 @@ void D3DTexture::setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void*
 
 	if (m_dxDefault) {
 		unsigned memPitch = 4 * m_width * sizeof(unsigned char);
-		deviceContext->UpdateSubresource(m_texture.Get(), 0, NULL, data, memPitch, 0);
-		deviceContext->GenerateMips(m_shaderRV.Get());
+		deviceContext->UpdateSubresource(m_texturePtr.Get(), 0, NULL, data, memPitch, 0);
+		deviceContext->GenerateMips(m_shaderView.Get());
 	}
 	else {
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 
-		HRESULT hr = deviceContext->Map(m_texture.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		HRESULT hr = deviceContext->Map(m_texturePtr.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 		if (FAILED(hr)) {
 			LOG_ERROR << "Failed to map texture data: " << _com_error(hr).ErrorMessage();
 			throw std::exception();
@@ -86,7 +83,7 @@ void D3DTexture::setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void*
 
 		memcpy(mappedResource.pData, data, m_width * m_height * 4);
 
-		deviceContext->Unmap(m_texture.Get(), 0);
+		deviceContext->Unmap(m_texturePtr.Get(), 0);
 	}
 }
 

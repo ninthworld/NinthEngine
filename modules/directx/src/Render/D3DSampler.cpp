@@ -8,8 +8,7 @@ namespace DX {
 
 D3DSampler::D3DSampler(
 	const ComPtr<ID3D11Device>& device,
-	const SamplerStruct sampler)
-	: m_binding(0) {
+	const SamplerStruct sampler) {
 
 	D3D11_SAMPLER_DESC samplerDesc;
 	ZeroMemory(&samplerDesc, sizeof(samplerDesc));
@@ -74,7 +73,7 @@ D3DSampler::D3DSampler(
 	samplerDesc.BorderColor[2] = sampler.border.b;
 	samplerDesc.BorderColor[3] = sampler.border.a;
 	
-	HRESULT hr = device->CreateSamplerState(&samplerDesc, &m_sampler);
+	HRESULT hr = device->CreateSamplerState(&samplerDesc, &m_samplerState);
 	CHECK_ERROR(hr, "ID3D11SamplerState");
 }
 

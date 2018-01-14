@@ -13,6 +13,7 @@ public:
 	GLRenderEngine();
 	~GLRenderEngine();
 
+	// RenderEngine
 	void init(const std::shared_ptr<GameWindow>& window, void* hwnd = nullptr);
 
 	std::unique_ptr<GraphicsDevice> getGraphicsDevice() { return std::move(m_device); };

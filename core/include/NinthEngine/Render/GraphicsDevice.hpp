@@ -1,7 +1,9 @@
 #pragma once
 
 #include <memory>
-#include "Buffer.hpp"
+#include "IndexBuffer.hpp"
+#include "VertexBuffer.hpp"
+#include "ConstantBuffer.hpp"
 #include "Shader.hpp"
 #include "Rasterizer.hpp"
 #include "Texture.hpp"
@@ -25,9 +27,9 @@ public:
 
 	virtual ~GraphicsDevice() = default;
 
-	virtual BufferBuilder createVertexBuffer() = 0;
-	virtual BufferBuilder createIndexBuffer() = 0;
-	virtual BufferBuilder createConstantBuffer() = 0;
+	virtual VertexBufferBuilder createVertexBuffer() = 0;
+	virtual IndexBufferBuilder createIndexBuffer() = 0;
+	virtual ConstantBufferBuilder createConstantBuffer() = 0;
 	virtual ShaderBuilder createShader() = 0;
 	virtual RasterizerBuilder createRasterizer() = 0;
 	virtual TextureBuilder createTexture() = 0;

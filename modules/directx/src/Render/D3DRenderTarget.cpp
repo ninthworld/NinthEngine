@@ -17,7 +17,7 @@ D3DRenderTarget::D3DRenderTarget(
 
 	for (unsigned i = 0; i < m_textures.size(); ++i) {
 		ComPtr<ID3D11RenderTargetView> view;
-		hr = device->CreateRenderTargetView(m_textures[i]->getTexture().Get(), nullptr, &view);
+		hr = device->CreateRenderTargetView(m_textures[i]->getTexturePtr().Get(), nullptr, &view);
 		CHECK_ERROR(hr, "ID3D11RenderTargetView");
 		m_renderTargetViews.push_back(view);
 	}
@@ -29,7 +29,7 @@ D3DRenderTarget::D3DRenderTarget(
 		depthDesc.ViewDimension = (m_depthTexture->getMultisampleCount() ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D);
 		depthDesc.Texture2D.MipSlice = 0;
 
-		hr = device->CreateDepthStencilView(m_depthTexture->getTexture().Get(), &depthDesc, &m_depthStencilView);
+		hr = device->CreateDepthStencilView(m_depthTexture->getTexturePtr().Get(), &depthDesc, &m_depthStencilView);
 		CHECK_ERROR(hr, "ID3D11DepthStencilView");
 	}
 }

@@ -9,7 +9,7 @@ SamplerState texSampler : register(s0);
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
 Texture2D positionTexture : register(t2);
-Texture2D ssaoTexture : register(t6);
+Texture2D ssaoTexture : register(t3);
 
 float4 main(VertexOut IN) : SV_TARGET {
 
