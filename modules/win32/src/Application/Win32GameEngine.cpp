@@ -29,6 +29,24 @@ Win32GameEngine::~Win32GameEngine() {
 
 void Win32GameEngine::run(std::unique_ptr<Game> game) {
 	
+	m_window->setResizeCallback(
+		[&game](const int width, const int height) {
+		game->onResize(width, height); });
+
+	auto win32Keyboard = std::dynamic_pointer_cast<Win32Keyboard>(m_window->getKeyboard());
+	win32Keyboard->setKeyCallback(
+		[&game](const Key key, const KeyState state) {
+		game->onKeyboard(key, state); });
+
+	auto win32Mouse = std::dynamic_pointer_cast<Win32Mouse>(m_window->getMouse());
+	win32Mouse->setButtonCallback(
+		[&game](const MouseButton button, const MouseState state) {
+		game->onMouseButton(button, state); });
+
+	win32Mouse->setMoveCallback(
+		[&game](const int x, const int y) {
+		game->onMouseMove(x, y); });
+
 	game->init();
 
 	const std::string title = m_window->getTitle();

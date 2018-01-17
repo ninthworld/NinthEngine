@@ -20,7 +20,7 @@ void Win32Keyboard::keyCallback(int key, int state) {
 		m_keys[key] = KeyState(state);
 	}
 
-	if (m_keyCB) m_keyCB(Key(key), KeyState(state));
+	if (m_keyboardCallback) m_keyboardCallback(Key(key), KeyState(state));
 }
 
 } // namespace Win32

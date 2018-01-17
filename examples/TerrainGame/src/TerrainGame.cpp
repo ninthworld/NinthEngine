@@ -29,35 +29,7 @@ TerrainGame::~TerrainGame() {
 }
 
 void TerrainGame::init() {
-
-	m_window->setResizeCallback([this](int width, int height) {
-		m_camera->setProjMatrix(width, height);
-		m_context->setViewport({ 0.0f, 0.0f, (float)width, (float)height });
-
-		glm::vec4 windowSize = glm::vec4(m_window->getWidth(), m_window->getHeight(), 0, 0);
-		m_context->setData(m_constantWindow, &windowSize);
-		m_context->setData(m_constantCameraProj, &m_camera->dataProj());
-	});
-
-	m_window->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
-		if (key == KEY_ESCAPE) m_window->close();
-		if (key == KEY_1 && state == KS_RELEASED) m_wireframe = !m_wireframe;
-		if (key == KEY_0 && state == KS_RELEASED) m_camDebug = !m_camDebug;
-
-		if (m_camDebug) m_cameraDebug->keyCallback(key, state);
-		else m_camera->keyCallback(key, state);
-	});
-
-	m_window->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
-		if (m_camDebug) m_cameraDebug->mouseButtonCallback(m_window, btn, state);
-		else m_camera->mouseButtonCallback(m_window, btn, state);
-	});
-
-	m_window->getMouse()->setMoveCallback([this](int mx, int my) {
-		if (m_camDebug) m_cameraDebug->mouseMoveCallback(m_window, mx, my);
-		else m_camera->mouseMoveCallback(m_window, mx, my);
-	});
-
+	
 	// Set Backbuffer Clear Color
 	m_context->setClearColor({ 0.57f, 0.67f, 0.87f, 1.0f });
 
@@ -316,5 +288,36 @@ void TerrainGame::render() {
 	m_context->bind(m_vertexArrayQuad);
 	m_context->draw(6, 0);
 	m_context->unbind(m_shaderLighting);
+}
 
+void TerrainGame::onResize(const int width, const int height) {
+
+	m_camera->setProjMatrix(width, height);
+	m_context->setViewport({ 0.0f, 0.0f, (float)width, (float)height });
+
+	glm::vec4 windowSize = glm::vec4(m_window->getWidth(), m_window->getHeight(), 0, 0);
+	m_context->setData(m_constantWindow, &windowSize);
+	m_context->setData(m_constantCameraProj, &m_camera->dataProj());
+}
+
+void TerrainGame::onKeyboard(const Key key, const KeyState state) {
+
+	if (key == KEY_ESCAPE) m_window->close();
+	if (key == KEY_1 && state == KS_RELEASED) m_wireframe = !m_wireframe;
+	if (key == KEY_0 && state == KS_RELEASED) m_camDebug = !m_camDebug;
+
+	if (m_camDebug) m_cameraDebug->keyCallback(key, state);
+	else m_camera->keyCallback(key, state);
+}
+
+void TerrainGame::onMouseButton(const MouseButton button, const MouseState state) {
+
+	if (m_camDebug) m_cameraDebug->mouseButtonCallback(m_window, button, state);
+	else m_camera->mouseButtonCallback(m_window, button, state);
+}
+
+void TerrainGame::onMouseMove(const int x, const int y) {
+
+	if (m_camDebug) m_cameraDebug->mouseMoveCallback(m_window, x, y);
+	else m_camera->mouseMoveCallback(m_window, x, y);
 }

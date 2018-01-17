@@ -40,10 +40,6 @@ public:
 
 	virtual ~Keyboard() = default;
 
-	virtual void setKeyCallback(const std::function<void(Key, KeyState)>&) = 0;
-
-	virtual void keyCallback(int key, int state) = 0;
-
 	virtual const KeyState getKey(Key key) const = 0;
 };
 

@@ -22,9 +22,6 @@ public:
 	virtual void update() = 0;
 	virtual void close() = 0;
 	
-	virtual void setResizeCallback(const std::function<void(int, int)>&) = 0;
-	virtual void resizeCallback(const int, const int) = 0;
-
 	virtual std::shared_ptr<Keyboard> getKeyboard() = 0;
 	virtual std::shared_ptr<Mouse> getMouse() = 0;
 

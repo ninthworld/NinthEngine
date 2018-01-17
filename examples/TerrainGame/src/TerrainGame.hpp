@@ -14,9 +14,14 @@ public:
 	TerrainGame(const std::shared_ptr<GameEngine>& engine);
 	~TerrainGame();
 
-	void init();
-	void update(const double deltaTime);
-	void render();
+	void init() override;
+	void update(const double deltaTime) override;
+	void render() override;
+
+	void onResize(const int width, const int height) override;
+	void onKeyboard(const Key key, const KeyState state) override;
+	void onMouseButton(const MouseButton button, const MouseState state) override;
+	void onMouseMove(const int x, const int y) override;
 
 protected:
 private:

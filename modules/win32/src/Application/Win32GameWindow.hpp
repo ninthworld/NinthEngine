@@ -5,14 +5,10 @@
 #include <NinthEngine\Application\Game.hpp>
 #include <NinthEngine\Application\GameWindow.hpp>
 #include "..\Utils\Win32Utils.hpp"
+#include "..\Input\Win32Keyboard.hpp"
+#include "..\Input\Win32Mouse.hpp"
 
 namespace NinthEngine {
-
-enum Key;
-enum KeyState;
-enum MouseButton;
-enum MouseState;
-
 namespace Win32 {
 
 class Win32GameWindow : public GameWindow {
@@ -20,11 +16,9 @@ public:
 	Win32GameWindow(const std::string title, const int width, const int height, HINSTANCE hInstance, int cmdShow);
 	~Win32GameWindow();
 
-	void update();
-	void close();
-
-	void setResizeCallback(const std::function<void(int, int)>& callback) override { m_resizeCB = callback; };
-	void resizeCallback(const int _width, const int _height) override { if(m_resizeCB) m_resizeCB(_width, _height); };
+	// GameWindow
+	void update() override;
+	void close() override;
 
 	std::shared_ptr<Keyboard> getKeyboard() override { return m_keyboard; }
 	std::shared_ptr<Mouse> getMouse() override { return m_mouse; }
@@ -44,6 +38,11 @@ public:
 	void setMouseVisible(const bool visible) override;
 	void setWindowSize(const int width, const int height) override;
 
+	// Self
+	void setResizeCallback(const std::function<void(int, int)>& callback) { m_resizeCallback = callback; };
+
+	void resizeCallback(const int width, const int height) { if (m_resizeCallback) m_resizeCallback(width, height); };
+	
 	LRESULT CALLBACK wndProcCallback(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
@@ -54,11 +53,11 @@ private:
 	std::string m_title;
 	int m_width, m_height;
 	bool m_mouseVisible, m_closed;
-	
-	std::function<void(int, int)> m_resizeCB;
 
-	std::shared_ptr<Keyboard> m_keyboard;
-	std::shared_ptr<Mouse> m_mouse;
+	std::shared_ptr<Win32Keyboard> m_keyboard;
+	std::shared_ptr<Win32Mouse> m_mouse;
+
+	std::function<void(const int, const int)> m_resizeCallback;
 
 };
 

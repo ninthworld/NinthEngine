@@ -14,11 +14,11 @@ public:
 	Win32Mouse();
 	~Win32Mouse();
 
-	void setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) override { m_buttonCB = callback; };
-	void setMoveCallback(const std::function<void(int, int)>& callback) override { m_moveCB = callback; };
+	void setButtonCallback(const std::function<void(MouseButton, MouseState)>& callback) { m_mouseButtonCallback = callback; };
+	void setMoveCallback(const std::function<void(int, int)>& callback) { m_mouseMoveCallback = callback; };
 
-	void buttonCallback(int button, int state) override;
-	void moveCallback(int x, int y) override;
+	void buttonCallback(int button, int state);
+	void moveCallback(int x, int y);
 
 	const MouseState getButton(MouseButton button) const override { return m_buttons[button]; };
 	const double getMouseX() const override { return m_x; };
@@ -32,8 +32,8 @@ private:
 	std::vector<MouseState> m_buttons;
 	bool m_centered;
 
-	std::function<void(MouseButton, MouseState)> m_buttonCB;
-	std::function<void(int, int)> m_moveCB;
+	std::function<void(const MouseButton, const MouseState)> m_mouseButtonCallback;
+	std::function<void(const int, const int)> m_mouseMoveCallback;
 };
 
 } // namespace Win32

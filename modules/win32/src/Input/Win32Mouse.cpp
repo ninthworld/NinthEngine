@@ -18,7 +18,7 @@ void Win32Mouse::buttonCallback(int button, int state) {
 		m_buttons[button] = MouseState(state);
 	}
 
-	if (m_buttonCB) m_buttonCB(MouseButton(button), MouseState(state));
+	if (m_mouseButtonCallback) m_mouseButtonCallback(MouseButton(button), MouseState(state));
 }
 
 void Win32Mouse::moveCallback(int x, int y) {
@@ -26,7 +26,7 @@ void Win32Mouse::moveCallback(int x, int y) {
 	m_x = x;
 	m_y = y;
 
-	if (m_moveCB) m_moveCB(x, y);
+	if (m_mouseMoveCallback) m_mouseMoveCallback(x, y);
 }
 
 } // namespace Win32

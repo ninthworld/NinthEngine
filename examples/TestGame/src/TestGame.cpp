@@ -18,26 +18,6 @@ TestGame::~TestGame() {
 
 void TestGame::init() {
 
-	m_window->setResizeCallback([this](int width, int height) {
-		m_camera->setProjMatrix(width, height);
-		m_context->setViewport({ 0.0f, 0.0f, (float)width, (float)height });
-	});
-
-	m_window->getKeyboard()->setKeyCallback([this](Key key, KeyState state) {
-		if (key == KEY_ESCAPE) {
-			m_window->close();
-		}
-		m_camera->keyCallback(key, state);
-	});
-
-	m_window->getMouse()->setButtonCallback([this](MouseButton btn, MouseState state) {
-		m_camera->mouseButtonCallback(m_window, btn, state);
-	});
-
-	m_window->getMouse()->setMoveCallback([this](int mx, int my) {
-		m_camera->mouseMoveCallback(m_window, mx, my);
-	});
-
 	// Set Backbuffer Clear Color
 	m_context->setClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 	
@@ -145,4 +125,24 @@ void TestGame::render() {
 
 	// Resolve Multisampled Scene to Backbuffer
 	m_context->resolveToBackBuffer(0, m_renderTargetMS);
+}
+
+void TestGame::onResize(const int width, const int height) {
+
+	m_camera->setProjMatrix(width, height);
+	m_context->setViewport({ 0.0f, 0.0f, (float)width, (float)height });
+}
+
+void TestGame::onKeyboard(const Key key, const KeyState state) {
+
+	if (key == KEY_ESCAPE) m_window->close();
+	m_camera->keyCallback(key, state);
+}
+
+void TestGame::onMouseButton(const MouseButton button, const MouseState state) {
+	m_camera->mouseButtonCallback(m_window, button, state);
+}
+
+void TestGame::onMouseMove(const int x, const int y) {
+	m_camera->mouseMoveCallback(m_window, x, y);
 }
