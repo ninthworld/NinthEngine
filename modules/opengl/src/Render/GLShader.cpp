@@ -1,4 +1,3 @@
-#include <plog\Log.h>
 #include "GLConstantBuffer.hpp"
 #include "GLTexture.hpp"
 #include "GLShader.hpp"

@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <memory>
+#include <vector>
 #include "..\..\Utils\MathUtils.hpp"
 #include "..\Config\BlenderConfig.hpp"
 

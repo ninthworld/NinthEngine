@@ -1,4 +1,3 @@
-#include <plog\Log.h>
 #include <NinthEngine\Application\GameWindow.hpp>
 #include "GLIndexBuffer.hpp"
 #include "GLShader.hpp"

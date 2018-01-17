@@ -1,6 +1,5 @@
 #ifdef _WIN32
 
-#include <plog\Log.h>
 #include "D3DConstantBuffer.hpp"
 
 namespace NinthEngine {

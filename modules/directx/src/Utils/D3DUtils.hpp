@@ -18,6 +18,8 @@
 
 using namespace Microsoft::WRL;
 
+#include <NinthEngine\Utils\LogUtils.hpp>
+
 #define CHECK_ERROR(hr, func) if (FAILED(hr)) { LOG_ERROR << "Failed to create " << func << ": " << _com_error(hr).ErrorMessage(); throw std::exception(); }
 
 #include <NinthEngine\Render\Config\TextureConfig.hpp>

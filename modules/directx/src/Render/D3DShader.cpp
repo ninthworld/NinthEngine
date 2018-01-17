@@ -2,7 +2,6 @@
 
 #define HLSL_VERSION(s) (s "_5_0")
 
-#include <plog\Log.h>
 #include "D3DConstantBuffer.hpp"
 #include "D3DTexture.hpp"
 #include "D3DSampler.hpp"

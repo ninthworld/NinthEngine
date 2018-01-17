@@ -10,18 +10,14 @@
 #pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glew32s.lib")
 
-#include <plog\Log.h>
+#include <NinthEngine\Utils\LogUtils.hpp>
 
-#ifdef _DEBUG
 #define CHECK_ERROR(func) switch(glGetError()) { \
 case GL_INVALID_ENUM: LOG_WARNING << func << ": " << "GL_INVALID_ENUM"; break; \
 case GL_INVALID_VALUE: LOG_WARNING << func << ": " << "GL_INVALID_VALUE"; break; \
 case GL_INVALID_OPERATION: LOG_WARNING << func << ": " << "GL_INVALID_OPERATION"; break; \
 case GL_INVALID_FRAMEBUFFER_OPERATION: LOG_WARNING << func << ": " << "GL_INVALID_FRAMEBUFFER_OPERATION"; break; \
 case GL_OUT_OF_MEMORY: LOG_WARNING << func << ": " << "GL_OUT_OF_MEMORY"; break; }
-#else
-#define CHECK_ERROR(func)
-#endif
 
 #include <NinthEngine\Render\Config\TextureConfig.hpp>
 

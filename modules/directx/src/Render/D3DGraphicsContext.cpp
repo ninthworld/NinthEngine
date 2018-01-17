@@ -1,6 +1,5 @@
 #ifdef _WIN32
 
-#include <plog\Log.h>
 #include <NinthEngine\Application\GameWindow.hpp>
 #include "D3DIndexBuffer.hpp"
 #include "D3DConstantBuffer.hpp"

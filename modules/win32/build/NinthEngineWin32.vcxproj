@@ -72,22 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,7 +136,6 @@
     <ClInclude Include="..\src\Application\Win32GameWindow.hpp" />
     <ClInclude Include="..\src\Input\Win32Keyboard.hpp" />
     <ClInclude Include="..\src\Input\Win32Mouse.hpp" />
-    <ClInclude Include="..\src\Render\Win32GLContext.hpp" />
     <ClInclude Include="..\src\Utils\Win32Utils.hpp" />
   </ItemGroup>
   <ItemGroup>

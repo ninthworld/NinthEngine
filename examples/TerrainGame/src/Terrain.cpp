@@ -1,5 +1,4 @@
-#include <stb_image.h>
-
+#include <NinthEngine\Utils\FileUtils.hpp>
 #include <NinthEngine\Camera\GameCamera.hpp>
 #include <NinthEngine\Render\GraphicsDevice.hpp>
 #include <NinthEngine\Render\GraphicsContext.hpp>

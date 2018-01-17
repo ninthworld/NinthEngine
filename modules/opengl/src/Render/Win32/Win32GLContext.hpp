@@ -5,7 +5,6 @@
 #include <Windows.h>
 #include <memory>
 #include <functional>
-#include <plog\Log.h>
 #include "..\..\Utils\GLUtils.hpp"
 #include "..\GLContext.hpp"
 

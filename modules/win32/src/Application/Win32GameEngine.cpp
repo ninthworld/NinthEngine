@@ -1,6 +1,6 @@
 #ifdef _WIN32
 
-#include <plog\Log.h>
+#include <NinthEngine\Utils\LogUtils.hpp>
 #include "..\..\include\NinthEngineWin32\Win32Bootstrap.hpp"
 #include "Win32GameEngine.hpp"
 

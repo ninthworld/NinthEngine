@@ -3,11 +3,12 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <plog\Log.h>
+#include "LogUtils.hpp"
+#include "STB\stb_image.h"
 
 namespace NinthEngine {
 
-inline static std::string readShaderFile(const std::string file) {
+static std::string readShaderFile(const std::string file) {
 
 #ifdef _DEBUG
 	LOG_DEBUG << "[SHADER] Loading " << file << "...";

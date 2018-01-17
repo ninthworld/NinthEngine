@@ -72,22 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\..\dependencies\glm;$(ProjectDir)..\..\..\dependencies\plog\include;$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\dependencies\stb;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\..\dependencies\glew\include;$(ProjectDir)..\..\..\core\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

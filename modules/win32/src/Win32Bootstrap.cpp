@@ -1,8 +1,6 @@
 #ifdef _WIN32
 
-#include <plog\Log.h>
-#include <plog\Appenders\ColorConsoleAppender.h>
-
+#include <NinthEngine\Utils\FileUtils.hpp>
 #include "Application\Win32GameWindow.hpp"
 #include "Application\Win32GameEngine.hpp"
 #include "..\include\NinthEngineWin32\Win32Bootstrap.hpp"

@@ -1,8 +1,4 @@
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 #include <vector>
-#include <plog\Log.h>
 #include <NinthEngine\Utils\FileUtils.hpp>
 #include "GLShader.hpp"
 #include "GLConstantBuffer.hpp"

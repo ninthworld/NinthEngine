@@ -1,6 +1,5 @@
 #ifdef _WIN32
 
-#include <plog\Log.h>
 #include "D3DVertexBuffer.hpp"
 #include "D3DVertexArray.hpp"
 

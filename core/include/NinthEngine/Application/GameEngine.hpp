@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include "..\Utils\MathUtils.hpp"
 #include "..\Application\Game.hpp"
 #include "..\Application\GameWindow.hpp"
 #include "..\Application\GameTimer.hpp"

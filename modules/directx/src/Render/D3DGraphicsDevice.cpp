@@ -1,10 +1,7 @@
 #ifdef _WIN32
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 #include <vector>
-#include <plog\Log.h>
+#include <NinthEngine\Utils\LogUtils.hpp>
 #include <NinthEngine\Utils\FileUtils.hpp>
 #include "D3DShader.hpp"
 #include "D3DConstantBuffer.hpp"

@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Render\Builder">
       <UniqueIdentifier>{68c2a2a3-56f3-41c0-b58c-e769412e2642}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{d2237662-b283-4d1d-a7cf-e2bc85948eef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngine\Application\Game.hpp">
@@ -153,10 +156,16 @@
     <ClInclude Include="..\include\NinthEngine\Render\Blender.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Utils\LogUtils.hpp">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp">
       <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Utils\FileUtils.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

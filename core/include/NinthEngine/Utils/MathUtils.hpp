@@ -1,11 +1,12 @@
 #pragma once
 
+#include <algorithm>
 #include <math.h>
-#include <glm\glm.hpp>
-#include <glm\ext.hpp>
+#include "GLM\glm.hpp"
+#include "GLM\ext.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm\gtx\extend.hpp>
+#include "GLM\gtx\extend.hpp"
 
 #define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062
 

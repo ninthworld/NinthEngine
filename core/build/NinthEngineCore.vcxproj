@@ -72,22 +72,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)$(Configuration)\$(Platform)\</IntDir>
-    <IncludePath>$(ProjectDir)..\..\dependencies\glm;$(ProjectDir)..\..\dependencies\plog\include;$(ProjectDir)..\..\dependencies\stb;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -167,7 +167,9 @@
     <ClInclude Include="..\include\NinthEngine\Render\VertexArray.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\VertexBuffer.hpp" />
     <ClInclude Include="..\include\NinthEngine\Utils\FileUtils.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Utils\LogUtils.hpp" />
     <ClInclude Include="..\include\NinthEngine\Utils\MathUtils.hpp" />
+    <ClCompile Include="..\src\Utils\FileUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp" />

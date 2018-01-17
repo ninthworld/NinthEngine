@@ -1,6 +1,6 @@
 #ifdef _WIN32
 
-#include <plog\Log.h>
+#include <NinthEngine\Utils\LogUtils.hpp>
 #include "..\Utils\Win32Utils.hpp"
 #include "..\Input\Win32Keyboard.hpp"
 #include "..\Input\Win32Mouse.hpp"

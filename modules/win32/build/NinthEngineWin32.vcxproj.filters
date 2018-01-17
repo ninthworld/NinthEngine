@@ -16,9 +16,6 @@
     <Filter Include="Header Files\Utils">
       <UniqueIdentifier>{6872f144-e14f-469c-816f-95888adb8b20}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Render">
-      <UniqueIdentifier>{2daaadda-8dfb-436c-b830-b2695863e462}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Application">
       <UniqueIdentifier>{d7d1eded-4472-481f-9d58-b62af56ce5e2}</UniqueIdentifier>
     </Filter>
@@ -50,9 +47,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Input\Win32Mouse.hpp">
       <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Render\Win32GLContext.hpp">
-      <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Utils\Win32Utils.hpp">
       <Filter>Header Files\Utils</Filter>
