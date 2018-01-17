@@ -43,6 +43,15 @@
     <Filter Include="Resource Files\fx\ssao">
       <UniqueIdentifier>{2f6df28c-54fa-4a73-935f-1c47c73b7689}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\grass">
+      <UniqueIdentifier>{57a39ea5-77d6-4764-9426-8866c4c78237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\grass\glsl">
+      <UniqueIdentifier>{6cf4e459-404d-422a-bb53-5f0c2a02e988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\grass\hlsl">
+      <UniqueIdentifier>{f2dcf8d9-fb61-40b0-839f-59a4600c5ee6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -109,6 +118,12 @@
     <FxCompile Include="res\fx\ssao\ssao.ps.hlsl">
       <Filter>Resource Files\fx\ssao</Filter>
     </FxCompile>
+    <FxCompile Include="res\grass\grass.ps.hlsl">
+      <Filter>Resource Files\grass\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="res\grass\grass.vs.hlsl">
+      <Filter>Resource Files\grass\hlsl</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\skydome\shaders\skydome.ps.glsl">
@@ -143,6 +158,12 @@
     </None>
     <None Include="res\fx\ssao\ssao.ps.glsl">
       <Filter>Resource Files\fx\ssao</Filter>
+    </None>
+    <None Include="res\grass\grass.vs.glsl">
+      <Filter>Resource Files\grass\glsl</Filter>
+    </None>
+    <None Include="res\grass\grass.ps.glsl">
+      <Filter>Resource Files\grass\glsl</Filter>
     </None>
   </ItemGroup>
 </Project>

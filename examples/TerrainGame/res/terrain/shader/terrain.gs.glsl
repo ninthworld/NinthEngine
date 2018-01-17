@@ -42,7 +42,6 @@ vec3 displacement[3];
 
 void main() {
 
-
 	displacement[0] = displacement[1] = displacement[2] = vec3(0);
 
 	float dist = 

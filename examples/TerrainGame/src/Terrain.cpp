@@ -18,7 +18,7 @@ Terrain::Terrain(
 	, m_constantCamera(constantCamera) {
 	
 	auto inputLayout = LayoutConfig().float2(POSITION);
-
+	
 	// Generate Model Data
 	std::vector<glm::vec2> vertices;
 	const unsigned divs = sqrt(patchSize) - 1;
@@ -37,11 +37,11 @@ Terrain::Terrain(
 		.build();
 
 	// Initialize Vertex Array
-	m_vertexArray = device->createVertexArray();
-	m_vertexArray->bind(vertexBuffer);
-
+	m_vertexArrayTerrain = device->createVertexArray();
+	m_vertexArrayTerrain->bind(vertexBuffer);
+	
 	// Initialize Shader
-	m_shader = device->createShader()
+	m_shaderTerrain = device->createShader()
 		.withLayout(inputLayout)
 		.withGLSL<VERTEX_SHADER>("res/terrain/shader/terrain.vs.glsl")
 		.withGLSL<HULL_SHADER>("res/terrain/shader/terrain.hs.glsl")
@@ -91,7 +91,7 @@ Terrain::Terrain(
 		.withMipmapping()
 		.build();
 	m_normalmap->setSampler(m_sampler);
-	
+
 	// Material - Grass
 	m_materials.push_back(
 		Material{
@@ -173,29 +173,118 @@ Terrain::Terrain(
 		.build() });
 
 	// Bind Constants to Shader
-	m_shader->bind(0, "Camera", m_constantCamera, GEOMETRY_SHADER | PIXEL_SHADER);
-	m_shader->bind(1, "Terrain", m_constantTerrain, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
-	m_shader->bind(2, "Node", m_constantNode, VERTEX_SHADER | HULL_SHADER | PIXEL_SHADER);
+	m_shaderTerrain->bind(0, "Camera", m_constantCamera, GEOMETRY_SHADER | PIXEL_SHADER);
+	m_shaderTerrain->bind(1, "Terrain", m_constantTerrain, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
+	m_shaderTerrain->bind(2, "Node", m_constantNode, VERTEX_SHADER | HULL_SHADER | PIXEL_SHADER);
 
 	// Bind Samplers to Shader
-	m_shader->bind(0, "texSampler", m_sampler, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
+	m_shaderTerrain->bind(0, "texSampler", m_sampler, VERTEX_SHADER | DOMAIN_SHADER | GEOMETRY_SHADER | PIXEL_SHADER);
 
 	// Bind Textures to Shader
 	unsigned t = 0;
-	m_shader->bind(t++, "heightmap", m_heightmap, VERTEX_SHADER | DOMAIN_SHADER);
-	m_shader->bind(t++, "normalmap", m_normalmap, PIXEL_SHADER);
+	m_shaderTerrain->bind(t++, "heightmap", m_heightmap, VERTEX_SHADER | DOMAIN_SHADER);
+	m_shaderTerrain->bind(t++, "normalmap", m_normalmap, PIXEL_SHADER);
 
 	for (unsigned i = 0; i < m_materials.size(); ++i) {
-		m_materials[i].mapAlpha->setSampler(m_sampler);
+		m_materials[i].diffuse->setSampler(m_sampler);
 		m_materials[i].displacement->setSampler(m_sampler);
 		m_materials[i].normal->setSampler(m_sampler);
 		m_materials[i].mapAlpha->setSampler(m_sampler);
 
-		m_shader->bind(t++, "material" + std::to_string(i) + "Dif", m_materials[i].diffuse, PIXEL_SHADER);
-		m_shader->bind(t++, "material" + std::to_string(i) + "Disp", m_materials[i].displacement, GEOMETRY_SHADER);
-		m_shader->bind(t++, "material" + std::to_string(i) + "Norm", m_materials[i].normal, PIXEL_SHADER);
-		m_shader->bind(t++, "material" + std::to_string(i) + "Alpha", m_materials[i].mapAlpha, GEOMETRY_SHADER | PIXEL_SHADER);
+		m_shaderTerrain->bind(t++, "material" + std::to_string(i) + "Dif", m_materials[i].diffuse, PIXEL_SHADER);
+		m_shaderTerrain->bind(t++, "material" + std::to_string(i) + "Disp", m_materials[i].displacement, GEOMETRY_SHADER);
+		m_shaderTerrain->bind(t++, "material" + std::to_string(i) + "Norm", m_materials[i].normal, PIXEL_SHADER);
+		m_shaderTerrain->bind(t++, "material" + std::to_string(i) + "Alpha", m_materials[i].mapAlpha, GEOMETRY_SHADER | PIXEL_SHADER);
 	}
+
+	// Grass
+	m_blender = device->createBlender()
+		.withAlphaToCoverage()
+		.build();
+
+	m_rasterizerNoCull = device->createRasterizer()
+		.withFill()
+		.withDepthClipping()
+		.withMultisampling()
+		.withFrontCCW()
+		.build();
+
+	m_constantGrass = device->createConstantBuffer()
+		.withLayout(LayoutConfig().float4())
+		.withData((void*)glm::value_ptr(glm::vec4(m_timeStep)))
+		.build();
+
+	inputLayout = LayoutConfig().float3(POSITION).float3(NORMAL).float2(TEXCOORD);
+
+	struct Vertex { glm::vec3 position, normal; glm::vec2 texCoord; };
+	std::vector<Vertex> grassVertices{
+		{ glm::vec3(0, 0, -1), glm::vec3(0, 1, 0), glm::vec2(0, 1) },
+		{ glm::vec3(0, 0, 1), glm::vec3(0, 1, 0), glm::vec2(1, 1) },
+		{ glm::vec3(0, 2, 1), glm::vec3(0, 1, 0), glm::vec2(1, 0) },
+		{ glm::vec3(0, 2, -1), glm::vec3(0, 1, 0), glm::vec2(0, 0) },
+
+		{ glm::vec3(cos(PI / 6), 0, -sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(0, 1) },
+		{ glm::vec3(-cos(PI / 6), 0, sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(1, 1) },
+		{ glm::vec3(-cos(PI / 6), 2, sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(1, 0) },
+		{ glm::vec3(cos(PI / 6), 2, -sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(0, 0) },
+
+		{ glm::vec3(cos(PI / 6), 0, sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(0, 1) },
+		{ glm::vec3(-cos(PI / 6), 0, -sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(1, 1) },
+		{ glm::vec3(-cos(PI / 6), 2, -sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(1, 0) },
+		{ glm::vec3(cos(PI / 6), 2, sin(PI / 6)), glm::vec3(0, 1, 0), glm::vec2(0, 0) }
+	};
+
+	std::vector<short> indices{
+		0, 1, 2, 2, 3, 0,
+		4, 5, 6, 6, 7, 4,
+		8, 9, 10, 10, 11, 8
+	};
+
+	std::shared_ptr<VertexBuffer> vertexBufferGrass = device->createVertexBuffer()
+		.withLayout(inputLayout)
+		.withData(grassVertices.size(), grassVertices.data())
+		.build();
+
+	m_indexBufferGrass = device->createIndexBuffer()
+		.withLayout(LayoutConfig().short1())
+		.withData(indices.size(), indices.data())
+		.build();
+
+	m_vertexArrayGrass = device->createVertexArray();
+	m_vertexArrayGrass->bind(vertexBufferGrass);
+
+	m_shaderGrass = device->createShader()
+		.withLayout(inputLayout)
+		.withGLSL<VERTEX_SHADER>("res/grass/grass.vs.glsl")
+		.withGLSL<PIXEL_SHADER>("res/grass/grass.ps.glsl")
+		.withHLSL<VERTEX_SHADER>("res/grass/grass.vs.hlsl", "main")
+		.withHLSL<PIXEL_SHADER>("res/grass/grass.ps.hlsl", "main")
+		.build();
+
+	m_grassColor = device->createTexture()
+		.withFile("res/grass/textures/grass_color.bmp")
+		.withMipmapping()
+		.build();
+	m_grassColor->setSampler(m_sampler);
+
+	m_grassAlpha = device->createTexture()
+		.withFile("res/grass/textures/grass_alpha.bmp")
+		.withMipmapping()
+		.build();
+	m_grassAlpha->setSampler(m_sampler);
+
+	m_shaderGrass->bind(0, "Camera", m_constantCamera);
+	m_shaderGrass->bind(1, "Terrain", m_constantTerrain);
+	m_shaderGrass->bind(2, "Node", m_constantNode);
+	m_shaderGrass->bind(3, "Grass", m_constantGrass);
+
+	m_shaderGrass->bind(0, "texSampler", m_sampler, VERTEX_SHADER | PIXEL_SHADER);
+
+	m_shaderGrass->bind(0, "grassColor", m_grassColor);
+	m_shaderGrass->bind(1, "grassAlpha", m_grassAlpha);
+	m_shaderGrass->bind(2, "heightmap", m_heightmap, VERTEX_SHADER);
+	m_shaderGrass->bind(3, "normalmap", m_normalmap, VERTEX_SHADER);
+	m_shaderGrass->bind(4, "alphamap", m_materials[0].mapAlpha, VERTEX_SHADER);
 
 	// Initialize Height Data
 	unsigned char* data = stbi_load("res/terrain/map/heightmap.bmp", &m_heightWidth, &m_heightHeight, nullptr, 1);
@@ -214,17 +303,12 @@ Terrain::~Terrain() {
 
 void Terrain::init() {
 
-
 	// Initialize Root Node
 	for (unsigned i = 0; i < rootPatches; ++i) {
 		for (unsigned j = 0; j < rootPatches; ++j) {
 			m_rootNodes.push_back(
 				std::make_unique<TerrainNode>(
 					shared_from_this(),
-					m_context,
-					m_camera,
-					m_vertexArray,
-					m_constantNode,
 					glm::vec2(i / (float)rootPatches, j / (float)rootPatches),
 					0,
 					glm::vec2(i, j)));
@@ -237,36 +321,63 @@ void Terrain::update() {
 	for (unsigned i = 0; i < m_rootNodes.size(); ++i) {
 		m_rootNodes[i]->update();
 	}
+
+#ifdef BIND_CAMERA_TO_GROUND
+	glm::vec3 camPos = m_camera->getPosition();
+	float height = getIntHeightAt(glm::vec2(camPos.x, camPos.z));
+	m_camera->setPosition(glm::vec3(camPos.x, 8 + height, camPos.z));
+#endif
+
+	// Grass
+	m_timeStep += 0.001f;
+	m_context->setData(m_constantGrass, (void*)glm::value_ptr(glm::vec4(m_timeStep)));
 }
 
 void Terrain::render() {
+
+	for (unsigned i = 0; i < m_rootNodes.size(); ++i) {
+		m_rootNodes[i]->preRender();
+	}
 	
-	// Bind Shader
-	m_context->bind(m_shader);
+	// Bind Terrain Shader
+	m_context->bind(m_shaderTerrain);
 
 	// Draw Terrain
+	m_context->bind(m_vertexArrayTerrain);
+
 	auto type = m_context->getPrimitive();
 	m_context->setPrimitive(PATCHES_TYPE, patchSize);
 	for (unsigned i = 0; i < m_rootNodes.size(); ++i) {
-		m_rootNodes[i]->render();
+		m_rootNodes[i]->renderTerrain();
 	}
+
 	m_context->setPrimitive(type);
 
-	m_context->unbind(m_shader);
+	m_context->unbind(m_shaderTerrain);
+
+	m_context->bind(m_blender);
+	m_context->bind(m_rasterizerNoCull);
+	m_context->bind(m_shaderGrass);
+	m_context->bind(m_vertexArrayGrass);
+	for (unsigned i = 0; i < m_rootNodes.size(); ++i) {
+		m_rootNodes[i]->renderGrass();
+	}
+	m_context->unbind(m_shaderGrass);
+	m_context->unbind(m_blender);
 }
 
-const int Terrain::getLodAt(const glm::vec2 pos) {
+const int Terrain::getLodAt(const glm::vec2 localPos) {
 
-	int rootI = floor(pos.x * rootPatches);
-	int rootJ = floor(pos.y * rootPatches);
+	int rootI = floor(localPos.x * rootPatches);
+	int rootJ = floor(localPos.y * rootPatches);
 
 	TerrainNode* node = m_rootNodes[rootI * rootPatches + rootJ].get();
 
 	while (!node->m_leaf && node->m_children.size()) {
 		glm::vec2 mid = node->m_location + glm::vec2(node->m_size / 2.0f);
 
-		int x = (pos.x < mid.x ? 0 : 1);
-		int y = (pos.y < mid.y ? 0 : 1);
+		int x = (localPos.x < mid.x ? 0 : 1);
+		int y = (localPos.y < mid.y ? 0 : 1);
 
 		node = node->m_children[x * 2 + y].get();
 	}
@@ -274,25 +385,50 @@ const int Terrain::getLodAt(const glm::vec2 pos) {
 	return node->m_lod;
 }
 
-const float Terrain::getHeightAt(const glm::vec2 pos) {
+const float Terrain::getIntHeightAt(const glm::vec2 worldPos) {
 
-	int x = floor(pos.x * m_heightWidth);
-	int y = floor(pos.y * m_heightHeight);
+	// Bilinear Interpolation Algorithm
+	float x = m_heightWidth * ((worldPos.y + scaleXZ / 2) / scaleXZ);
+	float y = m_heightHeight * ((worldPos.x + scaleXZ / 2) / scaleXZ);
+	
+	int x1 = floor(x);
+	int x2 = ceil(x);
+	int y1 = floor(y);
+	int y2 = ceil(y);
+
+	float q11 = m_heightData[x1 * m_heightHeight + y1];
+	float q12 = m_heightData[x1 * m_heightHeight + y2];
+	float q21 = m_heightData[x2 * m_heightHeight + y1];
+	float q22 = m_heightData[x2 * m_heightHeight + y2];
+
+	float r1 = q11 * (x2 - x) / (x2 - x1) + q21 * (x - x1) / (x2 - x1);
+	float r2 = q12 * (x2 - x) / (x2 - x1) + q22 * (x - x1) / (x2 - x1);
+
+	return (r1 * (y2 - y) / (y2 - y1) + r2 * (y - y1) / (y2 - y1)) * scaleY;
+}
+
+const float Terrain::getHeightAt(const glm::vec2 localPos) {
+	int x = floor(localPos.x * m_heightWidth);
+	int y = floor(localPos.y * m_heightHeight);
 
 	return m_heightData[x * m_heightHeight + y] * scaleY;
 }
 
-const float Terrain::getMaxHeightAt(const glm::vec2 pos0, const glm::vec2 pos1) {
+const float Terrain::getMaxHeightAt(const glm::vec2 localPos0, const glm::vec2 localPos1) {
+	glm::vec2 p0 = glm::vec2(localPos0.y, localPos0.x);
+	glm::vec2 p1 = glm::vec2(localPos1.y, localPos1.x);
 
-	int x = floor(pos0.x * m_heightWidth);
-	int y = floor(pos0.y * m_heightHeight);
-	int dX = floor(abs(pos1.x - pos0.x) * m_heightWidth);
-	int dY = floor(abs(pos1.y - pos0.y) * m_heightHeight);
+	int x = floor(p0.x * m_heightWidth);
+	int y = floor(p0.y * m_heightHeight);
+	int dX = floor(abs(p1.x - p0.x) * m_heightWidth);
+	int dY = floor(abs(p1.y - p0.y) * m_heightHeight);
 
 	float maxHeight = 0;
+	unsigned size = m_heightWidth * m_heightHeight;
 	for (unsigned i = 0; i < dX; ++i) {
 		for (unsigned j = 0; j < dY; ++j) {
-			maxHeight = std::max(maxHeight, m_heightData[(x + i) * m_heightHeight + (y + i)] * scaleY);
+			unsigned index = std::min((x + i) * m_heightHeight + (y + i), size - 1);
+			maxHeight = std::max(maxHeight, m_heightData[index] * scaleY);
 		}
 	}
 	return maxHeight;

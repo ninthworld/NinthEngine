@@ -22,6 +22,10 @@ public:
 	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
 	void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer) override;
 
+	void drawInstanced(const unsigned instances, const unsigned vertexCount, const unsigned startIndex) override;
+	void drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) override;
+	void drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer) override;
+
 	void swapBuffers() override;
 
 	void bindBackBuffer() override;
@@ -32,10 +36,12 @@ public:
 	void resolve(const std::shared_ptr<RenderTarget>& renderTargetFrom, const std::shared_ptr<RenderTarget>& renderTargetTo) override;
 
 	void bind(const std::shared_ptr<Shader>& shader) override;
+	void bind(const std::shared_ptr<Blender>& blender) override;
 	void bind(const std::shared_ptr<Rasterizer>& rasterizer) override;
 	void bind(const std::shared_ptr<RenderTarget>& renderTarget) override;
 	void bind(const std::shared_ptr<VertexArray>& vertexArray) override;
 
+	void unbind(const std::shared_ptr<Blender>& blender) override;
 	void unbind(const std::shared_ptr<Shader>& shader) override;
 	void unbind(const std::shared_ptr<VertexArray>& vertexArray) override;
 

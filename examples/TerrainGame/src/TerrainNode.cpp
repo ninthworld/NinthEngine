@@ -7,18 +7,10 @@
 
 TerrainNode::TerrainNode(
 	const std::shared_ptr<Terrain>& root,
-	const std::shared_ptr<GraphicsContext>& context,
-	const std::shared_ptr<GameCamera>& camera,
-	const std::shared_ptr<VertexArray>& vertexArray,
-	const std::shared_ptr<ConstantBuffer>& constantNode,
 	const glm::vec2 location,
 	const int lod,
 	const glm::vec2 index)
 	: m_root(root)
-	, m_context(context)
-	, m_camera(camera)
-	, m_vertexArray(vertexArray)
-	, m_constantNode(constantNode)
 	, m_location(location)
 	, m_index(index)
 	, m_lod(lod)
@@ -39,7 +31,7 @@ TerrainNode::TerrainNode(
 
 	m_bounds = AABB{
 		glm::vec3(pos0.x, 0, pos0.y),
-		glm::vec3(pos1.x, root->getMaxHeightAt(m_location, m_location + glm::vec2(m_size)) * 2.0f, pos1.y)
+		glm::vec3(pos1.x, root->getMaxHeightAt(m_location, m_location + glm::vec2(m_size)) + 8.0f, pos1.y)
 	};
 
 	m_localMatrix = glm::translate(m_localMatrix, glm::vec3(m_location.x, 0.0f, m_location.y));
@@ -55,7 +47,7 @@ void TerrainNode::update() {
 		m_children[i]->update();
 	}
 
-	glm::vec3 camPos = m_camera->getPosition();
+	glm::vec3 camPos = m_root->m_camera->getPosition();
 	if (camPos.y > m_bounds.max.y) camPos.y -= m_bounds.max.y;
 	else camPos.y = 0;
 
@@ -69,10 +61,6 @@ void TerrainNode::update() {
 					m_children.push_back(
 						std::make_unique<TerrainNode>(
 							m_root,
-							m_context,
-							m_camera,
-							m_vertexArray,
-							m_constantNode,
 							m_location + glm::vec2(i * m_size / 2.0f, j * m_size / 2.0f),
 							m_lod + 1,
 							glm::vec2(i, j)));
@@ -99,24 +87,55 @@ void TerrainNode::update() {
 			}
 		}
 	}
+
 }
 
-void TerrainNode::render() {
+void TerrainNode::preRender() {
 
-	if (!m_leaf) {
+	m_inBounds = isInFrustum(m_bounds, m_root->m_camera->getViewFrustum());
+	if (m_inBounds && !m_leaf) {
 		for (unsigned i = 0; i < m_children.size(); ++i) {
-			m_children[i]->render();
+			m_children[i]->preRender();
 		}
 	}
-	else if(isInFrustum(m_bounds, m_camera->getViewFrustum())) {
+}
 
-		// Update Constants
-		NodeData data{ m_localMatrix, glm::vec4(), m_location, m_index, m_size, m_lod, glm::vec2() };
-		for (unsigned i = 0; i < 4; ++i) data.neighbors[i] = m_neighbors[i];
-		m_context->setData(m_constantNode, &data);
+void TerrainNode::renderTerrain() {
 
-		// Draw Terrain
-		m_context->bind(m_vertexArray);
-		m_context->draw(patchSize);
+	if (m_inBounds) {
+		if (!m_leaf) {
+			for (unsigned i = 0; i < m_children.size(); ++i) {
+				m_children[i]->renderTerrain();
+			}
+		}
+		else {
+			// Update Constants
+			NodeData data{ m_localMatrix, glm::vec4(), m_location, m_index, m_size, m_lod, glm::vec2() };
+			for (unsigned i = 0; i < 4; ++i) data.neighbors[i] = m_neighbors[i];
+			m_root->m_context->setData(m_root->m_constantNode, &data);
+
+			// Draw Terrain
+			m_root->m_context->draw(patchSize);
+		}
+	}
+}
+
+void TerrainNode::renderGrass() {
+
+	if (m_inBounds) {
+		if (!m_leaf) {
+			for (unsigned i = 0; i < m_children.size(); ++i) {
+				m_children[i]->renderGrass();
+			}
+		}
+		else if(m_lod > 3) {
+			// Update Constants
+			NodeData data{ m_localMatrix, glm::vec4(), m_location, m_index, m_size, m_lod, glm::vec2() };
+			for (unsigned i = 0; i < 4; ++i) data.neighbors[i] = m_neighbors[i];
+			m_root->m_context->setData(m_root->m_constantNode, &data);
+
+			// Draw Grass
+			m_root->m_context->drawIndexedInstanced(pow(10 + (8 - m_lod) * 4, 2), m_root->m_indexBufferGrass, m_root->m_indexBufferGrass->getUnitCount());
+		}
 	}
 }

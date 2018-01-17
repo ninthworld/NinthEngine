@@ -69,6 +69,9 @@
     <ClCompile Include="..\src\Render\GLSampler.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Render\GLBlender.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngineGL\GLRenderEngine.hpp">
@@ -117,6 +120,9 @@
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\GLVertexBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\GLBlender.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>

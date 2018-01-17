@@ -98,7 +98,7 @@ void TerrainGame::init() {
 		.withFrontCCW()
 		.build();
 	m_context->bind(m_rasterizer);
-	
+
 	// Initialize Samplers
 	m_sampler = m_device->createSampler().build();
 
@@ -275,9 +275,11 @@ void TerrainGame::render() {
 	// Bind Multisampled Render Target
 	m_context->bind(m_renderTargetMS);
 	m_context->clear(m_renderTargetMS);
-	
+
 	// Render Terrain
 	m_terrain->render();
+
+	m_context->bind(m_rasterizer);
 
 	// Resolve Multisampled Render Target to Lighting Render Target
 	m_context->resolve(m_renderTargetMS, m_renderTargetLighting);

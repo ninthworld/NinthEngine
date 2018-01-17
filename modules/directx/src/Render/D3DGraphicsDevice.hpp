@@ -19,6 +19,7 @@ public:
 	ConstantBufferBuilder createConstantBuffer() override;
 	ShaderBuilder createShader() override;
 	RasterizerBuilder createRasterizer() override;
+	BlenderBuilder createBlender() override;
 	TextureBuilder createTexture() override;
 	SamplerBuilder createSampler() override;
 	RenderTargetBuilder createRenderTarget() override;

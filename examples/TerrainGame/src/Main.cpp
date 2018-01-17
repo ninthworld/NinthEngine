@@ -8,8 +8,8 @@
 #include "TerrainGame.hpp"
 
 // Render Engine
-#define _USE_GL
-//#define _USE_DX
+//#define _USE_GL
+#define _USE_DX
 
 using namespace NinthEngine;
 

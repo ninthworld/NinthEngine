@@ -33,7 +33,7 @@ float4 lerp4(float a, float b, float4 x) {
 }
 
 float tessLevel(int _lod) {
-	return lerp(1, 64, float(_lod) / 8.0);
+	return lerp(16, 64, float(_lod) / 8.0);
 }
 
 HullPatchOut mainPatch(

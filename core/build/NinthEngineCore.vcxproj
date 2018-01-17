@@ -138,7 +138,9 @@
     <ClInclude Include="..\include\NinthEngine\Camera\GameCamera.hpp" />
     <ClInclude Include="..\include\NinthEngine\Input\Keyboard.hpp" />
     <ClInclude Include="..\include\NinthEngine\Input\Mouse.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Blender.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Buffer.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\BlenderBuilder.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Builder\BufferBuilder.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Builder\RasterizerBuilder.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Builder\RenderTargetBuilder.hpp" />
@@ -146,6 +148,7 @@
     <ClInclude Include="..\include\NinthEngine\Render\Builder\ShaderBuilder.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Builder\TextureBuilder.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\BufferConfig.hpp" />
+    <ClInclude Include="..\include\NinthEngine\Render\Config\BlenderConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\LayoutConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\RasterizerConfig.hpp" />
     <ClInclude Include="..\include\NinthEngine\Render\Config\SamplerConfig.hpp" />

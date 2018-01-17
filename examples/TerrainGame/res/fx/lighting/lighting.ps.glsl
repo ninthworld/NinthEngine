@@ -1,5 +1,7 @@
 #version 400
 
+#define ENABLE_SSAO true
+
 #define MIN_VIEW 0.99994
 #define MAX_VIEW 0.99996
 
@@ -41,10 +43,12 @@ void main() {
 	vec3 lightDir = normalize(vec3(1, 1, 1));
 	float cosTheta = max(dot(normal, lightDir), 0.1);
 	
-	out_fragColor = vec4(color * cosTheta * ssao, 1);// + vec4(normal * position * color  * 0, 1);
+	out_fragColor = vec4(color * cosTheta, 1);
+
+	if (ENABLE_SSAO) out_fragColor.xyz *= ssao;
 
 	// Poor-man's stencil
-	if(depth > MIN_VIEW) {
+	if (depth > MIN_VIEW) {
 		out_fragColor = mix(out_fragColor, vec4(skydome, 1.0), clamp((depth - MIN_VIEW) / (1.0 - MAX_VIEW), 0, 1));
 	}
 }

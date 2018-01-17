@@ -12,6 +12,7 @@
 #include "Builder\BufferBuilder.hpp"
 #include "Builder\ShaderBuilder.hpp"
 #include "Builder\RasterizerBuilder.hpp"
+#include "Builder\BlenderBuilder.hpp"
 #include "Builder\TextureBuilder.hpp"
 #include "Builder\SamplerBuilder.hpp"
 #include "Builder\RenderTargetBuilder.hpp"
@@ -32,6 +33,7 @@ public:
 	virtual ConstantBufferBuilder createConstantBuffer() = 0;
 	virtual ShaderBuilder createShader() = 0;
 	virtual RasterizerBuilder createRasterizer() = 0;
+	virtual BlenderBuilder createBlender() = 0;
 	virtual TextureBuilder createTexture() = 0;
 	virtual SamplerBuilder createSampler() = 0;
 	virtual RenderTargetBuilder createRenderTarget() = 0;

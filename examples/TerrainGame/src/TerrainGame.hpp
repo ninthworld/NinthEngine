@@ -72,5 +72,5 @@ private:
 
 	// Terrain
 	std::shared_ptr<Terrain> m_terrain;
-		
+
 };

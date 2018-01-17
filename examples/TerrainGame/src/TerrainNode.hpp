@@ -10,10 +10,6 @@ class TerrainNode {
 public:
 	TerrainNode(
 		const std::shared_ptr<Terrain>& root,
-		const std::shared_ptr<GraphicsContext>& context,
-		const std::shared_ptr<GameCamera>& camera,
-		const std::shared_ptr<VertexArray>& vertexArray,
-		const std::shared_ptr<ConstantBuffer>& constantNode,
 		const glm::vec2 location,
 		const int lod,
 		const glm::vec2 index);
@@ -21,18 +17,13 @@ public:
 
 	void update();
 
-	void render();
+	void preRender();
 
-private:
-	std::shared_ptr<GraphicsContext> m_context;
-	std::shared_ptr<GameCamera> m_camera;
-	
-	// Constant Buffers
-	std::shared_ptr<ConstantBuffer> m_constantNode;
-	
-	// Vertex Array
-	std::shared_ptr<VertexArray> m_vertexArray;
+	void renderTerrain();
 
+	void renderGrass();
+
+private:	
 	// Root
 	std::shared_ptr<Terrain> m_root;
 
@@ -46,6 +37,7 @@ private:
 	bool m_leaf;
 	std::vector<bool> m_neighbors;
 	AABB m_bounds;
+	bool m_inBounds;
 
 	// Children
 	std::vector<std::unique_ptr<TerrainNode>> m_children;

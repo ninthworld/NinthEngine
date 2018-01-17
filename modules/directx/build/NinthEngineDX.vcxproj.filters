@@ -60,6 +60,9 @@
     <ClCompile Include="..\src\Render\D3DSampler.cpp">
       <Filter>Source Files\Render</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Render\D3DBlender.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Render\D3DConstantBuffer.hpp">
@@ -102,6 +105,9 @@
       <Filter>Header Files\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Render\D3DBuffer.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Render\D3DBlender.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
   </ItemGroup>

@@ -61,3 +61,40 @@ static const GLenum getGLintIFormat(const NinthEngine::FormatType format) {
 	return getGLenumFormat(format);
 }
 
+#include <NinthEngine\Render\Config\BlenderConfig.hpp>
+
+static const GLenum getGLBlendEquation(const NinthEngine::BlendOpType func) {
+
+	switch (func) {
+	case NinthEngine::BLEND_OP_ADD: return GL_FUNC_ADD;
+	case NinthEngine::BLEND_OP_SUBTRACT: return GL_FUNC_SUBTRACT;
+	case NinthEngine::BLEND_OP_REV_SUBTRACT: return GL_FUNC_REVERSE_SUBTRACT;
+	case NinthEngine::BLEND_OP_MIN: return GL_MIN;
+	case NinthEngine::BLEND_OP_MAX: return GL_MAX;
+	default: return GL_FUNC_ADD;
+	}
+}
+
+static const GLenum getGLBlendType(const NinthEngine::BlendType type) {
+
+	switch (type) {
+	case NinthEngine::BLEND_ZERO: return GL_ZERO;
+		case NinthEngine::BLEND_ONE: return GL_ONE;
+		case NinthEngine::BLEND_SRC_COLOR: return GL_SRC_COLOR;
+		case NinthEngine::BLEND_INV_SRC_COLOR: return GL_ONE_MINUS_SRC_COLOR;
+		case NinthEngine::BLEND_SRC_ALPHA: return GL_SRC_ALPHA;
+		case NinthEngine::BLEND_INV_SRC_ALPHA: return GL_ONE_MINUS_SRC_ALPHA;
+		case NinthEngine::BLEND_DEST_ALPHA: return GL_DST_ALPHA;
+		case NinthEngine::BLEND_INV_DEST_ALPHA: return GL_ONE_MINUS_DST_ALPHA;
+		case NinthEngine::BLEND_DEST_COLOR: return GL_DST_COLOR;
+		case NinthEngine::BLEND_INV_DEST_COLOR: return GL_ONE_MINUS_DST_COLOR;
+		case NinthEngine::BLEND_SRC_ALPHA_SAT: return GL_SRC_ALPHA;	// Unique DirectX Blend Type?
+		case NinthEngine::BLEND_BLEND_FACTOR: return GL_CONSTANT_COLOR;
+		case NinthEngine::BLEND_INV_BLEND_FACTOR: return GL_ONE_MINUS_CONSTANT_COLOR;
+		case NinthEngine::BLEND_SRC1_COLOR: return GL_SRC1_COLOR;
+		case NinthEngine::BLEND_INV_SRC1_COLOR: return GL_ONE_MINUS_SRC1_COLOR;
+		case NinthEngine::BLEND_SRC1_ALPHA: return GL_SRC1_ALPHA;
+		case NinthEngine::BLEND_INV_SRC1_ALPHA: return GL_ONE_MINUS_SRC1_ALPHA;
+		default: return GL_ZERO;
+	}
+}

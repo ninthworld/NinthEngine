@@ -12,6 +12,7 @@
 #include "D3DVertexBuffer.hpp"
 #include "D3DVertexArray.hpp"
 #include "D3DRasterizer.hpp"
+#include "D3DBlender.hpp"
 #include "D3DTexture.hpp"
 #include "D3DSampler.hpp"
 #include "D3DRenderTarget.hpp"
@@ -114,6 +115,13 @@ RasterizerBuilder D3DGraphicsDevice::createRasterizer() {
 	return RasterizerBuilder([this](
 		const RasterizerStruct rasterizer) {
 		return std::make_unique<D3DRasterizer>(m_device, rasterizer);
+	});
+}
+
+BlenderBuilder D3DGraphicsDevice::createBlender() {
+	return BlenderBuilder([this](
+		const BlenderStruct blender) {
+		return std::make_unique<D3DBlender>(m_device, blender);
 	});
 }
 

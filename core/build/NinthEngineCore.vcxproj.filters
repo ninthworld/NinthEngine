@@ -144,6 +144,15 @@
     <ClInclude Include="..\include\NinthEngine\Render\IndexBuffer.hpp">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Builder\BlenderBuilder.hpp">
+      <Filter>Header Files\Render\Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Config\BlenderConfig.hpp">
+      <Filter>Header Files\Render\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NinthEngine\Render\Blender.hpp">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Camera\FPSGameCamera.cpp">

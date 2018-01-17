@@ -5,6 +5,7 @@
 #include "..\Utils\MathUtils.hpp"
 #include "IndexBuffer.hpp"
 #include "Rasterizer.hpp"
+#include "Blender.hpp"
 #include "RenderTarget.hpp"
 #include "Sampler.hpp"
 #include "Shader.hpp"
@@ -33,6 +34,10 @@ public:
 	virtual void draw(const unsigned vertexCount, const unsigned startIndex = 0) = 0;
 	virtual void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex = 0) = 0;
 	virtual void drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer) = 0;
+
+	virtual void drawInstanced(const unsigned instances, const unsigned vertexCount, const unsigned startIndex = 0) = 0;
+	virtual void drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex = 0) = 0;
+	virtual void drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer) = 0;
 	
 	virtual void swapBuffers() = 0;
 
@@ -44,10 +49,12 @@ public:
 	virtual void resolve(const std::shared_ptr<RenderTarget>& renderTargetFrom, const std::shared_ptr<RenderTarget>& renderTargetTo) = 0;
 
 	virtual void bind(const std::shared_ptr<Rasterizer>& rasterizer) = 0;
+	virtual void bind(const std::shared_ptr<Blender>& blender) = 0;
 	virtual void bind(const std::shared_ptr<RenderTarget>& renderTarget) = 0;
 	virtual void bind(const std::shared_ptr<Shader>& shader) = 0;
 	virtual void bind(const std::shared_ptr<VertexArray>& vertexArray) = 0;
 
+	virtual void unbind(const std::shared_ptr<Blender>& blender) = 0;
 	virtual void unbind(const std::shared_ptr<Shader>& shader) = 0;
 	virtual void unbind(const std::shared_ptr<VertexArray>& vertexArray) = 0;
 

@@ -3,6 +3,7 @@
 #include "GLIndexBuffer.hpp"
 #include "GLShader.hpp"
 #include "GLRasterizer.hpp"
+#include "GLBlender.hpp"
 #include "GLRenderTarget.hpp"
 #include "GLSampler.hpp"
 #include "GLTexture.hpp"
@@ -56,6 +57,35 @@ void GLGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuf
 
 void GLGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBuffer) {
 	drawIndexed(indexBuffer, indexBuffer->getUnitCount(), 0);
+}
+
+void GLGraphicsContext::drawInstanced(const unsigned instances, const unsigned vertexCount, const unsigned startIndex) {
+
+	if (m_primitiveType == PATCHES_TYPE) {
+		glPatchParameteri(GL_PATCH_VERTICES, m_patchSize);
+	}
+
+	glDrawArraysInstanced(m_glPrimitive, startIndex, vertexCount, instances);
+}
+
+void GLGraphicsContext::drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
+
+	if (m_primitiveType == PATCHES_TYPE) {
+		glPatchParameteri(GL_PATCH_VERTICES, m_patchSize);
+	}
+
+	auto glBuffer = std::dynamic_pointer_cast<GLIndexBuffer>(indexBuffer);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, glBuffer->getBufferId());
+	glDrawElementsInstanced(m_glPrimitive, indexCount,
+		(glBuffer->getUnitSize() == sizeof(short) ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT),
+		reinterpret_cast<void*>(startIndex), instances);
+	CHECK_ERROR("glDrawElements");
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+void GLGraphicsContext::drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer) {
+	drawIndexedInstanced(instances, indexBuffer, indexBuffer->getUnitCount(), 0);
 }
 
 void GLGraphicsContext::swapBuffers() {
@@ -132,46 +162,103 @@ void GLGraphicsContext::resolve(
 void GLGraphicsContext::bind(const std::shared_ptr<Rasterizer>& rasterizer) {
 
 	auto glRasterizer = std::dynamic_pointer_cast<GLRasterizer>(rasterizer);
+	auto rasterizerStruct = glRasterizer->getRasterizerStruct();
 	
-	glPolygonMode(GL_FRONT_AND_BACK, (glRasterizer->getRasterizerStruct().fill == SOLID ? GL_FILL : GL_LINE));
-	glFrontFace((glRasterizer->getRasterizerStruct().frontCCW ? GL_CCW : GL_CW));
+	glPolygonMode(GL_FRONT_AND_BACK, (rasterizerStruct.fill == SOLID ? GL_FILL : GL_LINE));
+	glFrontFace((rasterizerStruct.frontCCW ? GL_CCW : GL_CW));
 
-	if (glRasterizer->getRasterizerStruct().cull != NONE) {
+	if (rasterizerStruct.cull != NONE) {
 		glEnable(GL_CULL_FACE);
-		glCullFace((glRasterizer->getRasterizerStruct().cull == FRONT ? GL_FRONT : GL_BACK));
+		glCullFace((rasterizerStruct.cull == FRONT ? GL_FRONT : GL_BACK));
 	}
 	else {
-		glDisable(GL_CULL_FACE);
+		glDisable(GL_CULL_FACE); 
 	}
 
-	if (glRasterizer->getRasterizerStruct().depthClipping) {
+	if (rasterizerStruct.depthClipping) {		
 		glEnable(GL_DEPTH_TEST);
-		//glDepthRange(m_config.m_depthBias, m_config.m_depthBiasSlopeScaled * m_config.m_depthBiasClamp);
+
+		// TODO: Find OpenGL equivalent to DirectX Depth Biasing
+		// \/ This breaks rendering
+		// glDepthRange(rasterizerStruct.bias, rasterizerStruct.slopeScale * rasterizerStruct.clamp);
 	}
 	else {
 		glDisable(GL_DEPTH_TEST);
 	}
 
-	if (glRasterizer->getRasterizerStruct().multisampling) {
+	if (rasterizerStruct.multisampling) {
 		glEnable(GL_MULTISAMPLE);
 	}
 	else {
 		glDisable(GL_MULTISAMPLE);
 	}
 
-	if (glRasterizer->getRasterizerStruct().scissoring) {
+	if (rasterizerStruct.scissoring) {
 		glEnable(GL_SCISSOR_TEST);
 	}
 	else {
 		glDisable(GL_SCISSOR_TEST);
 	}
 
-	if (glRasterizer->getRasterizerStruct().lineAA) {
+	if (rasterizerStruct.lineAA) {
 		glEnable(GL_LINE_SMOOTH);
 		glLineWidth(0.5f);
 	}
 	else {
 		glDisable(GL_LINE_SMOOTH);
+	}
+}
+
+void GLGraphicsContext::bind(const std::shared_ptr<Blender>& blender) {
+
+	auto glBlender = std::dynamic_pointer_cast<GLBlender>(blender);
+	auto blenderStruct = glBlender->getBlenderStruct();
+	/*
+	glBlendColor(
+		blenderStruct.blendFactor.r, 
+		blenderStruct.blendFactor.g, 
+		blenderStruct.blendFactor.b, 
+		blenderStruct.blendFactor.a);
+		*/
+	if (blenderStruct.alphaToCoverage) {
+		glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+	}
+	else {
+		glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+	}
+
+	if (blenderStruct.independentBlend) {
+		// TODO: Find equivalent support for independent blending
+		// Possibly glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+	}
+	else {
+	}
+
+	unsigned enabledCount = 0;
+	for (unsigned i = 0; i < 8; ++i) {
+		auto target = blenderStruct.targets[i];
+		if (target.enabled) {
+			++enabledCount;
+
+			glBlendEquationi(i, getGLBlendEquation(target.blendFunc));
+			glBlendFunci(i, getGLBlendType(target.blendSrc), getGLBlendType(target.blendDest));
+
+			// TODO: Find equivalent support for target.blendAlpha
+			//	Possibly glAlphaFunc?
+		
+			glColorMaski(i,
+				target.colorWrite & COLOR_WRITE_RED,
+				target.colorWrite & COLOR_WRITE_GREEN,
+				target.colorWrite & COLOR_WRITE_BLUE,
+				target.colorWrite & COLOR_WRITE_ALPHA);
+		}
+	}
+
+	if (enabledCount) {
+		glEnable(GL_BLEND);
+	}
+	else {
+		glDisable(GL_BLEND);
 	}
 }
 
@@ -212,6 +299,17 @@ void GLGraphicsContext::bind(const std::shared_ptr<VertexArray>& vertexArray) {
 	for (int i = 0; i < glVertexArray->getAttribCount(); ++i) {
 		glEnableVertexAttribArray(i);
 	}
+}
+
+
+void GLGraphicsContext::unbind(const std::shared_ptr<Blender>& blender) {
+
+	auto glBlender = std::dynamic_pointer_cast<GLBlender>(blender);
+	auto blenderStruct = glBlender->getBlenderStruct();
+
+	glBlendColor(0, 0, 0, 0);
+	glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
+	glDisable(GL_BLEND);
 }
 
 void GLGraphicsContext::unbind(const std::shared_ptr<Shader>& shader) {

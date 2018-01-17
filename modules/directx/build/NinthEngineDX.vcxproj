@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\DXRenderEngine.cpp" />
+    <ClCompile Include="..\src\Render\D3DBlender.cpp" />
     <ClCompile Include="..\src\Render\D3DConstantBuffer.cpp" />
     <ClCompile Include="..\src\Render\D3DGraphicsContext.cpp" />
     <ClCompile Include="..\src\Render\D3DGraphicsDevice.cpp" />
@@ -145,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngineDX\DXRenderEngine.hpp" />
+    <ClInclude Include="..\src\Render\D3DBlender.hpp" />
     <ClInclude Include="..\src\Render\D3DBuffer.hpp" />
     <ClInclude Include="..\src\Render\D3DConstantBuffer.hpp" />
     <ClInclude Include="..\src\Render\D3DGraphicsContext.hpp" />

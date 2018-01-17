@@ -17,7 +17,7 @@ layout(std140) uniform Node {
 };
 
 float tessLevel(int _lod) {
-	return mix(1, gl_MaxTessGenLevel, float(_lod) / 8.0);
+	return mix(16, gl_MaxTessGenLevel, float(_lod) / 8.0);
 }
 
 void main() {

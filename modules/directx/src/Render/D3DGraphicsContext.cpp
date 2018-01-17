@@ -7,6 +7,7 @@
 #include "D3DVertexBuffer.hpp"
 #include "D3DVertexArray.hpp"
 #include "D3DRasterizer.hpp"
+#include "D3DBlender.hpp"
 #include "D3DTexture.hpp"
 #include "D3DSampler.hpp"
 #include "D3DShader.hpp"
@@ -128,6 +129,27 @@ void D3DGraphicsContext::drawIndexed(const std::shared_ptr<IndexBuffer>& indexBu
 	drawIndexed(indexBuffer, indexBuffer->getUnitCount(), 0);
 }
 
+void D3DGraphicsContext::drawInstanced(const unsigned instances, const unsigned vertexCount, const unsigned startIndex) {
+
+	m_deviceContext->IASetPrimitiveTopology(m_d3dPrimitive);
+	m_deviceContext->DrawInstanced(vertexCount, instances, startIndex, startIndex);
+}
+
+void D3DGraphicsContext::drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer, const unsigned indexCount, const unsigned startIndex) {
+
+	auto d3dBuffer = std::dynamic_pointer_cast<D3DIndexBuffer>(indexBuffer);
+	m_deviceContext->IASetIndexBuffer(
+		d3dBuffer->getBufferPtr().Get(),
+		(d3dBuffer->getUnitSize() == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT), 0);
+
+	m_deviceContext->IASetPrimitiveTopology(m_d3dPrimitive);
+	m_deviceContext->DrawIndexedInstanced(indexCount, instances, startIndex, 0, 0);
+}
+
+void D3DGraphicsContext::drawIndexedInstanced(const unsigned instances, const std::shared_ptr<IndexBuffer>& indexBuffer) {
+	drawIndexedInstanced(instances, indexBuffer, indexBuffer->getUnitCount(), 0);
+}
+
 void D3DGraphicsContext::swapBuffers() {
 	m_swapChain->Present(0, 0);
 }
@@ -207,6 +229,18 @@ void D3DGraphicsContext::bind(const std::shared_ptr<Rasterizer>& rasterizer) {
 	m_deviceContext->RSSetState(d3dRasterizer->getRasterizerState().Get());
 }
 
+void D3DGraphicsContext::bind(const std::shared_ptr<Blender>& blender) {
+
+	auto d3dBlender = std::dynamic_pointer_cast<D3DBlender>(blender);
+	FLOAT blendFactor[4]{
+		d3dBlender->getBlendFactor().r,
+		d3dBlender->getBlendFactor().g,
+		d3dBlender->getBlendFactor().b,
+		d3dBlender->getBlendFactor().a
+	};
+	m_deviceContext->OMSetBlendState(d3dBlender->getBlendState().Get(), blendFactor, 0xffffffff);
+}
+
 void D3DGraphicsContext::bind(const std::shared_ptr<RenderTarget>& renderTarget) {
 
 	auto d3dRenderTarget = std::dynamic_pointer_cast<D3DRenderTarget>(renderTarget);
@@ -282,6 +316,13 @@ void D3DGraphicsContext::bind(const std::shared_ptr<VertexArray>& vertexArray) {
 			buffer->getBufferPtr().GetAddressOf(),
 			&unitSize, &offset);
 	}
+}
+
+void D3DGraphicsContext::unbind(const std::shared_ptr<Blender>& blender) {
+
+	ID3D11BlendState* nullState = nullptr;
+	FLOAT blendFactor[4]{ 1, 1, 1, 1 };
+	m_deviceContext->OMSetBlendState(nullState, blendFactor, 0xffffffff);
 }
 
 void D3DGraphicsContext::unbind(const std::shared_ptr<Shader>& shader) {

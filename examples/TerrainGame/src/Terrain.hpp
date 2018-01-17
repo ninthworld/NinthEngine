@@ -63,9 +63,10 @@ public:
 	void update();
 	void render();
 
-	const int getLodAt(const glm::vec2 pos);
-	const float getHeightAt(const glm::vec2 pos);
-	const float getMaxHeightAt(const glm::vec2 pos0, const glm::vec2 pos1);
+	const int getLodAt(const glm::vec2 localPos);
+	const float getIntHeightAt(const glm::vec2 worldPos);
+	const float getHeightAt(const glm::vec2 localPos);
+	const float getMaxHeightAt(const glm::vec2 localPos0, const glm::vec2 localPos1);
 
 private:
 	std::shared_ptr<GraphicsContext> m_context;
@@ -73,13 +74,13 @@ private:
 	glm::vec3 m_camLastPos;
 
 	// Shader
-	std::shared_ptr<Shader> m_shader;
+	std::shared_ptr<Shader> m_shaderTerrain;
 	
 	// Constant Buffers
 	std::shared_ptr<ConstantBuffer> m_constantCamera;
 	std::shared_ptr<ConstantBuffer> m_constantTerrain;
 	std::shared_ptr<ConstantBuffer> m_constantNode;
-
+	
 	// Samplers
 	std::shared_ptr<Sampler> m_sampler;
 
@@ -91,7 +92,7 @@ private:
 	std::vector<Material> m_materials;
 	
 	// Vertex Array
-	std::shared_ptr<VertexArray> m_vertexArray;
+	std::shared_ptr<VertexArray> m_vertexArrayTerrain;
 
 	// Terrain Root Nodes
 	std::vector<std::unique_ptr<TerrainNode>> m_rootNodes;
@@ -99,4 +100,17 @@ private:
 	// Terrain Height Data
 	int m_heightWidth, m_heightHeight;
 	float* m_heightData;
+
+	// Grass
+	std::shared_ptr<Blender> m_blender;
+	std::shared_ptr<Rasterizer> m_rasterizerNoCull;
+	std::shared_ptr<IndexBuffer> m_indexBufferGrass;
+	std::shared_ptr<VertexArray> m_vertexArrayGrass;
+	std::shared_ptr<Shader> m_shaderGrass;
+	std::shared_ptr<Texture> m_grassColor;
+	std::shared_ptr<Texture> m_grassAlpha;
+	std::shared_ptr<ConstantBuffer> m_constantGrass;
+	float m_timeStep = 0;
+
+	friend class TerrainNode;
 };

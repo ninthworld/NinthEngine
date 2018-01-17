@@ -10,6 +10,7 @@
 #include "GLVertexBuffer.hpp"
 #include "GLVertexArray.hpp"
 #include "GLRasterizer.hpp"
+#include "GLBlender.hpp"
 #include "GLTexture.hpp"
 #include "GLSampler.hpp"
 #include "GLRenderTarget.hpp"
@@ -101,6 +102,13 @@ RasterizerBuilder GLGraphicsDevice::createRasterizer() {
 	return RasterizerBuilder([this](
 		const RasterizerStruct rasterizer) {
 		return std::make_unique<GLRasterizer>(rasterizer);
+	});
+}
+
+BlenderBuilder GLGraphicsDevice::createBlender() {
+	return BlenderBuilder([this](
+		const BlenderStruct blender) {
+		return std::make_unique<GLBlender>(blender);
 	});
 }
 

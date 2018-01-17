@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\GLRenderEngine.cpp" />
+    <ClCompile Include="..\src\Render\GLBlender.cpp" />
     <ClCompile Include="..\src\Render\GLConstantBuffer.cpp" />
     <ClCompile Include="..\src\Render\GLGraphicsContext.cpp" />
     <ClCompile Include="..\src\Render\GLGraphicsDevice.cpp" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngineGL\GLRenderEngine.hpp" />
+    <ClInclude Include="..\src\Render\GLBlender.hpp" />
     <ClInclude Include="..\src\Render\GLBuffer.hpp" />
     <ClInclude Include="..\src\Render\GLConstantBuffer.hpp" />
     <ClInclude Include="..\src\Render\GLContext.hpp" />
