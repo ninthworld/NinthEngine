@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Utils\LodePNG\lodepng.cpp" />
     <ClInclude Include="..\include\NinthEngine\Application\Game.hpp" />
     <ClInclude Include="..\include\NinthEngine\Application\GameEngine.hpp" />
     <ClInclude Include="..\include\NinthEngine\Application\GameTimer.hpp" />

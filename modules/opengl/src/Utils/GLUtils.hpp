@@ -23,9 +23,14 @@ case GL_OUT_OF_MEMORY: LOG_WARNING << func << ": " << "GL_OUT_OF_MEMORY"; break;
 
 static const GLenum getGLenumType(const NinthEngine::FormatType format) {
 
-	switch (format) {
-	case NinthEngine::FORMAT_DEPTH_24_STENCIL_8: return GL_UNSIGNED_INT_24_8;
-	default: return GL_UNSIGNED_BYTE;
+	if (format == NinthEngine::FORMAT_DEPTH_24_STENCIL_8) {
+		return GL_UNSIGNED_INT_24_8;
+	}
+	else if (format & FORMAT_16) {
+		return GL_UNSIGNED_SHORT;
+	}
+	else {
+		return GL_UNSIGNED_BYTE;
 	}
 }
 
@@ -54,7 +59,23 @@ static const GLenum getGLenumFormat(const NinthEngine::FormatType format) {
 
 static const GLenum getGLintIFormat(const NinthEngine::FormatType format) {
 
-	return getGLenumFormat(format);
+	if (format & FORMAT_16) {
+		if (format & FORMAT_R) {
+			return GL_R16;
+		}
+		else if (format & FORMAT_RG) {
+			return GL_RG16;
+		}
+		else if (format & FORMAT_RGB) {
+			return GL_RGB16;
+		}
+		else {
+			return GL_RGBA16;
+		}
+	}
+	else {
+		return getGLenumFormat(format);
+	}
 }
 
 #include <NinthEngine\Render\Config\BlenderConfig.hpp>

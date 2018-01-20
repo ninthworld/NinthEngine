@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{d2237662-b283-4d1d-a7cf-e2bc85948eef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utils\LodePNG">
+      <UniqueIdentifier>{219fd783-785c-4728-9fd3-9c02c59a07cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\NinthEngine\Application\Game.hpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Utils\FileUtils.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Utils\LodePNG\lodepng.cpp">
+      <Filter>Source Files\Utils\LodePNG</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

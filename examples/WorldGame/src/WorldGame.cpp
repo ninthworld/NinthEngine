@@ -35,10 +35,10 @@ void WorldGame::init() {
 
 	// Initialize Terrain
 	TerrainConfig terrainConfig{
-		glm::vec3(2048, 128, 2048),
+		glm::vec3(2048, 256, 2048),
 		16,
-		8,
-		{ 512, 256, 128, 64, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+		1,
+		{ 4096, 2048, 1024, 512, 256, 128, 64, 32, 0, 0, 0, 0, 0, 0 }
 	};
 	
 	m_terrain = std::make_shared<Terrain>(m_device, m_context, m_camera, m_constantCamera, terrainConfig);

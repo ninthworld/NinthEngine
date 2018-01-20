@@ -1,5 +1,6 @@
 #include "TerrainNode.hpp"
 #include "Terrain.hpp"
+#include <NinthEngine\Utils\LodePNG\lodepng.h>
 
 Terrain::Terrain(
 	const std::shared_ptr<GraphicsDevice>& device,	
@@ -154,12 +155,26 @@ Terrain::Terrain(
 		.build();
 	m_shader->bind(0, "texSampler", m_sampler, VERTEX_SHADER | PIXEL_SHADER);
 
+	std::vector<unsigned char> image;
+	unsigned width, height;
+	lodepng::decode(image, width, height, "res/terrain/heightmap.png" , LodePNGColorType::LCT_GREY, 16);
+	
+	for (unsigned i = 0; i < width * height * 2; i += 2) {
+		unsigned char t = image[i];
+		image[i] = image[i + 1];
+		image[i + 1] = t;
+	}
+	
 	m_heightmap = device->createTexture()
-		.withFile("res/heightmap.bmp")
+		.withFormat(FORMAT_R_16_UNORM)
+		.withSize(width, height)
 		.build();
+	m_heightmap->setSampler(m_sampler);
+	
+	m_context->setData(m_heightmap, &image[0]);
 
 	m_normalmap = device->createTexture()
-		.withFile("res/normalmap.bmp")
+		.withFile("res/terrain/normalmap.png")
 		.build();
 
 	m_shader->bind(0, "heightmap", m_heightmap, VERTEX_SHADER);

@@ -35,6 +35,7 @@ public:
 
 	TextureBuilder& withSize(const unsigned width, const unsigned height) {
 		m_width = width;
+		m_height = height;
 		return *this;
 	};
 

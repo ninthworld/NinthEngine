@@ -137,7 +137,7 @@ TextureBuilder D3DGraphicsDevice::createTexture() {
 			unsigned char* data = stbi_load(file.c_str(), &width, &height, nullptr, 4);
 
 			TextureStruct tStruct{
-				FORMAT_RGBA_8_UNORM,
+				texture.format,
 				(unsigned)width,
 				(unsigned)height,
 				texture.mmLevels,
