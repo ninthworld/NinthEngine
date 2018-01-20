@@ -7,14 +7,11 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\skydome\Skydome.cpp">
-      <Filter>Source Files\skydome</Filter>
+    <ClCompile Include="src\Terrain.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\terrain\TerrainNode.cpp">
-      <Filter>Source Files\terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="src\terrain\Terrain.cpp">
-      <Filter>Source Files\terrain</Filter>
+    <ClCompile Include="src\TerrainNode.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -30,86 +27,24 @@
     <Filter Include="Resource Files\terrain">
       <UniqueIdentifier>{16469875-0f34-48c4-b03d-b0eff55722df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\fx">
-      <UniqueIdentifier>{a9a8f6bc-430b-49fd-a9e1-faea818f35a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\fx\lighting">
-      <UniqueIdentifier>{3e271a48-3099-4be4-8f40-afe60ee836e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\terrain\glsl">
-      <UniqueIdentifier>{45351147-6325-45e8-a52a-a315a595cf1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\skydome">
-      <UniqueIdentifier>{2a0b8573-c4b3-49da-85be-c78f79446fdc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\terrain">
-      <UniqueIdentifier>{ecf979d3-3dcb-480f-ac58-730b162c59d6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\skydome">
-      <UniqueIdentifier>{bd3a63a8-5c54-4249-b333-58ab8adcc02b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\terrain">
-      <UniqueIdentifier>{3e09477f-fec3-4c82-aef8-0df5e44926ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\skydome">
-      <UniqueIdentifier>{88824463-7e8a-4492-ae05-d547e1e5933e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\skydome\glsl">
-      <UniqueIdentifier>{464c3a15-5ef7-4f4d-976f-aba032df78f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\skydome\hlsl">
-      <UniqueIdentifier>{6f24df0e-4071-4968-a8cf-562fc410c6ac}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\WorldGame.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\skydome\Skydome.hpp">
-      <Filter>Header Files\skydome</Filter>
+    <ClInclude Include="src\TerrainNode.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\terrain\Terrain.hpp">
-      <Filter>Header Files\terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="src\terrain\TerrainNode.hpp">
-      <Filter>Header Files\terrain</Filter>
+    <ClInclude Include="src\Terrain.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\fx\lighting\lighting.ps.glsl">
-      <Filter>Resource Files\fx\lighting</Filter>
+    <None Include="res\terrain\shaders\terrain.ps.glsl">
+      <Filter>Resource Files\terrain</Filter>
     </None>
-    <None Include="res\fx\fx.vs.glsl">
-      <Filter>Resource Files\fx</Filter>
+    <None Include="res\terrain\shaders\terrain.vs.glsl">
+      <Filter>Resource Files\terrain</Filter>
     </None>
-    <None Include="res\terrain\shaders\glsl\terrain.vs.glsl">
-      <Filter>Resource Files\terrain\glsl</Filter>
-    </None>
-    <None Include="res\terrain\shaders\glsl\terrain.ds.glsl">
-      <Filter>Resource Files\terrain\glsl</Filter>
-    </None>
-    <None Include="res\terrain\shaders\glsl\terrain.gs.glsl">
-      <Filter>Resource Files\terrain\glsl</Filter>
-    </None>
-    <None Include="res\terrain\shaders\glsl\terrain.hs.glsl">
-      <Filter>Resource Files\terrain\glsl</Filter>
-    </None>
-    <None Include="res\terrain\shaders\glsl\terrain.ps.glsl">
-      <Filter>Resource Files\terrain\glsl</Filter>
-    </None>
-    <None Include="res\skydome\shaders\glsl\skydome.vs.glsl">
-      <Filter>Resource Files\skydome\glsl</Filter>
-    </None>
-    <None Include="res\skydome\shaders\glsl\skydome.ps.glsl">
-      <Filter>Resource Files\skydome\glsl</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="res\skydome\shaders\hlsl\skydome.vs.hlsl">
-      <Filter>Resource Files\skydome\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="res\skydome\shaders\hlsl\skydome.ps.hlsl">
-      <Filter>Resource Files\skydome\hlsl</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

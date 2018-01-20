@@ -76,7 +76,6 @@ public:
 	SamplerBuilder& withAnisotropy(const unsigned max = 1) {
 		m_anisotropy = true;
 		m_maxAnisotropy = max;
-		return *this;
 	};
 
 	SamplerBuilder& withCompare(const CompareType func) {

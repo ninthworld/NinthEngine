@@ -3,8 +3,7 @@
 #include <memory>
 #include <NinthEngine\Application\Game.hpp>
 #include <NinthEngine\Camera\FPSGameCamera.hpp>
-#include "terrain\Terrain.hpp"
-#include "skydome\Skydome.hpp"
+#include "Terrain.hpp"
 
 using namespace NinthEngine;
 
@@ -38,34 +37,13 @@ private:
 	std::shared_ptr<FPSGameCamera> m_cameraDebug;
 	bool m_camDebug = false;
 
-	// Deferred Rendering Pipeline
-	std::shared_ptr<VertexArray> m_vertexArrayQuad;
-
 	// Rasterizers
-	bool m_wireframe;
-	std::shared_ptr<Rasterizer> m_rasterizerDefault;
-	std::shared_ptr<Rasterizer> m_rasterizerWireframe;
-	
+	std::shared_ptr<Rasterizer> m_rasterizer;
+
 	// Constants
 	std::shared_ptr<ConstantBuffer> m_constantCamera;
-	std::shared_ptr<ConstantBuffer> m_constantWindow;
-	std::shared_ptr<ConstantBuffer> m_constantCameraProj;
 
 	// Terrain
 	std::shared_ptr<Terrain> m_terrain;
-
-	// Skydome
-	std::shared_ptr<Skydome> m_skydome;
-
-	// Samplers
-	std::shared_ptr<Sampler> m_sampler;
-
-	// Render Targets
-	std::shared_ptr<RenderTarget> m_renderTargetMS;
-	std::shared_ptr<RenderTarget> m_renderTargetResolve;
-	std::shared_ptr<RenderTarget> m_renderTargetSkydome;
-
-	// Shaders
-	std::shared_ptr<Shader> m_shaderLighting;
 
 };
