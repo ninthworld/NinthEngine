@@ -1,138 +1,98 @@
-#include <algorithm>
-#include "..\..\include\NinthEngine\Application\GameWindow.hpp"
-#include "..\..\include\NinthEngine\Input\Keyboard.hpp"
-#include "..\..\include\NinthEngine\Input\Mouse.hpp"
 #include "..\..\include\NinthEngine\Camera\FPSGameCamera.hpp"
 
 namespace NinthEngine {
 
-FPSGameCamera::FPSGameCamera(const glm::vec3 position, const glm::vec3 rotation, const FPSGameCameraSettings settings)
-	: m_position(position)
-	, m_rotation(rotation)
-	, m_settings(settings)
-	, m_mouseDelta(glm::vec2()) {
+FPSGameCamera::FPSGameCamera(
+	const glm::vec3 position,
+	const glm::vec3 rotation,
+	const float moveFactor,
+	const float yawFactor,
+	const float pitchFactor,
+	const float fov,
+	const float zNear,
+	const float zFar,
+	const int width,
+	const int height)
+	: m_moveFactor(moveFactor)
+	, m_yawFactor(yawFactor)
+	, m_pitchFactor(pitchFactor)
+	, m_mouseDelta(glm::vec2(0))
+	, GameCamera(
+		position,
+		rotation,
+		fov,
+		zNear,
+		zFar,
+		width,
+		height) {
 }
 
 FPSGameCamera::~FPSGameCamera() {
 }
 
-void FPSGameCamera::update(const std::shared_ptr<GameWindow>& window, const double deltaTime) {
+void FPSGameCamera::update(const double deltaTime) {
 	
-	m_rotation.x += m_mouseDelta.y; // *deltaTime;
-	m_rotation.y += m_mouseDelta.x; // *deltaTime;
-	m_mouseDelta = glm::vec2();
+	glm::vec3 rotation = getRotation();
+
+	rotation.x += m_mouseDelta.y;
+	rotation.y += m_mouseDelta.x;
+	m_mouseDelta = glm::vec2(0);
 	
-	m_rotation.x = std::max<float>(-PI / 2.001, fmin(PI / 2.001, m_rotation.x));
-	m_rotation.y += (m_rotation.y < 0 ? 2.0 * PI : (m_rotation.y > 2.0 * PI ? -2.0 * PI : 0));
+	rotation.x = std::max<float>(-PI / 2.001, fmin(PI / 2.001, rotation.x));
+	rotation.y += (rotation.y < 0 ? 2.0 * PI : (rotation.y > 2.0 * PI ? -2.0 * PI : 0));
 	
-	auto movement = glm::vec3();
-	double sinXRot = sin(m_rotation.x);
-	double cosXRot = cos(m_rotation.x);
-	double sinYRot = sin(m_rotation.y);
-	double cosYRot = cos(m_rotation.y);
+	double sinXRot = sin(rotation.x);
+	double cosXRot = cos(rotation.x);
+	double sinYRot = sin(rotation.y);
+	double cosYRot = cos(rotation.y);
 	double pitchLimitFactor = cosXRot;
 
-	if (window->getKeyboard()->getKey(KEY_W) == KS_PRESSED) {
+	auto movement = glm::vec3(0);
+	if (m_keyState[KEY_W] == KS_PRESSED) {
 		movement.x += sinYRot * pitchLimitFactor;
 		movement.z -= cosYRot * pitchLimitFactor;
 	}
 
-	if (window->getKeyboard()->getKey(KEY_S) == KS_PRESSED) {
+	if (m_keyState[KEY_S] == KS_PRESSED) {
 		movement.x -= sinYRot * pitchLimitFactor;
 		movement.z += cosYRot * pitchLimitFactor;
 	}
 
-	if (window->getKeyboard()->getKey(KEY_A) == KS_PRESSED) {
+	if (m_keyState[KEY_A] == KS_PRESSED) {
 		movement.x += -cosYRot;
 		movement.z += -sinYRot;
 	}
 
-	if (window->getKeyboard()->getKey(KEY_D) == KS_PRESSED) {
+	if (m_keyState[KEY_D] == KS_PRESSED) {
 		movement.x += cosYRot;
 		movement.z += sinYRot;
 	}
 
-	if (window->getKeyboard()->getKey(KEY_SPACE) == KS_PRESSED) {
+	if (m_keyState[KEY_SPACE] == KS_PRESSED) {
 		movement.y++;
 	}
 
-	if (window->getKeyboard()->getKey(KEY_SHIFT) == KS_PRESSED) {
+	if (m_keyState[KEY_SHIFT] == KS_PRESSED) {
 		movement.y--;
 	}
 
 	movement = (glm::length(movement) > 0 ? glm::normalize(movement) : movement);
-	double fpsFactor = getFPSSettings().moveSpeedFactor * deltaTime;
-	movement *= fpsFactor;
+	movement *= m_moveFactor * deltaTime;
 
-	m_position += movement;
-
-	m_data.position = glm::vec4(m_position, 0.0f);
+	setPosition(getPosition() + movement);
+	setRotation(rotation);
 
 	setViewMatrix();
 }
 
-void FPSGameCamera::setProjMatrix(const int width, const int height) {
-	float w = std::max<float>(width, 1);
-	float h = std::max<float>(height, 1);
-	float aspect = w / h;
-
-	m_projMatrix = glm::perspective(getSettings().FOV, aspect, getSettings().zNear, getSettings().zFar);
-
-	m_dataProj.projMatrix = m_projMatrix;
-	m_dataProj.invProjMatrix = glm::mat4(
-		1 / m_projMatrix[0][0], 0, 0, 0,
-		0, 1 / m_projMatrix[1][1], 0, 0,
-		0, 0, 0, 1 / m_projMatrix[3][2],
-		0, 0, 1 / m_projMatrix[2][3], -m_projMatrix[2][2] / (m_projMatrix[2][3] * m_projMatrix[3][2]));
-
-	setViewMatrix();
+void FPSGameCamera::onKeyboard(const Key key, const KeyState state) {
+	m_keyState[key] = state;
 }
 
-void FPSGameCamera::setViewMatrix() {
-	m_viewMatrix = glm::rotate(glm::mat4(1), m_rotation.x, glm::vec3(1, 0, 0));
-	m_viewMatrix = glm::rotate(m_viewMatrix, m_rotation.y, glm::vec3(0, 1, 0));
-	m_viewMatrix = glm::rotate(m_viewMatrix, m_rotation.z, glm::vec3(0, 0, 1));
-	m_viewMatrix = glm::translate(m_viewMatrix, -m_position);
-	m_data.viewMatrix = m_viewMatrix;
-
-	setViewProjMatrix();
-}
-
-void FPSGameCamera::setViewMatrix(const glm::mat4 view) {
-	m_viewMatrix = view;
-	m_data.viewMatrix = m_viewMatrix;
-}
-
-void FPSGameCamera::setViewProjMatrix() {
-	m_viewProjMatrix = m_projMatrix * m_viewMatrix;
-	m_data.viewProjMatrix = m_viewProjMatrix;
-
-	glm::mat4 tViewProjMatrix = glm::transpose(m_viewProjMatrix);
-	for (unsigned i = 0; i < 3; ++i) {
-		m_frustumPlanes[i * 2] = glm::normalize(tViewProjMatrix[i] + tViewProjMatrix[3]);
-		m_frustumPlanes[i * 2 + 1] = glm::normalize(-tViewProjMatrix[i] + tViewProjMatrix[3]);
-	}
-}
-
-void FPSGameCamera::setViewProjMatrix(const glm::mat4 viewProj) {
-	m_viewProjMatrix = viewProj;
-	m_data.viewProjMatrix = m_viewProjMatrix;
-}
-
-void FPSGameCamera::mouseMoveCallback(const std::shared_ptr<GameWindow>& window, int x, int y) {
-
-	if (window->getMouse()->getButton(MB_RIGHT_BTN) == MS_PRESSED) {
-		
-		m_mouseDelta = glm::vec2(
-			(x - (window->getWidth() / 2)) * getFPSSettings().yawSensitivity,
-			(y - (window->getHeight() / 2)) * getFPSSettings().pitchSensitivity
-		);
-	}
-}
-
-void FPSGameCamera::mouseButtonCallback(const std::shared_ptr<GameWindow>& window, MouseButton button, MouseState state) {
-
-	if (window->getMouse()->getButton(MB_RIGHT_BTN) == MS_PRESSED) {
+void FPSGameCamera::onMouseButton(const std::shared_ptr<GameWindow>& window, const const MouseButton button, const MouseState state) {
+	
+	m_mouseState[button] = state;
+	if (m_mouseState[MB_RIGHT_BTN] == MS_PRESSED) {
 		window->setMouseVisible(false);
 		window->getMouse()->setMouseCentered(true);
 	}
@@ -142,7 +102,13 @@ void FPSGameCamera::mouseButtonCallback(const std::shared_ptr<GameWindow>& windo
 	}
 }
 
-void FPSGameCamera::keyCallback(Key key, KeyState state) {
+void FPSGameCamera::onMouseMove(const std::shared_ptr<GameWindow>& window, const int x, const int y) {
+
+	if (m_mouseState[MB_RIGHT_BTN] == MS_PRESSED) {
+		m_mouseDelta = glm::vec2(
+			(x - (window->getWidth() / 2.0f)) * m_yawFactor,
+			(y - (window->getHeight() / 2.0f)) * m_pitchFactor);
+	}
 }
 
 } // namespace NinthEngine

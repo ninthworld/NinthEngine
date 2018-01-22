@@ -3,8 +3,27 @@
 #include <string>
 #include <memory>
 #include <functional>
+#include "..\Utils\MathUtils.hpp"
+#include "..\Render\Config\LayoutConfig.hpp"
 
 namespace NinthEngine {
+
+const static LayoutConfig windowStructLayout =
+	LayoutConfig().float4();
+struct WindowStruct {
+	glm::vec4 windowSize;
+};
+/*
+* GLSL
+	layout(std140) uniform Window {
+		vec4 windowSize;
+	};
+
+* HLSL
+	cbuffer Window : register(b?) {
+		float4 windowSize;
+	};
+*/
 
 class Game;
 class GameWindow;

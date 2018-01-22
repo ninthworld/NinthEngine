@@ -6,10 +6,7 @@ TestGame::TestGame(const std::shared_ptr<GameEngine>& engine)
 	, m_device(engine->getGraphicsDevice())
 	, m_context(engine->getGraphicsContext()) {
 
-	FPSGameCameraSettings camSettings;
-	camSettings.moveSpeedFactor = 8.0f;
-
-	m_camera = std::make_shared<FPSGameCamera>(glm::vec3(0, 0, 2), glm::vec3(0, 0, 0), camSettings);
+	m_camera = std::make_shared<FPSGameCamera>(glm::vec3(0, 0, 2), glm::vec3(0), 8.0f);
 	m_camera->setProjMatrix(m_window->getWidth(), m_window->getHeight());
 }
 
@@ -33,8 +30,8 @@ void TestGame::init() {
 	
 	// Initialize Constant Buffers
 	m_constantCamera = m_device->createConstantBuffer()
-		.withLayout(LayoutConfig().float4x4().float4x4().float4())
-		.withData(&m_camera->data())
+		.withLayout(cameraStructLayout)
+		.withData(&m_camera->getStruct())
 		.build();
 
 	// Initialize Model Data
@@ -100,10 +97,10 @@ void TestGame::init() {
 void TestGame::update(const double deltaTime) {
 
 	// Update Camera
-	m_camera->update(m_window, deltaTime);
+	m_camera->update(deltaTime);
 
 	// Update Constant Buffers
-	m_context->setData(m_constantCamera, &m_camera->data());
+	m_context->setData(m_constantCamera, &m_camera->getStruct());
 }
 
 void TestGame::render() {
@@ -136,13 +133,13 @@ void TestGame::onResize(const int width, const int height) {
 void TestGame::onKeyboard(const Key key, const KeyState state) {
 
 	if (key == KEY_ESCAPE) m_window->close();
-	m_camera->keyCallback(key, state);
+	m_camera->onKeyboard(key, state);
 }
 
 void TestGame::onMouseButton(const MouseButton button, const MouseState state) {
-	m_camera->mouseButtonCallback(m_window, button, state);
+	m_camera->onMouseButton(m_window, button, state);
 }
 
 void TestGame::onMouseMove(const int x, const int y) {
-	m_camera->mouseMoveCallback(m_window, x, y);
+	m_camera->onMouseMove(m_window, x, y);
 }

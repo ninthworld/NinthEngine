@@ -139,7 +139,7 @@ void GLGraphicsContext::resolve(
 
 	auto glRenderTargetFrom = std::dynamic_pointer_cast<GLRenderTarget>(renderTargetFrom);
 	auto glRenderTargetTo = std::dynamic_pointer_cast<GLRenderTarget>(renderTargetTo);
-	for (unsigned i = 0; i < std::min(renderTargetFrom->getTextureCount(), renderTargetTo->getTextureCount()); ++i) {
+	for (unsigned i = 0; i < min(renderTargetFrom->getTextureCount(), renderTargetTo->getTextureCount()); ++i) {
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, glRenderTargetFrom->getFramebufferId());
 		glReadBuffer(GL_COLOR_ATTACHMENT0 + i);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, glRenderTargetTo->getFramebufferId());

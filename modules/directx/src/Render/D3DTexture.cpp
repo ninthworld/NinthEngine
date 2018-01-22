@@ -67,7 +67,25 @@ void D3DTexture::setSampler(const std::shared_ptr<Sampler>& sampler) {
 void D3DTexture::setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void* data) {
 
 	if (m_dxDefault) {
-		unsigned memPitch = 4 * m_width * sizeof(unsigned char);
+
+		unsigned memPitch = m_width * sizeof(unsigned char);
+		if (m_format & FORMAT_RG) {
+			memPitch *= 2;
+		}
+		else if (m_format & FORMAT_RGB) {
+			memPitch *= 3;
+		}
+		else {
+			memPitch *= 4;
+		}
+
+		if (m_format & FORMAT_16) {
+			memPitch *= 2;
+		}
+		else if (m_format & FORMAT_32) {
+			memPitch *= 4;
+		}
+
 		deviceContext->UpdateSubresource(m_texturePtr.Get(), 0, NULL, data, memPitch, 0);
 		deviceContext->GenerateMips(m_shaderView.Get());
 	}
@@ -79,8 +97,29 @@ void D3DTexture::setData(const ComPtr<ID3D11DeviceContext>& deviceContext, void*
 			LOG_ERROR << "Failed to map texture data: " << _com_error(hr).ErrorMessage();
 			throw std::exception();
 		}
+		
+		size_t size = m_width * m_height;
+		if (m_format & FORMAT_R) {
+			size *= 1;
+		}
+		else if (m_format & FORMAT_RG) {
+			size *= 2;
+		}
+		else if(m_format & FORMAT_RGB) {
+			size *= 3;
+		}
+		else {
+			size *= 4;
+		}
 
-		memcpy(mappedResource.pData, data, m_width * m_height * 4);
+		if (m_format & FORMAT_16) {
+			size *= 2;
+		}
+		else if (m_format & FORMAT_32) {
+			size *= 4;
+		}
+
+		memcpy(mappedResource.pData, data, size);
 
 		deviceContext->Unmap(m_texturePtr.Get(), 0);
 	}

@@ -1,58 +1,115 @@
 #pragma once
 
 #include <memory>
+#include <array>
 #include "..\Utils\MathUtils.hpp"
+#include "..\Render\Config\LayoutConfig.hpp"
 
 namespace NinthEngine {
 
-struct Camera {
-	glm::mat4 viewMatrix;
-	glm::mat4 viewProjMatrix;
-	glm::vec4 position;
+const static LayoutConfig cameraStructLayout = 
+	LayoutConfig().float4x4().float4();
+struct CameraStruct {
+	glm::mat4 camViewProj;
+	glm::vec4 camPosition;
 };
+/*
+* GLSL
+	layout(std140) uniform Camera {
+		mat4 camViewProj;
+		vec4 camPosition;
+	};
 
-struct CameraProj {
-	glm::mat4 projMatrix;
-	glm::mat4 invProjMatrix;
+* HLSL
+	cbuffer Camera : register(b?) {
+		float4x4 camViewProj;
+		float4 camPosition;
+	};
+*/
+
+const static LayoutConfig cameraExtStructLayout =
+	LayoutConfig().float4x4().float4x4().float4x4();
+struct CameraExtStruct {
+	glm::mat4 camView;
+	glm::mat4 camProj;
+	glm::mat4 camInvProj;
 };
+/*
+* GLSL
+	layout(std140) uniform CameraExt {
+		mat4 camView;
+		mat4 camProj;
+		mat4 camInvProj;
+	};
 
-struct GameCameraSettings {
-	float FOV = 45.0f;
-	float zNear = 0.1f;
-	float zFar = 1024.0f;
-};
-
-class GameWindow;
+* HLSL
+	cbuffer CameraExt : register(b?) {
+		float4x4 camView;
+		float4x4 camProj;
+		float4x4 camInvProj;
+	};
+*/
 
 class GameCamera {
 public:
-	GameCamera() = default;
-	GameCamera(const GameCamera&) = delete;
-	GameCamera& operator=(const GameCamera&) = delete;
+	GameCamera(
+		const glm::vec3 position = glm::vec3(0), 
+		const glm::vec3 rotation = glm::vec3(0),
+		const float fov = 45.0f,
+		const float zNear = 0.1f,
+		const float zFar = 1000.0f,
+		const int width = 1,
+		const int height = 1);
+	virtual ~GameCamera();
 
-	virtual ~GameCamera() = default;
+	virtual void update(const double deltaTime);
+	
+	virtual void onResize(const int width, const int height);
 
-	virtual void update(const std::shared_ptr<GameWindow>& window, const double deltaTime) = 0;
+	const glm::vec3 getPosition() const { return m_position; };
+	const glm::vec3 getRotation() const { return m_rotation; };
+	const float getFOV() const { return m_fov; };
+	const float getZNear() const { return m_zNear; };
+	const float getZFar() const { return m_zFar; };
 
-	virtual const GameCameraSettings getSettings() const = 0;
-	virtual const glm::vec3 getPosition() const = 0;
-	virtual const glm::vec3 getRotation() const = 0;
-	virtual const glm::mat4 getProjMatrix() const = 0;
-	virtual const glm::mat4 getViewMatrix() const = 0;
-	virtual const glm::mat4 getViewProjMatrix() const = 0;
-	virtual const glm::vec4* getViewFrustum() const = 0;
+	const glm::mat4 getProjMatrix() const { return m_projMatrix; };
+	const glm::mat4 getViewMatrix() const { return m_viewMatrix; };
+	const glm::mat4 getViewProjMatrix() const { return m_viewProjMatrix; };
 
-	virtual void setSettings(GameCameraSettings) = 0;
-	virtual void setPosition(const glm::vec3) = 0;
-	virtual void setRotation(const glm::vec3) = 0;
-	virtual void setProjMatrix(const int width, const int height) = 0;
-	virtual void setViewMatrix() = 0;
-	virtual void setViewMatrix(const glm::mat4 view) = 0;
-	virtual void setViewProjMatrix() = 0;
-	virtual void setViewProjMatrix(const glm::mat4 viewProj) = 0;
+	CameraStruct getStruct() { return m_struct; };
+	CameraExtStruct getExtStruct() { return m_extStruct; };
 
-	virtual Camera data() = 0;
-	virtual CameraProj dataProj() = 0;
+	void setPosition(const glm::vec3 position) { m_position = position; m_struct.camPosition = glm::vec4(position, 1.0f); };
+	void setRotation(const glm::vec3 rotation) { m_rotation = rotation; };
+	void setFOV(const float fov) { m_fov = fov; };
+	void setZNear(const float zNear) { m_zNear = zNear; };
+	void setZFar(const float zFar) { m_zFar = zFar; };
+
+	void setProjMatrix(const glm::mat4 projMatrix) { m_projMatrix = projMatrix; m_extStruct.camProj = projMatrix; };
+	void setViewMatrix(const glm::mat4 viewMatrix) { m_viewMatrix = viewMatrix; m_extStruct.camView = viewMatrix; };
+	void setViewProjMatrix(const glm::mat4 viewProjMatrix) { m_viewProjMatrix = viewProjMatrix; m_struct.camViewProj = viewProjMatrix; };
+
+	virtual void setProjMatrix(const int width, const int height);
+	virtual void setViewMatrix();
+	virtual void setViewProjMatrix();
+
+	const bool inFrustum(const AABB box) const;
+
+private:
+	glm::vec3 m_position;
+	glm::vec3 m_rotation;
+	float m_fov;
+	float m_zNear;
+	float m_zFar;
+
+	glm::mat4 m_projMatrix;
+	glm::mat4 m_viewMatrix;
+	glm::mat4 m_viewProjMatrix;
+
+	CameraStruct m_struct;
+	CameraExtStruct m_extStruct;
+
+	std::array<glm::vec4, 6> m_frustumPlanes;
 
 };
 

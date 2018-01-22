@@ -204,7 +204,7 @@ void D3DGraphicsContext::resolve(
 	const std::shared_ptr<RenderTarget>& renderTargetFrom, 
 	const std::shared_ptr<RenderTarget>& renderTargetTo) {
 
-	for (unsigned i = 0; i < std::min(renderTargetFrom->getTextureCount(), renderTargetTo->getTextureCount()); ++i) {
+	for (unsigned i = 0; i < min(renderTargetFrom->getTextureCount(), renderTargetTo->getTextureCount()); ++i) {
 		auto d3dTextureFrom = std::dynamic_pointer_cast<D3DTexture>(renderTargetFrom->getTexture(i));
 		auto d3dTextureTo = std::dynamic_pointer_cast<D3DTexture>(renderTargetTo->getTexture(i));
 

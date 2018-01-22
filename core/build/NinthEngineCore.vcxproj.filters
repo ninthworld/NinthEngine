@@ -173,5 +173,8 @@
     <ClCompile Include="..\src\Utils\LodePNG\lodepng.cpp">
       <Filter>Source Files\Utils\LodePNG</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Camera\GameCamera.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
