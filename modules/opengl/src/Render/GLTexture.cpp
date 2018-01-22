@@ -31,8 +31,8 @@ GLTexture::GLTexture(const TextureStruct texture)
 		CHECK_ERROR("glTexImage2D");
 
 		if (m_mmLevels) {
-			glGenerateTextureMipmap(m_textureId);
-			CHECK_ERROR("glGenerateTextureMipmap");
+			glGenerateMipmap(GL_TEXTURE_2D);
+			CHECK_ERROR("glGenerateMipmap");
 		}
 		else {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
@@ -62,8 +62,8 @@ void GLTexture::setData(void* data) {
 		CHECK_ERROR("glTexSubImage2D");
 
 		if (m_mmLevels) {
-			glGenerateTextureMipmap(m_textureId);
-			CHECK_ERROR("glGenerateTextureMipmap");
+			glGenerateMipmap(GL_TEXTURE_2D);
+			CHECK_ERROR("glGenerateMipmap");
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);

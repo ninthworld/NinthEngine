@@ -8,7 +8,7 @@ GLVertexArray::GLVertexArray()
 	: m_vertexArrayId(0)
 	, m_attribCount(0) {
 
-	glCreateVertexArrays(1, &m_vertexArrayId);
+	glGenVertexArrays(1, &m_vertexArrayId);
 }
 
 GLVertexArray::~GLVertexArray() {
