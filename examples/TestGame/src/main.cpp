@@ -4,12 +4,19 @@
 // NinthEngine Core Library
 #pragma comment(lib, "NinthEngineCore.lib")
 
-// Game Application
-#include "TestGame.hpp"
-
 // Render Engine
-//#define _USE_GL
-#define _USE_DX
+#define _USE_GL
+//#define _USE_DX
+
+// Game Application
+//#define _TEST_GAME
+#define _SHADOW_GAME
+
+#if defined(_TEST_GAME)
+#include "TestGame\TestGame.hpp"
+#elif defined(_SHADOW_GAME)
+#include "ShadowGame\ShadowGame.hpp"
+#endif
 
 using namespace NinthEngine;
 
@@ -42,13 +49,21 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 #endif
 
 	Win32::Win32Bootstrap bootstrap(
+#if defined(_TEST_GAME)
 		"Test Game", 
+#elif defined(_SHADOW_GAME)
+		"Shadow Game",
+#endif
 		1600, 900, 
 		hInstance, cmdShow, 
 		std::move(renderEngine));
 
 	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
+#if defined(_TEST_GAME)
 		return std::make_unique<TestGame>(engine);
+#elif defined(_SHADOW_GAME)
+		return std::make_unique<ShadowGame>(engine);
+#endif
 	});
 
 	return 0;

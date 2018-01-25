@@ -24,7 +24,12 @@ GLRenderTarget::GLRenderTarget(
 		CHECK_ERROR("glFramebufferTexture2D");
 	}
 
-	glDrawBuffers(colorAttachments.size(), &colorAttachments[0]);
+	if (colorAttachments.size()) {
+		glDrawBuffers(colorAttachments.size(), &colorAttachments[0]);
+	}
+	else {
+		glDrawBuffer(GL_NONE);
+	}
 
 	if (m_depthTexture) {
 		glFramebufferTexture2D(

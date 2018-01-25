@@ -13,40 +13,133 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resource Files\glsl">
-      <UniqueIdentifier>{483d0874-d010-4931-b7b2-07cd99ce8fb9}</UniqueIdentifier>
+    <Filter Include="Resource Files\TestGame">
+      <UniqueIdentifier>{64767ead-e324-4823-93ee-2eff58362977}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\hlsl">
-      <UniqueIdentifier>{ce3738bb-76ab-4af7-b19e-538c92b07983}</UniqueIdentifier>
+    <Filter Include="Resource Files\TestGame\cube">
+      <UniqueIdentifier>{64c88cd8-1f6e-4585-9081-b19805fed759}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\TestGame.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Filter Include="Resource Files\TestGame\cube\hlsl">
+      <UniqueIdentifier>{e49ea6b8-bc41-4a4e-8d9c-26954457c76d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\TestGame\cube\glsl">
+      <UniqueIdentifier>{94e82459-0c4c-402c-bb60-f2bdd7ed9e1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\TestGame">
+      <UniqueIdentifier>{4f9aec1e-9117-4a36-8864-0614c7047775}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\TestGame">
+      <UniqueIdentifier>{15529423-1be1-4bb1-9da6-824bdf2ac89c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ShadowGame">
+      <UniqueIdentifier>{6634a23f-05c8-4fa1-a64d-37368311c3ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ShadowGame">
+      <UniqueIdentifier>{68209981-9526-452e-a098-d65b674b6c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame">
+      <UniqueIdentifier>{940246ee-e461-4152-80c3-a4b971104852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\scene">
+      <UniqueIdentifier>{62755dc3-ab2b-4758-a6d5-17b888e8f67a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\scene\glsl">
+      <UniqueIdentifier>{2c330935-298c-47a4-b472-572a0241b4a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\scene\hlsl">
+      <UniqueIdentifier>{3c2cee98-89e8-49b3-a7e1-f58500f1bba2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\fx">
+      <UniqueIdentifier>{bf4744d3-c4fc-4378-85ea-daac669b394a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\fx\glsl">
+      <UniqueIdentifier>{18a31511-ba87-4bcf-a4ef-6444ba30c839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\fx\hlsl">
+      <UniqueIdentifier>{2f0322e4-5763-4c55-afb4-a0a5bbea1a51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\fx\glsl\lighting">
+      <UniqueIdentifier>{e554d5ca-ac57-4e07-a3e7-ee1769237707}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\fx\hlsl\lighting">
+      <UniqueIdentifier>{dc01aff9-7e14-4a3e-894e-3cd83414815e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\scene\glsl\shadowmap">
+      <UniqueIdentifier>{03d40024-5b8b-4ed7-ae70-979f8fe1add4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ShadowGame\scene\hlsl\shadowmap">
+      <UniqueIdentifier>{dbeb7211-a16a-44a6-9e19-9057b81580b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestGame.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\ShadowGame\ShadowGame.cpp">
+      <Filter>Source Files\ShadowGame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestGame\TestGame.cpp">
+      <Filter>Source Files\TestGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="res\cube.vs.hlsl">
-      <Filter>Resource Files\hlsl</Filter>
+    <FxCompile Include="res\TestGame\cube\shaders\hlsl\cube.ps.hlsl">
+      <Filter>Resource Files\TestGame\cube\hlsl</Filter>
     </FxCompile>
-    <FxCompile Include="res\cube.ps.hlsl">
-      <Filter>Resource Files\hlsl</Filter>
+    <FxCompile Include="res\TestGame\cube\shaders\hlsl\cube.vs.hlsl">
+      <Filter>Resource Files\TestGame\cube\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="res\ShadowGame\fx\hlsl\fx.vs.hlsl">
+      <Filter>Resource Files\ShadowGame\fx\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="res\ShadowGame\fx\hlsl\lighting\lighting.ps.hlsl">
+      <Filter>Resource Files\ShadowGame\fx\hlsl\lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="res\ShadowGame\scene\shaders\hlsl\shadowmap\sceneShadow.vs.hlsl">
+      <Filter>Resource Files\ShadowGame\scene\hlsl\shadowmap</Filter>
+    </FxCompile>
+    <FxCompile Include="res\ShadowGame\scene\shaders\hlsl\shadowmap\sceneShadow.ps.hlsl">
+      <Filter>Resource Files\ShadowGame\scene\hlsl\shadowmap</Filter>
+    </FxCompile>
+    <FxCompile Include="res\ShadowGame\scene\shaders\hlsl\scene.vs.hlsl">
+      <Filter>Resource Files\ShadowGame\scene\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="res\ShadowGame\scene\shaders\hlsl\scene.ps.hlsl">
+      <Filter>Resource Files\ShadowGame\scene\hlsl</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\cube.vs.glsl">
-      <Filter>Resource Files\glsl</Filter>
+    <None Include="res\TestGame\cube\shaders\glsl\cube.vs.glsl">
+      <Filter>Resource Files\TestGame\cube\glsl</Filter>
     </None>
-    <None Include="res\cube.ps.glsl">
-      <Filter>Resource Files\glsl</Filter>
+    <None Include="res\TestGame\cube\shaders\glsl\cube.ps.glsl">
+      <Filter>Resource Files\TestGame\cube\glsl</Filter>
     </None>
+    <None Include="res\ShadowGame\scene\shaders\glsl\scene.vs.glsl">
+      <Filter>Resource Files\ShadowGame\scene\glsl</Filter>
+    </None>
+    <None Include="res\ShadowGame\scene\shaders\glsl\scene.ps.glsl">
+      <Filter>Resource Files\ShadowGame\scene\glsl</Filter>
+    </None>
+    <None Include="res\ShadowGame\fx\glsl\fx.vs.glsl">
+      <Filter>Resource Files\ShadowGame\fx\glsl</Filter>
+    </None>
+    <None Include="res\ShadowGame\fx\glsl\lighting\lighting.ps.glsl">
+      <Filter>Resource Files\ShadowGame\fx\glsl\lighting</Filter>
+    </None>
+    <None Include="res\ShadowGame\scene\shaders\glsl\shadowmap\sceneShadow.vs.glsl">
+      <Filter>Resource Files\ShadowGame\scene\glsl\shadowmap</Filter>
+    </None>
+    <None Include="res\ShadowGame\scene\shaders\glsl\shadowmap\sceneShadow.ps.glsl">
+      <Filter>Resource Files\ShadowGame\scene\glsl\shadowmap</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ShadowGame\ShadowGame.hpp">
+      <Filter>Header Files\ShadowGame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TestGame\TestGame.hpp">
+      <Filter>Header Files\TestGame</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

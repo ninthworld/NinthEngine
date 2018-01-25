@@ -36,11 +36,13 @@ void GameCamera::setProjMatrix(const int width, const int height) {
 		m_zFar);
 
 	m_extStruct.camProj = m_projMatrix;
-	m_extStruct.camInvProj = glm::mat4(
+	m_extStruct.camInvProj = glm::inverse(m_projMatrix);
+		/*
+		glm::mat4(
 		1 / m_projMatrix[0][0], 0, 0, 0,
 		0, 1 / m_projMatrix[1][1], 0, 0,
 		0, 0, 0, 1 / m_projMatrix[3][2],
-		0, 0, 1 / m_projMatrix[2][3], -m_projMatrix[2][2] / (m_projMatrix[2][3] * m_projMatrix[3][2]));
+		0, 0, 1 / m_projMatrix[2][3], -m_projMatrix[2][2] / (m_projMatrix[2][3] * m_projMatrix[3][2]));*/
 
 	setViewMatrix();
 }
@@ -51,6 +53,7 @@ void GameCamera::setViewMatrix() {
 	m_viewMatrix = glm::rotate(m_viewMatrix, m_rotation.z, glm::vec3(0, 0, 1));
 	m_viewMatrix = glm::translate(m_viewMatrix, -m_position);
 	m_extStruct.camView = m_viewMatrix;
+	m_extStruct.camInvView = glm::inverse(m_viewMatrix);
 
 	setViewProjMatrix();
 }

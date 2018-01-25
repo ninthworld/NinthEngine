@@ -17,7 +17,7 @@ Win32GameEngine::Win32GameEngine(
 	m_context = renderEngine->getGraphicsContext();
 	
 	m_timer = std::make_unique<Win32GameTimer>();
-	m_context->setViewport({ 0.0f, 0.0f, (float)window->getWidth(), (float)window->getHeight() });
+	m_context->setViewport({ 0, 0, window->getWidth(), window->getHeight() });
 }
 
 Win32GameEngine::~Win32GameEngine() {

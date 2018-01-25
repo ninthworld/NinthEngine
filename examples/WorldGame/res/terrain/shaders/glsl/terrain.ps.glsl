@@ -63,8 +63,7 @@ void main() {
 
 	vec2 mapPosition = (gs_position.xz + terrainScale.x / 2.0) / terrainScale.x;
 
-	vec3 normal = texture(normalmap, mapPosition).rgb;
-	normal = normalize(normal * 2.0 - 1.0);
+	vec3 normal = texture(normalmap, mapPosition).rgb * 2.0 - 1.0;
 	
 	vec3 grassColor = texture(material0_color, gs_texCoord).rgb;
 	vec3 grassNormal = texture(material0_normal, gs_texCoord).rgb;

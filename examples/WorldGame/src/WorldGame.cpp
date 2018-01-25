@@ -168,7 +168,6 @@ void WorldGame::onResize(const int width, const int height) {
 	m_fx->onResize(width, height);
 
 	m_camera->onResize(width, height);
-	m_context->setViewport({ 0.0f, 0.0f, (float)width, (float)height });
 
 	glm::vec4 windowSize = glm::vec4(m_window->getWidth(), m_window->getHeight(), 0, 0);
 	m_context->setData(m_constantWindow, &windowSize);

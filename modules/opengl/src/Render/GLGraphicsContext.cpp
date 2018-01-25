@@ -17,12 +17,13 @@ GLGraphicsContext::GLGraphicsContext(
 	std::unique_ptr<GLContext> glContext,
 	const std::shared_ptr<GameWindow>& window)
 	: m_glContext(std::move(glContext))
+	, m_window(window)
 	, m_color({ 0.0f, 0.0f, 0.0f, 0.0f })
 	, m_primitiveType(TRIANGLES_TYPE)
 	, m_patchSize(1)
 	, m_glPrimitive(GL_TRIANGLES)
 	, m_boundFBO(0)
-	, m_viewport({ 0.0f, 0.0f, 0.0f, 0.0f }) {
+	, m_viewport({ 0, 0, 0, 0 }) {
 }
 
 GLGraphicsContext::~GLGraphicsContext() {
@@ -98,6 +99,7 @@ void GLGraphicsContext::clearBackBuffer() {
 
 void GLGraphicsContext::bindBackBuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	setViewport({ 0, 0, m_window->getWidth(), m_window->getHeight() });
 	m_boundFBO = 0;
 }
 
@@ -263,9 +265,12 @@ void GLGraphicsContext::bind(const std::shared_ptr<Blender>& blender) {
 
 void GLGraphicsContext::bind(const std::shared_ptr<RenderTarget>& renderTarget) {
 
-	auto glRenderPass = std::dynamic_pointer_cast<GLRenderTarget>(renderTarget);
-	glBindFramebuffer(GL_FRAMEBUFFER, glRenderPass->getFramebufferId());
-	m_boundFBO = glRenderPass->getFramebufferId();
+	auto glRenderTarget = std::dynamic_pointer_cast<GLRenderTarget>(renderTarget);
+	glBindFramebuffer(GL_FRAMEBUFFER, glRenderTarget->getFramebufferId());
+	setViewport({ 0, 0, 
+		(int)glRenderTarget->getDepthTexture()->getWidth(), 
+		(int)glRenderTarget->getDepthTexture()->getHeight() });
+	m_boundFBO = glRenderTarget->getFramebufferId();
 }
 
 void GLGraphicsContext::bind(const std::shared_ptr<Shader>& shader) {

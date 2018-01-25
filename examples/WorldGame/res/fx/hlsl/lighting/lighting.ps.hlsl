@@ -59,8 +59,7 @@ PixelOut main(VertexOut IN) {
 	float3 color = float3(0, 0, 0);
 	for (int i = 0; i < SAMPLES; ++i) {
 		float depth = depthTexture.Load(IN.texCoord * windowSize.xy, i);
-		float3 normal = normalTexture.Load(IN.texCoord * windowSize.xy, i).rgb;
-		normal = normalize(normal * 2.0 - 1.0);
+		float3 normal = normalTexture.Load(IN.texCoord * windowSize.xy, i).rgb * 2.0 - 1.0;
 
 		float3 position = positionTexture.Load(IN.texCoord * windowSize.xy, i).rgb;
 		position = position * 2.0 - 1.0;

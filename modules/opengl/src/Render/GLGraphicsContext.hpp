@@ -56,6 +56,7 @@ public:
 	const int getPatchSize() const override { return m_patchSize; };
 
 private:
+	std::shared_ptr<GameWindow> m_window;
 	std::unique_ptr<GLContext> m_glContext;
 	GLuint m_boundFBO;
 

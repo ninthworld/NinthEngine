@@ -84,10 +84,10 @@ void TestGame::init() {
 	// Initialize Shader
 	m_shader = m_device->createShader()
 		.withLayout(inputLayout)
-		.withGLSL<VERTEX_SHADER>("res/cube.vs.glsl")
-		.withGLSL<PIXEL_SHADER>("res/cube.ps.glsl")
-		.withHLSL<VERTEX_SHADER>("res/cube.vs.hlsl", "main")
-		.withHLSL<PIXEL_SHADER>("res/cube.ps.hlsl", "main")
+		.withGLSL<VERTEX_SHADER>("res/TestGame/cube/shaders/glsl/cube.vs.glsl")
+		.withGLSL<PIXEL_SHADER>("res/TestGame/cube/shaders/glsl/cube.ps.glsl")
+		.withHLSL<VERTEX_SHADER>("res/TestGame/cube/shaders/hlsl/cube.vs.hlsl", "main")
+		.withHLSL<PIXEL_SHADER>("res/TestGame/cube/shaders/hlsl/cube.ps.hlsl", "main")
 		.build();
 
 	// Bind Constants to Shader
@@ -125,9 +125,7 @@ void TestGame::render() {
 }
 
 void TestGame::onResize(const int width, const int height) {
-
 	m_camera->setProjMatrix(width, height);
-	m_context->setViewport({ 0.0f, 0.0f, (float)width, (float)height });
 }
 
 void TestGame::onKeyboard(const Key key, const KeyState state) {

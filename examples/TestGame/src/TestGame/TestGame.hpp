@@ -43,7 +43,7 @@ private:
 	std::shared_ptr<IndexBuffer> m_indexBuffer;
 	std::shared_ptr<VertexArray> m_vertexArray;
 
-	// Render Pass
+	// Render Target
 	std::shared_ptr<RenderTarget> m_renderTargetMS;
 
 };

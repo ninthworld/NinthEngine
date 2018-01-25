@@ -52,8 +52,7 @@ void main() {
 	vec3 color = vec3(0);
 	for (int i = 0; i < SAMPLES; ++i) {
 		float depth = texelFetch(depthTexture, ivec2(vs_texCoord * windowSize.xy), i).r;
-		vec3 normal = texelFetch(normalTexture, ivec2(vs_texCoord * windowSize.xy), i).rgb;
-		normal = normalize(normal * 2.0 - 1.0);
+		vec3 normal = texelFetch(normalTexture, ivec2(vs_texCoord * windowSize.xy), i).rgb * 2.0 - 1.0;
 		
 		vec3 position = texelFetch(positionTexture, ivec2(vs_texCoord * windowSize.xy), i).rgb;
 		position = position * 2.0 - 1.0;

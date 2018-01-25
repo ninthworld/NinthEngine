@@ -56,6 +56,7 @@ public:
 	const int getPatchSize() const override { return m_patchSize; };
 
 private:
+	std::shared_ptr<GameWindow> m_window;
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<IDXGISwapChain> m_swapChain;
 	ComPtr<ID3D11RenderTargetView> m_backBuffer;

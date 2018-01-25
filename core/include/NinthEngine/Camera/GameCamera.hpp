@@ -28,10 +28,11 @@ struct CameraStruct {
 */
 
 const static LayoutConfig cameraExtStructLayout =
-	LayoutConfig().float4x4().float4x4().float4x4();
+	LayoutConfig().float4x4().float4x4().float4x4().float4x4();
 struct CameraExtStruct {
 	glm::mat4 camView;
 	glm::mat4 camProj;
+	glm::mat4 camInvView;
 	glm::mat4 camInvProj;
 };
 /*
@@ -39,6 +40,7 @@ struct CameraExtStruct {
 	layout(std140) uniform CameraExt {
 		mat4 camView;
 		mat4 camProj;
+		mat4 camInvView;
 		mat4 camInvProj;
 	};
 
@@ -46,6 +48,7 @@ struct CameraExtStruct {
 	cbuffer CameraExt : register(b?) {
 		float4x4 camView;
 		float4x4 camProj;
+		float4x4 camInvView;
 		float4x4 camInvProj;
 	};
 */

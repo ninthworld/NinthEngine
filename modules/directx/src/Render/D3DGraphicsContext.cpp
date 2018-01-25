@@ -22,6 +22,7 @@ D3DGraphicsContext::D3DGraphicsContext(
 	const ComPtr<ID3D11DeviceContext>& deviceContext,
 	const std::shared_ptr<GameWindow>& window)
 	: m_deviceContext(deviceContext)
+	, m_window(window)
 	, m_color({ 0.0f, 0.0f, 0.0f, 0.0f })
 	, m_primitiveType(TRIANGLES_TYPE)
 	, m_patchSize(1)
@@ -161,6 +162,7 @@ void D3DGraphicsContext::clearBackBuffer() {
 
 void D3DGraphicsContext::bindBackBuffer() {
 	m_deviceContext->OMSetRenderTargets(1, m_backBuffer.GetAddressOf(), m_depthStencilView.Get());
+	setViewport({ 0, 0, m_window->getWidth(), m_window->getHeight() });
 }
 
 void D3DGraphicsContext::clear(const std::shared_ptr<RenderTarget>& renderTarget) {
@@ -249,7 +251,10 @@ void D3DGraphicsContext::bind(const std::shared_ptr<RenderTarget>& renderTarget)
 		targets.push_back(d3dRenderTarget->getRenderTargetView(i).Get());
 	}
 
-	m_deviceContext->OMSetRenderTargets(targets.size(), &targets.front(), d3dRenderTarget->getDepthStencilView().Get());
+	m_deviceContext->OMSetRenderTargets(targets.size(), (targets.size() ? &targets.front() : nullptr), d3dRenderTarget->getDepthStencilView().Get());
+	setViewport({ 0, 0, 
+		(int)d3dRenderTarget->getDepthTexture()->getWidth(), 
+		(int)d3dRenderTarget->getDepthTexture()->getHeight() });
 }
 
 void D3DGraphicsContext::bind(const std::shared_ptr<Shader>& shader) {
@@ -400,10 +405,10 @@ void D3DGraphicsContext::setData(const std::shared_ptr<Texture>& texture, void* 
 void D3DGraphicsContext::setViewport(const Viewport viewport) {
 
 	D3D11_VIEWPORT vp;
-	vp.TopLeftX = viewport.x;
-	vp.TopLeftY = viewport.y;
-	vp.Width = viewport.width;
-	vp.Height = viewport.height;
+	vp.TopLeftX = (float)viewport.x;
+	vp.TopLeftY = (float)viewport.y;
+	vp.Width = (float)viewport.width;
+	vp.Height = (float)viewport.height;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 
