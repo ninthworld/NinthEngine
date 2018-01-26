@@ -225,9 +225,10 @@ void ShadowGame::initConstants() {
 		.withData(&m_skyStruct)
 		.build();
 
+	ShadowMapStruct shadowMapStruct{ glm::mat4(1), glm::mat4(1), glm::mat4(1), glm::vec4(0), glm::vec4(0), glm::vec4(0) };
 	m_constantShadowMap = m_device->createConstantBuffer()
-		.withLayout(cameraStructLayout)
-		.withData(&m_camera->getStruct())
+		.withLayout(shadowMapStructLayout)
+		.withData(&shadowMapStruct)
 		.build();
 }
 
@@ -242,11 +243,13 @@ void ShadowGame::initRenderTargets() {
 	m_renderTargetScene->getDepthTexture()->setSampler(m_sampler);
 
 	unsigned shadowMapSize = 2048;
-	m_renderTargetShadowMap = m_device->createRenderTarget()
-		.withRenderTarget(shadowMapSize, shadowMapSize)
-		.withRenderTarget(shadowMapSize, shadowMapSize, FORMAT_DEPTH_24_STENCIL_8)
-		.build();
-	m_renderTargetShadowMap->getDepthTexture()->setSampler(m_sampler);
+	for (unsigned i = 0; i < m_renderTargetShadowMap.size(); ++i) {
+		m_renderTargetShadowMap[i] = m_device->createRenderTarget()
+			.withRenderTarget(shadowMapSize, shadowMapSize)
+			.withRenderTarget(shadowMapSize, shadowMapSize, FORMAT_DEPTH_24_STENCIL_8)
+			.build();
+		m_renderTargetShadowMap[i]->getDepthTexture()->setSampler(m_sampler);
+	}
 }
 
 void ShadowGame::initShaders() {
@@ -286,7 +289,10 @@ void ShadowGame::initShaders() {
 	m_shaderFX->bind(0, "colorTexture", m_renderTargetScene->getTexture(0), PIXEL_SHADER);
 	m_shaderFX->bind(1, "normalTexture", m_renderTargetScene->getTexture(1), PIXEL_SHADER);
 	m_shaderFX->bind(2, "depthTexture", m_renderTargetScene->getDepthTexture(), PIXEL_SHADER);
-	m_shaderFX->bind(3, "shadowDepthTexture", m_renderTargetShadowMap->getDepthTexture(), PIXEL_SHADER);
+
+	for (unsigned i = 0; i < m_renderTargetShadowMap.size(); ++i) {
+		m_shaderFX->bind(3 + i, "shadowMap" + i, m_renderTargetShadowMap[i]->getDepthTexture(), PIXEL_SHADER);
+	}
 }
 
 float angle = 0.0f;
@@ -297,7 +303,7 @@ void ShadowGame::update(const double deltaTime) {
 	else m_camera->update(deltaTime);
 
 	angle += 0.001f;
-	//m_skyStruct.sunPosition = glm::vec4(cos(angle), 1.0f, sin(angle), 1.0f);
+	m_skyStruct.sunPosition = glm::vec4(cos(angle), 1.0f, sin(angle), 1.0f);
 	m_context->setData(m_constantSky, &m_skyStruct);
 
 	// Update Camera Constant Buffer
@@ -323,48 +329,20 @@ void ShadowGame::render() {
 		acos(lightDir.y),
 		atan2(lightDir.x, lightDir.z),
 		0.0f);	
-	
-	glm::mat4 camRotateMatrix = glm::mat4(1);
-	camRotateMatrix *= glm::rotate(glm::mat4(1), float(PI) - m_camera->getRotation().y, glm::vec3(0, 1, 0));
-	camRotateMatrix *= glm::rotate(glm::mat4(1), m_camera->getRotation().x, glm::vec3(1, 0, 0));
-
-	glm::mat4 lightRotateMatrix(1.0f);
-	lightRotateMatrix *= glm::rotate(glm::mat4(1), lightRotation.y, glm::vec3(0, 1, 0));
-	lightRotateMatrix *= glm::rotate(glm::mat4(1), lightRotation.x, glm::vec3(1, 0, 0));
-
-	glm::vec3 points[8];
-	for (unsigned i = 0; i < 8; ++i) {
-		points[i] = lightRotateMatrix * camRotateMatrix * glm::vec4(m_frustumPoints[i], 1.0f);
-	}
-
-	glm::vec3 center = glm::vec3(camRotateMatrix * glm::vec4(m_frustumPoints[8], 1.0f)) + m_camera->getPosition();
-	glm::vec3 min(FLT_MAX);
-	glm::vec3 max(FLT_MIN);
-	for (unsigned i = 0; i < 8; ++i) {
-		for (unsigned j = 0; j < 3; ++j) {
-			if (points[i][j] < min[j]) min[j] = points[i][j];
-			if (points[i][j] > max[j]) max[j] = points[i][j];
-		}
-	}
-
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(min.x, max.x, min.y, max.y, min.z, max.z);
-	glm::mat4 depthViewMatrix = glm::mat4(1);
-	depthViewMatrix *= glm::translate(glm::mat4(1), -center);
-	//depthViewMatrix *= glm::lookAt(lightDir, glm::vec3(0), glm::vec3(0, 1, 0));
-	//depthViewMatrix *= glm::rotate(glm::mat4(1), lightRotation.x, glm::vec3(1, 0, 0));
-	//depthViewMatrix *= glm::rotate(glm::mat4(1), lightRotation.y, glm::vec3(0, 1, 0));
 
 	CameraStruct cameraStruct;
-	cameraStruct.camViewProj = depthProjectionMatrix * depthViewMatrix;
-	m_context->setData(m_constantShadowMap, &cameraStruct);
-
-	ModelStruct modelStruct{ glm::mat4(1) };
-	
-	for (unsigned i = 0; i < 2; ++i) {
-		if (i == 0) {
-			m_context->bind(m_renderTargetShadowMap);
-			m_context->clear(m_renderTargetShadowMap);
+	for (unsigned i = 0; i < m_renderTargetShadowMap.size() + 1; ++i) {
+		if (i < m_renderTargetShadowMap.size()) {
+			m_context->bind(m_renderTargetShadowMap[i]);
+			m_context->clear(m_renderTargetShadowMap[i]);
 			m_context->bind(m_shaderShadowMap);
+
+			float radius = (i == 0 ? 20 : (i == 1 ? 100 : 200));
+			glm::mat4 depthProjectionMatrix = glm::ortho<float>(-radius, radius, -radius, radius, -radius, radius);
+			glm::mat4 depthViewMatrix = glm::lookAt(lightDir + m_camera->getPosition(), m_camera->getPosition(), glm::vec3(0, 1, 0));
+
+			cameraStruct.camViewProj = depthProjectionMatrix * depthViewMatrix;
+			m_context->setData(m_constantShadowMap, &cameraStruct);
 		}
 		else {
 			m_context->bind(m_renderTargetScene);
@@ -372,6 +350,7 @@ void ShadowGame::render() {
 			m_context->bind(m_shaderScene);
 		}
 
+		ModelStruct modelStruct{ glm::mat4(1) };
 		modelStruct.modelTransform = glm::scale(glm::mat4(1), glm::vec3(100));
 		m_context->setData(m_constantModel, &modelStruct);
 		m_context->bind(m_vertexArrayPlane);
@@ -379,30 +358,13 @@ void ShadowGame::render() {
 
 		m_context->bind(m_vertexArrayCube);
 		for (unsigned j = 0; j < 4; ++j) {
+			ModelStruct modelStruct{ glm::mat4(1) };
 			modelStruct.modelTransform = glm::translate(glm::mat4(1), glm::vec3(16 * floor(j/2), 1, 16 * (j%2)));
 			m_context->setData(m_constantModel, &modelStruct);
 			m_context->drawIndexed(m_indexBufferCube);
 		}
 	}
-
-	m_context->bind(m_rasterizerWireframe);
-
-	// Draw Ortho
-	modelStruct.modelTransform = glm::translate(glm::mat4(1), center);
-	modelStruct.modelTransform *= lightRotateMatrix;
-	modelStruct.modelTransform *= glm::scale(glm::mat4(1), max - min);
-	m_context->setData(m_constantModel, &modelStruct);
-	m_context->drawIndexed(m_indexBufferCube);
-
-	// Draw Frustum
-	modelStruct.modelTransform = glm::translate(glm::mat4(1), m_camera->getPosition());
-	modelStruct.modelTransform *= camRotateMatrix;
-	m_context->setData(m_constantModel, &modelStruct);
-	m_context->bind(m_vertexArrayFrustum);
-	m_context->drawIndexed(m_indexBufferCube);
-
-	m_context->bind(m_rasterizerDefault);
-
+	
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
 

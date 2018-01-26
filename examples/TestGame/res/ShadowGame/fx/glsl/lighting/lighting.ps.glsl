@@ -21,14 +21,16 @@ layout(std140) uniform CameraExt {
 };
 
 layout(std140) uniform ShadowMap {
-	mat4 shadowCamViewProj;
-	vec4 shadowCamPosition;
+	mat4 shadowCamViewProj[3];
+	vec4 shadowCamPosition[3];
 };
 
 uniform sampler2D colorTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D depthTexture;
-uniform sampler2D shadowDepthTexture;
+uniform sampler2D shadowMap0;
+uniform sampler2D shadowMap1;
+uniform sampler2D shadowMap2;
 
 #define Z_NEAR	0.1
 #define Z_FAR	1000.0
@@ -61,11 +63,23 @@ void main() {
 	if (depth != 1.0) {
 		float cosTheta = clamp(dot(normal, lightDir), 0, 1);
 
+		float camDist = distance(position, camPosition.xyz);
 		vec4 shadowCoord = biasMatrix * shadowCamViewProj * vec4(position, 1.0);
 		float visibility = 1.0;
-		//if (distance(position, camPosition.xyz) < 64.0)
-		if (texture(shadowDepthTexture, shadowCoord.xy).r < shadowCoord.z - 0.005) {
-			visibility = 0.0;
+		if (camDist < 10.0) {
+			if (texture(shadowMap0, shadowCoord.xy).r < shadowCoord.z - 0.005) {
+				visibility = 0.0;
+			}
+		}
+		else if (camDist < 50.0) {
+			if (texture(shadowMap1, shadowCoord.xy).r < shadowCoord.z - 0.005) {
+				visibility = 0.0;
+			}
+		}
+		else {
+			if (texture(shadowMap2, shadowCoord.xy).r < shadowCoord.z - 0.005) {
+				visibility = 0.0;
+			}
 		}
 
 		color *= clamp(cosTheta * visibility, 0.3, 1.0);
@@ -73,8 +87,10 @@ void main() {
 
 	ps_color = vec4(color, 1);
 
+	/*
 	if (vs_texCoord.x < 0.2 && vs_texCoord.y < 0.2 * 16/9) {
 		vec2 coord = vs_texCoord / vec2(0.2, 0.2*16/9);
-		ps_color = vec4(linearize(texture(shadowDepthTexture, coord).r).xxx, 1.0);
+		ps_color = vec4(vec3(linearize(texture(shadowDepthTexture, coord).r)), 1.0);
 	}
+	*/
 }

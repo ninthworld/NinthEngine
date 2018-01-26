@@ -24,6 +24,13 @@ struct SkyStruct {
 	glm::vec4 sunPosition;
 };
 
+const static LayoutConfig shadowMapStructLayout =
+	LayoutConfig().float4x4().float4x4().float4x4().float4().float4().float4();
+struct ShadowMapStruct {
+	glm::mat4 shadowCamViewProj[3];
+	glm::vec4 shadowCamPosition[3];
+};
+
 class ShadowGame : public Game {
 public:
 	ShadowGame(const std::shared_ptr<GameEngine>& engine);
@@ -66,7 +73,7 @@ private:
 
 	// Render Targets
 	std::shared_ptr<RenderTarget> m_renderTargetScene;
-	std::shared_ptr<RenderTarget> m_renderTargetShadowMap;
+	std::array<std::shared_ptr<RenderTarget>, 3> m_renderTargetShadowMap;
 	void initRenderTargets();
 
 	// Shaders
