@@ -25,10 +25,9 @@ struct SkyStruct {
 };
 
 const static LayoutConfig shadowMapStructLayout =
-	LayoutConfig().float4x4().float4x4().float4x4().float4().float4().float4();
+	LayoutConfig().float4x4().float4x4().float4x4();
 struct ShadowMapStruct {
 	glm::mat4 shadowCamViewProj[3];
-	glm::vec4 shadowCamPosition[3];
 };
 
 class ShadowGame : public Game {
@@ -68,6 +67,7 @@ private:
 	std::shared_ptr<ConstantBuffer> m_constantCameraExt;
 	std::shared_ptr<ConstantBuffer> m_constantModel;
 	std::shared_ptr<ConstantBuffer> m_constantSky;
+	std::shared_ptr<ConstantBuffer> m_constantShadowCamera;
 	std::shared_ptr<ConstantBuffer> m_constantShadowMap;
 	void initConstants();
 

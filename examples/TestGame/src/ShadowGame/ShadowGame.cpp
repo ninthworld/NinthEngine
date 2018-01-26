@@ -225,10 +225,15 @@ void ShadowGame::initConstants() {
 		.withData(&m_skyStruct)
 		.build();
 
-	ShadowMapStruct shadowMapStruct{ glm::mat4(1), glm::mat4(1), glm::mat4(1), glm::vec4(0), glm::vec4(0), glm::vec4(0) };
+	ShadowMapStruct shadowMapStruct;
 	m_constantShadowMap = m_device->createConstantBuffer()
 		.withLayout(shadowMapStructLayout)
 		.withData(&shadowMapStruct)
+		.build();
+
+	m_constantShadowCamera = m_device->createConstantBuffer()
+		.withLayout(cameraStructLayout)
+		.withData(&m_camera->getStruct())
 		.build();
 }
 
@@ -271,7 +276,7 @@ void ShadowGame::initShaders() {
 		.withHLSL<VERTEX_SHADER>("res/ShadowGame/scene/shaders/hlsl/shadowmap/sceneShadow.vs.hlsl", "main")
 		.withHLSL<PIXEL_SHADER>("res/ShadowGame/scene/shaders/hlsl/shadowmap/sceneShadow.ps.hlsl", "main")
 		.build();
-	m_shaderShadowMap->bind(0, "ShadowMap", m_constantShadowMap, VERTEX_SHADER);
+	m_shaderShadowMap->bind(0, "ShadowCamera", m_constantShadowCamera, VERTEX_SHADER);
 	m_shaderShadowMap->bind(1, "Model", m_constantModel, VERTEX_SHADER);
 
 	m_shaderFX = m_device->createShader()
@@ -290,9 +295,9 @@ void ShadowGame::initShaders() {
 	m_shaderFX->bind(1, "normalTexture", m_renderTargetScene->getTexture(1), PIXEL_SHADER);
 	m_shaderFX->bind(2, "depthTexture", m_renderTargetScene->getDepthTexture(), PIXEL_SHADER);
 
-	for (unsigned i = 0; i < m_renderTargetShadowMap.size(); ++i) {
-		m_shaderFX->bind(3 + i, "shadowMap" + i, m_renderTargetShadowMap[i]->getDepthTexture(), PIXEL_SHADER);
-	}
+	m_shaderFX->bind(3, "shadowMap0", m_renderTargetShadowMap[0]->getDepthTexture(), PIXEL_SHADER);
+	m_shaderFX->bind(4, "shadowMap1", m_renderTargetShadowMap[1]->getDepthTexture(), PIXEL_SHADER);
+	m_shaderFX->bind(5, "shadowMap2", m_renderTargetShadowMap[2]->getDepthTexture(), PIXEL_SHADER);
 }
 
 float angle = 0.0f;
@@ -306,7 +311,6 @@ void ShadowGame::update(const double deltaTime) {
 	m_skyStruct.sunPosition = glm::vec4(cos(angle), 1.0f, sin(angle), 1.0f);
 	m_context->setData(m_constantSky, &m_skyStruct);
 
-	// Update Camera Constant Buffer
 	if (m_debug) {
 		m_context->setData(m_constantCamera, &m_cameraDebug->getStruct());
 		m_context->setData(m_constantCameraExt, &m_cameraDebug->getExtStruct());
@@ -330,8 +334,8 @@ void ShadowGame::render() {
 		atan2(lightDir.x, lightDir.z),
 		0.0f);	
 
-	CameraStruct cameraStruct;
-	for (unsigned i = 0; i < m_renderTargetShadowMap.size() + 1; ++i) {
+	ShadowMapStruct shadowMap;
+	for (unsigned i = 0; i <= m_renderTargetShadowMap.size(); ++i) {
 		if (i < m_renderTargetShadowMap.size()) {
 			m_context->bind(m_renderTargetShadowMap[i]);
 			m_context->clear(m_renderTargetShadowMap[i]);
@@ -340,14 +344,17 @@ void ShadowGame::render() {
 			float radius = (i == 0 ? 20 : (i == 1 ? 100 : 200));
 			glm::mat4 depthProjectionMatrix = glm::ortho<float>(-radius, radius, -radius, radius, -radius, radius);
 			glm::mat4 depthViewMatrix = glm::lookAt(lightDir + m_camera->getPosition(), m_camera->getPosition(), glm::vec3(0, 1, 0));
+			shadowMap.shadowCamViewProj[i] = depthProjectionMatrix * depthViewMatrix;
 
-			cameraStruct.camViewProj = depthProjectionMatrix * depthViewMatrix;
-			m_context->setData(m_constantShadowMap, &cameraStruct);
+			CameraStruct cameraStruct;
+			cameraStruct.camViewProj = shadowMap.shadowCamViewProj[i];
+			m_context->setData(m_constantShadowCamera, &cameraStruct);
 		}
 		else {
 			m_context->bind(m_renderTargetScene);
 			m_context->clear(m_renderTargetScene);
 			m_context->bind(m_shaderScene);
+			
 		}
 
 		ModelStruct modelStruct{ glm::mat4(1) };
@@ -364,6 +371,7 @@ void ShadowGame::render() {
 			m_context->drawIndexed(m_indexBufferCube);
 		}
 	}
+	m_context->setData(m_constantShadowMap, &shadowMap);
 	
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
