@@ -41,6 +41,7 @@ public:
 private:
 	// Rasterizers
 	std::shared_ptr<Rasterizer> m_rasterizerDefault;
+	std::shared_ptr<Rasterizer> m_rasterizerWireframe;
 	void initRasterizers();
 
 	// Samplers
@@ -50,6 +51,7 @@ private:
 	// Geometry
 	std::shared_ptr<VertexArray> m_vertexArrayQuad;
 	std::shared_ptr<VertexArray> m_vertexArrayPlane;
+	std::shared_ptr<VertexArray> m_vertexArrayFrustum;
 	std::shared_ptr<VertexArray> m_vertexArrayCube;
 	std::shared_ptr<IndexBuffer> m_indexBufferCube;
 	void initGeometry();
@@ -79,6 +81,10 @@ private:
 	std::shared_ptr<GraphicsDevice> m_device;
 	std::shared_ptr<GraphicsContext> m_context;
 	std::shared_ptr<FPSGameCamera> m_camera;
+	std::shared_ptr<FPSGameCamera> m_cameraDebug;
+	bool m_debug = false;
+
+	std::array<glm::vec3, 9> m_frustumPoints;
 
 	SkyStruct m_skyStruct;
 

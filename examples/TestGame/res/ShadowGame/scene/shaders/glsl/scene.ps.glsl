@@ -1,7 +1,7 @@
 #version 400
 
 in vec3 vs_color;
-flat in vec3 vs_normal;
+in vec3 vs_normal;
 
 layout(location=0) out vec4 ps_color;
 layout(location=1) out vec4 ps_normal;

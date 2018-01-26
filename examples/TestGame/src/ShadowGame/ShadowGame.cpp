@@ -5,10 +5,13 @@ ShadowGame::ShadowGame(const std::shared_ptr<GameEngine>& engine)
 	, m_window(engine->getWindow())
 	, m_device(engine->getGraphicsDevice())
 	, m_context(engine->getGraphicsContext())
-	, m_skyStruct({ glm::vec4(-1.0f, 1.0f, 0.5f, 1.0f) }) {
+	, m_skyStruct({ glm::vec4(0.0f, 1.0f, 0.0f, 1.0f) }) {
 
-	m_camera = std::make_shared<FPSGameCamera>(glm::vec3(4, 4, 4), glm::vec3(PI / 6, -PI / 4, 0), 8.0f);
+	m_camera = std::make_shared<FPSGameCamera>(glm::vec3(4, 4, 4), glm::vec3(0), 8.0f);
 	m_camera->setProjMatrix(m_window->getWidth(), m_window->getHeight());
+
+	m_cameraDebug = std::make_shared<FPSGameCamera>(glm::vec3(8), glm::vec3(PI / 6, -PI / 4, 0), 8.0f);
+	m_cameraDebug->setProjMatrix(m_window->getWidth(), m_window->getHeight());
 }
 
 ShadowGame::~ShadowGame() {
@@ -27,6 +30,14 @@ void ShadowGame::init() {
 }
 
 void ShadowGame::initRasterizers() {
+
+	m_rasterizerWireframe = m_device->createRasterizer()
+		.withFill(WIREFRAME)
+		.withDepthClipping()
+		.withMultisampling()
+		.withFrontCCW()
+		.build();
+
 	m_rasterizerDefault = m_device->createRasterizer()
 		.withFill()
 		.withDepthClipping()
@@ -48,14 +59,74 @@ void ShadowGame::initGeometry() {
 
 	struct Vertex { glm::vec3 position, color, normal; };
 
+	// Frustum Geometry
+	float aspectRatio = float(m_window->getWidth()) / float(m_window->getHeight());
+	float fov = m_camera->getFOV();
+	float near = m_camera->getZNear();
+	float far = 64.0f; // m_camera->getZFar();
+
+	float nearHalfWidth = near * tan(fov);
+	float nearHalfHeight = nearHalfWidth / aspectRatio;
+	float farHalfWidth = far * tan(fov);
+	float farHalfHeight = farHalfWidth / aspectRatio;
+
+	m_frustumPoints[0] = glm::vec3(-nearHalfWidth, nearHalfHeight, near);	// Near Left Top
+	m_frustumPoints[1] = glm::vec3(-nearHalfWidth, -nearHalfHeight, near);	// Near Left Bottom
+	m_frustumPoints[2] = glm::vec3(nearHalfWidth, nearHalfHeight, near);	// Near Right Top
+	m_frustumPoints[3] = glm::vec3(nearHalfWidth, -nearHalfHeight, near);	// Near Right Bottom
+	m_frustumPoints[4] = glm::vec3(-farHalfWidth, farHalfHeight, far);		// Far Left Top
+	m_frustumPoints[5] = glm::vec3(-farHalfWidth, -farHalfHeight, far);		// Far Left Bottom
+	m_frustumPoints[6] = glm::vec3(farHalfWidth, farHalfHeight, far);		// Far Right Top
+	m_frustumPoints[7] = glm::vec3(farHalfWidth, -farHalfHeight, far);		// Far Right Bottom
+	m_frustumPoints[8] = glm::vec3(0, 0, (far - near) / 2.0f + near);		// Center
+
+	std::vector<Vertex> verticesFrustum{
+		// Top
+		{ m_frustumPoints[2], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[6], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[4], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[0], glm::vec3(), glm::vec3() },
+		// Bottom
+		{ m_frustumPoints[5], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[7], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[3], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[1], glm::vec3(), glm::vec3() },
+		// Right
+		{ m_frustumPoints[3], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[7], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[6], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[2], glm::vec3(), glm::vec3() },
+		// Left
+		{ m_frustumPoints[4], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[5], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[1], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[0], glm::vec3(), glm::vec3() },
+		// Front
+		{ m_frustumPoints[3], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[2], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[0], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[1], glm::vec3(), glm::vec3() },
+		// Front
+		{ m_frustumPoints[4], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[6], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[7], glm::vec3(), glm::vec3() },
+		{ m_frustumPoints[5], glm::vec3(), glm::vec3() },
+	};
+
+	m_vertexArrayFrustum = m_device->createVertexArray();
+	m_vertexArrayFrustum->bind(m_device->createVertexBuffer()
+		.withLayout(sceneLayout)
+		.withData(verticesFrustum.size(), verticesFrustum.data())
+		.build());
+
 	// Plane Geometry
 	glm::vec3 colorPlane(0.1f, 0.4f, 0.9f);
 	std::vector<Vertex> verticesPlane{
-		{ glm::vec3(-0.5f, 0.0f, -0.5f), colorPlane, glm::vec3(0, 0, 0) },
-		{ glm::vec3( 0.5f, 0.0f,  0.5f), colorPlane, glm::vec3(0, 0, 0) },
+		{ glm::vec3(-0.5f, 0.0f, -0.5f), colorPlane, glm::vec3(0, 1, 0) },
+		{ glm::vec3( 0.5f, 0.0f,  0.5f), colorPlane, glm::vec3(0, 1, 0) },
 		{ glm::vec3( 0.5f, 0.0f, -0.5f), colorPlane, glm::vec3(0, 1, 0) },
-		{ glm::vec3(-0.5f, 0.0f, -0.5f), colorPlane, glm::vec3(0, 0, 0) },
-		{ glm::vec3(-0.5f, 0.0f,  0.5f), colorPlane, glm::vec3(0, 0, 0) },
+		{ glm::vec3(-0.5f, 0.0f, -0.5f), colorPlane, glm::vec3(0, 1, 0) },
+		{ glm::vec3(-0.5f, 0.0f,  0.5f), colorPlane, glm::vec3(0, 1, 0) },
 		{ glm::vec3( 0.5f, 0.0f,  0.5f), colorPlane, glm::vec3(0, 1, 0) },
 	};
 
@@ -64,35 +135,39 @@ void ShadowGame::initGeometry() {
 		.withLayout(sceneLayout)
 		.withData(verticesPlane.size(), verticesPlane.data())
 		.build());
-
+	
 	// Cube Geometry
-
-	/*
-
-	+y
-	|
-	+--- +x
-	/
-	+z
-
-	4 --- 5
-	/|    /|
-	7 --- 6 |
-	| 0 --| 1
-	|/    |/
-	3 --- 2
-
-	*/
-
 	std::vector<Vertex> verticesCube{
-		{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0, 0, 0), glm::vec3( 0, -1,  0) },
-		{ glm::vec3( 0.5f, -0.5f, -0.5f), glm::vec3(0, 0, 1), glm::vec3( 0,  0, -1) },
-		{ glm::vec3( 0.5f, -0.5f,  0.5f), glm::vec3(0, 1, 0), glm::vec3( 1,  0,  0) },
-		{ glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3(0, 1, 1), glm::vec3( 0,  0,  1) },
-		{ glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3(1, 0, 0), glm::vec3(-1,  0,  0) },
-		{ glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3(1, 0, 1), glm::vec3( 0,  1,  0) },
-		{ glm::vec3( 0.5f,  0.5f,  0.5f), glm::vec3(1, 1, 0), glm::vec3( 0,  0,  0) },
-		{ glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec3(1, 1, 1), glm::vec3( 0,  0,  0) }
+		// Top
+		{ glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0, 1, 0), glm::vec3(0, 1, 0) },
+		{ glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0, 0, 1), glm::vec3(0, 1, 0) },
+		{ glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0) },
+		{ glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(0, 1, 1), glm::vec3(0, 1, 0) },
+		// Bottom
+		{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1, 1, 0), glm::vec3(0, -1, 0) },
+		{ glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1, 0, 1), glm::vec3(0, -1, 0) },
+		{ glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1, 0, 0), glm::vec3(0, -1, 0) },
+		{ glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1, 1, 1), glm::vec3(0, -1, 0) },
+		// Right
+		{ glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1, 0, 0), glm::vec3(1, 0, 0) },
+		{ glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1, 0, 1), glm::vec3(1, 0, 0) },
+		{ glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0, 0, 1), glm::vec3(1, 0, 0) },
+		{ glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0, 1, 0), glm::vec3(1, 0, 0) },
+		// Left
+		{ glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0, 0, 0), glm::vec3(-1, 0, 0) },
+		{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1, 1, 0), glm::vec3(-1, 0, 0) },
+		{ glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1, 1, 1), glm::vec3(-1, 0, 0) },
+		{ glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(0, 1, 1), glm::vec3(-1, 0, 0) },
+		// Front
+		{ glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(1, 0, 0), glm::vec3(0, 0, 1) },
+		{ glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0, 1, 0), glm::vec3(0, 0, 1) },
+		{ glm::vec3(-0.5f, 0.5f, 0.5f), glm::vec3(0, 1, 1), glm::vec3(0, 0, 1) },
+		{ glm::vec3(-0.5f, -0.5f, 0.5f), glm::vec3(1, 1, 1), glm::vec3(0, 0, 1) },
+		// Front
+		{ glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0, 0, 0), glm::vec3(0, 0, -1) },
+		{ glm::vec3(0.5f, 0.5f, -0.5f), glm::vec3(0, 0, 1), glm::vec3(0, 0, -1) },
+		{ glm::vec3(0.5f, -0.5f, -0.5f), glm::vec3(1, 0, 1), glm::vec3(0, 0, -1) },
+		{ glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(1, 1, 0), glm::vec3(0, 0, -1) }
 	};
 
 	m_vertexArrayCube = m_device->createVertexArray();
@@ -102,12 +177,12 @@ void ShadowGame::initGeometry() {
 		.build());
 
 	std::vector<short> indicesCube{
-		1, 2, 0, 2, 3, 0, // -Y
-		4, 5, 1, 0, 4, 1, // -Z
-		5, 6, 2, 1, 5, 2, // +X
-		6, 7, 3, 2, 6, 3, // +Z
-		3, 7, 4, 0, 3, 4, // -X
-		7, 6, 5, 4, 7, 5  // +Y
+		0, 1, 2, 2, 3, 0, // +Y
+		4, 5, 6, 6, 7, 4, // -Y
+		8, 9, 10, 10, 11, 8, // +X
+		12, 13, 14, 14, 15, 12, // -X
+		16, 17, 18, 18, 19, 16, // +Z
+		20, 21, 22, 22, 23, 20 // -Z
 	};
 
 	m_indexBufferCube = m_device->createIndexBuffer()
@@ -218,15 +293,22 @@ float angle = 0.0f;
 void ShadowGame::update(const double deltaTime) {
 
 	// Update Camera
-	m_camera->update(deltaTime);
+	if (m_debug) m_cameraDebug->update(deltaTime);
+	else m_camera->update(deltaTime);
 
 	angle += 0.001f;
-	m_skyStruct.sunPosition = glm::vec4(cos(angle), 1.0f, sin(angle), 1.0f);
+	//m_skyStruct.sunPosition = glm::vec4(cos(angle), 1.0f, sin(angle), 1.0f);
 	m_context->setData(m_constantSky, &m_skyStruct);
 
 	// Update Camera Constant Buffer
-	m_context->setData(m_constantCamera, &m_camera->getStruct());
-	m_context->setData(m_constantCameraExt, &m_camera->getExtStruct());
+	if (m_debug) {
+		m_context->setData(m_constantCamera, &m_cameraDebug->getStruct());
+		m_context->setData(m_constantCameraExt, &m_cameraDebug->getExtStruct());
+	}
+	else {
+		m_context->setData(m_constantCamera, &m_camera->getStruct());
+		m_context->setData(m_constantCameraExt, &m_camera->getExtStruct());
+	}
 }
 
 const static float OFFSET = 10;
@@ -238,44 +320,24 @@ void ShadowGame::render() {
 
 	glm::vec3 lightDir = glm::normalize(m_skyStruct.sunPosition);
 	glm::vec3 lightRotation(
-		atan2(lightDir.z, lightDir.x),
-		asin(lightDir.y),
+		acos(lightDir.y),
+		atan2(lightDir.x, lightDir.z),
 		0.0f);	
-
-	float aspectRatio = float(m_window->getWidth()) / float(m_window->getHeight());
-	float fov = m_camera->getFOV();
-	float near = m_camera->getZNear();
-	float far = 100.0f; // m_camera->getZFar();
-
-	float nearHalfWidth = near * tan(fov);
-	float nearHalfHeight = nearHalfWidth / aspectRatio;
-	float farHalfWidth = far * tan(fov);
-	float farHalfHeight = farHalfWidth / aspectRatio;
-
-	glm::vec3 points[8];
-	points[0] = glm::vec3(-nearHalfWidth, nearHalfHeight, near);	// Near Left Top
-	points[1] = glm::vec3(-nearHalfWidth, -nearHalfHeight, near);	// Near Left Bottom
-	points[2] = glm::vec3(nearHalfWidth, nearHalfHeight, near);		// Near Right Top
-	points[3] = glm::vec3(nearHalfWidth, -nearHalfHeight, near);	// Near Right Bottom
-	points[4] = glm::vec3(-farHalfWidth, farHalfHeight, far);		// Far Left Top
-	points[5] = glm::vec3(-farHalfWidth, -farHalfHeight, far);		// Far Left Bottom
-	points[6] = glm::vec3(farHalfWidth, farHalfHeight, far);		// Far Right Top
-	points[7] = glm::vec3(farHalfWidth, -farHalfHeight, far);		// Far Right Bottom
-
-	glm::mat4 camRotateMatrix(1.0f);
-	camRotateMatrix = glm::rotate(camRotateMatrix, m_camera->getRotation().x, glm::vec3(1, 0, 0));
-	camRotateMatrix = glm::rotate(camRotateMatrix, m_camera->getRotation().y, glm::vec3(0, 1, 0));
+	
+	glm::mat4 camRotateMatrix = glm::mat4(1);
+	camRotateMatrix *= glm::rotate(glm::mat4(1), float(PI) - m_camera->getRotation().y, glm::vec3(0, 1, 0));
+	camRotateMatrix *= glm::rotate(glm::mat4(1), m_camera->getRotation().x, glm::vec3(1, 0, 0));
 
 	glm::mat4 lightRotateMatrix(1.0f);
-	lightRotateMatrix = glm::rotate(lightRotateMatrix, -lightRotation.x, glm::vec3(1, 0, 0));
-	lightRotateMatrix = glm::rotate(lightRotateMatrix, -lightRotation.y, glm::vec3(0, 1, 0));
-	lightRotateMatrix = glm::lookAt(-lightDir, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+	lightRotateMatrix *= glm::rotate(glm::mat4(1), lightRotation.y, glm::vec3(0, 1, 0));
+	lightRotateMatrix *= glm::rotate(glm::mat4(1), lightRotation.x, glm::vec3(1, 0, 0));
 
+	glm::vec3 points[8];
 	for (unsigned i = 0; i < 8; ++i) {
-		points[i] = lightRotateMatrix * camRotateMatrix * glm::vec4(points[i], 1.0f);
+		points[i] = lightRotateMatrix * camRotateMatrix * glm::vec4(m_frustumPoints[i], 1.0f);
 	}
 
-	glm::vec3 center = m_camera->getPosition();
+	glm::vec3 center = glm::vec3(camRotateMatrix * glm::vec4(m_frustumPoints[8], 1.0f)) + m_camera->getPosition();
 	glm::vec3 min(FLT_MAX);
 	glm::vec3 max(FLT_MIN);
 	for (unsigned i = 0; i < 8; ++i) {
@@ -286,7 +348,12 @@ void ShadowGame::render() {
 	}
 
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(min.x, max.x, min.y, max.y, min.z, max.z);
-	glm::mat4 depthViewMatrix = glm::lookAt(lightDir + center, center, glm::vec3(0, 1, 0));
+	glm::mat4 depthViewMatrix = glm::mat4(1);
+	depthViewMatrix *= glm::translate(glm::mat4(1), -center);
+	//depthViewMatrix *= glm::lookAt(lightDir, glm::vec3(0), glm::vec3(0, 1, 0));
+	//depthViewMatrix *= glm::rotate(glm::mat4(1), lightRotation.x, glm::vec3(1, 0, 0));
+	//depthViewMatrix *= glm::rotate(glm::mat4(1), lightRotation.y, glm::vec3(0, 1, 0));
+
 	CameraStruct cameraStruct;
 	cameraStruct.camViewProj = depthProjectionMatrix * depthViewMatrix;
 	m_context->setData(m_constantShadowMap, &cameraStruct);
@@ -317,7 +384,25 @@ void ShadowGame::render() {
 			m_context->drawIndexed(m_indexBufferCube);
 		}
 	}
-	
+
+	m_context->bind(m_rasterizerWireframe);
+
+	// Draw Ortho
+	modelStruct.modelTransform = glm::translate(glm::mat4(1), center);
+	modelStruct.modelTransform *= lightRotateMatrix;
+	modelStruct.modelTransform *= glm::scale(glm::mat4(1), max - min);
+	m_context->setData(m_constantModel, &modelStruct);
+	m_context->drawIndexed(m_indexBufferCube);
+
+	// Draw Frustum
+	modelStruct.modelTransform = glm::translate(glm::mat4(1), m_camera->getPosition());
+	modelStruct.modelTransform *= camRotateMatrix;
+	m_context->setData(m_constantModel, &modelStruct);
+	m_context->bind(m_vertexArrayFrustum);
+	m_context->drawIndexed(m_indexBufferCube);
+
+	m_context->bind(m_rasterizerDefault);
+
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
 
@@ -334,15 +419,18 @@ void ShadowGame::onResize(const int width, const int height) {
 }
 
 void ShadowGame::onKeyboard(const Key key, const KeyState state) {
-
 	if (key == KEY_ESCAPE) m_window->close();
-	m_camera->onKeyboard(key, state);
+	if (key == KEY_0 && state == KS_RELEASED) m_debug = !m_debug;
+	if (m_debug) m_cameraDebug->onKeyboard(key, state);
+	else m_camera->onKeyboard(key, state);
 }
 
 void ShadowGame::onMouseButton(const MouseButton button, const MouseState state) {
-	m_camera->onMouseButton(m_window, button, state);
+	if (m_debug) m_cameraDebug->onMouseButton(m_window, button, state);
+	else m_camera->onMouseButton(m_window, button, state);
 }
 
 void ShadowGame::onMouseMove(const int x, const int y) {
-	m_camera->onMouseMove(m_window, x, y);
+	if (m_debug) m_cameraDebug->onMouseMove(m_window, x, y);
+	else m_camera->onMouseMove(m_window, x, y);
 }

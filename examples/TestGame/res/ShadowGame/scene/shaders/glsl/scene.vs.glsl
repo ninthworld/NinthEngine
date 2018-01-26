@@ -5,7 +5,7 @@ layout(location=1) in vec3 in_color;
 layout(location=2) in vec3 in_normal;
 
 out vec3 vs_color;
-flat out vec3 vs_normal;
+out vec3 vs_normal;
 
 layout(std140) uniform Camera {
 	mat4 camViewProj;

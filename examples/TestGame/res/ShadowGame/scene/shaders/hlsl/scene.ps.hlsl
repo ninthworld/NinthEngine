@@ -1,7 +1,7 @@
 
 struct VertexOut {
 	float3 color : COLOR;
-	nointerpolation float3 normal : NORMAl;
+	float3 normal : NORMAl;
 	float4 svPosition : SV_POSITION;
 };
 

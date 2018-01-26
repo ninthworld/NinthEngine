@@ -7,7 +7,7 @@ struct VertexIn {
 
 struct VertexOut {
 	float3 color : COLOR;
-	nointerpolation float3 normal : NORMAL;
+	float3 normal : NORMAL;
 	float4 svPosition : SV_POSITION;
 };
 
