@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\VoxelDungeon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Chunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ChunkManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FX\FX.cpp">
+      <Filter>Source Files\FX</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{09e39293-92f1-4c9a-adc0-f402f246da22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{0ec6be6e-4aba-4bdf-857d-6e60e7339c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{3edb2cd3-5eef-4c19-adba-cde0407a4d08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\glsl">
+      <UniqueIdentifier>{72168379-aca0-4abf-9d8b-ae3c984b2fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx">
+      <UniqueIdentifier>{ab32da2b-e466-4af1-acf3-204e280788cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\glsl">
+      <UniqueIdentifier>{6633dea2-b7ee-4bca-90ce-e5b626f9fa85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\glsl\lighting">
+      <UniqueIdentifier>{a7bbb7a1-8b34-45b8-9897-d0eadc69d5e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FX">
+      <UniqueIdentifier>{d9a1b9ca-a9eb-4124-aa1c-d7eba5e037b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FX">
+      <UniqueIdentifier>{cbc8e2a1-e229-4393-8451-a7eddb64a315}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\VoxelDungeon.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Chunk.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ChunkManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FX\FX.hpp">
+      <Filter>Header Files\FX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VoxelModel.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VoxelUtils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\glsl\voxel.vs.glsl">
+      <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="res\shaders\glsl\voxel.ps.glsl">
+      <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="res\fx\glsl\fx.vs.glsl">
+      <Filter>Resource Files\fx\glsl</Filter>
+    </None>
+    <None Include="res\fx\glsl\lighting\lighting.ps.glsl">
+      <Filter>Resource Files\fx\glsl\lighting</Filter>
+    </None>
+  </ItemGroup>
+</Project>

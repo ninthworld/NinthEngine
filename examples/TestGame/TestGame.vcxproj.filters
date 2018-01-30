@@ -70,6 +70,18 @@
     <Filter Include="Resource Files\ShadowGame\scene\hlsl\shadowmap">
       <UniqueIdentifier>{dbeb7211-a16a-44a6-9e19-9057b81580b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\RaymarchGame">
+      <UniqueIdentifier>{96aad3a6-f8fc-4ba7-bf4e-5b76e8ac015f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\RaymarchGame">
+      <UniqueIdentifier>{01c95163-580a-46ce-ba7e-cdd29000d86f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\RaymarchGame">
+      <UniqueIdentifier>{8083d7ea-3b89-485d-9c20-837c2276f2e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\RaymarchGame\glsl">
+      <UniqueIdentifier>{08977172-5e47-4a4d-85d1-ddee77663e9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -80,6 +92,9 @@
     </ClCompile>
     <ClCompile Include="src\TestGame\TestGame.cpp">
       <Filter>Source Files\TestGame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RaymarchGame\RaymarchGame.cpp">
+      <Filter>Source Files\RaymarchGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +148,12 @@
     <None Include="res\ShadowGame\scene\shaders\glsl\shadowmap\sceneShadow.ps.glsl">
       <Filter>Resource Files\ShadowGame\scene\glsl\shadowmap</Filter>
     </None>
+    <None Include="res\RaymarchGame\shaders\glsl\raymarch.vs.glsl">
+      <Filter>Resource Files\RaymarchGame\glsl</Filter>
+    </None>
+    <None Include="res\RaymarchGame\shaders\glsl\raymarch.ps.glsl">
+      <Filter>Resource Files\RaymarchGame\glsl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShadowGame\ShadowGame.hpp">
@@ -140,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="src\TestGame\TestGame.hpp">
       <Filter>Header Files\TestGame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RaymarchGame\RaymarchGame.hpp">
+      <Filter>Header Files\RaymarchGame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

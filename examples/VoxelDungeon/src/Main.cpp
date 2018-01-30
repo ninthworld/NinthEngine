@@ -8,18 +8,7 @@
 #define _USE_GL
 //#define _USE_DX
 
-// Game Application
-#define _TEST_GAME
-//#define _SHADOW_GAME
-//#define _RAYMARCH_GAME
-
-#if defined(_TEST_GAME)
-#include "TestGame\TestGame.hpp"
-#elif defined(_SHADOW_GAME)
-#include "ShadowGame\ShadowGame.hpp"
-#elif defined(_RAYMARCH_GAME)
-#include "RaymarchGame\RaymarchGame.hpp"
-#endif
+#include "VoxelDungeon.hpp"
 
 using namespace NinthEngine;
 
@@ -52,25 +41,13 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE prevInstance, LPWSTR cmdLine,
 #endif
 
 	Win32::Win32Bootstrap bootstrap(
-#if defined(_TEST_GAME)
-		"Test Game", 
-#elif defined(_SHADOW_GAME)
-		"Shadow Game",
-#elif defined(_RAYMARCH_GAME)
-		"Raymarch Game",
-#endif
+		"Voxel Dungeon",
 		1600, 900, 
 		hInstance, cmdShow, 
 		std::move(renderEngine));
 
 	bootstrap.run([](const std::shared_ptr<GameEngine>& engine) {
-#if defined(_TEST_GAME)
-		return std::make_unique<TestGame>(engine);
-#elif defined(_SHADOW_GAME)
-		return std::make_unique<ShadowGame>(engine);
-#elif defined(_RAYMARCH_GAME)
-		return std::make_unique<RaymarchGame>(engine);
-#endif
+		return std::make_unique<VoxelDungeon>(engine);
 	});
 
 	return 0;
