@@ -6,7 +6,7 @@ VoxelDungeon::VoxelDungeon(const std::shared_ptr<GameEngine>& engine)
 	, m_device(engine->getGraphicsDevice())
 	, m_context(engine->getGraphicsContext()) {
 
-	m_camera = std::make_shared<FPSGameCamera>(glm::vec3(0, 64.0f, 0), glm::vec3(0, 3.14159*0.75f, 0), 64.0f);
+	m_camera = std::make_shared<FPSGameCamera>(glm::vec3(0, 64.0f, 0), glm::vec3(0, PI * 0.75f, 0), 64.0f);
 	m_camera->setProjMatrix(m_window->getWidth(), m_window->getHeight());
 
 	m_timer = m_engine->createTimer();

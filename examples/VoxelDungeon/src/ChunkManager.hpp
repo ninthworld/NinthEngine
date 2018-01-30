@@ -4,6 +4,7 @@
 #include <memory>
 #include <NinthEngine\Application\Game.hpp>
 #include "VoxelUtils.hpp"
+#include "VoxelModel.hpp"
 
 using namespace NinthEngine;
 
@@ -48,11 +49,15 @@ private:
 	// Textures
 	std::shared_ptr<Sampler> m_sampler;
 	std::shared_ptr<Texture> m_textureDirt;
+	std::shared_ptr<Texture> m_textureColors;
 	void initTextures();
 
 	// Shaders
 	std::shared_ptr<Shader> m_shaderVoxel;
 	void initShaders();
+
+	// Models
+	std::unique_ptr<VoxelModel<20>> m_modelLink;
 
 private:
 	std::shared_ptr<GraphicsDevice> m_device;

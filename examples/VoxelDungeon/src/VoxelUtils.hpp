@@ -4,10 +4,10 @@
 
 using namespace NinthEngine;
 
-enum VoxelMaterialType {
+enum VoxelMaterialType : unsigned {
 	VM_NONE,
 	VM_DIRT,
-	VM_GRASS_1,
+	VM_GRASS_1 = 32,
 	VM_GRASS_2,
 	VM_NULL
 };

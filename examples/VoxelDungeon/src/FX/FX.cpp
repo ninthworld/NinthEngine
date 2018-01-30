@@ -46,9 +46,10 @@ void FX::initRenderTargets(
 		.withMultisampling(2)
 		.withRenderTarget(window->getWidth(), window->getHeight())
 		.withRenderTarget(window->getWidth(), window->getHeight())
-		.withRenderTarget(window->getWidth(), window->getHeight())
 		.withRenderTarget(window->getWidth(), window->getHeight(), FORMAT_DEPTH_24_STENCIL_8)
 		.build();
+	m_renderTargetMS->getTexture(0)->setSampler(m_sampler);
+	m_renderTargetMS->getTexture(1)->setSampler(m_sampler);
 }
 
 void FX::initShaders(
@@ -67,7 +68,7 @@ void FX::initShaders(
 	m_shaderLighting->bind(0, "texSampler", m_sampler, PIXEL_SHADER);
 	m_shaderLighting->bind(0, "colorTexture", m_renderTargetMS->getTexture(0), PIXEL_SHADER);
 	m_shaderLighting->bind(1, "normalTexture", m_renderTargetMS->getTexture(1), PIXEL_SHADER);
-	m_shaderLighting->bind(2, "depthTexture", m_renderTargetMS->getDepthTexture(), PIXEL_SHADER);
+	//m_shaderLighting->bind(2, "depthTexture", m_renderTargetMS->getDepthTexture(), PIXEL_SHADER);
 }
 
 void FX::bindMS() {
