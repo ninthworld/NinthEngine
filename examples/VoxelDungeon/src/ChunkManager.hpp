@@ -48,8 +48,8 @@ private:
 
 	// Textures
 	std::shared_ptr<Sampler> m_sampler;
-	std::shared_ptr<Texture> m_textureDirt;
-	std::shared_ptr<Texture> m_textureColors;
+	std::shared_ptr<Texture> m_textureStoneFloor;
+	std::shared_ptr<Texture> m_textureStoneWall;
 	void initTextures();
 
 	// Shaders
@@ -57,7 +57,10 @@ private:
 	void initShaders();
 
 	// Models
-	std::unique_ptr<VoxelModel<20>> m_modelLink;
+	std::shared_ptr<VoxelModel<32, 2, 32>> m_modelStoneFloor;
+	std::shared_ptr<VoxelModel<16, 64, 16>> m_modelStoneWall;
+	std::shared_ptr<VoxelModel<16, 64, 16>> m_modelStonePillar;
+	void initModels();
 
 private:
 	std::shared_ptr<GraphicsDevice> m_device;

@@ -1,4 +1,3 @@
-#include <NinthEngine\Utils\LodePNG\lodepng.h>
 #include "Chunk.hpp"
 #include "ChunkManager.hpp"
 
@@ -16,46 +15,48 @@ ChunkManager::~ChunkManager() {
 }
 
 void ChunkManager::init() {
-
-	m_modelLink = std::make_unique<VoxelModel<20>>(m_context);
-
+	
 	initConstants();
 	initTextures();
 	initShaders();
+	initModels();
 
 	for (int i = 0; i < 4; ++i) {
 		for (int j = 0; j < 4; ++j) {
 			ChunkPos pos{ i, 0, j };
 			auto chunk = std::make_unique<Chunk>(shared_from_this(), pos);
+
+			chunk->appendModel(m_modelStoneFloor, 0, 0, 0);
+			chunk->appendModel(m_modelStoneFloor, 0, 0, 32);
+			chunk->appendModel(m_modelStoneFloor, 32, 0, 0);
+			chunk->appendModel(m_modelStoneFloor, 32, 0, 32);
+
 			m_chunks.insert(std::make_pair(pos, std::move(chunk)));
 		}
 	}
 
-	for (int i = 0; i < 4 * CHUNK_SIZE; ++i) {
-		for (int j = 0; j < 4 * CHUNK_SIZE; ++j) {
-			setVoxelAt(i, 0, j, VM_DIRT);
-
-			float dist = glm::distance(glm::vec2(i, j), glm::vec2(CHUNK_SIZE * 2, CHUNK_SIZE * 2));
-
-			if (dist > 12) {
-				setVoxelAt(i, 1, j, VM_GRASS_1);
-			}
-
-			if (dist > 14) {
-				setVoxelAt(i, 2, j, VM_GRASS_2);
-			}
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			m_chunks[{ 0, 0, i }]->appendModel(m_modelStoneWall, 0, 0, j * 16, 1);
 		}
-	}
-	
-	for (unsigned i = 0; i < 20; ++i) {
-		for (unsigned j = 0; j < 20; ++j) {
-			for (unsigned k = 0; k < 20; ++k) {
-				auto material = m_modelLink->getVoxelAt(i, j, k);
-				setVoxelAt(i, j + 3, k, material);
-			}
+		for (int j = 0; j < 4; ++j) {
+			m_chunks[{ 3, 0, i }]->appendModel(m_modelStoneWall, 48, 0, j * 16, 1);
 		}
+
+		for (int j = 0; j < 4; ++j) {
+			m_chunks[{ i, 0, 0 }]->appendModel(m_modelStoneWall, j * 16, 0, 0, 0);
+		}
+		for (int j = 0; j < 4; ++j) {
+			m_chunks[{ i, 0, 3 }]->appendModel(m_modelStoneWall, j * 16, 0, 48, 0);
+		}
+
+		m_chunks[{ 0, 0, i }]->appendModel(m_modelStonePillar, 0, 0, 0);
+		m_chunks[{ 3, 0, i }]->appendModel(m_modelStonePillar, 48, 0, 0);
+		m_chunks[{ i, 0, 0 }]->appendModel(m_modelStonePillar, 0, 0, 0);
+		m_chunks[{ i, 0, 3 }]->appendModel(m_modelStonePillar, 0, 0, 48);
 	}
 
+	// Generate Vertex Arrays
 	for (auto it = m_chunks.begin(); it != m_chunks.end(); ++it) {
 		it->second->generateVertexArray(m_device);
 	}
@@ -76,51 +77,15 @@ void ChunkManager::initTextures() {
 		.withFilter(NEAREST)
 		.build();
 
-	m_textureDirt = m_device->createTexture()
-		.withFile("res/textures/dirt.png")
+	m_textureStoneFloor = m_device->createTexture()
+		.withFile("res/textures/texture_stone_floor.png")
 		.build();
-	m_textureDirt->setSampler(m_sampler);
-	
-	// Colors
-	std::vector<unsigned char> colorsImage;
-	unsigned width, height;
-	lodepng::decode(colorsImage, width, height, "res/textures/colors.png", LodePNGColorType::LCT_RGB, 8);
-	m_textureColors = m_device->createTexture()
-		.withFormat(FORMAT_RGB_8_UNORM)
-		.withSize(width, height)
+	m_textureStoneFloor->setSampler(m_sampler);
+
+	m_textureStoneWall = m_device->createTexture()
+		.withFile("res/textures/texture_stone_wall.png")
 		.build();
-	m_textureColors->setSampler(m_sampler);
-
-	std::vector<unsigned char> linkImage;
-	unsigned w, h;
-	lodepng::decode(linkImage, w, h, "res/textures/link.png", LodePNGColorType::LCT_RGBA, 8);
-
-	std::vector<glm::vec3> linkColors;
-	for (unsigned i = 0; i < linkImage.size(); i += 4) {
-		if (linkImage[i + 3] > 0) {
-			auto color = glm::vec3(linkImage[i], linkImage[i + 1], linkImage[i + 2]);
-
-			unsigned x = i / 4 % 14;
-			unsigned z = floor((i / 4) / (20 * 14));
-			unsigned y = floor(((i / 4) % (20 * 14)) / 20);
-
-			unsigned vIndex;
-			for (vIndex = 0; vIndex < linkColors.size(); ++vIndex) {
-				if (linkColors[vIndex] == color) break;
-			}
-			if (vIndex == linkColors.size()) linkColors.push_back(color);
-
-			m_modelLink->setVoxelAt(x, y, z, VoxelMaterialType(vIndex + 64));
-		}
-	}
-
-	for (unsigned i = 0; i < linkColors.size(); ++i) {
-		colorsImage[32 * 3 + i * 3] = static_cast<unsigned char>(linkColors[i].r);
-		colorsImage[32 * 3 + i * 3 + 1] = static_cast<unsigned char>(linkColors[i].g);
-		colorsImage[32 * 3 + i * 3 + 2] = static_cast<unsigned char>(linkColors[i].b);
-	}
-
-	m_context->setData(m_textureColors, &colorsImage[0]);
+	m_textureStoneWall->setSampler(m_sampler);
 }
 
 void ChunkManager::initShaders() {
@@ -134,8 +99,20 @@ void ChunkManager::initShaders() {
 	m_shaderVoxel->bind(1, "Chunk", m_constantChunk);
 
 	m_shaderVoxel->bind(0, "texSampler", m_sampler, PIXEL_SHADER);
-	m_shaderVoxel->bind(0, "colorsTexture", m_textureColors, VERTEX_SHADER);
-	m_shaderVoxel->bind(1, "dirtTexture", m_textureDirt, PIXEL_SHADER);
+	m_shaderVoxel->bind(0, "stoneFloor", m_textureStoneFloor, PIXEL_SHADER);
+	m_shaderVoxel->bind(1, "stoneWall", m_textureStoneWall, PIXEL_SHADER);
+}
+
+void ChunkManager::initModels() {
+	
+	m_modelStoneFloor = std::make_shared<VoxelModel<32, 2, 32>>(m_context);
+	m_modelStoneFloor->loadModel("res/models/model_stone_floor.png", VM_STONE_FLOOR);
+
+	m_modelStoneWall = std::make_shared<VoxelModel<16, 64, 16>>(m_context);
+	m_modelStoneWall->loadModel("res/models/model_stone_wall.png", VM_STONE_WALL);
+
+	m_modelStonePillar = std::make_shared<VoxelModel<16, 64, 16>>(m_context);
+	m_modelStonePillar->loadModel("res/models/model_stone_pillar.png", VM_STONE_WALL);
 }
 
 void ChunkManager::update(const double deltaTime) {

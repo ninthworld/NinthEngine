@@ -1,30 +1,70 @@
-﻿2018-01-30 12:17:47.549 DEBUG [7480] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.vs.glsl...
-2018-01-30 12:17:50.272 DEBUG [7480] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.ps.glsl...
-2018-01-30 12:18:48.983 DEBUG [9568] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/fx.vs.glsl...
-2018-01-30 12:18:48.988 DEBUG [9568] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/lighting/lighting.ps.glsl...
-2018-01-30 12:18:48.989 DEBUG [9568] [NinthEngine::GL::GLGraphicsDevice::createTexture::<lambda_ab2442b39ec02e61f668264db77365a1>::operator ()@119] [TEXTURE] Loading res/textures/dirt.png...
-2018-01-30 12:18:48.997 DEBUG [9568] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.vs.glsl...
-2018-01-30 12:18:48.998 DEBUG [9568] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.ps.glsl...
-2018-01-30 12:20:06.179 DEBUG [6544] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/fx.vs.glsl...
-2018-01-30 12:20:06.183 DEBUG [6544] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/lighting/lighting.ps.glsl...
-2018-01-30 12:20:06.185 DEBUG [6544] [NinthEngine::GL::GLGraphicsDevice::createTexture::<lambda_ab2442b39ec02e61f668264db77365a1>::operator ()@119] [TEXTURE] Loading res/textures/dirt.png...
-2018-01-30 12:20:06.192 DEBUG [6544] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.vs.glsl...
-2018-01-30 12:20:06.193 DEBUG [6544] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.ps.glsl...
-2018-01-30 12:21:00.037 DEBUG [8808] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/fx.vs.glsl...
-2018-01-30 12:21:00.040 DEBUG [8808] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/lighting/lighting.ps.glsl...
-2018-01-30 12:21:00.042 DEBUG [8808] [NinthEngine::GL::GLGraphicsDevice::createTexture::<lambda_ab2442b39ec02e61f668264db77365a1>::operator ()@119] [TEXTURE] Loading res/textures/dirt.png...
-2018-01-30 12:21:00.049 DEBUG [8808] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.vs.glsl...
-2018-01-30 12:21:00.050 DEBUG [8808] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.ps.glsl...
-2018-01-30 12:21:35.969 DEBUG [4476] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/fx.vs.glsl...
-2018-01-30 12:21:35.973 DEBUG [4476] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/lighting/lighting.ps.glsl...
-2018-01-30 12:21:35.975 DEBUG [4476] [NinthEngine::GL::GLGraphicsDevice::createTexture::<lambda_ab2442b39ec02e61f668264db77365a1>::operator ()@119] [TEXTURE] Loading res/textures/dirt.png...
-2018-01-30 12:21:35.982 DEBUG [4476] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.vs.glsl...
-2018-01-30 12:21:35.983 DEBUG [4476] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.ps.glsl...
-2018-01-30 12:22:06.721 DEBUG [12612] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/fx.vs.glsl...
-2018-01-30 12:22:06.725 DEBUG [12612] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/lighting/lighting.ps.glsl...
-2018-01-30 12:22:06.727 DEBUG [12612] [NinthEngine::GL::GLGraphicsDevice::createTexture::<lambda_ab2442b39ec02e61f668264db77365a1>::operator ()@119] [TEXTURE] Loading res/textures/dirt.png...
-2018-01-30 12:22:36.046 DEBUG [5040] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/fx.vs.glsl...
-2018-01-30 12:22:36.050 DEBUG [5040] [NinthEngine::readShaderFile@14] [SHADER] Loading res/fx/glsl/lighting/lighting.ps.glsl...
-2018-01-30 12:22:36.051 DEBUG [5040] [NinthEngine::GL::GLGraphicsDevice::createTexture::<lambda_ab2442b39ec02e61f668264db77365a1>::operator ()@119] [TEXTURE] Loading res/textures/dirt.png...
-2018-01-30 12:22:36.059 DEBUG [5040] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.vs.glsl...
-2018-01-30 12:22:36.060 DEBUG [5040] [NinthEngine::readShaderFile@14] [SHADER] Loading res/shaders/glsl/voxel.ps.glsl...
+﻿2018-01-31 01:11:12.216 WARN  [2756] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:11:12.229 ERROR [2756] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:11:12.229 ERROR [2756] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:11:12.229 WARN  [2756] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:12:36.497 ERROR [13200] [NinthEngine::GL::GLShader::createProgram@130] @0º¹ö
+2018-01-31 01:12:36.498 ERROR [13200] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:12:36.498 WARN  [13200] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:12:36.499 ERROR [13200] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:12:36.500 ERROR [13200] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:12:36.500 WARN  [13200] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:13:02.398 ERROR [9344] [NinthEngine::GL::GLShader::createProgram@130] €NdV
+2018-01-31 01:13:02.398 ERROR [9344] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:13:02.398 WARN  [9344] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:13:02.400 ERROR [9344] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:13:02.400 ERROR [9344] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:13:02.400 WARN  [9344] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:13:20.299 ERROR [1124] [NinthEngine::GL::GLShader::createProgram@130] fzŒ
+2018-01-31 01:13:20.299 ERROR [1124] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:13:20.299 WARN  [1124] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:13:20.300 ERROR [1124] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:13:20.301 ERROR [1124] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:13:20.301 WARN  [1124] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:14:11.134 ERROR [7152] [NinthEngine::GL::GLShader::createProgram@130] À™ Ç
+2018-01-31 01:14:11.134 ERROR [7152] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:14:11.134 WARN  [7152] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:14:11.135 ERROR [7152] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:14:11.136 ERROR [7152] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:14:11.136 WARN  [7152] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:14:31.085 ERROR [16184] [NinthEngine::GL::GLShader::createProgram@130] ÀÇ]¬
+2018-01-31 01:14:31.085 ERROR [16184] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:14:31.085 WARN  [16184] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:14:31.087 ERROR [16184] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:14:31.087 ERROR [16184] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:14:31.087 WARN  [16184] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:14:49.002 ERROR [10856] [NinthEngine::GL::GLShader::createProgram@130] uAcù
+2018-01-31 01:14:49.004 ERROR [10856] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:14:49.004 WARN  [10856] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:14:49.005 ERROR [10856] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:14:49.005 ERROR [10856] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:14:49.006 WARN  [10856] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:15:04.220 ERROR [15576] [NinthEngine::GL::GLShader::createProgram@130] ð`vRo
+2018-01-31 01:15:04.220 ERROR [15576] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:15:04.220 WARN  [15576] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:15:04.222 ERROR [15576] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:15:04.222 ERROR [15576] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:15:04.222 WARN  [15576] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:15:40.354 ERROR [8676] [NinthEngine::GL::GLShader::createProgram@130] ¼	<ã
+2018-01-31 01:15:40.355 ERROR [8676] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:15:40.355 WARN  [8676] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:15:40.356 ERROR [8676] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:15:40.356 ERROR [8676] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:15:40.357 WARN  [8676] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:16:58.926 ERROR [7464] [NinthEngine::GL::GLShader::createProgram@130] ÐEÆ¬
+2018-01-31 01:16:58.927 ERROR [7464] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:16:58.927 WARN  [7464] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:16:58.929 ERROR [7464] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:16:58.929 ERROR [7464] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:16:58.929 WARN  [7464] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:17:12.742 ERROR [12392] [NinthEngine::GL::GLShader::createProgram@130] p#Uo
+2018-01-31 01:17:12.742 ERROR [12392] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:17:12.743 WARN  [12392] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:17:12.744 ERROR [12392] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:17:12.744 ERROR [12392] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:17:12.744 WARN  [12392] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:21:01.668 ERROR [14740] [NinthEngine::GL::GLShader::createProgram@130] Ú ¾ð
+2018-01-31 01:21:01.669 ERROR [14740] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:21:01.669 WARN  [14740] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION
+2018-01-31 01:21:01.670 ERROR [14740] [NinthEngine::GL::GLShader::createProgram@130] 
+2018-01-31 01:21:01.670 ERROR [14740] [NinthEngine::GL::GLShader::createProgram@131] Failed to validate GL Shader Program
+2018-01-31 01:21:01.670 WARN  [14740] [NinthEngine::GL::GLShader::bind@40] glGetUniformBlockIndex: GL_INVALID_OPERATION

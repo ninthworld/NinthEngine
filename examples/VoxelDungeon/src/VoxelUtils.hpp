@@ -5,11 +5,11 @@
 using namespace NinthEngine;
 
 enum VoxelMaterialType : unsigned {
-	VM_NONE,
-	VM_DIRT,
-	VM_GRASS_1 = 32,
-	VM_GRASS_2,
-	VM_NULL
+	VM_NONE = 0,
+	VM_STONE_FLOOR = 1,
+	VM_STONE_WALL = 2, // 3
+
+	VM_NULL = UINT_MAX
 };
 
 typedef unsigned char VoxelFace;

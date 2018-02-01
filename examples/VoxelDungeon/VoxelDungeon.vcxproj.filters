@@ -45,6 +45,12 @@
     <Filter Include="Header Files\FX">
       <UniqueIdentifier>{cbc8e2a1-e229-4393-8451-a7eddb64a315}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\fx\glsl\blur">
+      <UniqueIdentifier>{100806a5-264c-4fe0-8ef6-bf3ec59e8146}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\glsl\ssao">
+      <UniqueIdentifier>{679d61e6-d11f-47c8-9b43-f1d0663b5e04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VoxelDungeon.hpp">
@@ -78,6 +84,12 @@
     </None>
     <None Include="res\fx\glsl\lighting\lighting.ps.glsl">
       <Filter>Resource Files\fx\glsl\lighting</Filter>
+    </None>
+    <None Include="res\fx\glsl\ssao\ssao.ps.glsl">
+      <Filter>Resource Files\fx\glsl\ssao</Filter>
+    </None>
+    <None Include="res\fx\glsl\blur\blur.ps.glsl">
+      <Filter>Resource Files\fx\glsl\blur</Filter>
     </None>
   </ItemGroup>
 </Project>

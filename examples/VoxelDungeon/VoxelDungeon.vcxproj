@@ -166,8 +166,10 @@
     <ClInclude Include="src\VoxelUtils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\fx\glsl\blur\blur.ps.glsl" />
     <None Include="res\fx\glsl\fx.vs.glsl" />
     <None Include="res\fx\glsl\lighting\lighting.ps.glsl" />
+    <None Include="res\fx\glsl\ssao\ssao.ps.glsl" />
     <None Include="res\shaders\glsl\voxel.ps.glsl" />
     <None Include="res\shaders\glsl\voxel.vs.glsl" />
   </ItemGroup>

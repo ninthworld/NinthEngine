@@ -18,31 +18,29 @@ layout(std140) uniform Camera {
 };
 
 layout(std140) uniform Window {
-	vec4 windowSize_;
+	vec4 windowSize;
 };
 
 #ifdef USE_MSAA
 uniform sampler2DMS colorTexture;
 uniform sampler2DMS normalTexture;
-//uniform sampler2DMS depthTexture;
+uniform sampler2DMS depthTexture;
 #else
 uniform sampler2D colorTexture;
 uniform sampler2D normalTexture;
-//uniform sampler2D depthTexture;
+uniform sampler2D depthTexture;
 #endif
+uniform sampler2D ssaoTexture;
 
 void main() {
 
-	vec4 windowSize = vec4(1600.0, 900.0, 0, 0);
-
 	vec3 lightDir = normalize(vec3(0.8, 1.2, 0.6));
 	
-	// Multisampling
 	float cosTheta = 0;
 	vec3 color = vec3(0);
 #ifdef USE_MSAA
 	for (int i = 0; i < SAMPLES; ++i) {
-		//float depth = texelFetch(depthTexture, ivec2(vs_texCoord * windowSize.xy), i).r;
+		float depth = texelFetch(depthTexture, ivec2(vs_texCoord * windowSize.xy), i).r;
 		vec3 normal = texelFetch(normalTexture, ivec2(vs_texCoord * windowSize.xy), i).rgb * 2.0 - 1.0;
 		
 		vec3 diffuse = texelFetch(colorTexture, ivec2(vs_texCoord * windowSize.xy), i).rgb;
@@ -57,6 +55,9 @@ void main() {
 	diffuse *= max(dot(normal, lightDir), 0.3);
 	color += diffuse;
 #endif
+
+	vec3 ssao = texture(ssaoTexture, vs_texCoord).rgb;
+	color *= ssao;
 
 	ps_color = vec4(color, 1);
 }

@@ -90,10 +90,12 @@ void VoxelDungeon::render() {
 
 	m_context->bind(m_rasterizerDefault);
 
+	m_fx->renderSSAO();
+
 	m_context->bindBackBuffer();
 	m_context->clearBackBuffer();
-
-	m_fx->renderLighting();
+	
+	m_fx->render();
 }
 
 void VoxelDungeon::onResize(const int width, const int height) {

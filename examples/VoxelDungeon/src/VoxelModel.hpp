@@ -2,12 +2,13 @@
 
 #include <vector>
 #include <array>
+#include <NinthEngine\Utils\LodePNG\lodepng.h>
 #include <NinthEngine\Application\Game.hpp>
 #include "VoxelUtils.hpp"
 
 using namespace NinthEngine;
 
-template<std::size_t N>
+template<std::size_t X, std::size_t Y, std::size_t Z>
 class VoxelModel {
 public:
 	VoxelModel(const std::shared_ptr<GraphicsContext>& context)
@@ -22,7 +23,29 @@ public:
 		}
 	};
 
-	const std::size_t getSize() const { return N; };
+	void loadModel(const std::string file, const VoxelMaterialType materialOffset) {
+		std::vector<unsigned char> image;
+		unsigned width, height;
+		lodepng::decode(image, width, height, file, LodePNGColorType::LCT_RGBA, 8);
+		assert((height == Z) && (width == X * Y));
+
+		for (unsigned i = 0; i < image.size(); i += 4) {
+			unsigned x = (i / 4) % X;
+			unsigned z = floor((i / 4) / float(X * Y));
+			unsigned y = floor(((i / 4) % (X * Y)) / (float)X);
+
+			if (image[i + 3] != 0) {
+				setVoxelAt(x, y, z, VoxelMaterialType(materialOffset + image[i]));
+			}
+			else {
+				setVoxelAt(x, y, z, VM_NONE);
+			}
+		}
+	}
+
+	const std::size_t getSizeX() const { return X; };
+	const std::size_t getSizeY() const { return Y; };
+	const std::size_t getSizeZ() const { return Z; };
 
 	const VoxelMaterialType getVoxelAt(const int x, const int y, const int z) const {
 		if (!inBounds(x, y, z)) {
@@ -33,13 +56,14 @@ public:
 
 	void setVoxelAt(const int x, const int y, const int z, const VoxelMaterialType material) {
 		assert(inBounds(x, y, z));
+		assert(material != VM_NULL);
 		m_data[getDataIndex(x, y, z)] = material;
 	};
 
-	void generateFaces(std::array<VoxelFace, N * N * N>& faces) {
-		for (unsigned i = 0; i < N; ++i) {
-			for (unsigned j = 0; j < N; ++j) {
-				for (unsigned k = 0; k < N; ++k) {
+	void generateFaces(std::array<VoxelFace, X * Y * Z>& faces) {
+		for (unsigned i = 0; i < X; ++i) {
+			for (unsigned j = 0; j < Y; ++j) {
+				for (unsigned k = 0; k < Z; ++k) {
 					unsigned index = getDataIndex(i, j, k);
 					if (getVoxelAt(i, j, k) == VM_NONE) continue;
 					if (getVoxelAt(i - 1, j, k) == VM_NONE) faces[index] |= VF_LEFT;
@@ -55,29 +79,29 @@ public:
 
 	void generateGeometry(std::vector<VoxelVertex>& vertices, std::vector<int>& indices) {
 
-		auto faces = std::array<VoxelFace, N * N * N>();
+		auto faces = std::array<VoxelFace, X * Y * Z>();
 		generateFaces(faces);
 
 		unsigned indicesIndex = 0;
 		VoxelFace face = VF_TOP;
 		for (int side = 0; side < 6; side++, face <<= 1) {
-			auto mask = std::array<bool, N * N * N>();
-			for (unsigned i = 0; i < N; ++i) {
-				for (unsigned j = 0; j < N; ++j) {
-					for (unsigned k = 0; k < N; ++k) {
-						unsigned x, y;
-						if (face == VF_TOP || face == VF_BOTTOM) x = k, y = i;
-						else if (face == VF_RIGHT || face == VF_LEFT) x = j, y = k;
-						else if (face == VF_FRONT || face == VF_BACK) x = i, y = j;
+			auto mask = std::array<bool, X * Y * Z>();
+			for (unsigned i = 0; i < X; ++i) {
+				for (unsigned j = 0; j < Y; ++j) {
+					for (unsigned k = 0; k < Z; ++k) {
+						unsigned x, y, xSize, ySize;
+						if (face == VF_TOP || face == VF_BOTTOM) x = k, y = i, xSize = Z, ySize = X;
+						else if (face == VF_RIGHT || face == VF_LEFT) x = j, y = k, xSize = Y, ySize = Z;
+						else if (face == VF_FRONT || face == VF_BACK) x = i, y = j, xSize = X, ySize = Y;
 
 						if (!mask[getDataIndex(i, j, k)] && faces[getDataIndex(i, j, k)] & face) {
 							auto material = getVoxelAt(i, j, k);
 
 							int width = 0;
 							int height = 0;
-							for (unsigned m = x; m < N; ++m) {
+							for (unsigned m = x; m < xSize; ++m) {
 								bool mx = (m == x);
-								for (unsigned n = y; n < N && (mx || n < width + y); ++n) {
+								for (unsigned n = y; n < ySize && (mx || n < width + y); ++n) {
 									unsigned index;
 									if (face == VF_TOP || face == VF_BOTTOM) index = getDataIndex(n, j, m);
 									else if (face == VF_RIGHT || face == VF_LEFT) index = getDataIndex(i, m, n);
@@ -183,12 +207,12 @@ public:
 
 protected:
 	const bool inBounds(const int x, const int y, const int z) const {
-		return (x >= 0 && x < N && y >= 0 && y < N && z >= 0 && z < N);
+		return (x >= 0 && x < X && y >= 0 && y < Y && z >= 0 && z < Z);
 	};
 
 	const unsigned getDataIndex(const int x, const int y, const int z) const {
 		assert(inBounds(x, y, z));
-		return x * N * N + y * N + z;
+		return x * Y * Z + y * Z + z;
 	};
 	
 protected:
@@ -197,6 +221,6 @@ protected:
 	std::shared_ptr<IndexBuffer> m_indexBuffer;
 	std::shared_ptr<VertexArray> m_vertexArray;
 
-	std::array<VoxelMaterialType, N * N * N> m_data;
+	std::array<VoxelMaterialType, X * Y * Z> m_data;
 
 };
