@@ -1,7 +1,10 @@
+#version 400
+
 // Original shader from https://github.com/McNopper/OpenGL/blob/master/Example28/shader/ssao.frag.glsl
 // Rewritten to work with existing code
 
-#version 400
+// TODO: Fix This
+//#define USE_MSAA
 
 #define KERNEL_SIZE		32
 #define RADIUS			1
@@ -27,15 +30,24 @@ layout(std140) uniform SSAO {
 	vec4 ssaoKernel[KERNEL_SIZE];
 };
 
+#ifdef USE_MSAA
 uniform sampler2DMS normalTexture;
 uniform sampler2DMS depthTexture;
+#else
+uniform sampler2D normalTexture;
+uniform sampler2D depthTexture;
+#endif
 uniform sampler2D noiseTexture;
 
 vec4 getViewPos(vec2 texCoord) {
 
 	vec2 pos = texCoord * 2.0 - 1.0;
-	
+
+#ifdef USE_MSAA
 	float z = texelFetch(depthTexture, ivec2(texCoord * windowSize.xy), 0).r * 2.0 - 1.0;
+#else
+	float z = texture(depthTexture, texCoord).r * 2.0 - 1.0;
+#endif
 
 	vec4 posProj = vec4(pos, z, 1.0);
 
@@ -50,7 +62,11 @@ void main() {
 
 	vec4 posView = getViewPos(vs_texCoord);
 
+#ifdef USE_MSAA
 	vec3 normalView = normalize(texelFetch(normalTexture, ivec2(vs_texCoord * windowSize.xy), 0).xyz * 2.0 - 1.0);
+#else
+	vec3 normalView = normalize(texture(normalTexture, vs_texCoord).xyz * 2.0 - 1.0);
+#endif
 
 	vec3 randomVector = normalize(vec3(texture(noiseTexture, vs_texCoord * windowSize.xy / 4.0).xy, 0.0) * 2.0 - 1.0);
 
@@ -74,7 +90,11 @@ void main() {
 
 		vec2 samplePointTexCoord = samplePointNDC.xy * 0.5 + 0.5;
 
-		float zSceneNDC = texelFetch(depthTexture, ivec2(samplePointTexCoord * windowSize.xy), 0).r * 2.0 - 1.0;
+#ifdef USE_MSAA
+		float zSceneNDC = texelFetch(depthTexture, ivec2(vs_texCoord * windowSize.xy), 0).r * 2.0 - 1.0;
+#else
+		float zSceneNDC = texture(depthTexture, vs_texCoord).r * 2.0 - 1.0;
+#endif
 
 		float delta = samplePointNDC.z - zSceneNDC;
 

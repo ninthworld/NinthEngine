@@ -94,6 +94,8 @@ void ChunkManager::initShaders() {
 		.withLayout(voxelVertexLayout)
 		.withGLSL<VERTEX_SHADER>("res/shaders/glsl/voxel.vs.glsl")
 		.withGLSL<PIXEL_SHADER>("res/shaders/glsl/voxel.ps.glsl")
+		.withHLSL<VERTEX_SHADER>("res/shaders/hlsl/voxel.vs.hlsl", "main")
+		.withHLSL<PIXEL_SHADER>("res/shaders/hlsl/voxel.ps.hlsl", "main")
 		.build();
 	m_shaderVoxel->bind(0, "Camera", m_constantCamera);
 	m_shaderVoxel->bind(1, "Chunk", m_constantChunk);

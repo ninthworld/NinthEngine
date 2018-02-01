@@ -19,8 +19,10 @@ layout(std140) uniform Chunk {
 
 const vec4 Materials[4] = vec4[](
 	vec4(0, 0, 0, 0),				// NULL
-	vec4(0, 0, 0, 1),				// Stone Floor	[TEXTURE]
-	vec4(0, 0, 0, 2),				// Stone Wall	[TEXTURE]
+	//vec4(0, 0, 0, 1),				// Stone Floor	[TEXTURE]
+	//vec4(0, 0, 0, 2),				// Stone Wall	[TEXTURE]
+	vec4(1, 0, 0, 0),
+	vec4(0, 1, 0, 0),
 	vec4(100, 70, 40, 0) / 255.0	// Stone Wall Pillar Foundation
 );
 

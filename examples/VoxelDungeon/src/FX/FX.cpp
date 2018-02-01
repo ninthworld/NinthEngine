@@ -70,7 +70,7 @@ void FX::initRenderTargets(
 	const std::shared_ptr<GameWindow>& window) {
 
 	m_renderTargetMS = device->createRenderTarget()
-		.withMultisampling(2)
+		//.withMultisampling(2)
 		.withRenderTarget(window->getWidth(), window->getHeight())
 		.withRenderTarget(window->getWidth(), window->getHeight())
 		.withRenderTarget(window->getWidth(), window->getHeight(), FORMAT_DEPTH_24_STENCIL_8)
@@ -100,6 +100,8 @@ void FX::initShaders(
 		.withLayout(fxLayout)
 		.withGLSL<VERTEX_SHADER>("res/fx/glsl/fx.vs.glsl")
 		.withGLSL<PIXEL_SHADER>("res/fx/glsl/lighting/lighting.ps.glsl")
+		.withHLSL<VERTEX_SHADER>("res/fx/hlsl/fx.vs.hlsl", "main")
+		.withHLSL<PIXEL_SHADER>("res/fx/hlsl/lighting/lighting.ps.hlsl", "main")
 		.build();
 	m_shaderLighting->bind(0, "Camera", constantCamera, PIXEL_SHADER);
 	m_shaderLighting->bind(1, "Window", constantWindow, PIXEL_SHADER);
@@ -113,6 +115,8 @@ void FX::initShaders(
 		.withLayout(fxLayout)
 		.withGLSL<VERTEX_SHADER>("res/fx/glsl/fx.vs.glsl")
 		.withGLSL<PIXEL_SHADER>("res/fx/glsl/ssao/ssao.ps.glsl")
+		.withHLSL<VERTEX_SHADER>("res/fx/hlsl/fx.vs.hlsl", "main")
+		.withHLSL<PIXEL_SHADER>("res/fx/hlsl/ssao/ssao.ps.hlsl", "main")
 		.build();
 	m_shaderSSAO->bind(0, "CameraExt", m_constantCameraExt, PIXEL_SHADER);
 	m_shaderSSAO->bind(1, "Window", constantWindow, PIXEL_SHADER);
@@ -126,6 +130,8 @@ void FX::initShaders(
 		.withLayout(fxLayout)
 		.withGLSL<VERTEX_SHADER>("res/fx/glsl/fx.vs.glsl")
 		.withGLSL<PIXEL_SHADER>("res/fx/glsl/blur/blur.ps.glsl")
+		.withHLSL<VERTEX_SHADER>("res/fx/hlsl/fx.vs.hlsl", "main")
+		.withHLSL<PIXEL_SHADER>("res/fx/hlsl/blur/blur.ps.hlsl", "main")
 		.build();
 	m_shaderBlur->bind(0, "Window", constantWindow, PIXEL_SHADER);
 	m_shaderBlur->bind(0, "texSampler", m_sampler, PIXEL_SHADER);

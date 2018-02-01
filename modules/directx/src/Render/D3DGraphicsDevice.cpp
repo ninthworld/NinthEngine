@@ -31,7 +31,7 @@ D3DGraphicsDevice::D3DGraphicsDevice() {
 	};
 
 	DWORD createDeviceFlags = 0;
-#ifdef _DEBUG
+#ifdef DX_DEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 

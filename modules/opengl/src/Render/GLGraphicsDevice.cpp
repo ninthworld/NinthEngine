@@ -17,7 +17,7 @@ namespace GL {
 
 GLGraphicsDevice::GLGraphicsDevice() {
 
-#if defined(_DEBUG) && defined(_GL_DEBUG)
+#ifdef GL_DEBUG
 	
 	std::stringstream str;
 

@@ -51,6 +51,21 @@
     <Filter Include="Resource Files\fx\glsl\ssao">
       <UniqueIdentifier>{679d61e6-d11f-47c8-9b43-f1d0663b5e04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\hlsl">
+      <UniqueIdentifier>{7dc0ee51-766b-4a1a-bd70-79fc3374fc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\hlsl">
+      <UniqueIdentifier>{74be09a3-a741-490c-b686-52e287e6634f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\hlsl\blur">
+      <UniqueIdentifier>{0c8561aa-55aa-4d7a-8096-769544b0797a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\hlsl\lighting">
+      <UniqueIdentifier>{6124b48b-4a65-4cf9-887b-ac84a731e220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\fx\hlsl\ssao">
+      <UniqueIdentifier>{040dcff9-5f3c-47dc-b214-2fe7f25b28e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\VoxelDungeon.hpp">
@@ -91,5 +106,25 @@
     <None Include="res\fx\glsl\blur\blur.ps.glsl">
       <Filter>Resource Files\fx\glsl\blur</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="res\shaders\hlsl\voxel.vs.hlsl">
+      <Filter>Resource Files\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\voxel.ps.hlsl">
+      <Filter>Resource Files\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="res\fx\hlsl\fx.vs.hlsl">
+      <Filter>Resource Files\fx\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="res\fx\hlsl\blur\blur.ps.hlsl">
+      <Filter>Resource Files\fx\hlsl\blur</Filter>
+    </FxCompile>
+    <FxCompile Include="res\fx\hlsl\lighting\lighting.ps.hlsl">
+      <Filter>Resource Files\fx\hlsl\lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="res\fx\hlsl\ssao\ssao.ps.hlsl">
+      <Filter>Resource Files\fx\hlsl\ssao</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -23,7 +23,7 @@ enum VoxelFaceType : unsigned char {
 };
 
 const static LayoutConfig voxelVertexLayout =
-LayoutConfig().float3(POSITION).float3(NORMAL).float1(COLOR);
+LayoutConfig().float3(POSITION).float3(NORMAL).float1(BLENDWEIGHT);
 struct VoxelVertex {
 	glm::vec3 position;
 	glm::vec3 normal;

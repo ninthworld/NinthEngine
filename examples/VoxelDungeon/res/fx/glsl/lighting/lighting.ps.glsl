@@ -1,7 +1,7 @@
 #version 400
 
 // TODO: Fix this
-#define USE_MSAA
+//#define USE_MSAA
 
 #define MIN_VIEW 0.99984
 #define MAX_VIEW 0.99988

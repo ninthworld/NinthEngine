@@ -82,6 +82,7 @@ void D3DShader::createShader<VERTEX_SHADER>(const ComPtr<ID3D11Device>& device, 
 		case TEXCOORD: desc.SemanticName = "TEXCOORD"; break;
 		case BINORMAL: desc.SemanticName = "BINORMAL"; break;
 		case TANGENT: desc.SemanticName = "TANGENT"; break;
+		case BLENDWEIGHT: desc.SemanticName = "BLENDWEIGHT"; break;
 		default: desc.SemanticName = ""; break;
 		}
 

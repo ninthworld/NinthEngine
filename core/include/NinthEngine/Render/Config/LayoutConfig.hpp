@@ -22,7 +22,8 @@ enum SemanticType {
 	NORMAL,
 	TEXCOORD,
 	BINORMAL,
-	TANGENT
+	TANGENT,
+	BLENDWEIGHT
 };
 
 struct LayoutStruct {
