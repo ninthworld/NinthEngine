@@ -1,5 +1,5 @@
 # NinthEngine
-Graphics Engine written in C++
+3D Render Engine written in C++
 
 Open source and distributed under MIT License.
 
