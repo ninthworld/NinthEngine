@@ -106,6 +106,12 @@
     <None Include="res\fx\glsl\blur\blur.ps.glsl">
       <Filter>Resource Files\fx\glsl\blur</Filter>
     </None>
+    <None Include="res\shaders\glsl\voxelShadow.ps.glsl">
+      <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="res\shaders\glsl\voxelShadow.vs.glsl">
+      <Filter>Resource Files\glsl</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="res\shaders\hlsl\voxel.vs.hlsl">

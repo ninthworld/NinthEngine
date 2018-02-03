@@ -177,6 +177,8 @@
     </FxCompile>
     <None Include="res\shaders\glsl\voxel.ps.glsl" />
     <None Include="res\shaders\glsl\voxel.vs.glsl" />
+    <None Include="res\shaders\glsl\voxelShadow.ps.glsl" />
+    <None Include="res\shaders\glsl\voxelShadow.vs.glsl" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="res\fx\hlsl\blur\blur.ps.hlsl">

@@ -1,3 +1,4 @@
+#include <NinthEngine\Utils\LodePNG\lodepng.h>
 #include "Chunk.hpp"
 #include "ChunkManager.hpp"
 
@@ -21,39 +22,47 @@ void ChunkManager::init() {
 	initShaders();
 	initModels();
 
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
+	std::vector<unsigned char> imageGround;
+	std::vector<unsigned char> imageModels;
+	unsigned width, height;
+	unsigned widthM, heightM;
+	lodepng::decode(imageGround, width, height, "res/maps/dungeon/map01_ground.png", LodePNGColorType::LCT_RGBA, 8);
+	lodepng::decode(imageModels, widthM, heightM, "res/maps/dungeon/map01_models.png", LodePNGColorType::LCT_RGBA, 8);
+	assert(width == widthM && height == heightM);
+
+	unsigned chunkPixel = (CHUNK_SIZE / MAP_PIXEL_SIZE);
+	for (unsigned i = 0; i < width / chunkPixel; ++i) {
+		for (unsigned j = 0; j < height / chunkPixel; ++j) {
 			ChunkPos pos{ i, 0, j };
 			auto chunk = std::make_unique<Chunk>(shared_from_this(), pos);
-
-			chunk->appendModel(m_modelStoneFloor, 0, 0, 0);
-			chunk->appendModel(m_modelStoneFloor, 0, 0, 32);
-			chunk->appendModel(m_modelStoneFloor, 32, 0, 0);
-			chunk->appendModel(m_modelStoneFloor, 32, 0, 32);
-
 			m_chunks.insert(std::make_pair(pos, std::move(chunk)));
 		}
 	}
 
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
-			m_chunks[{ 0, 0, i }]->appendModel(m_modelStoneWall, 0, 0, j * 16, 1);
-		}
-		for (int j = 0; j < 4; ++j) {
-			m_chunks[{ 3, 0, i }]->appendModel(m_modelStoneWall, 48, 0, j * 16, 1);
+	for (unsigned i = 0; i < imageGround.size(); i += 4) {
+		auto colorGround = glm::vec4(imageGround[i], imageGround[i + 1], imageGround[i + 2], imageGround[i + 3]);
+		auto colorModels = glm::vec4(imageModels[i], imageModels[i + 1], imageModels[i + 2], imageModels[i + 3]);
+		unsigned iX = (i / 4) % width;
+		unsigned iZ = floor((i / 4) / float(width));
+		int cX = floor(iX / float(chunkPixel));
+		int cZ = floor(iZ / float(chunkPixel));
+		unsigned x = iX % (chunkPixel);
+		unsigned z = iZ % (chunkPixel);
+
+		auto& chunk = m_chunks[{ cX, 0, cZ }];
+		if (colorGround.a) {
+			switch (unsigned(colorGround.r)) {
+			case 0: chunk->appendModel(m_modelStoneFloor, x * MAP_PIXEL_SIZE, colorGround.b * 16, z * MAP_PIXEL_SIZE); break;
+			case 1: chunk->appendModel(m_modelDirtFloor, x * MAP_PIXEL_SIZE, colorGround.b * 16, z * MAP_PIXEL_SIZE); break;
+			}			
 		}
 
-		for (int j = 0; j < 4; ++j) {
-			m_chunks[{ i, 0, 0 }]->appendModel(m_modelStoneWall, j * 16, 0, 0, 0);
+		if (colorModels.a) {
+			switch (unsigned(colorModels.r)) {
+			case 0: chunk->appendModel(m_modelStoneWall, x * MAP_PIXEL_SIZE, 1 + colorModels.b * 16, z * MAP_PIXEL_SIZE, colorModels.g, (unsigned(colorModels.g) % 2)); break;
+			case 1: chunk->appendModel(m_modelStonePillarSmall, x * MAP_PIXEL_SIZE, 1 + colorModels.b * 16, z * MAP_PIXEL_SIZE); break;
+			}
 		}
-		for (int j = 0; j < 4; ++j) {
-			m_chunks[{ i, 0, 3 }]->appendModel(m_modelStoneWall, j * 16, 0, 48, 0);
-		}
-
-		m_chunks[{ 0, 0, i }]->appendModel(m_modelStonePillar, 0, 0, 0);
-		m_chunks[{ 3, 0, i }]->appendModel(m_modelStonePillar, 48, 0, 0);
-		m_chunks[{ i, 0, 0 }]->appendModel(m_modelStonePillar, 0, 0, 0);
-		m_chunks[{ i, 0, 3 }]->appendModel(m_modelStonePillar, 0, 0, 48);
 	}
 
 	// Generate Vertex Arrays
@@ -78,14 +87,24 @@ void ChunkManager::initTextures() {
 		.build();
 
 	m_textureStoneFloor = m_device->createTexture()
-		.withFile("res/textures/texture_stone_floor.png")
+		.withFile("res/textures/dungeon/stone_floor.png")
 		.build();
 	m_textureStoneFloor->setSampler(m_sampler);
 
+	m_textureDirtFloor = m_device->createTexture()
+		.withFile("res/textures/dungeon/dirt_floor.png")
+		.build();
+	m_textureDirtFloor->setSampler(m_sampler);
+
 	m_textureStoneWall = m_device->createTexture()
-		.withFile("res/textures/texture_stone_wall.png")
+		.withFile("res/textures/dungeon/stone_wall.png")
 		.build();
 	m_textureStoneWall->setSampler(m_sampler);
+
+	m_textureStonePillarSmall = m_device->createTexture()
+		.withFile("res/textures/dungeon/stone_pillar_small.png")
+		.build();
+	m_textureStonePillarSmall->setSampler(m_sampler);
 }
 
 void ChunkManager::initShaders() {
@@ -102,19 +121,24 @@ void ChunkManager::initShaders() {
 
 	m_shaderVoxel->bind(0, "texSampler", m_sampler, PIXEL_SHADER);
 	m_shaderVoxel->bind(0, "stoneFloor", m_textureStoneFloor, PIXEL_SHADER);
-	m_shaderVoxel->bind(1, "stoneWall", m_textureStoneWall, PIXEL_SHADER);
+	m_shaderVoxel->bind(1, "dirtFloor", m_textureDirtFloor, PIXEL_SHADER);
+	m_shaderVoxel->bind(2, "stoneWall", m_textureStoneWall, PIXEL_SHADER);
+	m_shaderVoxel->bind(3, "stonePillarSmall", m_textureStonePillarSmall, PIXEL_SHADER);
 }
 
 void ChunkManager::initModels() {
 	
-	m_modelStoneFloor = std::make_shared<VoxelModel<32, 2, 32>>(m_context);
-	m_modelStoneFloor->loadModel("res/models/model_stone_floor.png", VM_STONE_FLOOR);
+	m_modelStoneFloor = std::make_shared<VoxelModel<MODEL_STONE_FLOOR>>(m_context);
+	m_modelStoneFloor->loadModel("res/models/dungeon/model_stone_floor.png", VM_STONE_FLOOR);
 
-	m_modelStoneWall = std::make_shared<VoxelModel<16, 64, 16>>(m_context);
-	m_modelStoneWall->loadModel("res/models/model_stone_wall.png", VM_STONE_WALL);
+	m_modelDirtFloor = std::make_shared<VoxelModel<MODEL_DIRT_FLOOR>>(m_context);
+	m_modelDirtFloor->loadModel("res/models/dungeon/model_stone_floor.png", VM_DIRT_FLOOR);
 
-	m_modelStonePillar = std::make_shared<VoxelModel<16, 64, 16>>(m_context);
-	m_modelStonePillar->loadModel("res/models/model_stone_pillar.png", VM_STONE_WALL);
+	m_modelStoneWall = std::make_shared<VoxelModel<MODEL_STONE_WALL>>(m_context);
+	m_modelStoneWall->loadModel("res/models/dungeon/model_stone_wall.png", VM_STONE_WALL_Z);
+
+	m_modelStonePillarSmall = std::make_shared<VoxelModel<MODEL_STONE_PILLAR_SMALL>>(m_context);
+	m_modelStonePillarSmall->loadModel("res/models/dungeon/model_stone_pillar_small.png", VM_STONE_PILLAR_SMALL);
 }
 
 void ChunkManager::update(const double deltaTime) {

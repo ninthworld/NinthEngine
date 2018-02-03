@@ -17,7 +17,7 @@ VoxelDungeon::~VoxelDungeon() {
 
 void VoxelDungeon::init() {
 
-	m_context->setClearColor({ 0.0f, 0.0f, 0.0f, 1.0f });
+	m_context->setClearColor(Color(glm::vec4(20.0f, 18.0f, 27.0f, 255.0f) / 255.0f));
 
 	initRasterizers();
 	initConstants();

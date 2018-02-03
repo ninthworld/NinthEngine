@@ -17,13 +17,22 @@ layout(std140) uniform Chunk {
 	vec4 chunkPosition;
 };
 
-const vec4 Materials[4] = vec4[](
+const vec4 Materials[11] = vec4[](
 	vec4(0, 0, 0, 0),				// NULL
-	//vec4(0, 0, 0, 1),				// Stone Floor	[TEXTURE]
-	//vec4(0, 0, 0, 2),				// Stone Wall	[TEXTURE]
-	vec4(1, 0, 0, 0),
-	vec4(0, 1, 0, 0),
-	vec4(100, 70, 40, 0) / 255.0	// Stone Wall Pillar Foundation
+
+	// Ground Materials
+	vec4(0, 0, 0, 1),				// Stone Floor	[TEXTURE]
+	vec4(0, 0, 0, 2),				// Dirt Floor	[TEXTURE]
+	vec4(0, 0, 0, 0),
+	vec4(0, 0, 0, 0),
+	vec4(0, 0, 0, 0),
+	vec4(0, 0, 0, 0),
+	vec4(0, 0, 0, 0),
+
+	// Model Materials
+	vec4(0, 0, 0, 8),				// Stone Wall Z	[TEXTURE]
+	vec4(0, 0, 0, 9),				// Stone Wall X	[TEXTURE]
+	vec4(0, 0, 0, 10)				// Stone Pillar Small [TEXTURE]
 );
 
 void main() {

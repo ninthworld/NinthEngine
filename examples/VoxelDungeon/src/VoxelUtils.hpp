@@ -6,8 +6,11 @@ using namespace NinthEngine;
 
 enum VoxelMaterialType : unsigned {
 	VM_NONE = 0,
-	VM_STONE_FLOOR = 1,
-	VM_STONE_WALL = 2, // 3
+	VM_STONE_FLOOR,
+	VM_DIRT_FLOOR,
+	VM_STONE_WALL_Z = 8,
+	VM_STONE_WALL_X,
+	VM_STONE_PILLAR_SMALL,
 
 	VM_NULL = UINT_MAX
 };

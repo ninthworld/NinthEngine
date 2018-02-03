@@ -8,7 +8,13 @@
 
 using namespace NinthEngine;
 
-#define CHUNK_SIZE 64
+#define CHUNK_SIZE 32
+#define MAP_PIXEL_SIZE 4
+
+#define MODEL_STONE_FLOOR	4, 1, 4
+#define MODEL_DIRT_FLOOR	4, 1, 4
+#define MODEL_STONE_WALL	4, 16, 4
+#define MODEL_STONE_PILLAR_SMALL	4, 16, 4
 
 struct ChunkPos {
 	int x, y, z;
@@ -49,7 +55,9 @@ private:
 	// Textures
 	std::shared_ptr<Sampler> m_sampler;
 	std::shared_ptr<Texture> m_textureStoneFloor;
+	std::shared_ptr<Texture> m_textureDirtFloor;
 	std::shared_ptr<Texture> m_textureStoneWall;
+	std::shared_ptr<Texture> m_textureStonePillarSmall;
 	void initTextures();
 
 	// Shaders
@@ -57,9 +65,10 @@ private:
 	void initShaders();
 
 	// Models
-	std::shared_ptr<VoxelModel<32, 2, 32>> m_modelStoneFloor;
-	std::shared_ptr<VoxelModel<16, 64, 16>> m_modelStoneWall;
-	std::shared_ptr<VoxelModel<16, 64, 16>> m_modelStonePillar;
+	std::shared_ptr<VoxelModel<MODEL_STONE_FLOOR>> m_modelStoneFloor;
+	std::shared_ptr<VoxelModel<MODEL_DIRT_FLOOR>> m_modelDirtFloor;
+	std::shared_ptr<VoxelModel<MODEL_STONE_WALL>> m_modelStoneWall;
+	std::shared_ptr<VoxelModel<MODEL_STONE_PILLAR_SMALL>> m_modelStonePillarSmall;
 	void initModels();
 
 private:

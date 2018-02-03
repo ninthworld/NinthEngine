@@ -70,7 +70,7 @@ void FX::initRenderTargets(
 	const std::shared_ptr<GameWindow>& window) {
 
 	m_renderTargetMS = device->createRenderTarget()
-		//.withMultisampling(2)
+		.withMultisampling(2)
 		.withRenderTarget(window->getWidth(), window->getHeight())
 		.withRenderTarget(window->getWidth(), window->getHeight())
 		.withRenderTarget(window->getWidth(), window->getHeight(), FORMAT_DEPTH_24_STENCIL_8)

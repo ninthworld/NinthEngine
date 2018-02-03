@@ -8,22 +8,31 @@ layout(location=0) out vec4 ps_color;
 layout(location=1) out vec4 ps_normal;
 
 uniform sampler2D stoneFloor;
+uniform sampler2D dirtFloor;
 uniform sampler2D stoneWall;
+uniform sampler2D stonePillarSmall;
 
 void main() {
 	
-	vec3 color = vs_material.rgb;
+	vec3 color;
+	switch(int(vs_material.a)) {
+	// Stone Floor
+	case 1: color = texture(stoneFloor, vs_position.xz / 16.0).rgb; break;
+	
+	// Dirt Floor
+	case 2: color = texture(dirtFloor, vs_position.xz / 16.0).rgb; break;
 
-	if (vs_material.a == 1) {
-		color = texture(stoneFloor, vs_position.xz / 32.0).rgb;
-	}
-	else if (vs_material.a == 2) {
-		vec2 texCoord;
-		if (vs_normal.x > 0) texCoord = vs_position.xy / vec2(64, -64);
-		if (vs_normal.x < 0) texCoord = vs_position.xy / vec2(64, -64);
-		if (vs_normal.z > 0) texCoord = vs_position.zy / vec2(64, -64);
-		if (vs_normal.z < 0) texCoord = vs_position.zy / vec2(64, -64);
-		color = texture(stoneWall, texCoord).rgb;
+	// Stone Wall (Facing Z)
+	case 8: color = texture(stoneWall, vec2(vs_position.x, -vs_position.y + 1.0) / 16.0).rgb; break;
+
+	// Stone Wall (Facing X)
+	case 9: color = texture(stoneWall, vec2(vs_position.z, -vs_position.y + 1.0) / 16.0).rgb; break;
+	
+	// Stone Pillar Small
+	case 10: color = texture(stonePillarSmall, vec2(vs_position.x + vs_position.z, -vs_position.y + 1.0) / vec2(4.0, 16.0)).rgb; break;
+
+	// No Texture
+	default: color = vs_material.rgb; break;
 	}
 
 	ps_color = vec4(color, 1.0);
