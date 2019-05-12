@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\GL4">
+      <UniqueIdentifier>{ECEB684A-D84E-F8EE-81D4-30A56D16C471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine">
+      <UniqueIdentifier>{1CFEE83F-88B3-6135-11A8-5B0C7D5C5839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\App">
+      <UniqueIdentifier>{4C954DEA-B820-BBAE-C131-3EA32D3C17AF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\Event">
+      <UniqueIdentifier>{6DA453B4-D9BA-514A-2232-DD6B8E8722D2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\Graphics">
+      <UniqueIdentifier>{DC6502AD-C8F4-8B76-7113-A0715D819C1C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\Input">
+      <UniqueIdentifier>{1BD397B4-87E9-954A-D060-216C3CB666D2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\Log">
+      <UniqueIdentifier>{EDC34DEA-594F-BBAE-6260-3EA3CE6A17AF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\Window">
+      <UniqueIdentifier>{8393DE67-6F77-9FBD-D8D7-9910C4DA893F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Win32">
+      <UniqueIdentifier>{8C36D494-7804-C89A-6198-38C14D05A4FF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Graphics\GL4\GL4Context.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4Graphics.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4Utils.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine.h" />
+    <ClInclude Include="src\NinthEngine\App\App.h">
+      <Filter>NinthEngine\App</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Core.h">
+      <Filter>NinthEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Entry.h">
+      <Filter>NinthEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Event\Event.h">
+      <Filter>NinthEngine\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Event\KeyEvent.h">
+      <Filter>NinthEngine\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Event\MouseEvent.h">
+      <Filter>NinthEngine\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Event\WindowEvent.h">
+      <Filter>NinthEngine\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\Graphics.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Input\InputCodes.h">
+      <Filter>NinthEngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Log\Log.h">
+      <Filter>NinthEngine\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Window\Window.h">
+      <Filter>NinthEngine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Win32\Win32GL4Context.h">
+      <Filter>Platform\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Win32\Win32InputCodes.h">
+      <Filter>Platform\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Win32\Win32Window.h">
+      <Filter>Platform\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Buffer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\ConstantBuffer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\IndexBuffer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\Shader.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\VertexArray.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\VertexBuffer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4Shader.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4VertexArray.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4VertexBuffer.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4IndexBuffer.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4ConstantBuffer.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Texture.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Texture.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\RenderTarget.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4RenderTarget.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Sampler.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Sampler.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Rasterizer.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Rasterizer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Graphics\GL4\GL4Graphics.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NinthEngine\App\App.cpp">
+      <Filter>NinthEngine\App</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NinthEngine\Log\Log.cpp">
+      <Filter>NinthEngine\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Win32\Win32GL4Context.cpp">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Win32\Win32Window.cpp">
+      <Filter>Platform\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Shader.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4VertexArray.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4VertexBuffer.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4IndexBuffer.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4ConstantBuffer.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Texture.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4RenderTarget.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Sampler.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Rasterizer.cpp" />
+  </ItemGroup>
+</Project>

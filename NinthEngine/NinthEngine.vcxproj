@@ -1,0 +1,218 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1CFEE83F-88B3-6135-11A8-5B0C7D5C5839}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>NinthEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\Debug-windows-x86_64\NinthEngine\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\NinthEngine\</IntDir>
+    <TargetName>NinthEngine</TargetName>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Release-windows-x86_64\NinthEngine\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\NinthEngine\</IntDir>
+    <TargetName>NinthEngine</TargetName>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Dist-windows-x86_64\NinthEngine\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86_64\NinthEngine\</IntDir>
+    <TargetName>NinthEngine</TargetName>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_GRAPHICS_GL4;NE_BUILD_DLL;NE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;lib\spdlog\include;lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Debug-windows-x86_64\Test &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Debug-windows-x86_64\Test &gt; nul)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_GRAPHICS_GL4;NE_BUILD_DLL;NE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;lib\spdlog\include;lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Release-windows-x86_64\Test &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Release-windows-x86_64\Test &gt; nul)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_GRAPHICS_GL4;NE_BUILD_DLL;NE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;lib\spdlog\include;lib\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.lib</ImportLibrary>
+    </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Dist-windows-x86_64\Test &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Dist-windows-x86_64\Test &gt; nul)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Graphics\GL4\GL4ConstantBuffer.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Context.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Graphics.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4IndexBuffer.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Rasterizer.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4RenderTarget.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Sampler.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Shader.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Texture.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4VertexArray.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4VertexBuffer.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Utils.h" />
+    <ClInclude Include="src\NinthEngine.h" />
+    <ClInclude Include="src\NinthEngine\App\App.h" />
+    <ClInclude Include="src\NinthEngine\Core.h" />
+    <ClInclude Include="src\NinthEngine\Entry.h" />
+    <ClInclude Include="src\NinthEngine\Event\Event.h" />
+    <ClInclude Include="src\NinthEngine\Event\KeyEvent.h" />
+    <ClInclude Include="src\NinthEngine\Event\MouseEvent.h" />
+    <ClInclude Include="src\NinthEngine\Event\WindowEvent.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Graphics.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Buffer.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\ConstantBuffer.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\IndexBuffer.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Rasterizer.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\RenderTarget.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Sampler.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Shader.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Texture.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\VertexArray.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\VertexBuffer.h" />
+    <ClInclude Include="src\NinthEngine\Input\InputCodes.h" />
+    <ClInclude Include="src\NinthEngine\Log\Log.h" />
+    <ClInclude Include="src\NinthEngine\Window\Window.h" />
+    <ClInclude Include="src\Platform\Win32\Win32GL4Context.h" />
+    <ClInclude Include="src\Platform\Win32\Win32InputCodes.h" />
+    <ClInclude Include="src\Platform\Win32\Win32Window.h" />
+    <ClInclude Include="src\pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Graphics\GL4\GL4ConstantBuffer.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Graphics.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4IndexBuffer.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Rasterizer.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4RenderTarget.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Sampler.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Shader.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4Texture.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4VertexArray.cpp" />
+    <ClCompile Include="src\Graphics\GL4\GL4VertexBuffer.cpp" />
+    <ClCompile Include="src\NinthEngine\App\App.cpp" />
+    <ClCompile Include="src\NinthEngine\Log\Log.cpp" />
+    <ClCompile Include="src\Platform\Win32\Win32GL4Context.cpp" />
+    <ClCompile Include="src\Platform\Win32\Win32Window.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="lib\glew-2.1.0\GLEW.vcxproj">
+      <Project>{F44A857C-E081-860D-896E-6C107584020F}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
