@@ -158,9 +158,9 @@
     <ClInclude Include="src\Graphics\GL4\GL4Sampler.h" />
     <ClInclude Include="src\Graphics\GL4\GL4Shader.h" />
     <ClInclude Include="src\Graphics\GL4\GL4Texture.h" />
+    <ClInclude Include="src\Graphics\GL4\GL4Utils.h" />
     <ClInclude Include="src\Graphics\GL4\GL4VertexArray.h" />
     <ClInclude Include="src\Graphics\GL4\GL4VertexBuffer.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Utils.h" />
     <ClInclude Include="src\NinthEngine.h" />
     <ClInclude Include="src\NinthEngine\App\App.h" />
     <ClInclude Include="src\NinthEngine\Core.h" />
@@ -169,9 +169,9 @@
     <ClInclude Include="src\NinthEngine\Event\KeyEvent.h" />
     <ClInclude Include="src\NinthEngine\Event\MouseEvent.h" />
     <ClInclude Include="src\NinthEngine\Event\WindowEvent.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Graphics.h" />
     <ClInclude Include="src\NinthEngine\Graphics\Buffer.h" />
     <ClInclude Include="src\NinthEngine\Graphics\ConstantBuffer.h" />
+    <ClInclude Include="src\NinthEngine\Graphics\Graphics.h" />
     <ClInclude Include="src\NinthEngine\Graphics\IndexBuffer.h" />
     <ClInclude Include="src\NinthEngine\Graphics\Rasterizer.h" />
     <ClInclude Include="src\NinthEngine\Graphics\RenderTarget.h" />

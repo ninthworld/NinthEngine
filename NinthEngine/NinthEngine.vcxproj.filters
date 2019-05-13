@@ -36,13 +36,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Graphics\GL4\GL4ConstantBuffer.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\GL4\GL4Context.h">
       <Filter>Graphics\GL4</Filter>
     </ClInclude>
     <ClInclude Include="src\Graphics\GL4\GL4Graphics.h">
       <Filter>Graphics\GL4</Filter>
     </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4IndexBuffer.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4Rasterizer.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4RenderTarget.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4Sampler.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4Shader.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4Texture.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
     <ClInclude Include="src\Graphics\GL4\GL4Utils.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4VertexArray.h">
+      <Filter>Graphics\GL4</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Graphics\GL4\GL4VertexBuffer.h">
       <Filter>Graphics\GL4</Filter>
     </ClInclude>
     <ClInclude Include="src\NinthEngine.h" />
@@ -67,7 +94,37 @@
     <ClInclude Include="src\NinthEngine\Event\WindowEvent.h">
       <Filter>NinthEngine\Event</Filter>
     </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\Buffer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\ConstantBuffer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="src\NinthEngine\Graphics\Graphics.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\IndexBuffer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\Rasterizer.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\RenderTarget.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\Sampler.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\Shader.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\Texture.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\VertexArray.h">
+      <Filter>NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Graphics\VertexBuffer.h">
       <Filter>NinthEngine\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\NinthEngine\Input\InputCodes.h">
@@ -89,40 +146,36 @@
       <Filter>Platform\Win32</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Buffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\ConstantBuffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\IndexBuffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\Shader.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\VertexArray.h">
-      <Filter>NinthEngine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\VertexBuffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Shader.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4VertexArray.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4VertexBuffer.h">
-      <Filter>Graphics\GL4</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4IndexBuffer.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4ConstantBuffer.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Texture.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Texture.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\RenderTarget.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4RenderTarget.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Sampler.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Sampler.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Rasterizer.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Rasterizer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Graphics\GL4\GL4ConstantBuffer.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\GL4\GL4Graphics.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4IndexBuffer.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4Rasterizer.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4RenderTarget.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4Sampler.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4Shader.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4Texture.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4VertexArray.cpp">
+      <Filter>Graphics\GL4</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\GL4\GL4VertexBuffer.cpp">
       <Filter>Graphics\GL4</Filter>
     </ClCompile>
     <ClCompile Include="src\NinthEngine\App\App.cpp">
@@ -138,16 +191,5 @@
       <Filter>Platform\Win32</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Shader.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4VertexArray.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4VertexBuffer.cpp">
-      <Filter>Graphics\GL4</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4IndexBuffer.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4ConstantBuffer.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Texture.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4RenderTarget.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Sampler.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Rasterizer.cpp" />
   </ItemGroup>
 </Project>
