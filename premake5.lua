@@ -11,6 +11,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 includedir = {}
 includedir["glew"] = "NinthEngine/lib/glew-2.1.0/include"
+includedir["glm"] = "NinthEngine/lib/glm/glm"
+includedir["spdlog"] = "NinthEngine/lib/spdlog/include"
 
 include "NinthEngine/lib/glew-2.1.0"
 
@@ -32,8 +34,9 @@ project "NinthEngine"
 
 	includedirs {
 		"%{prj.name}/src",
-		"%{prj.name}/lib/spdlog/include",
-		"%{includedir.glew}"
+		"%{includedir.glew}",
+		"%{includedir.glm}",
+		"%{includedir.spdlog}"
 	}
 	
 	links {
@@ -48,7 +51,6 @@ project "NinthEngine"
 
 		defines {
 			"NE_PLATFORM_WIN32",
-			"NE_GRAPHICS_GL4",
 			"NE_BUILD_DLL"
 		}
 
@@ -82,8 +84,9 @@ project "Test"
 	}
 
 	includedirs {
-		"NinthEngine/lib/spdlog/include",
-		"NinthEngine/src"
+		"NinthEngine/src",
+		"%{includedir.glm}",
+		"%{includedir.spdlog}"		
 	}
 	
 	links {
@@ -96,8 +99,7 @@ project "Test"
 		systemversion "latest"
 
 		defines {
-			"NE_PLATFORM_WIN32",
-			"NE_GRAPHICS_GL4"
+			"NE_PLATFORM_WIN32"
 		}
 
 	filter "configurations:Debug"
