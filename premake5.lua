@@ -13,6 +13,7 @@ includedir = {}
 includedir["glew"] = "NinthEngine/lib/glew-2.1.0/include"
 includedir["glm"] = "NinthEngine/lib/glm/glm"
 includedir["spdlog"] = "NinthEngine/lib/spdlog/include"
+includedir["stb"] = "NinthEngine/lib/stb"
 
 include "NinthEngine/lib/glew-2.1.0"
 
@@ -36,7 +37,8 @@ project "NinthEngine"
 		"%{prj.name}/src",
 		"%{includedir.glew}",
 		"%{includedir.glm}",
-		"%{includedir.spdlog}"
+		"%{includedir.spdlog}",
+		"%{includedir.stb}"
 	}
 	
 	links {
@@ -86,7 +88,8 @@ project "Test"
 	includedirs {
 		"NinthEngine/src",
 		"%{includedir.glm}",
-		"%{includedir.spdlog}"		
+		"%{includedir.spdlog}",
+		"%{includedir.stb}"	
 	}
 	
 	links {
