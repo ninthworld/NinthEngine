@@ -25,6 +25,15 @@
     <Filter Include="NinthEngine\Log">
       <UniqueIdentifier>{EDC34DEA-594F-BBAE-6260-3EA3CE6A17AF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NinthEngine\Scene">
+      <UniqueIdentifier>{399046B5-A5A6-444B-EE1D-D06C5A7315D3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\Scene\Camera">
+      <UniqueIdentifier>{918A40B2-7DAF-8F32-A6FA-74C2927E8E50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NinthEngine\Scene\Light">
+      <UniqueIdentifier>{A02AE76A-0C62-2F02-156C-9325812256FB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="NinthEngine\Window">
       <UniqueIdentifier>{8393DE67-6F77-9FBD-D8D7-9910C4DA893F}</UniqueIdentifier>
     </Filter>
@@ -133,6 +142,21 @@
     <ClInclude Include="src\NinthEngine\Log\Log.h">
       <Filter>NinthEngine\Log</Filter>
     </ClInclude>
+    <ClInclude Include="src\NinthEngine\Scene\Camera\Camera.h">
+      <Filter>NinthEngine\Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Scene\Light\Light.h">
+      <Filter>NinthEngine\Scene\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Scene\Node.h">
+      <Filter>NinthEngine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Scene\Scene.h">
+      <Filter>NinthEngine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NinthEngine\Scene\SceneNode.h">
+      <Filter>NinthEngine\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="src\NinthEngine\Window\Window.h">
       <Filter>NinthEngine\Window</Filter>
     </ClInclude>
@@ -146,6 +170,7 @@
       <Filter>Platform\Win32</Filter>
     </ClInclude>
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Graphics\GL4\GL4ConstantBuffer.cpp">
@@ -191,5 +216,10 @@
       <Filter>Platform\Win32</Filter>
     </ClCompile>
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\NinthEngine\Scene\SceneNode.cpp">
+      <Filter>NinthEngine\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NinthEngine\Scene\Scene.cpp" />
+    <ClCompile Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.cpp" />
   </ItemGroup>
 </Project>

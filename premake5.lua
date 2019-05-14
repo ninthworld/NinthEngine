@@ -11,7 +11,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 includedir = {}
 includedir["glew"] = "NinthEngine/lib/glew-2.1.0/include"
-includedir["glm"] = "NinthEngine/lib/glm/glm"
+includedir["glm"] = "NinthEngine/lib/glm"
 includedir["spdlog"] = "NinthEngine/lib/spdlog/include"
 includedir["stb"] = "NinthEngine/lib/stb"
 

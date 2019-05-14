@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -102,7 +102,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -128,7 +128,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -182,6 +182,12 @@
     <ClInclude Include="src\NinthEngine\Graphics\VertexBuffer.h" />
     <ClInclude Include="src\NinthEngine\Input\InputCodes.h" />
     <ClInclude Include="src\NinthEngine\Log\Log.h" />
+    <ClInclude Include="src\NinthEngine\Scene\Camera\Camera.h" />
+    <ClInclude Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.h" />
+    <ClInclude Include="src\NinthEngine\Scene\Light\Light.h" />
+    <ClInclude Include="src\NinthEngine\Scene\Node.h" />
+    <ClInclude Include="src\NinthEngine\Scene\Scene.h" />
+    <ClInclude Include="src\NinthEngine\Scene\SceneNode.h" />
     <ClInclude Include="src\NinthEngine\Window\Window.h" />
     <ClInclude Include="src\Platform\Win32\Win32GL4Context.h" />
     <ClInclude Include="src\Platform\Win32\Win32InputCodes.h" />
@@ -201,6 +207,9 @@
     <ClCompile Include="src\Graphics\GL4\GL4VertexBuffer.cpp" />
     <ClCompile Include="src\NinthEngine\App\App.cpp" />
     <ClCompile Include="src\NinthEngine\Log\Log.cpp" />
+    <ClCompile Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\NinthEngine\Scene\Scene.cpp" />
+    <ClCompile Include="src\NinthEngine\Scene\SceneNode.cpp" />
     <ClCompile Include="src\Platform\Win32\Win32GL4Context.cpp" />
     <ClCompile Include="src\Platform\Win32\Win32Window.cpp" />
     <ClCompile Include="src\pch.cpp">
