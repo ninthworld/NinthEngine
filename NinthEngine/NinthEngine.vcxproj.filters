@@ -1,225 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Graphics">
-      <UniqueIdentifier>{1653CE33-0220-293F-2B39-17E717655ECD}</UniqueIdentifier>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Graphics\GL4">
-      <UniqueIdentifier>{ECEB684A-D84E-F8EE-81D4-30A56D16C471}</UniqueIdentifier>
+    <Filter Include="include\App">
+      <UniqueIdentifier>{3935C031-A5EA-3827-2EDF-32FE9A932F2B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine">
-      <UniqueIdentifier>{1CFEE83F-88B3-6135-11A8-5B0C7D5C5839}</UniqueIdentifier>
+    <Filter Include="include\Event">
+      <UniqueIdentifier>{9AF3EDA2-06B4-69D9-CFEE-B2563B6EAEB5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\App">
-      <UniqueIdentifier>{4C954DEA-B820-BBAE-C131-3EA32D3C17AF}</UniqueIdentifier>
+    <Filter Include="include\Graphics">
+      <UniqueIdentifier>{E901C778-D5FA-E5CA-FE2C-CB4FEA84C5D6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Event">
-      <UniqueIdentifier>{6DA453B4-D9BA-514A-2232-DD6B8E8722D2}</UniqueIdentifier>
+    <Filter Include="include\Input">
+      <UniqueIdentifier>{482232A3-B4E2-ADD9-7D1D-F756E99CF2B5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Graphics">
-      <UniqueIdentifier>{DC6502AD-C8F4-8B76-7113-A0715D819C1C}</UniqueIdentifier>
+    <Filter Include="include\Log">
+      <UniqueIdentifier>{DA63C031-4619-3927-CF0D-33FE3BC22F2B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Input">
-      <UniqueIdentifier>{1BD397B4-87E9-954A-D060-216C3CB666D2}</UniqueIdentifier>
+    <Filter Include="include\Model">
+      <UniqueIdentifier>{89DB7AA3-F59B-F6D9-BED6-3F572A563BB6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Log">
-      <UniqueIdentifier>{EDC34DEA-594F-BBAE-6260-3EA3CE6A17AF}</UniqueIdentifier>
+    <Filter Include="include\Resource">
+      <UniqueIdentifier>{C01BD8E0-AC14-F732-D546-DCB7C19ED63E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Scene">
-      <UniqueIdentifier>{399046B5-A5A6-444B-EE1D-D06C5A7315D3}</UniqueIdentifier>
+    <Filter Include="include\Scene">
+      <UniqueIdentifier>{66DFE0A3-D29F-5CDA-9BDA-A557075AA1B6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Scene\Camera">
-      <UniqueIdentifier>{918A40B2-7DAF-8F32-A6FA-74C2927E8E50}</UniqueIdentifier>
+    <Filter Include="include\Scene\Camera">
+      <UniqueIdentifier>{1E65DEC7-0AF4-6791-B312-7C8C9F807837}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Scene\Light">
-      <UniqueIdentifier>{A02AE76A-0C62-2F02-156C-9325812256FB}</UniqueIdentifier>
+    <Filter Include="include\Scene\Light">
+      <UniqueIdentifier>{8D67BD25-F9C8-9A33-8236-E1E5EE96D1F2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NinthEngine\Window">
-      <UniqueIdentifier>{8393DE67-6F77-9FBD-D8D7-9910C4DA893F}</UniqueIdentifier>
+    <Filter Include="include\Window">
+      <UniqueIdentifier>{50C8C229-3C96-B62F-252A-275611979294}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\Win32">
-      <UniqueIdentifier>{8C36D494-7804-C89A-6198-38C14D05A4FF}</UniqueIdentifier>
+    <Filter Include="src\App">
+      <UniqueIdentifier>{DD622FA9-4942-AE44-525A-391BBEB814A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Log">
+      <UniqueIdentifier>{7E912FA9-EA70-AE44-F388-391B5FE714A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Resource">
+      <UniqueIdentifier>{E46F59CC-D0D2-E870-7958-2127659AB4F3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scene">
+      <UniqueIdentifier>{0A06D2B3-7670-862A-BFAE-37D02B58647F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scene\Camera">
+      <UniqueIdentifier>{422B757E-2E24-94D0-5756-795543AE73DC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scene\Light">
+      <UniqueIdentifier>{31F9C11B-9D84-2FE0-A695-B2D412A08BE0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Graphics\GL4\GL4ConstantBuffer.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\App\App.h">
+      <Filter>include\App</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Context.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Core.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Graphics.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Entry.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4IndexBuffer.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Event\Event.h">
+      <Filter>include\Event</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Rasterizer.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Event\KeyEvent.h">
+      <Filter>include\Event</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4RenderTarget.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Event\MouseEvent.h">
+      <Filter>include\Event</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Sampler.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Event\WindowEvent.h">
+      <Filter>include\Event</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Shader.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Graphics\Buffer.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Texture.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Graphics\ConstantBuffer.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4Utils.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Graphics\Graphics.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4VertexArray.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Graphics\IndexBuffer.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\Graphics\GL4\GL4VertexBuffer.h">
-      <Filter>Graphics\GL4</Filter>
+    <ClInclude Include="include\Graphics\Rasterizer.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine.h" />
-    <ClInclude Include="src\NinthEngine\App\App.h">
-      <Filter>NinthEngine\App</Filter>
+    <ClInclude Include="include\Graphics\RenderTarget.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Core.h">
-      <Filter>NinthEngine</Filter>
+    <ClInclude Include="include\Graphics\Sampler.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Entry.h">
-      <Filter>NinthEngine</Filter>
+    <ClInclude Include="include\Graphics\Shader.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Event\Event.h">
-      <Filter>NinthEngine\Event</Filter>
+    <ClInclude Include="include\Graphics\Texture.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Event\KeyEvent.h">
-      <Filter>NinthEngine\Event</Filter>
+    <ClInclude Include="include\Graphics\VertexArray.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Event\MouseEvent.h">
-      <Filter>NinthEngine\Event</Filter>
+    <ClInclude Include="include\Graphics\VertexBuffer.h">
+      <Filter>include\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Event\WindowEvent.h">
-      <Filter>NinthEngine\Event</Filter>
+    <ClInclude Include="include\Input\InputCodes.h">
+      <Filter>include\Input</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\Buffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Log\Log.h">
+      <Filter>include\Log</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\ConstantBuffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Model\Mesh.h">
+      <Filter>include\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\Graphics.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Model\Model.h">
+      <Filter>include\Model</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\IndexBuffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\NinthEngine.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\Rasterizer.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Resource\ResourceLoader.h">
+      <Filter>include\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\RenderTarget.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Scene\Camera\Camera.h">
+      <Filter>include\Scene\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\Sampler.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Scene\Camera\PerspectiveCamera.h">
+      <Filter>include\Scene\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\Shader.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Scene\Light\AmbientLight.h">
+      <Filter>include\Scene\Light</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\Texture.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Scene\Light\DirectionalLight.h">
+      <Filter>include\Scene\Light</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\VertexArray.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Scene\Light\Light.h">
+      <Filter>include\Scene\Light</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Graphics\VertexBuffer.h">
-      <Filter>NinthEngine\Graphics</Filter>
+    <ClInclude Include="include\Scene\Light\PointLight.h">
+      <Filter>include\Scene\Light</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Input\InputCodes.h">
-      <Filter>NinthEngine\Input</Filter>
+    <ClInclude Include="include\Scene\Node.h">
+      <Filter>include\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Log\Log.h">
-      <Filter>NinthEngine\Log</Filter>
+    <ClInclude Include="include\Scene\Scene.h">
+      <Filter>include\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Scene\Camera\Camera.h">
-      <Filter>NinthEngine\Scene\Camera</Filter>
+    <ClInclude Include="include\Window\Window.h">
+      <Filter>include\Window</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Scene\Light\Light.h">
-      <Filter>NinthEngine\Scene\Light</Filter>
+    <ClInclude Include="include\pch.h">
+      <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="src\NinthEngine\Scene\Node.h">
-      <Filter>NinthEngine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NinthEngine\Scene\Scene.h">
-      <Filter>NinthEngine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NinthEngine\Scene\SceneNode.h">
-      <Filter>NinthEngine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NinthEngine\Window\Window.h">
-      <Filter>NinthEngine\Window</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Win32\Win32GL4Context.h">
-      <Filter>Platform\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Win32\Win32InputCodes.h">
-      <Filter>Platform\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Win32\Win32Window.h">
-      <Filter>Platform\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Graphics\GL4\GL4ConstantBuffer.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\App\App.cpp">
+      <Filter>src\App</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4Graphics.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\Log\Log.cpp">
+      <Filter>src\Log</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4IndexBuffer.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\Resource\ResourceLoader.cpp">
+      <Filter>src\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4Rasterizer.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\Scene\Camera\PerspectiveCamera.cpp">
+      <Filter>src\Scene\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4RenderTarget.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\Scene\Light\AmbientLight.cpp">
+      <Filter>src\Scene\Light</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4Sampler.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\Scene\Light\DirectionalLight.cpp">
+      <Filter>src\Scene\Light</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4Shader.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\Scene\Light\PointLight.cpp">
+      <Filter>src\Scene\Light</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4Texture.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\Scene\Scene.cpp">
+      <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4VertexArray.cpp">
-      <Filter>Graphics\GL4</Filter>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Graphics\GL4\GL4VertexBuffer.cpp">
-      <Filter>Graphics\GL4</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NinthEngine\App\App.cpp">
-      <Filter>NinthEngine\App</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NinthEngine\Log\Log.cpp">
-      <Filter>NinthEngine\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Win32\Win32GL4Context.cpp">
-      <Filter>Platform\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Win32\Win32Window.cpp">
-      <Filter>Platform\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pch.cpp" />
-    <ClCompile Include="src\NinthEngine\Scene\SceneNode.cpp">
-      <Filter>NinthEngine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NinthEngine\Scene\Scene.cpp" />
-    <ClCompile Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.cpp" />
   </ItemGroup>
 </Project>

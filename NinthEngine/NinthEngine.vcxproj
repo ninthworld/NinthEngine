@@ -77,10 +77,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\dependencies\glm;..\dependencies\spdlog\include;..\dependencies\stb;..\dependencies\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -89,20 +89,16 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.lib</ImportLibrary>
     </Link>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Debug-windows-x86_64\Test &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Debug-windows-x86_64\Test &gt; nul)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\dependencies\glm;..\dependencies\spdlog\include;..\dependencies\stb;..\dependencies\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,20 +111,16 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.lib</ImportLibrary>
     </Link>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Release-windows-x86_64\Test &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Release-windows-x86_64\Test &gt; nul)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;lib\glew-2.1.0\include;lib\glm;lib\spdlog\include;lib\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\dependencies\glm;..\dependencies\spdlog\include;..\dependencies\stb;..\dependencies\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -141,85 +133,57 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.lib</ImportLibrary>
     </Link>
-    <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.dll\ (xcopy /Q /E /Y /I ..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Dist-windows-x86_64\Test &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Dist-windows-x86_64\NinthEngine\NinthEngine.dll ..\bin\Dist-windows-x86_64\Test &gt; nul)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Graphics\GL4\GL4ConstantBuffer.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Context.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Graphics.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4IndexBuffer.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Rasterizer.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4RenderTarget.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Sampler.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Shader.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Texture.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4Utils.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4VertexArray.h" />
-    <ClInclude Include="src\Graphics\GL4\GL4VertexBuffer.h" />
-    <ClInclude Include="src\NinthEngine.h" />
-    <ClInclude Include="src\NinthEngine\App\App.h" />
-    <ClInclude Include="src\NinthEngine\Core.h" />
-    <ClInclude Include="src\NinthEngine\Entry.h" />
-    <ClInclude Include="src\NinthEngine\Event\Event.h" />
-    <ClInclude Include="src\NinthEngine\Event\KeyEvent.h" />
-    <ClInclude Include="src\NinthEngine\Event\MouseEvent.h" />
-    <ClInclude Include="src\NinthEngine\Event\WindowEvent.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Buffer.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\ConstantBuffer.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Graphics.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\IndexBuffer.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Rasterizer.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\RenderTarget.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Sampler.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Shader.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\Texture.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\VertexArray.h" />
-    <ClInclude Include="src\NinthEngine\Graphics\VertexBuffer.h" />
-    <ClInclude Include="src\NinthEngine\Input\InputCodes.h" />
-    <ClInclude Include="src\NinthEngine\Log\Log.h" />
-    <ClInclude Include="src\NinthEngine\Scene\Camera\Camera.h" />
-    <ClInclude Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.h" />
-    <ClInclude Include="src\NinthEngine\Scene\Light\Light.h" />
-    <ClInclude Include="src\NinthEngine\Scene\Node.h" />
-    <ClInclude Include="src\NinthEngine\Scene\Scene.h" />
-    <ClInclude Include="src\NinthEngine\Scene\SceneNode.h" />
-    <ClInclude Include="src\NinthEngine\Window\Window.h" />
-    <ClInclude Include="src\Platform\Win32\Win32GL4Context.h" />
-    <ClInclude Include="src\Platform\Win32\Win32InputCodes.h" />
-    <ClInclude Include="src\Platform\Win32\Win32Window.h" />
-    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="include\App\App.h" />
+    <ClInclude Include="include\Core.h" />
+    <ClInclude Include="include\Entry.h" />
+    <ClInclude Include="include\Event\Event.h" />
+    <ClInclude Include="include\Event\KeyEvent.h" />
+    <ClInclude Include="include\Event\MouseEvent.h" />
+    <ClInclude Include="include\Event\WindowEvent.h" />
+    <ClInclude Include="include\Graphics\Buffer.h" />
+    <ClInclude Include="include\Graphics\ConstantBuffer.h" />
+    <ClInclude Include="include\Graphics\Graphics.h" />
+    <ClInclude Include="include\Graphics\IndexBuffer.h" />
+    <ClInclude Include="include\Graphics\Rasterizer.h" />
+    <ClInclude Include="include\Graphics\RenderTarget.h" />
+    <ClInclude Include="include\Graphics\Sampler.h" />
+    <ClInclude Include="include\Graphics\Shader.h" />
+    <ClInclude Include="include\Graphics\Texture.h" />
+    <ClInclude Include="include\Graphics\VertexArray.h" />
+    <ClInclude Include="include\Graphics\VertexBuffer.h" />
+    <ClInclude Include="include\Input\InputCodes.h" />
+    <ClInclude Include="include\Log\Log.h" />
+    <ClInclude Include="include\Model\Mesh.h" />
+    <ClInclude Include="include\Model\Model.h" />
+    <ClInclude Include="include\NinthEngine.h" />
+    <ClInclude Include="include\Resource\ResourceLoader.h" />
+    <ClInclude Include="include\Scene\Camera\Camera.h" />
+    <ClInclude Include="include\Scene\Camera\PerspectiveCamera.h" />
+    <ClInclude Include="include\Scene\Light\AmbientLight.h" />
+    <ClInclude Include="include\Scene\Light\DirectionalLight.h" />
+    <ClInclude Include="include\Scene\Light\Light.h" />
+    <ClInclude Include="include\Scene\Light\PointLight.h" />
+    <ClInclude Include="include\Scene\Node.h" />
+    <ClInclude Include="include\Scene\Scene.h" />
+    <ClInclude Include="include\Window\Window.h" />
+    <ClInclude Include="include\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Graphics\GL4\GL4ConstantBuffer.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Graphics.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4IndexBuffer.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Rasterizer.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4RenderTarget.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Sampler.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Shader.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4Texture.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4VertexArray.cpp" />
-    <ClCompile Include="src\Graphics\GL4\GL4VertexBuffer.cpp" />
-    <ClCompile Include="src\NinthEngine\App\App.cpp" />
-    <ClCompile Include="src\NinthEngine\Log\Log.cpp" />
-    <ClCompile Include="src\NinthEngine\Scene\Camera\PerspectiveCamera.cpp" />
-    <ClCompile Include="src\NinthEngine\Scene\Scene.cpp" />
-    <ClCompile Include="src\NinthEngine\Scene\SceneNode.cpp" />
-    <ClCompile Include="src\Platform\Win32\Win32GL4Context.cpp" />
-    <ClCompile Include="src\Platform\Win32\Win32Window.cpp" />
+    <ClCompile Include="src\App\App.cpp" />
+    <ClCompile Include="src\Log\Log.cpp" />
+    <ClCompile Include="src\Resource\ResourceLoader.cpp" />
+    <ClCompile Include="src\Scene\Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\Scene\Light\AmbientLight.cpp" />
+    <ClCompile Include="src\Scene\Light\DirectionalLight.cpp" />
+    <ClCompile Include="src\Scene\Light\PointLight.cpp" />
+    <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="lib\glew-2.1.0\GLEW.vcxproj">
-      <Project>{F44A857C-E081-860D-896E-6C107584020F}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

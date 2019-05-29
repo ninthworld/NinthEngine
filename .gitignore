@@ -3,4 +3,8 @@ bin/
 bin-int/
 premake/
 
+*.vcxproj
+*.filters
 *.user
+*.sln
+*.bat
