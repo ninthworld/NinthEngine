@@ -21,7 +21,6 @@ public:
 
 		// Model* model = getResourceManager()->loadModel("resources/cube.obj");
 
-
 		/*
 		Camera* camera = getScene()->createCamera("mainCamera");
 		camera->setType(CameraType::Perspective);

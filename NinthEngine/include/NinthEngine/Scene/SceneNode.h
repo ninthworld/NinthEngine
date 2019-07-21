@@ -18,7 +18,7 @@ class DirectionalLight;
 struct DirectionalLightProps;
 
 class NE_API SceneNode : public Node {
-	friend SceneManager;
+	friend class SceneManager;
 protected:
 	SceneNode(Node* parent) : Node(parent) {}
 public:

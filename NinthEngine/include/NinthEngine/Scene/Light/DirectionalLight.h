@@ -11,7 +11,7 @@ struct NE_API DirectionalLightProps : LightProps {
 };
 
 class NE_API DirectionalLight : public Light {
-	friend SceneNode;
+	friend class SceneNode;
 protected:
 	DirectionalLight(Node* parent, const DirectionalLightProps& props);
 public:

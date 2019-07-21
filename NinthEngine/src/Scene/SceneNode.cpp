@@ -19,8 +19,8 @@ PerspectiveCamera* SceneNode::createPerspectiveCamera(const PerspectiveCameraPro
 	PerspectiveCamera* child = new PerspectiveCamera(this, props);
 	addChild(child);
 	child->m_sceneManager = m_sceneManager;
-	m_sceneManager->m_allNodes.push_back(child);
-	m_sceneManager->m_cameras.push_back(child);
+	m_sceneManager->getNodes().push_back(child);
+	m_sceneManager->getCameras().push_back(child);
 	return child;
 }
 
@@ -28,8 +28,8 @@ Light* SceneNode::createAmbientLight(const LightProps& props) {
 	Light* child = new Light(this, props);
 	addChild(child);
 	child->m_sceneManager = m_sceneManager;
-	m_sceneManager->m_allNodes.push_back(child);
-	m_sceneManager->m_lights.push_back(child);
+	m_sceneManager->getNodes().push_back(child);
+	m_sceneManager->getLights().push_back(child);
 	return child;
 }
 
@@ -37,8 +37,8 @@ PointLight* SceneNode::createPointLight(const PointLightProps& props) {
 	PointLight* child = new PointLight(this, props);
 	addChild(child);
 	child->m_sceneManager = m_sceneManager;
-	m_sceneManager->m_allNodes.push_back(child);
-	m_sceneManager->m_lights.push_back(child);
+	m_sceneManager->getNodes().push_back(child);
+	m_sceneManager->getLights().push_back(child);
 	return child;
 }
 
@@ -46,8 +46,8 @@ DirectionalLight* SceneNode::createDirectionalLight(const DirectionalLightProps&
 	DirectionalLight* child = new DirectionalLight(this, props);
 	addChild(child);
 	child->m_sceneManager = m_sceneManager;
-	m_sceneManager->m_allNodes.push_back(child);
-	m_sceneManager->m_lights.push_back(child);
+	m_sceneManager->getNodes().push_back(child);
+	m_sceneManager->getLights().push_back(child);
 	return child;
 }
 

@@ -24,7 +24,7 @@ struct NE_API LightProps {
 };
 
 class NE_API Light : public SceneNode {
-	friend SceneNode;
+	friend class SceneNode;
 protected:
 	Light(Node* parent, const LightProps& props);
 public:

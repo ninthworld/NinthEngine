@@ -11,7 +11,7 @@ class Camera;
 class Light;
 
 class NE_API SceneManager {
-	friend SceneNode;
+	friend class SceneNode;
 public:
 	SceneManager();
 	~SceneManager();
@@ -27,6 +27,11 @@ public:
 	inline const unsigned int getNumLights() const { return m_lights.size(); }
 	
 protected:
+	std::vector<Camera*>& getCameras() { return m_cameras; }
+	std::vector<Light*>& getLights() { return m_lights; }
+	std::vector<Node*>& getNodes() { return m_allNodes; }
+
+private:
 	std::vector<Camera*> m_cameras;
 	std::vector<Light*> m_lights;
 	std::vector<Node*> m_allNodes;

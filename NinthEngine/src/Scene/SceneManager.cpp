@@ -8,6 +8,7 @@ namespace NinthEngine {
 
 SceneManager::SceneManager() {
 	m_root = new SceneNode(nullptr);
+	m_root->m_sceneManager = this;
 	m_allNodes.push_back(m_root);
 }
 

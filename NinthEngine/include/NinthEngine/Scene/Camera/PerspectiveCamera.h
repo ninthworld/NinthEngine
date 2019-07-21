@@ -17,7 +17,7 @@ struct NE_API PerspectiveCameraProps {
 };
 
 class NE_API PerspectiveCamera : public Camera {
-	friend SceneNode;
+	friend class SceneNode;
 protected:
 	PerspectiveCamera(Node* parent, const PerspectiveCameraProps& props);
 public:
