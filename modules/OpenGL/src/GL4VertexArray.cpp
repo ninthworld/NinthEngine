@@ -1,46 +1,51 @@
-#include "pch.h"
-#include "GL4VertexArray.h"
-#include "GL4Utils.h"
+#include "NinthEngine/GLPCH.h"
+#include "NinthEngine/GLVertexArray.h"
+#include "NinthEngine/GLUtils.h"
 
 namespace NinthEngine {
 
-GL4VertexArray::GL4VertexArray(
-	std::function<void(GL4VertexArray*)> pushVertexArray,
-	std::function<GL4VertexArray*(void)> popVertexArray)
-	: m_pushVertexArray(pushVertexArray), m_popVertexArray(popVertexArray)
+GLVertexArray::GLVertexArray(GLStateManager<GLVertexArray>* stateManager)
+	: m_stateManager(stateManager)
 	, m_attributeCount(0) {
 	glGenVertexArrays(1, &m_arrayId);
 }
 
-GL4VertexArray::~GL4VertexArray() {
+GLVertexArray::~GLVertexArray() {
+	destroy();
+}
+
+void GLVertexArray::destroy() {
 	if (m_arrayId) {
 		glDeleteVertexArrays(1, &m_arrayId);
+		m_arrayId = NULL;
 	}
 }
 
-void GL4VertexArray::bind() {
-	m_pushVertexArray(this);
+void GLVertexArray::bind() {
+	m_stateManager->push(this);
 	glBindVertexArray(m_arrayId);
 	for (unsigned int i = 0; i < m_attributeCount; ++i) {
 		glEnableVertexAttribArray(i);
 	}
 }
 
-void GL4VertexArray::unbind() {
+void GLVertexArray::unbind() {
 	for (unsigned int i = 0; i < m_attributeCount; ++i) {
 		glDisableVertexAttribArray(i);
 	}
-
-	GLuint nativeId = 0;
-	GL4VertexArray* vertexArray = m_popVertexArray();
-	if (vertexArray != nullptr) nativeId = vertexArray->getNativeId();
-	glBindVertexArray(nativeId);
+	m_stateManager->pop();
+	if (m_stateManager->peak() == nullptr) {
+		glBindVertexArray(0);
+	}
+	else {
+		m_stateManager->peak()->bind();
+	}
 }
 
-void GL4VertexArray::addVertexBuffer(VertexBuffer* buffer) {
-	auto glBuffer = (GL4VertexBuffer*)buffer;
-
+void GLVertexArray::addVertexBuffer(VertexBuffer* buffer) {
 	bind();
+
+	auto glBuffer = (GLVertexBuffer*)buffer;
 	glBindBuffer(GL_ARRAY_BUFFER, glBuffer->getNativeId());
 
 	GLuint unitFlag = 0;
@@ -61,10 +66,10 @@ void GL4VertexArray::addVertexBuffer(VertexBuffer* buffer) {
 		}
 
 		glVertexAttribPointer(
-			i + m_attributeCount, unitCount, unitFlag, 
-			GL_FALSE, glBuffer->getLayout().getByteSize(), 
+			i + m_attributeCount, unitCount, unitFlag,
+			GL_FALSE, glBuffer->getLayout().getByteSize(),
 			reinterpret_cast<void*>(totalBytes));
-		NE_GL4_CHECK_ERROR("glVertexAttribPointer");
+		NE_GL_CHECK_ERROR("glVertexAttribPointer");
 
 		switch (unitFlag) {
 		case GL_INT: totalBytes += unitCount * sizeof(int); break;
@@ -76,9 +81,9 @@ void GL4VertexArray::addVertexBuffer(VertexBuffer* buffer) {
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	unbind();
-
 	m_buffers.push_back(glBuffer);
+
+	unbind();
 }
 
 }

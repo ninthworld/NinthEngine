@@ -11,6 +11,8 @@ project "SimpleApp"
 
 	includedirs {
 		"../../NinthEngine/include",
+		"../../modules/OpenGL/include",
+		"../../%{includedir.glew}",
 		"../../%{includedir.glm}",
 		"../../%{includedir.spdlog}",
 		"../../%{includedir.stb}",
@@ -18,7 +20,10 @@ project "SimpleApp"
 	}
 	
 	links {
-		"NinthEngine"
+		"NinthEngine",
+		"OpenGL",
+		"glew",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"

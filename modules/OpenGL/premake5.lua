@@ -5,7 +5,7 @@ project "OpenGL"
 	targetdir ("../../bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("../../bin-int/" .. outputdir .. "/%{prj.name}")
 	
-	pchheader "include/GLPCH.h"
+	pchheader "NinthEngine/GLPCH.h"
 	pchsource "src/GLPCH.cpp"
 	
 	files {
@@ -22,6 +22,7 @@ project "OpenGL"
 	}
 	
 	links {
+		"NinthEngine",
 		"glew",
 		"opengl32.lib"
 	}

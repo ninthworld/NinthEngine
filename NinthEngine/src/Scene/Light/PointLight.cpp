@@ -1,22 +1,21 @@
-#include "pch.h"
-#include "PointLight.h"
+#include "NinthEngine/NEPCH.h"
+#include "NinthEngine/Scene/Light/PointLight.h"
 
 namespace NinthEngine {
 
-PointLight* PointLight::create(Node* parent) {
-	auto node = new PointLight(parent);
-	if (parent != nullptr) parent->addChild(node);
-	return node;
-}
-
-PointLight::PointLight(Node* parent) : Light(parent) {
-	m_data.type = static_cast<float>((int)LightType::Point);
-}
+PointLight::PointLight(Node* parent, const PointLightProps& props) 
+	: Light(parent, props), m_range(props.range), m_attenuation(props.attenuation) {}
 
 PointLight::~PointLight() {}
 
-void PointLight::updateLight() {
-	m_data.position = glm::vec4(getWorldPosition(), 0.0f);
+void PointLight::setRange(const float range) {
+	m_range = range;
+	onLocalModified();
+}
+
+void PointLight::setAttenuation(LightAttenuation attenuation) {
+	m_attenuation = attenuation;
+	onLocalModified();
 }
 
 }

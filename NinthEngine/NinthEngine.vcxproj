@@ -19,7 +19,7 @@
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>NinthEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -77,7 +77,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>NinthEngine/NEPCH.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>include;..\dependencies\glm;..\dependencies\spdlog\include;..\dependencies\stb;..\dependencies\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -95,7 +95,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>NinthEngine/NEPCH.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>include;..\dependencies\glm;..\dependencies\spdlog\include;..\dependencies\stb;..\dependencies\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -117,7 +117,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>include/pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>NinthEngine/NEPCH.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NE_PLATFORM_WIN32;NE_BUILD_DLL;NE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>include;..\dependencies\glm;..\dependencies\spdlog\include;..\dependencies\stb;..\dependencies\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -137,53 +137,61 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\App\App.h" />
-    <ClInclude Include="include\Core.h" />
-    <ClInclude Include="include\Entry.h" />
-    <ClInclude Include="include\Event\Event.h" />
-    <ClInclude Include="include\Event\KeyEvent.h" />
-    <ClInclude Include="include\Event\MouseEvent.h" />
-    <ClInclude Include="include\Event\WindowEvent.h" />
-    <ClInclude Include="include\Graphics\Buffer.h" />
-    <ClInclude Include="include\Graphics\ConstantBuffer.h" />
-    <ClInclude Include="include\Graphics\Graphics.h" />
-    <ClInclude Include="include\Graphics\IndexBuffer.h" />
-    <ClInclude Include="include\Graphics\Rasterizer.h" />
-    <ClInclude Include="include\Graphics\RenderTarget.h" />
-    <ClInclude Include="include\Graphics\Sampler.h" />
-    <ClInclude Include="include\Graphics\Shader.h" />
-    <ClInclude Include="include\Graphics\Texture.h" />
-    <ClInclude Include="include\Graphics\VertexArray.h" />
-    <ClInclude Include="include\Graphics\VertexBuffer.h" />
-    <ClInclude Include="include\Input\InputCodes.h" />
-    <ClInclude Include="include\Log\Log.h" />
-    <ClInclude Include="include\Model\Mesh.h" />
-    <ClInclude Include="include\Model\Model.h" />
     <ClInclude Include="include\NinthEngine.h" />
-    <ClInclude Include="include\Resource\ResourceLoader.h" />
-    <ClInclude Include="include\Scene\Camera\Camera.h" />
-    <ClInclude Include="include\Scene\Camera\PerspectiveCamera.h" />
-    <ClInclude Include="include\Scene\Light\AmbientLight.h" />
-    <ClInclude Include="include\Scene\Light\DirectionalLight.h" />
-    <ClInclude Include="include\Scene\Light\Light.h" />
-    <ClInclude Include="include\Scene\Light\PointLight.h" />
-    <ClInclude Include="include\Scene\Node.h" />
-    <ClInclude Include="include\Scene\Scene.h" />
-    <ClInclude Include="include\Window\Window.h" />
-    <ClInclude Include="include\pch.h" />
+    <ClInclude Include="include\NinthEngine\Application.h" />
+    <ClInclude Include="include\NinthEngine\Core.h" />
+    <ClInclude Include="include\NinthEngine\Entry.h" />
+    <ClInclude Include="include\NinthEngine\Event\Event.h" />
+    <ClInclude Include="include\NinthEngine\Event\KeyboardEvent.h" />
+    <ClInclude Include="include\NinthEngine\Event\MouseEvent.h" />
+    <ClInclude Include="include\NinthEngine\Event\WindowEvent.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\Buffer.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\ConstantBuffer.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\Graphics.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\IndexBuffer.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\Rasterizer.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\Sampler.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\Shader.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\Surface.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\Texture.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\VertexArray.h" />
+    <ClInclude Include="include\NinthEngine\Graphics\VertexBuffer.h" />
+    <ClInclude Include="include\NinthEngine\Input.h" />
+    <ClInclude Include="include\NinthEngine\Listener\InputListener.h" />
+    <ClInclude Include="include\NinthEngine\Listener\WindowListener.h" />
+    <ClInclude Include="include\NinthEngine\Log.h" />
+    <ClInclude Include="include\NinthEngine\Model\Mesh.h" />
+    <ClInclude Include="include\NinthEngine\Model\Model.h" />
+    <ClInclude Include="include\NinthEngine\NEPCH.h" />
+    <ClInclude Include="include\NinthEngine\Platform\Win32\Win32Input.h" />
+    <ClInclude Include="include\NinthEngine\Platform\Win32\Win32Window.h" />
+    <ClInclude Include="include\NinthEngine\Resource\ResourceManager.h" />
+    <ClInclude Include="include\NinthEngine\Scene\Camera\Camera.h" />
+    <ClInclude Include="include\NinthEngine\Scene\Camera\PerspectiveCamera.h" />
+    <ClInclude Include="include\NinthEngine\Scene\Light\DirectionalLight.h" />
+    <ClInclude Include="include\NinthEngine\Scene\Light\Light.h" />
+    <ClInclude Include="include\NinthEngine\Scene\Light\PointLight.h" />
+    <ClInclude Include="include\NinthEngine\Scene\Node.h" />
+    <ClInclude Include="include\NinthEngine\Scene\SceneManager.h" />
+    <ClInclude Include="include\NinthEngine\Scene\SceneNode.h" />
+    <ClInclude Include="include\NinthEngine\Window\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\App\App.cpp" />
-    <ClCompile Include="src\Log\Log.cpp" />
-    <ClCompile Include="src\Resource\ResourceLoader.cpp" />
-    <ClCompile Include="src\Scene\Camera\PerspectiveCamera.cpp" />
-    <ClCompile Include="src\Scene\Light\AmbientLight.cpp" />
-    <ClCompile Include="src\Scene\Light\DirectionalLight.cpp" />
-    <ClCompile Include="src\Scene\Light\PointLight.cpp" />
-    <ClCompile Include="src\Scene\Scene.cpp" />
-    <ClCompile Include="src\pch.cpp">
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Log.cpp" />
+    <ClCompile Include="src\NEPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\Platform\Win32\Win32Window.cpp" />
+    <ClCompile Include="src\Resource\ResourceManager.cpp" />
+    <ClCompile Include="src\Scene\Camera\Camera.cpp" />
+    <ClCompile Include="src\Scene\Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\Scene\Light\DirectionalLight.cpp" />
+    <ClCompile Include="src\Scene\Light\Light.cpp" />
+    <ClCompile Include="src\Scene\Light\PointLight.cpp" />
+    <ClCompile Include="src\Scene\Node.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp" />
+    <ClCompile Include="src\Scene\SceneNode.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

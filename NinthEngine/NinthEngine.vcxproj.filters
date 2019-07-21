@@ -4,47 +4,50 @@
     <Filter Include="include">
       <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\App">
-      <UniqueIdentifier>{3935C031-A5EA-3827-2EDF-32FE9A932F2B}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine">
+      <UniqueIdentifier>{0FA0BE61-7B01-9C6F-046F-E22170CFD22E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Event">
-      <UniqueIdentifier>{9AF3EDA2-06B4-69D9-CFEE-B2563B6EAEB5}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Event">
+      <UniqueIdentifier>{A0B0A593-0C73-D91D-5523-68AAC124B2FB}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Graphics">
-      <UniqueIdentifier>{E901C778-D5FA-E5CA-FE2C-CB4FEA84C5D6}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Graphics">
+      <UniqueIdentifier>{2FE9C429-1BA4-B4D5-C45B-2D20B0F5FE65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Input">
-      <UniqueIdentifier>{482232A3-B4E2-ADD9-7D1D-F756E99CF2B5}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Listener">
+      <UniqueIdentifier>{849C853C-7057-75E8-190F-EE3205A9BF78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Log">
-      <UniqueIdentifier>{DA63C031-4619-3927-CF0D-33FE3BC22F2B}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Model">
+      <UniqueIdentifier>{8F983294-FB5A-661E-440B-F5AAB00C3FFC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Model">
-      <UniqueIdentifier>{89DB7AA3-F59B-F6D9-BED6-3F572A563BB6}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Platform">
+      <UniqueIdentifier>{435D7FAA-2F18-6F56-D8CF-E7A0C469B9E6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Resource">
-      <UniqueIdentifier>{C01BD8E0-AC14-F732-D546-DCB7C19ED63E}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Platform\Win32">
+      <UniqueIdentifier>{653B53CF-5177-5639-BA89-6E30A6E4FE53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Scene">
-      <UniqueIdentifier>{66DFE0A3-D29F-5CDA-9BDA-A557075AA1B6}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Resource">
+      <UniqueIdentifier>{0603D691-F2BD-C53D-9B75-3E88870F10CE}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Scene\Camera">
-      <UniqueIdentifier>{1E65DEC7-0AF4-6791-B312-7C8C9F807837}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Scene">
+      <UniqueIdentifier>{6C9C9894-D85E-CC1E-210F-5BAB8D10A5FC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Scene\Light">
-      <UniqueIdentifier>{8D67BD25-F9C8-9A33-8236-E1E5EE96D1F2}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Scene\Camera">
+      <UniqueIdentifier>{647F6A08-50D0-554A-7934-440C65E4E8B3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Window">
-      <UniqueIdentifier>{50C8C229-3C96-B62F-252A-275611979294}</UniqueIdentifier>
+    <Filter Include="include\NinthEngine\Scene\Light">
+      <UniqueIdentifier>{13516C10-7F34-7B50-8837-A98CF49941A1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\NinthEngine\Window">
+      <UniqueIdentifier>{16267231-0236-1E02-6BEF-8220571E0D9B}</UniqueIdentifier>
     </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\App">
-      <UniqueIdentifier>{DD622FA9-4942-AE44-525A-391BBEB814A6}</UniqueIdentifier>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Log">
-      <UniqueIdentifier>{7E912FA9-EA70-AE44-F388-391B5FE714A6}</UniqueIdentifier>
+    <Filter Include="src\Platform\Win32">
+      <UniqueIdentifier>{C356B8F2-AF3A-7948-189B-739B049E63CA}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Resource">
       <UniqueIdentifier>{E46F59CC-D0D2-E870-7958-2127659AB4F3}</UniqueIdentifier>
@@ -60,124 +63,134 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\App\App.h">
-      <Filter>include\App</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Core.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Entry.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\Event.h">
-      <Filter>include\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\KeyEvent.h">
-      <Filter>include\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\MouseEvent.h">
-      <Filter>include\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Event\WindowEvent.h">
-      <Filter>include\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Buffer.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\ConstantBuffer.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Graphics.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\IndexBuffer.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Rasterizer.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\RenderTarget.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Sampler.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Shader.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\Texture.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\VertexArray.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics\VertexBuffer.h">
-      <Filter>include\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Input\InputCodes.h">
-      <Filter>include\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Log\Log.h">
-      <Filter>include\Log</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\Mesh.h">
-      <Filter>include\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Model\Model.h">
-      <Filter>include\Model</Filter>
-    </ClInclude>
     <ClInclude Include="include\NinthEngine.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Resource\ResourceLoader.h">
-      <Filter>include\Resource</Filter>
+    <ClInclude Include="include\NinthEngine\Application.h">
+      <Filter>include\NinthEngine</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Camera\Camera.h">
-      <Filter>include\Scene\Camera</Filter>
+    <ClInclude Include="include\NinthEngine\Core.h">
+      <Filter>include\NinthEngine</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Camera\PerspectiveCamera.h">
-      <Filter>include\Scene\Camera</Filter>
+    <ClInclude Include="include\NinthEngine\Entry.h">
+      <Filter>include\NinthEngine</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Light\AmbientLight.h">
-      <Filter>include\Scene\Light</Filter>
+    <ClInclude Include="include\NinthEngine\Event\Event.h">
+      <Filter>include\NinthEngine\Event</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Light\DirectionalLight.h">
-      <Filter>include\Scene\Light</Filter>
+    <ClInclude Include="include\NinthEngine\Event\KeyboardEvent.h">
+      <Filter>include\NinthEngine\Event</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Light\Light.h">
-      <Filter>include\Scene\Light</Filter>
+    <ClInclude Include="include\NinthEngine\Event\MouseEvent.h">
+      <Filter>include\NinthEngine\Event</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Light\PointLight.h">
-      <Filter>include\Scene\Light</Filter>
+    <ClInclude Include="include\NinthEngine\Event\WindowEvent.h">
+      <Filter>include\NinthEngine\Event</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Node.h">
-      <Filter>include\Scene</Filter>
+    <ClInclude Include="include\NinthEngine\Graphics\Buffer.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene\Scene.h">
-      <Filter>include\Scene</Filter>
+    <ClInclude Include="include\NinthEngine\Graphics\ConstantBuffer.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="include\Window\Window.h">
-      <Filter>include\Window</Filter>
+    <ClInclude Include="include\NinthEngine\Graphics\Graphics.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="include\pch.h">
-      <Filter>include</Filter>
+    <ClInclude Include="include\NinthEngine\Graphics\IndexBuffer.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Graphics\Rasterizer.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Graphics\Sampler.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Graphics\Shader.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Graphics\Surface.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Graphics\Texture.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Graphics\VertexArray.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Graphics\VertexBuffer.h">
+      <Filter>include\NinthEngine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Input.h">
+      <Filter>include\NinthEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Listener\InputListener.h">
+      <Filter>include\NinthEngine\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Listener\WindowListener.h">
+      <Filter>include\NinthEngine\Listener</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Log.h">
+      <Filter>include\NinthEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Model\Mesh.h">
+      <Filter>include\NinthEngine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Model\Model.h">
+      <Filter>include\NinthEngine\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\NEPCH.h">
+      <Filter>include\NinthEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Platform\Win32\Win32Input.h">
+      <Filter>include\NinthEngine\Platform\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Platform\Win32\Win32Window.h">
+      <Filter>include\NinthEngine\Platform\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\Camera\Camera.h">
+      <Filter>include\NinthEngine\Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\Camera\PerspectiveCamera.h">
+      <Filter>include\NinthEngine\Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\Light\DirectionalLight.h">
+      <Filter>include\NinthEngine\Scene\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\Light\Light.h">
+      <Filter>include\NinthEngine\Scene\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\Light\PointLight.h">
+      <Filter>include\NinthEngine\Scene\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\Node.h">
+      <Filter>include\NinthEngine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Window\Window.h">
+      <Filter>include\NinthEngine\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\SceneManager.h">
+      <Filter>include\NinthEngine\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NinthEngine\Scene\SceneNode.h" />
+    <ClInclude Include="include\NinthEngine\Resource\ResourceManager.h">
+      <Filter>include\NinthEngine\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\App\App.cpp">
-      <Filter>src\App</Filter>
+    <ClCompile Include="src\Application.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Log\Log.cpp">
-      <Filter>src\Log</Filter>
+    <ClCompile Include="src\Log.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Resource\ResourceLoader.cpp">
-      <Filter>src\Resource</Filter>
+    <ClCompile Include="src\NEPCH.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Win32\Win32Window.cpp">
+      <Filter>src\Platform\Win32</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Camera\PerspectiveCamera.cpp">
       <Filter>src\Scene\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Scene\Light\AmbientLight.cpp">
-      <Filter>src\Scene\Light</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Light\DirectionalLight.cpp">
       <Filter>src\Scene\Light</Filter>
@@ -185,11 +198,15 @@
     <ClCompile Include="src\Scene\Light\PointLight.cpp">
       <Filter>src\Scene\Light</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\Scene.cpp">
+    <ClCompile Include="src\Scene\Node.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\pch.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\Scene\SceneNode.cpp" />
+    <ClCompile Include="src\Scene\Camera\Camera.cpp" />
+    <ClCompile Include="src\Scene\Light\Light.cpp" />
+    <ClCompile Include="src\Resource\ResourceManager.cpp">
+      <Filter>src\Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

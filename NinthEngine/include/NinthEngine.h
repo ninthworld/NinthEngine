@@ -1,5 +1,5 @@
 #pragma once
 
-#include "App/App.h"
-#include "Log/Log.h"
-#include "Entry.h"
+#include "NinthEngine/Application.h"
+#include "NinthEngine/Log.h"
+#include "NinthEngine/Entry.h"

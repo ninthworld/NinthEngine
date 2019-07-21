@@ -5,7 +5,7 @@ project "NinthEngine"
 	targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "include/NEPCH.h"
+	pchheader "NinthEngine/NEPCH.h"
 	pchsource "src/NEPCH.cpp"
 	
 	files {
